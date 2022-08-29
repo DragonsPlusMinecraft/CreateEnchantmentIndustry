@@ -1,0 +1,13 @@
+{
+  "required": true,
+  "priority": 1100,
+  "package": "plus.dragons.createenchantmentindustry.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "refmap": "create_enchantment_industry.refmap.json",
+  "mixins": [],
+  "client": [],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "minVersion": "0.8"
+}
