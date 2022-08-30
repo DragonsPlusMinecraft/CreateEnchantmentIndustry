@@ -2,6 +2,7 @@ package plus.dragons.createenchantmentindustry.contraptions.enchantments;
 
 import com.simibubi.create.foundation.utility.Pair;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraftforge.fluids.FluidStack;
@@ -18,7 +19,6 @@ public class Disenchanting {
         return !EnchantmentHelper.getEnchantments(itemStack).isEmpty();
     }
 
-    // TODO: Should it handle Enchanted Book?
     public static Pair<FluidStack, ItemStack> disenchant(ItemStack stack, boolean simulate) {
         FluidStack resultingFluid = new FluidStack(ModFluids.EXPERIENCE.get().getSource(),getExperienceFromItem(stack));
         ItemStack resultingItem = disenchantItem(stack,simulate);
@@ -26,11 +26,19 @@ public class Disenchanting {
     }
 
     public static ItemStack disenchantItem(ItemStack itemStack, boolean simulate){
-        ItemStack ret;
-        if(simulate) ret=itemStack.copy();
-        else ret = itemStack;
-        EnchantmentHelper.setEnchantments(new HashMap<>(),ret);
-        return ret;
+        if(itemStack.is(Items.ENCHANTED_BOOK)){
+            if(simulate) return Items.BOOK.getDefaultInstance();
+            else{
+                itemStack = Items.BOOK.getDefaultInstance();
+                return itemStack;
+            }
+        } else {
+            ItemStack ret;
+            if(simulate) ret=itemStack.copy();
+            else ret = itemStack;
+            EnchantmentHelper.setEnchantments(new HashMap<>(),ret);
+            return ret;
+        }
     }
 
     /**
