@@ -1,29 +1,38 @@
 package plus.dragons.createenchantmentindustry;
 
-import com.mojang.logging.LogUtils;
-
+import com.simibubi.create.foundation.data.CreateRegistrate;
+import com.tterrag.registrate.util.nullness.NonNullSupplier;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import org.slf4j.Logger;
-import plus.dragons.createenchantmentindustry.registry.ModRegistries;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import plus.dragons.createenchantmentindustry.entry.ModBlockEntities;
+import plus.dragons.createenchantmentindustry.entry.ModBlocks;
+import plus.dragons.createenchantmentindustry.entry.ModFluids;
 
 @Mod("create_enchantment_industry")
 public class EnchantmentIndustry
 {
-    // Directly reference a slf4j logger
-    private static final Logger LOGGER = LogUtils.getLogger();
-
+    private static final Logger LOGGER = LogManager.getLogger();
     public static final String MOD_ID = "create_enchantment_industry";
+    private static final NonNullSupplier<CreateRegistrate> REGISTRATE = CreateRegistrate.lazy(MOD_ID);
 
     public EnchantmentIndustry()
     {
-        ModRegistries.init();
-        IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
+        initAllEntries();
+    }
+
+    private void initAllEntries(){
+        ModBlocks.register();
+        ModBlockEntities.register();
+        ModFluids.register();
     }
 
     public static ResourceLocation genRL(String name){
         return new ResourceLocation(MOD_ID,name);
+    }
+
+    public static CreateRegistrate registrate() {
+        return REGISTRATE.get();
     }
 }
