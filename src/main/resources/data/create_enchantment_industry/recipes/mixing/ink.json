@@ -1,0 +1,19 @@
+{
+  "type": "create:mixing",
+  "ingredients": [
+    {
+      "tag": "create_enchantment_industry:ink_ingredient"
+    },
+    {
+      "fluid": "minecraft:water",
+      "nbt": {},
+      "amount": 250
+    }
+  ],
+  "results": [
+    {
+      "fluid": "create_enchantment_industry:ink",
+      "amount": 250
+    }
+  ]
+}
