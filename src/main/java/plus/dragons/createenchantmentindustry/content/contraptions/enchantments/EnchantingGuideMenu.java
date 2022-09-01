@@ -98,16 +98,14 @@ public class EnchantingGuideMenu extends GhostItemContainer<ItemStack> {
         ItemStack held = getCarried();
         if (clickTypeIn == ClickType.CLONE) {
             if (player.isCreative() && held.isEmpty()) {
-                ItemStack stackInSlot = ghostInventory.getStackInSlot(36)
+                ItemStack stackInSlot = ghostInventory.getStackInSlot(0)
                         .copy();
                 setCarried(stackInSlot);
-                return;
             }
-            return;
         }
 
-        if(getSlot(36).mayPlace(held)){
-            ghostInventory.setStackInSlot(36, held.copy());
+        else if(getSlot(36).mayPlace(held) || held.isEmpty()){
+            ghostInventory.setStackInSlot(0, held.copy());
             getSlot(slotId).setChanged();
         }
     }
@@ -116,20 +114,13 @@ public class EnchantingGuideMenu extends GhostItemContainer<ItemStack> {
     public ItemStack quickMoveStack(Player playerIn, int index) {
         if (index < 36) {
             ItemStack stackToInsert = playerInventory.getItem(index);
-            for (int i = 0; i < ghostInventory.getSlots(); i++) {
-                ItemStack stack = ghostInventory.getStackInSlot(i);
-                if (!allowRepeats() && ItemHandlerHelper.canItemStacksStack(stack, stackToInsert))
-                    break;
-                if (stack.isEmpty()) {
-                    ItemStack copy = stackToInsert.copy();
-                    copy.setCount(1);
-                    ghostInventory.insertItem(i, copy, false);
-                    getSlot(i + 36).setChanged();
-                    break;
-                }
+            if(getSlot(36).mayPlace(stackToInsert)){
+                ItemStack copy = stackToInsert.copy();
+                ghostInventory.insertItem(0, copy, false);
+                getSlot(36).setChanged();
             }
         } else {
-            ghostInventory.extractItem(index - 36, 1, false);
+            ghostInventory.extractItem(0, 1, false);
             getSlot(index).setChanged();
         }
         return ItemStack.EMPTY;
