@@ -1,4 +1,4 @@
-package plus.dragons.createenchantmentindustry.contraptions.enchantments;
+package plus.dragons.createenchantmentindustry.content.contraptions.enchantments;
 
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;

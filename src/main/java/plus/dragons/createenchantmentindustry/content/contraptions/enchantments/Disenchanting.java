@@ -1,4 +1,4 @@
-package plus.dragons.createenchantmentindustry.contraptions.enchantments;
+package plus.dragons.createenchantmentindustry.content.contraptions.enchantments;
 
 import com.simibubi.create.foundation.utility.Pair;
 import net.minecraft.world.item.ItemStack;

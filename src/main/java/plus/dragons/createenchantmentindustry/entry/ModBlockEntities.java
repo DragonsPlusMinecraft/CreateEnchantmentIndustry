@@ -2,10 +2,7 @@ package plus.dragons.createenchantmentindustry.entry;
 
 import com.tterrag.registrate.util.entry.BlockEntityEntry;
 import plus.dragons.createenchantmentindustry.EnchantmentIndustry;
-import plus.dragons.createenchantmentindustry.contraptions.enchantments.CopierBlockEntity;
-import plus.dragons.createenchantmentindustry.contraptions.enchantments.CopierRenderer;
-import plus.dragons.createenchantmentindustry.contraptions.enchantments.DisenchanterBlockEntity;
-import plus.dragons.createenchantmentindustry.contraptions.enchantments.DisenchanterRenderer;
+import plus.dragons.createenchantmentindustry.content.contraptions.enchantments.*;
 
 public class ModBlockEntities {
 
@@ -19,6 +16,12 @@ public class ModBlockEntities {
             .tileEntity("copier_machine", CopierBlockEntity::new)
             .validBlocks(ModBlocks.COPIER)
             .renderer(() -> CopierRenderer::new)
+            .register();
+
+    public static final BlockEntityEntry<EnchantingAlterBlockEntity> BLAZE_ENCHANTING_ALTER = EnchantmentIndustry.registrate()
+            .tileEntity("blaze_enchanting_later", EnchantingAlterBlockEntity::new)
+            .validBlocks(ModBlocks.BLAZE_ENCHANTING_ALTER)
+            .renderer(() -> EnchantingAlterRenderer::new)
             .register();
 
     public static void register(){}

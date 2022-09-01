@@ -6,9 +6,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.fml.common.Mod;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import plus.dragons.createenchantmentindustry.entry.ModBlockEntities;
-import plus.dragons.createenchantmentindustry.entry.ModBlocks;
-import plus.dragons.createenchantmentindustry.entry.ModFluids;
+import plus.dragons.createenchantmentindustry.entry.*;
 
 @Mod("create_enchantment_industry")
 public class EnchantmentIndustry
@@ -23,9 +21,11 @@ public class EnchantmentIndustry
     }
 
     private void initAllEntries(){
+        ModItems.register();
         ModBlocks.register();
         ModBlockEntities.register();
         ModFluids.register();
+        ModContainerTypes.register();
     }
 
     public static ResourceLocation genRL(String name){

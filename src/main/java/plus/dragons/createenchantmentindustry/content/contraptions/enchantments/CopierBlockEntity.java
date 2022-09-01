@@ -1,6 +1,5 @@
-package plus.dragons.createenchantmentindustry.contraptions.enchantments;
+package plus.dragons.createenchantmentindustry.content.contraptions.enchantments;
 
-import com.simibubi.create.content.contraptions.fluids.actors.FillingBySpout;
 import com.simibubi.create.content.contraptions.goggles.IHaveGoggleInformation;
 import com.simibubi.create.content.contraptions.relays.belt.transport.TransportedItemStack;
 import com.simibubi.create.foundation.tileEntity.SmartTileEntity;

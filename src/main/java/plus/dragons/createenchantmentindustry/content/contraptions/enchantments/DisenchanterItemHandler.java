@@ -1,9 +1,8 @@
-package plus.dragons.createenchantmentindustry.contraptions.enchantments;
+package plus.dragons.createenchantmentindustry.content.contraptions.enchantments;
 
 import com.simibubi.create.content.contraptions.relays.belt.transport.TransportedItemStack;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemHandlerHelper;
 
