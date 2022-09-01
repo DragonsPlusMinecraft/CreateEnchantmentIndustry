@@ -9,6 +9,7 @@ import com.simibubi.create.foundation.tileEntity.ComparatorUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
@@ -78,6 +79,18 @@ public class CopierBlock extends Block implements IWrenchable, ITE<CopierBlockEn
             });
         }
         return InteractionResult.PASS;
+    }
+
+    @Override
+    public void onRemove(BlockState state, Level worldIn, BlockPos pos, BlockState newState, boolean isMoving) {
+        if (!state.hasBlockEntity() || state.getBlock() == newState.getBlock())
+            return;
+        withTileEntityDo(worldIn, pos, te -> {
+            ItemStack heldItemStack = te.copyTarget;
+            if (!heldItemStack.isEmpty())
+                Containers.dropItemStack(worldIn, pos.getX(), pos.getY(), pos.getZ(), heldItemStack);
+        });
+        worldIn.removeBlockEntity(pos);
     }
 
     // TODO: When create itself change it, change it.
