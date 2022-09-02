@@ -1,8 +1,13 @@
 package plus.dragons.createenchantmentindustry.content.contraptions.enchantments;
 
 import com.simibubi.create.foundation.gui.container.GhostItemContainer;
+import com.simibubi.create.foundation.gui.widget.Label;
+import com.simibubi.create.foundation.gui.widget.SelectionScrollInput;
+import com.simibubi.create.foundation.utility.Components;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.ClickType;
@@ -11,15 +16,19 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.items.ItemHandlerHelper;
 import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.items.SlotItemHandler;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class EnchantingGuideMenu extends GhostItemContainer<ItemStack> {
+    private static Component NO_ENCHANTMENT = new TranslatableComponent("tooltip.create_enchantment_industry.no_avaliable_enchantment");
 
     // TODO need index switcher
-    private int index;
-
+    public int index;
+    public SelectionScrollInput scrollInput;
+    public Label scrollInputLabel;
 
     public EnchantingGuideMenu(MenuType<?> type, int id, Inventory inv, FriendlyByteBuf extraData) {
         super(type, id, inv, extraData);
@@ -27,13 +36,33 @@ public class EnchantingGuideMenu extends GhostItemContainer<ItemStack> {
 
     public EnchantingGuideMenu(MenuType<?> type, int id, Inventory inv, ItemStack contentHolder) {
         super(type, id, inv, contentHolder);
+    }
 
+    private void regenEnchantmentListData(){
+        index = 0;
+        genEnchantmentListData();
+    }
+
+    private void genEnchantmentListData(){
+        var map = EnchantmentHelper.getEnchantments(this.getSlot(36).getItem());
+        List<Component> options = new ArrayList<>();
+        if(map.isEmpty())
+            options.add(NO_ENCHANTMENT);
+        else
+            options.addAll(map.entrySet().stream().map(entry -> entry.getKey().getFullname(entry.getValue())).toList());
+        scrollInput.forOptions(options);
+        scrollInput.setState(index);
     }
 
     @Override
     protected void init(Inventory inv, ItemStack contentHolderIn) {
         super.init(inv, contentHolderIn);
         this.index = contentHolderIn.getOrCreateTag().getInt("index");
+        scrollInput = new SelectionScrollInput(46,10,80,30);
+        scrollInputLabel = new Label(49, 14, Components.immutableEmpty()).withShadow();
+        scrollInput.calling(index -> this.index = index)
+                .writingTo(scrollInputLabel);
+        genEnchantmentListData();
     }
 
     @Override
@@ -51,7 +80,7 @@ public class EnchantingGuideMenu extends GhostItemContainer<ItemStack> {
         super.initAndReadInventory(contentHolder);
         var tag = contentHolder.getOrCreateTag();
         if(tag.contains("target"))
-        ghostInventory.setStackInSlot(0,ItemStack.of((CompoundTag) tag.get("target")));
+            ghostInventory.setStackInSlot(0,ItemStack.of((CompoundTag) tag.get("target")));
     }
 
     @Override
@@ -67,12 +96,15 @@ public class EnchantingGuideMenu extends GhostItemContainer<ItemStack> {
         this.addSlot(new EnchantedBookSlot(ghostInventory, 0, 46, 18));
     }
 
+
+
     @Override
     protected void saveData(ItemStack contentHolder) {
-        var tag = contentHolder.getOrCreateTag();
+        /*var tag = contentHolder.getOrCreateTag();
         tag.put("target", ghostInventory.getStackInSlot(0).serializeNBT());
-        tag.putInt("index",index);
+        tag.putInt("index",index);*/
     }
+
 
     static class EnchantedBookSlot extends SlotItemHandler{
 
@@ -107,6 +139,7 @@ public class EnchantingGuideMenu extends GhostItemContainer<ItemStack> {
         else if(getSlot(36).mayPlace(held) || held.isEmpty()){
             ghostInventory.setStackInSlot(0, held.copy());
             getSlot(slotId).setChanged();
+            regenEnchantmentListData();
         }
     }
 
@@ -118,10 +151,12 @@ public class EnchantingGuideMenu extends GhostItemContainer<ItemStack> {
                 ItemStack copy = stackToInsert.copy();
                 ghostInventory.insertItem(0, copy, false);
                 getSlot(36).setChanged();
+                regenEnchantmentListData();
             }
         } else {
             ghostInventory.extractItem(0, 1, false);
             getSlot(index).setChanged();
+            regenEnchantmentListData();
         }
         return ItemStack.EMPTY;
     }
