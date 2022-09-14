@@ -2,30 +2,32 @@ package plus.dragons.createenchantmentindustry.content.contraptions.enchantments
 
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.AllShapes;
-import com.simibubi.create.content.contraptions.relays.belt.transport.TransportedItemStack;
+import com.simibubi.create.content.contraptions.processing.burner.BlazeBurnerBlock;
 import com.simibubi.create.content.contraptions.wrench.IWrenchable;
 import com.simibubi.create.foundation.block.ITE;
 import com.simibubi.create.foundation.tileEntity.ComparatorUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.pathfinder.PathComputationType;
+import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import plus.dragons.createenchantmentindustry.entry.ModBlockEntities;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class EnchantingAlterBlock extends Block implements IWrenchable, ITE<EnchantingAlterBlockEntity> {
     public EnchantingAlterBlock(Properties pProperties) {
@@ -66,9 +68,10 @@ public class EnchantingAlterBlock extends Block implements IWrenchable, ITE<Ench
         ItemStack heldItem = player.getItemInHand(handIn);
         if (!heldItem.isEmpty())
             return InteractionResult.PASS;
-        worldIn.setBlockAndUpdate(pos, AllBlocks.BLAZE_BURNER.getDefaultState());
+        worldIn.setBlockAndUpdate(pos, AllBlocks.BLAZE_BURNER.getDefaultState().setValue(BlazeBurnerBlock.HEAT_LEVEL, BlazeBurnerBlock.HeatLevel.SMOULDERING));
         return InteractionResult.SUCCESS;
     }
+
 
     @Override
     public void setPlacedBy(Level pLevel, BlockPos pPos, BlockState pState, LivingEntity pPlacer, ItemStack pStack) {
@@ -77,10 +80,23 @@ public class EnchantingAlterBlock extends Block implements IWrenchable, ITE<Ench
         // AdvancementBehaviour.setPlacedBy(pLevel, pPos, pPlacer);
     }
 
+    @Override
+    public ItemStack getCloneItemStack(BlockGetter pLevel, BlockPos pPos, BlockState pState) {
+        return new ItemStack(AllBlocks.BLAZE_BURNER.get());
+    }
+
     // TODO: When create itself change it, change it.
     @Override
     public boolean hasAnalogOutputSignal(BlockState state) {
         return true;
+    }
+
+
+    @Override
+    public List<ItemStack> getDrops(BlockState pState, LootContext.Builder pBuilder) {
+        var ret = new ArrayList<ItemStack>();
+        ret.add(new ItemStack(AllBlocks.BLAZE_BURNER.get()));
+        return ret;
     }
 
     // TODO: When create itself change it, change it.

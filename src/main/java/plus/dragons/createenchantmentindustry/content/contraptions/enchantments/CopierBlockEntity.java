@@ -34,6 +34,7 @@ public class CopierBlockEntity extends SmartTileEntity implements IHaveGoggleInf
     SmartFluidTankBehaviour tank;
     public ItemStack copyTarget;
     public boolean tooExpensive;
+
     public CopierBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
         processingTicks = -1;
@@ -75,11 +76,11 @@ public class CopierBlockEntity extends SmartTileEntity implements IHaveGoggleInf
                                                                       TransportedItemStackHandlerBehaviour handler) {
         if (handler.tileEntity.isVirtual())
             return PASS;
-        if (tooExpensive || copyTarget==null)
+        if (tooExpensive || copyTarget == null)
             return PASS;
         if (!CopyingBook.valid(transported.stack))
             return PASS;
-        if (tank.isEmpty() || CopyingBook.isCorrectInt(copyTarget,getCurrentFluidInTank()))
+        if (tank.isEmpty() || CopyingBook.isCorrectInt(copyTarget, getCurrentFluidInTank()))
             return HOLD;
         if (CopyingBook.getRequiredAmountForItem(copyTarget) == -1)
             return PASS;
@@ -90,11 +91,11 @@ public class CopierBlockEntity extends SmartTileEntity implements IHaveGoggleInf
                                                                     TransportedItemStackHandlerBehaviour handler) {
         if (processingTicks != -1 && processingTicks != 10)
             return HOLD;
-        if (tooExpensive || copyTarget==null)
+        if (tooExpensive || copyTarget == null)
             return PASS;
         if (!CopyingBook.valid(transported.stack))
             return PASS;
-        if (tank.isEmpty()|| !CopyingBook.isCorrectInt(copyTarget,getCurrentFluidInTank()))
+        if (tank.isEmpty() || !CopyingBook.isCorrectInt(copyTarget, getCurrentFluidInTank()))
             return HOLD;
         FluidStack fluid = getCurrentFluidInTank();
         int requiredAmountForItem = CopyingBook.getRequiredAmountForItem(copyTarget);
@@ -134,7 +135,7 @@ public class CopierBlockEntity extends SmartTileEntity implements IHaveGoggleInf
     protected void write(CompoundTag compoundTag, boolean clientPacket) {
         super.write(compoundTag, clientPacket);
         compoundTag.putInt("ProcessingTicks", processingTicks);
-        compoundTag.putBoolean("tooExpensive",tooExpensive);
+        compoundTag.putBoolean("tooExpensive", tooExpensive);
         if (copyTarget != null)
             compoundTag.put("copyTarget", copyTarget.serializeNBT());
     }

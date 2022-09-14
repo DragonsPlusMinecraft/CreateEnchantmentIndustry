@@ -22,5 +22,6 @@ public class ModContainerTypes {
                 .register();
     }
 
-    public static void register() {}
+    public static void register() {
+    }
 }

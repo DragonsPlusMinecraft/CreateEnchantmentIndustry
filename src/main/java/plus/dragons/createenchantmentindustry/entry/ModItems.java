@@ -13,11 +13,12 @@ public class ModItems {
             // TODO Consider should we make our own tab?
             .creativeModeTab(() -> Create.BASE_CREATIVE_TAB);
 
-    static{
+    static {
         REGISTRATE.startSection(AllSections.KINETICS);
     }
 
     public static final ItemEntry<EnchantingGuideItem> ENCHANTING_GUIDE_FOR_BLAZE = REGISTRATE.item("enchanting_guide_for_blaze", EnchantingGuideItem::new).register();
 
-    public static void register(){}
+    public static void register() {
+    }
 }

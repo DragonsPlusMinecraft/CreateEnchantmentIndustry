@@ -32,7 +32,7 @@ public enum ModPackets {
     private ModPackets.LoadedPacket<?> packet;
 
     <T extends SimplePacketBase> ModPackets(Class<T> type, Function<FriendlyByteBuf, T> factory,
-                                                 NetworkDirection direction) {
+                                            NetworkDirection direction) {
         packet = new ModPackets.LoadedPacket<>(type, factory, direction);
     }
 

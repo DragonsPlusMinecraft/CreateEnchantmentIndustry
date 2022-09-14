@@ -29,6 +29,6 @@ public class EnchantingGuideScreen extends AbstractSimiContainerScreen<Enchantin
     @Override
     public void removed() {
         super.removed();
-        ModPackets.channel.sendToServer(new EnchantingGuideEditPacket(menu.index,menu.getSlot(36).getItem()));
+        ModPackets.channel.sendToServer(new EnchantingGuideEditPacket(menu.index, menu.getSlot(36).getItem()));
     }
 }

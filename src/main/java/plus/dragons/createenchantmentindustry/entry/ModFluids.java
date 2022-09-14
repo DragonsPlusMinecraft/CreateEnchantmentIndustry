@@ -1,6 +1,5 @@
 package plus.dragons.createenchantmentindustry.entry;
 
-import com.simibubi.create.AllFluids;
 import com.simibubi.create.AllTags;
 import com.simibubi.create.content.contraptions.fluids.VirtualFluid;
 import com.tterrag.registrate.util.entry.FluidEntry;
@@ -18,7 +17,7 @@ public class ModFluids {
     public static final ResourceLocation FLUID_FLOWING_RL = EnchantmentIndustry.genRL("fluid/experience_flow");
 
     public static final FluidEntry<VirtualFluid> EXPERIENCE =
-            EnchantmentIndustry.registrate().virtualFluid("experience",FLUID_STILL_RL,FLUID_FLOWING_RL)
+            EnchantmentIndustry.registrate().virtualFluid("experience", FLUID_STILL_RL, FLUID_FLOWING_RL)
                     .register();
 
     public static final FluidEntry<ForgeFlowingFluid.Flowing> INK =
@@ -35,7 +34,8 @@ public class ModFluids {
                     .build()
                     .register();
 
-    public static void register(){}
+    public static void register() {
+    }
 
     /**
      * Removing alpha from tint prevents optifine from forcibly applying biome

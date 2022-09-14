@@ -7,6 +7,7 @@ import com.simibubi.create.foundation.tileEntity.TileEntityBehaviour;
 import com.simibubi.create.foundation.tileEntity.behaviour.belt.DirectBeltInputBehaviour;
 import com.simibubi.create.foundation.tileEntity.behaviour.fluid.SmartFluidTankBehaviour;
 import com.simibubi.create.foundation.utility.BlockHelper;
+import com.simibubi.create.foundation.utility.Iterate;
 import com.simibubi.create.foundation.utility.Pair;
 import com.simibubi.create.foundation.utility.VecHelper;
 import net.minecraft.core.BlockPos;
@@ -22,10 +23,10 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
-import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.items.ItemHandlerHelper;
 import plus.dragons.createenchantmentindustry.entry.ModFluids;
 
+import java.util.IdentityHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -36,10 +37,15 @@ public class EnchantingAlterBlockEntity extends SmartTileEntity implements IHave
     TransportedItemStack heldItem;
     ItemStack targetItem = ItemStack.EMPTY;
     int processingTicks;
-    Map<Direction, LazyOptional<DisenchanterItemHandler>> itemHandlers;
+    Map<Direction, LazyOptional<EnchantingItemHandler>> itemHandlers;
 
     public EnchantingAlterBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
+        itemHandlers = new IdentityHashMap<>();
+        for (Direction d : Iterate.horizontalDirections) {
+            EnchantingItemHandler enchantingItemHandler = new EnchantingItemHandler(this, d);
+            itemHandlers.put(d, LazyOptional.of(() -> enchantingItemHandler));
+        }
     }
 
     @Override
@@ -157,7 +163,7 @@ public class EnchantingAlterBlockEntity extends SmartTileEntity implements IHave
         }
 
         if (heldItem.prevBeltPosition < .5f && heldItem.beltPosition >= .5f) {
-            if (!Enchanting.valid(heldItem.stack,targetItem))
+            if (!Enchanting.valid(heldItem.stack, targetItem))
                 return;
             heldItem.beltPosition = .5f;
             if (onClient)
@@ -173,10 +179,10 @@ public class EnchantingAlterBlockEntity extends SmartTileEntity implements IHave
             return true;
         if (processingTicks < 5)
             return true;
-        if (!Enchanting.valid(heldItem.stack,targetItem))
+        if (!Enchanting.valid(heldItem.stack, targetItem))
             return false;
 
-        Pair<FluidStack, ItemStack> enchantItem = Enchanting.enchant(heldItem.stack,targetItem, true);
+        Pair<FluidStack, ItemStack> enchantItem = Enchanting.enchant(heldItem.stack, targetItem, true);
         FluidStack fluidFromItem = enchantItem.getFirst();
 
         if (processingTicks > 5) {
@@ -187,7 +193,7 @@ public class EnchantingAlterBlockEntity extends SmartTileEntity implements IHave
             return true;
         }
 
-        enchantItem = Enchanting.enchant(heldItem.stack,targetItem, true);
+        enchantItem = Enchanting.enchant(heldItem.stack, targetItem, true);
         // award(AllAdvancements.DRAIN);
 
         // Process finished
@@ -201,7 +207,7 @@ public class EnchantingAlterBlockEntity extends SmartTileEntity implements IHave
         return 1 / 8f;
     }
 
-    public void setTargetItem(ItemStack itemStack){
+    public void setTargetItem(ItemStack itemStack) {
         targetItem = itemStack;
     }
 
@@ -212,7 +218,7 @@ public class EnchantingAlterBlockEntity extends SmartTileEntity implements IHave
         if (!getHeldItemStack().isEmpty())
             return inserted;
 
-        if (inserted.getCount() > 1 && Enchanting.valid(targetItem,inserted)) {
+        if (inserted.getCount() > 1 && Enchanting.valid(targetItem, inserted)) {
             returned = ItemHandlerHelper.copyStackWithSize(inserted, inserted.getCount() - 1);
             inserted = ItemHandlerHelper.copyStackWithSize(inserted, 1);
         }
@@ -245,7 +251,7 @@ public class EnchantingAlterBlockEntity extends SmartTileEntity implements IHave
     @Override
     public void setRemoved() {
         super.setRemoved();
-        for (LazyOptional<DisenchanterItemHandler> lazyOptional : itemHandlers.values())
+        for (LazyOptional<EnchantingItemHandler> lazyOptional : itemHandlers.values())
             lazyOptional.invalidate();
     }
 

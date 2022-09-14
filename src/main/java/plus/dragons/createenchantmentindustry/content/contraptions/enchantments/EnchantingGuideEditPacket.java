@@ -1,11 +1,9 @@
 package plus.dragons.createenchantmentindustry.content.contraptions.enchantments;
 
-import com.simibubi.create.AllItems;
 import com.simibubi.create.foundation.networking.SimplePacketBase;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.network.NetworkEvent;
 import plus.dragons.createenchantmentindustry.entry.ModItems;
@@ -45,8 +43,8 @@ public class EnchantingGuideEditPacket extends SimplePacketBase {
                         return;
 
                     CompoundTag tag = mainHandItem.getOrCreateTag();
-                    tag.putInt("index",index);
-                    tag.put("target",itemStack.serializeNBT());
+                    tag.putInt("index", index);
+                    tag.put("target", itemStack.serializeNBT());
 
                     sender.getCooldowns()
                             .addCooldown(mainHandItem.getItem(), 5);

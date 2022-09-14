@@ -18,10 +18,15 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.pathfinder.PathComputationType;
+import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import plus.dragons.createenchantmentindustry.entry.ModBlockEntities;
+import plus.dragons.createenchantmentindustry.entry.ModBlocks;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class CopierBlock extends Block implements IWrenchable, ITE<CopierBlockEntity> {
     public CopierBlock(Properties pProperties) {
@@ -42,14 +47,22 @@ public class CopierBlock extends Block implements IWrenchable, ITE<CopierBlockEn
     }
 
     @Override
+    public List<ItemStack> getDrops(BlockState pState, LootContext.Builder pBuilder) {
+        var ret = new ArrayList<ItemStack>();
+        ret.add(ModBlocks.COPIER.asStack());
+        return ret;
+    }
+
+
+    @Override
     public InteractionResult use(BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand,
                                  BlockHitResult blockRayTraceResult) {
         ItemStack heldItem = player.getItemInHand(hand);
 
-        if(heldItem.isEmpty()){
+        if (heldItem.isEmpty()) {
             return onTileEntityUse(world, pos, be -> {
-                if(be.copyTarget!=null){
-                    player.setItemInHand(hand,be.copyTarget);
+                if (be.copyTarget != null) {
+                    player.setItemInHand(hand, be.copyTarget);
                     be.tooExpensive = false;
                     be.copyTarget = null;
                     be.processingTicks = -1;
@@ -57,12 +70,12 @@ public class CopierBlock extends Block implements IWrenchable, ITE<CopierBlockEn
                     return InteractionResult.SUCCESS;
                 } else return InteractionResult.PASS;
             });
-        } else if(heldItem.is(Items.ENCHANTED_BOOK) || heldItem.is(Items.WRITTEN_BOOK)) {
+        } else if (heldItem.is(Items.ENCHANTED_BOOK) || heldItem.is(Items.WRITTEN_BOOK)) {
             return onTileEntityUse(world, pos, be -> {
-                if(be.copyTarget==null && player.getAbilities().instabuild){
-                    player.setItemInHand(hand,ItemStack.EMPTY);
+                if (be.copyTarget == null && player.getAbilities().instabuild) {
+                    player.setItemInHand(hand, ItemStack.EMPTY);
                 } else {
-                    player.setItemInHand(hand,be.copyTarget);
+                    player.setItemInHand(hand, be.copyTarget);
                 }
                 be.tooExpensive = CopyingBook.isTooExpensive(heldItem, CopierBlockEntity.TANK_CAPACITY);
                 be.copyTarget = heldItem;
@@ -80,7 +93,7 @@ public class CopierBlock extends Block implements IWrenchable, ITE<CopierBlockEn
             return;
         withTileEntityDo(worldIn, pos, te -> {
             ItemStack heldItemStack = te.copyTarget;
-            if (!heldItemStack.isEmpty())
+            if (heldItemStack != null)
                 Containers.dropItemStack(worldIn, pos.getX(), pos.getY(), pos.getZ(), heldItemStack);
         });
         worldIn.removeBlockEntity(pos);

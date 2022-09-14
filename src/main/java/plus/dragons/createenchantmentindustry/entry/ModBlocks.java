@@ -20,7 +20,7 @@ public class ModBlocks {
             // TODO Consider should we make our own tab?
             .creativeModeTab(() -> Create.BASE_CREATIVE_TAB);
 
-    static{
+    static {
         REGISTRATE.startSection(AllSections.KINETICS);
     }
 
@@ -51,5 +51,6 @@ public class ModBlocks {
             .simpleItem()
             .register();
 
-    public static void register(){}
+    public static void register() {
+    }
 }

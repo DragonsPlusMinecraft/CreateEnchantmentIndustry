@@ -13,14 +13,12 @@ import org.apache.logging.log4j.Logger;
 import plus.dragons.createenchantmentindustry.entry.*;
 
 @Mod("create_enchantment_industry")
-public class EnchantmentIndustry
-{
+public class EnchantmentIndustry {
     private static final Logger LOGGER = LogManager.getLogger();
     public static final String MOD_ID = "create_enchantment_industry";
     private static final NonNullSupplier<CreateRegistrate> REGISTRATE = CreateRegistrate.lazy(MOD_ID);
 
-    public EnchantmentIndustry()
-    {
+    public EnchantmentIndustry() {
         IEventBus modEventBus = FMLJavaModLoadingContext.get()
                 .getModEventBus();
         IEventBus forgeEventBus = MinecraftForge.EVENT_BUS;
@@ -30,7 +28,7 @@ public class EnchantmentIndustry
         modEventBus.addListener(EnchantmentIndustry::init);
     }
 
-    private void initAllEntries(){
+    private void initAllEntries() {
         ModItems.register();
         ModBlocks.register();
         ModBlockEntities.register();
@@ -42,8 +40,8 @@ public class EnchantmentIndustry
         ModPackets.registerPackets();
     }
 
-    public static ResourceLocation genRL(String name){
-        return new ResourceLocation(MOD_ID,name);
+    public static ResourceLocation genRL(String name) {
+        return new ResourceLocation(MOD_ID, name);
     }
 
     public static CreateRegistrate registrate() {
