@@ -46,7 +46,7 @@ public class Disenchanting {
      * Curse is also countable.
      */
     private static int getExperienceFromItem(ItemStack itemStack) {
-        int l = EnchantmentHelper.getEnchantments(itemStack).values().stream().reduce(0,Integer::sum);
+        int l = EnchantmentHelper.getEnchantments(itemStack).entrySet().stream().map(enchantmentEntry -> enchantmentEntry.getKey().getMinCost(enchantmentEntry.getValue())).reduce(0,Integer::sum);
         return l + expertedValue(l);
     }
 

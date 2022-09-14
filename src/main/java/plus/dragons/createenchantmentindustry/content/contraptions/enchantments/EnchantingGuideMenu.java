@@ -96,14 +96,8 @@ public class EnchantingGuideMenu extends GhostItemContainer<ItemStack> {
         this.addSlot(new EnchantedBookSlot(ghostInventory, 0, 46, 18));
     }
 
-
-
     @Override
-    protected void saveData(ItemStack contentHolder) {
-        /*var tag = contentHolder.getOrCreateTag();
-        tag.put("target", ghostInventory.getStackInSlot(0).serializeNBT());
-        tag.putInt("index",index);*/
-    }
+    protected void saveData(ItemStack contentHolder) {}
 
 
     static class EnchantedBookSlot extends SlotItemHandler{

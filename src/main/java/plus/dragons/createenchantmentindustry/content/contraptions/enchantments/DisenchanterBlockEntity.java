@@ -35,7 +35,7 @@ public class DisenchanterBlockEntity extends SmartTileEntity implements IHaveGog
     public static final int DISENCHANTER_TIME = 20;
     SmartFluidTankBehaviour internalTank;
     TransportedItemStack heldItem;
-    protected int processingTicks;
+    int processingTicks;
     Map<Direction, LazyOptional<DisenchanterItemHandler>> itemHandlers;
 
     public DisenchanterBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
@@ -105,7 +105,6 @@ public class DisenchanterBlockEntity extends SmartTileEntity implements IHaveGog
             if (tryExportingToBeltFunnel != null) {
                 if (tryExportingToBeltFunnel.getCount() != heldItem.stack.getCount()) {
                     if (tryExportingToBeltFunnel.isEmpty())
-                        // So confident
                         heldItem = null;
                     else
                         heldItem.stack = tryExportingToBeltFunnel;

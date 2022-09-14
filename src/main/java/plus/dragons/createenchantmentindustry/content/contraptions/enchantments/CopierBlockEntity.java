@@ -27,7 +27,7 @@ import static com.simibubi.create.foundation.tileEntity.behaviour.belt.BeltProce
 
 public class CopierBlockEntity extends SmartTileEntity implements IHaveGoggleInformation {
 
-    public static final int FILLING_TIME = 100;
+    public static final int COPYING_TIME = 100;
     public static final int TANK_CAPACITY = 3000;
     protected BeltProcessingBehaviour beltProcessing;
     public int processingTicks;
@@ -104,7 +104,7 @@ public class CopierBlockEntity extends SmartTileEntity implements IHaveGoggleInf
             return HOLD;
 
         if (processingTicks == -1) {
-            processingTicks = FILLING_TIME;
+            processingTicks = COPYING_TIME;
             notifyUpdate();
             return HOLD;
         }

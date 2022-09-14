@@ -45,7 +45,7 @@ public class CopyingBook {
     }
 
     private static int getExperienceFromItem(ItemStack itemStack) {
-        return EnchantmentHelper.getEnchantments(itemStack).values().stream().reduce(0,Integer::sum);
+        return EnchantmentHelper.getEnchantments(itemStack).entrySet().stream().map(enchantmentEntry -> enchantmentEntry.getKey().getMaxCost(enchantmentEntry.getValue())).reduce(0,Integer::sum);
     }
 
 
