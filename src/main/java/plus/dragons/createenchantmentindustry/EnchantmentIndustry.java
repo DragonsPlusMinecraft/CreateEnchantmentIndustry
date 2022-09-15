@@ -10,6 +10,7 @@ import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import plus.dragons.createenchantmentindustry.content.contraptions.fluids.OpenEndedPipeEffects;
 import plus.dragons.createenchantmentindustry.entry.*;
 
 @Mod("create_enchantment_industry")
@@ -24,6 +25,7 @@ public class EnchantmentIndustry {
         IEventBus forgeEventBus = MinecraftForge.EVENT_BUS;
 
         initAllEntries();
+        OpenEndedPipeEffects.register();
 
         modEventBus.addListener(EnchantmentIndustry::init);
     }

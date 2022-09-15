@@ -1,6 +1,5 @@
 package plus.dragons.createenchantmentindustry.entry;
 
-import com.simibubi.create.AllTags;
 import com.simibubi.create.content.contraptions.fluids.VirtualFluid;
 import com.tterrag.registrate.util.entry.FluidEntry;
 import net.minecraft.core.BlockPos;
@@ -18,6 +17,7 @@ public class ModFluids {
 
     public static final FluidEntry<VirtualFluid> EXPERIENCE =
             EnchantmentIndustry.registrate().virtualFluid("experience", FLUID_STILL_RL, FLUID_FLOWING_RL)
+                    .attributes(builder -> builder.luminosity(15))
                     .register();
 
     public static final FluidEntry<ForgeFlowingFluid.Flowing> INK =
