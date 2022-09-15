@@ -357,7 +357,7 @@ public class DisenchanterBlockEntity extends SmartTileEntity implements IHaveGog
             return itemHandlers.get(side)
                     .cast();
 
-        if (side == Direction.DOWN && isFluidHandlerCap(capability))
+        if ((side == Direction.DOWN || side == null) && isFluidHandlerCap(capability))
             return internalTank.getCapability()
                     .cast();
         return super.getCapability(capability, side);
@@ -365,7 +365,6 @@ public class DisenchanterBlockEntity extends SmartTileEntity implements IHaveGog
 
     @Override
     public boolean addToGoggleTooltip(List<Component> tooltip, boolean isPlayerSneaking) {
-        // TODO: For now it did not working, need fix
         return containedFluidTooltip(tooltip, isPlayerSneaking, getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY));
     }
 }

@@ -48,7 +48,6 @@ public class ModBlocks {
             .transform(AllTags.pickaxeOnly())
             .addLayer(() -> RenderType::cutoutMipped)
             .blockstate((ctx, pov) -> pov.simpleBlock(ctx.get(), AssetLookup.standardModel(ctx, pov)))
-            .simpleItem()
             .register();
 
     public static void register() {

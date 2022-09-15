@@ -7,10 +7,16 @@ import com.simibubi.create.foundation.tileEntity.TileEntityBehaviour;
 import com.simibubi.create.foundation.tileEntity.behaviour.belt.BeltProcessingBehaviour;
 import com.simibubi.create.foundation.tileEntity.behaviour.belt.TransportedItemStackHandlerBehaviour;
 import com.simibubi.create.foundation.tileEntity.behaviour.fluid.SmartFluidTankBehaviour;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.WrittenBookItem;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
@@ -18,6 +24,7 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
+import plus.dragons.createenchantmentindustry.foundation.utility.ModLang;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -162,6 +169,37 @@ public class CopierBlockEntity extends SmartTileEntity implements IHaveGoggleInf
     protected AABB createRenderBoundingBox() {
         // TODO: Change after model is done.
         return super.createRenderBoundingBox().expandTowards(0, -2, 0);
+    }
+
+    @Override
+    public boolean addToGoggleTooltip(List<Component> tooltip, boolean isPlayerSneaking) {
+        ModLang.translate("gui.goggles.copier_machine").forGoggles(tooltip);
+        if(copyTarget==null){
+            ModLang.translate("gui.goggles.copier_no_target")
+                    .style(ChatFormatting.GRAY)
+                    .forGoggles(tooltip, 1);
+        } else {
+            if(copyTarget.is(Items.WRITTEN_BOOK)){
+                var page = WrittenBookItem.getPageCount(copyTarget);
+                ModLang.builder()
+                        .add(ModLang.itemName(copyTarget)
+                                .style(ChatFormatting.BLUE))
+                        .text(ChatFormatting.GRAY, " / ")
+                        .add(ModLang.number(page)
+                                .text(" ")
+                                .add(page==1?ModLang.translate("generic.unit.page"):ModLang.translate("generic.unit.pages"))
+                                .style(ChatFormatting.DARK_GRAY))
+                        .forGoggles(tooltip, 1);
+            } else if(copyTarget.is(Items.ENCHANTED_BOOK)){
+                ModLang.itemName(copyTarget).style(ChatFormatting.LIGHT_PURPLE).forGoggles(tooltip, 1);
+                var map = EnchantmentHelper.getEnchantments(copyTarget);
+                for(var e: map.entrySet()){
+                    tooltip.add(new TextComponent("     ").append(e.getKey().getFullname(e.getValue())).withStyle(ChatFormatting.DARK_GRAY));
+                }
+            }
+        }
+        containedFluidTooltip(tooltip, isPlayerSneaking, getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY));
+        return true;
     }
 
 }

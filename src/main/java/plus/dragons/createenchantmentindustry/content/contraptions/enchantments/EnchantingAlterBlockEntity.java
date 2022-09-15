@@ -1,6 +1,8 @@
 package plus.dragons.createenchantmentindustry.content.contraptions.enchantments;
 
+import com.simibubi.create.AllBlocks;
 import com.simibubi.create.content.contraptions.goggles.IHaveGoggleInformation;
+import com.simibubi.create.content.contraptions.processing.burner.BlazeBurnerBlock;
 import com.simibubi.create.content.contraptions.relays.belt.transport.TransportedItemStack;
 import com.simibubi.create.foundation.tileEntity.SmartTileEntity;
 import com.simibubi.create.foundation.tileEntity.TileEntityBehaviour;
@@ -10,10 +12,12 @@ import com.simibubi.create.foundation.utility.BlockHelper;
 import com.simibubi.create.foundation.utility.Iterate;
 import com.simibubi.create.foundation.utility.Pair;
 import com.simibubi.create.foundation.utility.VecHelper;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -25,6 +29,7 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.items.ItemHandlerHelper;
 import plus.dragons.createenchantmentindustry.entry.ModFluids;
+import plus.dragons.createenchantmentindustry.foundation.utility.ModLang;
 
 import java.util.IdentityHashMap;
 import java.util.List;
@@ -60,12 +65,20 @@ public class EnchantingAlterBlockEntity extends SmartTileEntity implements IHave
     public void tick() {
         super.tick();
 
+        boolean onClient = level.isClientSide && !isVirtual();
+
+        if (EnchantingGuideItem.getEnchantment(targetItem)==null){
+            if(!onClient){
+                level.setBlockAndUpdate(getBlockPos(), AllBlocks.BLAZE_BURNER.getDefaultState().setValue(BlazeBurnerBlock.HEAT_LEVEL, BlazeBurnerBlock.HeatLevel.SMOULDERING));
+                return;
+            }
+        }
+
         if (heldItem == null) {
             processingTicks = 0;
             return;
         }
 
-        boolean onClient = level.isClientSide && !isVirtual();
 
         if (processingTicks > 0) {
             heldItem.prevBeltPosition = .5f;
@@ -281,7 +294,7 @@ public class EnchantingAlterBlockEntity extends SmartTileEntity implements IHave
             return itemHandlers.get(side)
                     .cast();
 
-        if (side == Direction.DOWN && isFluidHandlerCap(capability))
+        if ((side == Direction.DOWN || side == null) && isFluidHandlerCap(capability))
             return internalTank.getCapability()
                     .cast();
         return super.getCapability(capability, side);
@@ -289,7 +302,12 @@ public class EnchantingAlterBlockEntity extends SmartTileEntity implements IHave
 
     @Override
     public boolean addToGoggleTooltip(List<Component> tooltip, boolean isPlayerSneaking) {
-        // TODO: For now it did not working, need fix
-        return containedFluidTooltip(tooltip, isPlayerSneaking, getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY));
+        ModLang.translate("gui.goggles.enchanting_alter").forGoggles(tooltip);
+        if(targetItem!=null){
+            var e = EnchantingGuideItem.getEnchantment(targetItem);
+            tooltip.add(new TextComponent("     ").append(e.getFirst().getFullname(e.getSecond())));
+        }
+        containedFluidTooltip(tooltip, isPlayerSneaking, getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY));
+        return true;
     }
 }

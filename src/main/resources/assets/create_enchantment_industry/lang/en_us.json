@@ -6,5 +6,10 @@
   "block.create_enchantment_industry.copier_machine": "Copier Machine",
   "block.create_enchantment_industry.blaze_enchanting_alter": "Blaze Enchanting Alter",
   "fluid.create_enchantment_industry.ink": "Ink",
-  "fluid.create_enchantment_industry.experience": "Liquid Experience"
+  "fluid.create_enchantment_industry.experience": "Liquid Experience",
+  "create_enchantment_industry.gui.goggles.copier_machine": "Object to be copied:",
+  "create_enchantment_industry.gui.goggles.copier_no_target": "None",
+  "create_enchantment_industry.gui.goggles.enchanting_alter": "Active Enchantment:",
+  "create_enchantment_industry.generic.unit.page": "Page",
+  "create_enchantment_industry.generic.unit.pages": "Pages"
 }
