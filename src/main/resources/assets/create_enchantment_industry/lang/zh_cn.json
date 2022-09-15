@@ -5,7 +5,7 @@
   "block.create_enchantment_industry.disenchanter": "祛魔台",
   "block.create_enchantment_industry.copier_machine": "复印机",
   "block.create_enchantment_industry.blaze_enchanting_alter": "烈焰人附魔祭坛",
-  "fluid.create_enchantment_industry.ink": "墨水k",
+  "block.create_enchantment_industry.ink": "墨水",
   "fluid.create_enchantment_industry.experience": "液态经验",
   "create_enchantment_industry.gui.goggles.copier_machine": "复印物品：",
   "create_enchantment_industry.gui.goggles.copier_no_target": "无",
