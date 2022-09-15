@@ -14,10 +14,15 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.ExperienceOrb;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
@@ -25,18 +30,23 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.items.ItemHandlerHelper;
+import plus.dragons.createenchantmentindustry.entry.ModFluids;
 
 import java.util.IdentityHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class DisenchanterBlockEntity extends SmartTileEntity implements IHaveGoggleInformation {
 
-    public static final int DISENCHANTER_TIME = 20;
+    public static final int DISENCHANTER_TIME = 10;
+    private static final int ABSORB_AMOUNT = 100;
     SmartFluidTankBehaviour internalTank;
     TransportedItemStack heldItem;
     int processingTicks;
     Map<Direction, LazyOptional<DisenchanterItemHandler>> itemHandlers;
+
+    AABB absorbArea;
 
     public DisenchanterBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
@@ -45,6 +55,7 @@ public class DisenchanterBlockEntity extends SmartTileEntity implements IHaveGog
             DisenchanterItemHandler disenchanterItemHandler = new DisenchanterItemHandler(this, d);
             itemHandlers.put(d, LazyOptional.of(() -> disenchanterItemHandler));
         }
+        absorbArea = new AABB(pos.above());
     }
 
     @Override
@@ -61,12 +72,15 @@ public class DisenchanterBlockEntity extends SmartTileEntity implements IHaveGog
     public void tick() {
         super.tick();
 
+        boolean onClient = level.isClientSide && !isVirtual();
+
+        if(!onClient && level.getDayTime()%20==0)
+            absorbExperienceFromWorld();
+
         if (heldItem == null) {
             processingTicks = 0;
             return;
         }
-
-        boolean onClient = level.isClientSide && !isVirtual();
 
         if (processingTicks > 0) {
             heldItem.prevBeltPosition = .5f;
@@ -173,6 +187,66 @@ public class DisenchanterBlockEntity extends SmartTileEntity implements IHaveGog
             sendData();
         }
 
+    }
+
+    protected void absorbExperienceFromWorld(){
+        List<Player> players = level.getEntitiesOfClass(Player.class, absorbArea, LivingEntity::isAlive);
+        if(!players.isEmpty()){
+            AtomicInteger sum = new AtomicInteger();
+            internalTank.allowInsertion();
+            players.forEach(player -> {
+                if (player.totalExperience >= ABSORB_AMOUNT) {
+                    sum.addAndGet(ABSORB_AMOUNT);
+                } else if (player.totalExperience != 0) {
+                    sum.addAndGet(player.totalExperience);
+                }
+            });
+            if(sum.get()!=0){
+                var fluidStack = new FluidStack(ModFluids.EXPERIENCE.get().getSource(),sum.get());
+                var inserted = internalTank.getPrimaryHandler().fill(fluidStack, IFluidHandler.FluidAction.EXECUTE);
+                if(inserted!=0){
+                    for(var player:players){
+                        if(inserted>=ABSORB_AMOUNT){
+                            if (player.totalExperience >= ABSORB_AMOUNT) {
+                                player.giveExperiencePoints(-ABSORB_AMOUNT);
+                                inserted -= ABSORB_AMOUNT;
+                            } else if (player.totalExperience != 0) {
+                                inserted -= player.totalExperience;
+                                player.giveExperiencePoints(-player.totalExperience);
+                            }
+                        } else if(sum.get()>0){
+                            if (player.totalExperience >= sum.get()) {
+                                player.giveExperiencePoints(-sum.get());
+                                inserted=0;
+                            } else  {
+                                inserted -= player.totalExperience;
+                                player.giveExperiencePoints(-player.totalExperience);
+                            }
+                        } else {
+                            break;
+                        }
+                    }
+                }
+            }
+            internalTank.forbidInsertion();
+        }
+        List<ExperienceOrb> experienceOrbs = level.getEntitiesOfClass(ExperienceOrb.class, absorbArea);
+        if(!experienceOrbs.isEmpty()){
+            internalTank.allowInsertion();
+            for(var orb:experienceOrbs){
+                var amount = orb.value;
+                var fluidStack = new FluidStack(ModFluids.EXPERIENCE.get().getSource(),amount);
+                var inserted = internalTank.getPrimaryHandler().fill(fluidStack, IFluidHandler.FluidAction.EXECUTE);
+                if(inserted==amount){
+                    orb.remove(Entity.RemovalReason.DISCARDED);
+                } else {
+                    if(inserted!=0)
+                        orb.value-=inserted;
+                    break;
+                }
+            }
+            internalTank.forbidInsertion();
+        }
     }
 
     protected boolean continueProcessing() {
