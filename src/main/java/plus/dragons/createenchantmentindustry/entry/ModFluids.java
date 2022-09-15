@@ -21,14 +21,13 @@ public class ModFluids {
                     .register();
 
     public static final FluidEntry<ForgeFlowingFluid.Flowing> INK =
-            EnchantmentIndustry.registrate().standardFluid("ink", ModFluids.NoColorFluidAttributes::new)
+            EnchantmentIndustry.registrate().fluid("ink", EnchantmentIndustry.genRL("fluid/ink_still"),EnchantmentIndustry.genRL("fluid/ink_flow"),ModFluids.NoColorFluidAttributes::new)
                     .attributes(b -> b.viscosity(1000)
                             .density(1000))
                     .properties(p -> p.levelDecreasePerBlock(2)
                             .tickRate(25)
                             .slopeFindDistance(4)
                             .explosionResistance(100f))
-                    .tag(AllTags.AllFluidTags.HONEY.tag)
                     .source(ForgeFlowingFluid.Source::new) // TODO: remove when Registrate fixes FluidBuilder
                     .bucket()
                     .build()
