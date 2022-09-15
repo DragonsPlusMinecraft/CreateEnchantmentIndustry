@@ -4,6 +4,7 @@ import com.simibubi.create.content.contraptions.processing.burner.BlazeBurnerTil
 import com.simibubi.create.foundation.utility.Pair;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -14,6 +15,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
@@ -23,6 +25,8 @@ import org.jetbrains.annotations.Nullable;
 import plus.dragons.createenchantmentindustry.entry.ModBlocks;
 import plus.dragons.createenchantmentindustry.entry.ModContainerTypes;
 import plus.dragons.createenchantmentindustry.entry.ModItems;
+
+import java.util.List;
 
 public class EnchantingGuideItem extends Item implements MenuProvider {
     public EnchantingGuideItem(Properties pProperties) {
@@ -70,6 +74,17 @@ public class EnchantingGuideItem extends Item implements MenuProvider {
             return InteractionResultHolder.success(heldItem);
         }
         return InteractionResultHolder.pass(heldItem);
+    }
+
+    @Override
+    public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> pTooltipComponents, TooltipFlag pIsAdvanced) {
+        super.appendHoverText(pStack, pLevel, pTooltipComponents, pIsAdvanced);
+        pTooltipComponents.add(new TranslatableComponent("create_enchantment_industry.tooltip.guide"));
+        var enchantment = getEnchantment(pStack);
+        if(enchantment==null){
+            pTooltipComponents.add(new TranslatableComponent("create_enchantment_industry.tooltip.guide_not_configured"));
+        } else
+            pTooltipComponents.add(enchantment.getFirst().getFullname(enchantment.getSecond()));
     }
 
     @Nullable

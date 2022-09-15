@@ -1,0 +1,10 @@
+{
+  "create_enchantment_industry.tooltip.guide": "Current Enchantment:",
+  "create_enchantment_industry.tooltip.guide_not_configured": "Not Configured",
+  "item.create_enchantment_industry.enchanting_guide_for_blaze": "Enchanting Guide for Blaze",
+  "block.create_enchantment_industry.disenchanter": "Disenchanter",
+  "block.create_enchantment_industry.copier_machine": "Copier Machine",
+  "block.create_enchantment_industry.blaze_enchanting_alter": "Blaze Enchanting Alter",
+  "fluid.create_enchantment_industry.ink": "Ink",
+  "fluid.create_enchantment_industry.experience": "Liquid Experience"
+}
