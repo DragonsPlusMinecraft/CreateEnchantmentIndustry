@@ -44,7 +44,7 @@ public class ModBlocks {
 
     public static final BlockEntry<EnchantingAlterBlock> BLAZE_ENCHANTING_ALTER = REGISTRATE
             .block("blaze_enchanting_alter", EnchantingAlterBlock::new)
-            .initialProperties(SharedProperties::copperMetal)
+            .initialProperties(SharedProperties::softMetal)
             .transform(AllTags.pickaxeOnly())
             .addLayer(() -> RenderType::cutoutMipped)
             .blockstate((ctx, pov) -> pov.simpleBlock(ctx.get(), AssetLookup.standardModel(ctx, pov)))
