@@ -2,6 +2,7 @@
   "create_enchantment_industry.tooltip.guide": "Current Enchantment:",
   "create_enchantment_industry.tooltip.guide_not_configured": "Not Configured",
   "item.create_enchantment_industry.enchanting_guide_for_blaze": "Enchanting Guide for Blaze",
+  "item.create_enchantment_industry.ink_bucket": "Ink Bucket",
   "block.create_enchantment_industry.disenchanter": "Disenchanter",
   "block.create_enchantment_industry.copier_machine": "Copier Machine",
   "block.create_enchantment_industry.blaze_enchanting_alter": "Blaze Enchanting Alter",
@@ -10,6 +11,8 @@
   "create_enchantment_industry.gui.goggles.copier_machine": "Object to be copied:",
   "create_enchantment_industry.gui.goggles.copier_no_target": "None",
   "create_enchantment_industry.gui.goggles.enchanting_alter": "Active Enchantment:",
+  "create_enchantment_industry.gui.goggles.copier_too_expensive": "Too Expensive!",
   "create_enchantment_industry.generic.unit.page": "Page",
-  "create_enchantment_industry.generic.unit.pages": "Pages"
+  "create_enchantment_industry.generic.unit.pages": "Pages",
+  "itemGroup.create_enchantment_industry.base": "Create Enchantment Industry"
 }

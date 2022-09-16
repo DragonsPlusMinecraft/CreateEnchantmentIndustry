@@ -74,7 +74,7 @@ public class DisenchanterBlockEntity extends SmartTileEntity implements IHaveGog
 
         boolean onClient = level.isClientSide && !isVirtual();
 
-        if(!onClient && level.getDayTime()%20==0)
+        if (!onClient && level.getDayTime() % 20 == 0)
             absorbExperienceFromWorld();
 
         if (heldItem == null) {
@@ -189,9 +189,9 @@ public class DisenchanterBlockEntity extends SmartTileEntity implements IHaveGog
 
     }
 
-    protected void absorbExperienceFromWorld(){
+    protected void absorbExperienceFromWorld() {
         List<Player> players = level.getEntitiesOfClass(Player.class, absorbArea, LivingEntity::isAlive);
-        if(!players.isEmpty()){
+        if (!players.isEmpty()) {
             AtomicInteger sum = new AtomicInteger();
             internalTank.allowInsertion();
             players.forEach(player -> {
@@ -201,12 +201,12 @@ public class DisenchanterBlockEntity extends SmartTileEntity implements IHaveGog
                     sum.addAndGet(player.totalExperience);
                 }
             });
-            if(sum.get()!=0){
-                var fluidStack = new FluidStack(ModFluids.EXPERIENCE.get().getSource(),sum.get());
+            if (sum.get() != 0) {
+                var fluidStack = new FluidStack(ModFluids.EXPERIENCE.get().getSource(), sum.get());
                 var inserted = internalTank.getPrimaryHandler().fill(fluidStack, IFluidHandler.FluidAction.EXECUTE);
-                if(inserted!=0){
-                    for(var player:players){
-                        if(inserted>=ABSORB_AMOUNT){
+                if (inserted != 0) {
+                    for (var player : players) {
+                        if (inserted >= ABSORB_AMOUNT) {
                             if (player.totalExperience >= ABSORB_AMOUNT) {
                                 player.giveExperiencePoints(-ABSORB_AMOUNT);
                                 inserted -= ABSORB_AMOUNT;
@@ -214,11 +214,11 @@ public class DisenchanterBlockEntity extends SmartTileEntity implements IHaveGog
                                 inserted -= player.totalExperience;
                                 player.giveExperiencePoints(-player.totalExperience);
                             }
-                        } else if(sum.get()>0){
+                        } else if (sum.get() > 0) {
                             if (player.totalExperience >= sum.get()) {
                                 player.giveExperiencePoints(-sum.get());
-                                inserted=0;
-                            } else  {
+                                inserted = 0;
+                            } else {
                                 inserted -= player.totalExperience;
                                 player.giveExperiencePoints(-player.totalExperience);
                             }
@@ -231,17 +231,17 @@ public class DisenchanterBlockEntity extends SmartTileEntity implements IHaveGog
             internalTank.forbidInsertion();
         }
         List<ExperienceOrb> experienceOrbs = level.getEntitiesOfClass(ExperienceOrb.class, absorbArea);
-        if(!experienceOrbs.isEmpty()){
+        if (!experienceOrbs.isEmpty()) {
             internalTank.allowInsertion();
-            for(var orb:experienceOrbs){
+            for (var orb : experienceOrbs) {
                 var amount = orb.value;
-                var fluidStack = new FluidStack(ModFluids.EXPERIENCE.get().getSource(),amount);
+                var fluidStack = new FluidStack(ModFluids.EXPERIENCE.get().getSource(), amount);
                 var inserted = internalTank.getPrimaryHandler().fill(fluidStack, IFluidHandler.FluidAction.EXECUTE);
-                if(inserted==amount){
+                if (inserted == amount) {
                     orb.remove(Entity.RemovalReason.DISCARDED);
                 } else {
-                    if(inserted!=0)
-                        orb.value-=inserted;
+                    if (inserted != 0)
+                        orb.value -= inserted;
                     break;
                 }
             }

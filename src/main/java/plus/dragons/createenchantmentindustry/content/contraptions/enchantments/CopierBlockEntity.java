@@ -174,26 +174,31 @@ public class CopierBlockEntity extends SmartTileEntity implements IHaveGoggleInf
     @Override
     public boolean addToGoggleTooltip(List<Component> tooltip, boolean isPlayerSneaking) {
         ModLang.translate("gui.goggles.copier_machine").forGoggles(tooltip);
-        if(copyTarget==null){
+        if (copyTarget == null) {
             ModLang.translate("gui.goggles.copier_no_target")
                     .style(ChatFormatting.GRAY)
                     .forGoggles(tooltip, 1);
         } else {
-            if(copyTarget.is(Items.WRITTEN_BOOK)){
+            if (copyTarget.is(Items.WRITTEN_BOOK)) {
                 var page = WrittenBookItem.getPageCount(copyTarget);
-                ModLang.builder()
+                var b = ModLang.builder()
                         .add(ModLang.itemName(copyTarget)
                                 .style(ChatFormatting.BLUE))
                         .text(ChatFormatting.GRAY, " / ")
                         .add(ModLang.number(page)
                                 .text(" ")
-                                .add(page==1?ModLang.translate("generic.unit.page"):ModLang.translate("generic.unit.pages"))
-                                .style(ChatFormatting.DARK_GRAY))
-                        .forGoggles(tooltip, 1);
-            } else if(copyTarget.is(Items.ENCHANTED_BOOK)){
-                ModLang.itemName(copyTarget).style(ChatFormatting.LIGHT_PURPLE).forGoggles(tooltip, 1);
+                                .add(page == 1 ? ModLang.translate("generic.unit.page") : ModLang.translate("generic.unit.pages"))
+                                .style(ChatFormatting.DARK_GRAY));
+                if (CopyingBook.isTooExpensive(copyTarget, TANK_CAPACITY))
+                    b.text(" ").add(ModLang.translate("gui.goggles.copier_too_expensive").style(ChatFormatting.RED));
+                b.forGoggles(tooltip, 1);
+            } else if (copyTarget.is(Items.ENCHANTED_BOOK)) {
+                var b = ModLang.itemName(copyTarget).style(ChatFormatting.LIGHT_PURPLE);
+                if (CopyingBook.isTooExpensive(copyTarget, TANK_CAPACITY))
+                    b.text(" ").add(ModLang.translate("gui.goggles.copier_too_expensive").style(ChatFormatting.RED));
+                b.forGoggles(tooltip, 1);
                 var map = EnchantmentHelper.getEnchantments(copyTarget);
-                for(var e: map.entrySet()){
+                for (var e : map.entrySet()) {
                     tooltip.add(new TextComponent("     ").append(e.getKey().getFullname(e.getValue())).withStyle(ChatFormatting.DARK_GRAY));
                 }
             }

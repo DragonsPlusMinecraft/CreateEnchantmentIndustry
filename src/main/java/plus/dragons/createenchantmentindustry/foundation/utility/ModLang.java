@@ -1,6 +1,5 @@
 package plus.dragons.createenchantmentindustry.foundation.utility;
 
-import com.simibubi.create.Create;
 import com.simibubi.create.foundation.utility.LangBuilder;
 import com.simibubi.create.foundation.utility.LangNumberFormat;
 import net.minecraft.world.item.ItemStack;

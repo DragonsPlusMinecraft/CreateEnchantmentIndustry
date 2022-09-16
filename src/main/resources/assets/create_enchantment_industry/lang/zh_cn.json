@@ -2,6 +2,7 @@
   "create_enchantment_industry.tooltip.guide": "当前附魔：",
   "create_enchantment_industry.tooltip.guide_not_configured": "未指定",
   "item.create_enchantment_industry.enchanting_guide_for_blaze": "烈焰人用附魔指南",
+  "item.create_enchantment_industry.ink_bucket": "墨水桶",
   "block.create_enchantment_industry.disenchanter": "祛魔台",
   "block.create_enchantment_industry.copier_machine": "复印机",
   "block.create_enchantment_industry.blaze_enchanting_alter": "烈焰人附魔祭坛",
@@ -9,7 +10,9 @@
   "fluid.create_enchantment_industry.experience": "液态经验",
   "create_enchantment_industry.gui.goggles.copier_machine": "复印物品：",
   "create_enchantment_industry.gui.goggles.copier_no_target": "无",
+  "create_enchantment_industry.gui.goggles.copier_too_expensive": "过于昂贵！",
   "create_enchantment_industry.gui.goggles.enchanting_alter": "当前附魔：",
   "create_enchantment_industry.generic.unit.page": "页",
-  "create_enchantment_industry.generic.unit.pages": "页"
+  "create_enchantment_industry.generic.unit.pages": "页",
+  "itemGroup.create_enchantment_industry.base": "机械动力：附魔工业"
 }

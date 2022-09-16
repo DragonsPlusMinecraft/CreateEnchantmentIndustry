@@ -15,11 +15,11 @@ import java.util.Random;
 public class OpenEndedPipeEffects {
     private static Random RNG = new Random();
 
-    public static void register(){
+    public static void register() {
         OpenEndedPipe.registerEffectHandler(new ExperienceEffect());
     }
 
-    public static class ExperienceEffect implements OpenEndedPipe.IEffectHandler{
+    public static class ExperienceEffect implements OpenEndedPipe.IEffectHandler {
 
         @Override
         public boolean canApplyEffects(OpenEndedPipe pipe, FluidStack fluid) {
@@ -30,20 +30,20 @@ public class OpenEndedPipeEffects {
         public void applyEffects(OpenEndedPipe pipe, FluidStack fluid) {
             List<Player> players = pipe.getWorld()
                     .getEntitiesOfClass(Player.class, pipe.getAOE(), LivingEntity::isAlive);
-            if(players.isEmpty()){
+            if (players.isEmpty()) {
                 var level = pipe.getWorld();
                 var pos = pipe.getOutputPos();
                 var pipePos = pipe.getPos();
-                var speed = new Vec3(pos.getX() - pipePos.getX(),pos.getY() - pipePos.getY(),pos.getZ() - pipePos.getZ()).scale(0.2);
+                var speed = new Vec3(pos.getX() - pipePos.getX(), pos.getY() - pipePos.getY(), pos.getZ() - pipePos.getZ()).scale(0.2);
                 var endPos = new AABB(pos).getCenter();
-                var expBall = new ExperienceOrb(level,endPos.x,endPos.y,endPos.z,fluid.getAmount());
+                var expBall = new ExperienceOrb(level, endPos.x, endPos.y, endPos.z, fluid.getAmount());
                 expBall.setDeltaMovement(speed);
                 level.addFreshEntity(expBall);
             } else {
-                var amount = fluid.getAmount()/players.size();
-                var left = fluid.getAmount()%players.size();
+                var amount = fluid.getAmount() / players.size();
+                var left = fluid.getAmount() % players.size();
                 players.forEach(player -> player.giveExperiencePoints(amount));
-                if(left!=0) players.get(RNG.nextInt(players.size())).giveExperiencePoints(left);
+                if (left != 0) players.get(RNG.nextInt(players.size())).giveExperiencePoints(left);
             }
         }
     }

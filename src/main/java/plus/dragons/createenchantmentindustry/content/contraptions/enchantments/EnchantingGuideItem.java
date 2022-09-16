@@ -81,7 +81,7 @@ public class EnchantingGuideItem extends Item implements MenuProvider {
         super.appendHoverText(pStack, pLevel, pTooltipComponents, pIsAdvanced);
         pTooltipComponents.add(new TranslatableComponent("create_enchantment_industry.tooltip.guide"));
         var enchantment = getEnchantment(pStack);
-        if(enchantment==null){
+        if (enchantment == null) {
             pTooltipComponents.add(new TranslatableComponent("create_enchantment_industry.tooltip.guide_not_configured"));
         } else
             pTooltipComponents.add(enchantment.getFirst().getFullname(enchantment.getSecond()));

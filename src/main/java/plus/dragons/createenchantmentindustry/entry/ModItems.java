@@ -1,6 +1,5 @@
 package plus.dragons.createenchantmentindustry.entry;
 
-import com.simibubi.create.Create;
 import com.simibubi.create.content.AllSections;
 import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.tterrag.registrate.util.entry.ItemEntry;
@@ -11,7 +10,7 @@ public class ModItems {
 
     private static final CreateRegistrate REGISTRATE = EnchantmentIndustry.registrate()
             // TODO Consider should we make our own tab?
-            .creativeModeTab(() -> Create.BASE_CREATIVE_TAB);
+            .creativeModeTab(() -> EnchantmentIndustry.CREATIVE_TAB);
 
     static {
         REGISTRATE.startSection(AllSections.KINETICS);

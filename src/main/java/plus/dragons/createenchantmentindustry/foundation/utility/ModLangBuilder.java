@@ -1,6 +1,5 @@
 package plus.dragons.createenchantmentindustry.foundation.utility;
 
-import com.simibubi.create.foundation.utility.Lang;
 import com.simibubi.create.foundation.utility.LangBuilder;
 import joptsimple.internal.Strings;
 import net.minecraft.network.chat.MutableComponent;

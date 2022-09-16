@@ -12,7 +12,6 @@ import com.simibubi.create.foundation.utility.BlockHelper;
 import com.simibubi.create.foundation.utility.Iterate;
 import com.simibubi.create.foundation.utility.Pair;
 import com.simibubi.create.foundation.utility.VecHelper;
-import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -67,8 +66,8 @@ public class EnchantingAlterBlockEntity extends SmartTileEntity implements IHave
 
         boolean onClient = level.isClientSide && !isVirtual();
 
-        if (EnchantingGuideItem.getEnchantment(targetItem)==null){
-            if(!onClient){
+        if (EnchantingGuideItem.getEnchantment(targetItem) == null) {
+            if (!onClient) {
                 level.setBlockAndUpdate(getBlockPos(), AllBlocks.BLAZE_BURNER.getDefaultState().setValue(BlazeBurnerBlock.HEAT_LEVEL, BlazeBurnerBlock.HeatLevel.SMOULDERING));
                 return;
             }
@@ -303,7 +302,7 @@ public class EnchantingAlterBlockEntity extends SmartTileEntity implements IHave
     @Override
     public boolean addToGoggleTooltip(List<Component> tooltip, boolean isPlayerSneaking) {
         ModLang.translate("gui.goggles.enchanting_alter").forGoggles(tooltip);
-        if(targetItem!=null){
+        if (targetItem != null) {
             var e = EnchantingGuideItem.getEnchantment(targetItem);
             tooltip.add(new TextComponent("     ").append(e.getFirst().getFullname(e.getSecond())));
         }
