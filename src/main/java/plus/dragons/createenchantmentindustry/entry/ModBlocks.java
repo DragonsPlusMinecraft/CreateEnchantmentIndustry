@@ -16,7 +16,6 @@ import plus.dragons.createenchantmentindustry.content.contraptions.enchantments.
 public class ModBlocks {
 
     private static final CreateRegistrate REGISTRATE = EnchantmentIndustry.registrate()
-            // TODO Consider should we make our own tab?
             .creativeModeTab(() -> EnchantmentIndustry.CREATIVE_TAB);
 
     static {
