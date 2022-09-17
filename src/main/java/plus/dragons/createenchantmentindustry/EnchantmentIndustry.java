@@ -1,10 +1,14 @@
 package plus.dragons.createenchantmentindustry;
 
+import com.simibubi.create.CreateClient;
 import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.tterrag.registrate.util.nullness.NonNullSupplier;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.CreativeModeTab;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
@@ -25,12 +29,13 @@ public class EnchantmentIndustry {
     public EnchantmentIndustry() {
         IEventBus modEventBus = FMLJavaModLoadingContext.get()
                 .getModEventBus();
-        // IEventBus forgeEventBus = MinecraftForge.EVENT_BUS;
+        IEventBus forgeEventBus = MinecraftForge.EVENT_BUS;
 
         initAllEntries();
         OpenEndedPipeEffects.register();
 
         modEventBus.addListener(EnchantmentIndustry::init);
+        DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> EnchantmentIndustryClient.onClient(modEventBus, forgeEventBus));
     }
 
     private void initAllEntries() {

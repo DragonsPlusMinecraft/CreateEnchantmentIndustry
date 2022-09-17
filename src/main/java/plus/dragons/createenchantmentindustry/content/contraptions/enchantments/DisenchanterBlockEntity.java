@@ -41,6 +41,7 @@ public class DisenchanterBlockEntity extends SmartTileEntity implements IHaveGog
 
     public static final int DISENCHANTER_TIME = 10;
     private static final int ABSORB_AMOUNT = 100;
+
     SmartFluidTankBehaviour internalTank;
     TransportedItemStack heldItem;
     int processingTicks;
@@ -257,8 +258,8 @@ public class DisenchanterBlockEntity extends SmartTileEntity implements IHaveGog
         if (!Disenchanting.valid(heldItem.stack))
             return false;
 
-        Pair<FluidStack, ItemStack> emptyItem = Disenchanting.disenchant(heldItem.stack, true);
-        FluidStack fluidFromItem = emptyItem.getFirst();
+        Pair<FluidStack, ItemStack> stackPair = Disenchanting.disenchant(heldItem.stack, true);
+        FluidStack fluidFromItem = stackPair.getFirst();
 
         if (processingTicks > 5) {
             internalTank.allowInsertion();
@@ -272,11 +273,11 @@ public class DisenchanterBlockEntity extends SmartTileEntity implements IHaveGog
             return true;
         }
 
-        emptyItem = Disenchanting.disenchant(heldItem.stack, true);
+        stackPair = Disenchanting.disenchant(heldItem.stack, true);
         // award(AllAdvancements.DRAIN);
 
         // Process finished
-        heldItem.stack = emptyItem.getSecond();
+        heldItem.stack = stackPair.getSecond();
         internalTank.allowInsertion();
         internalTank.getPrimaryHandler()
                 .fill(fluidFromItem, IFluidHandler.FluidAction.EXECUTE);
@@ -287,6 +288,10 @@ public class DisenchanterBlockEntity extends SmartTileEntity implements IHaveGog
 
     private float itemMovementPerTick() {
         return 1 / 8f;
+    }
+
+    public SmartFluidTankBehaviour getInternalTank() {
+        return internalTank;
     }
 
     private ItemStack tryInsertingFromSide(TransportedItemStack transportedStack, Direction side, boolean simulate) {

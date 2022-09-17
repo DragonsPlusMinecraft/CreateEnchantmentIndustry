@@ -14,5 +14,8 @@
   "create_enchantment_industry.gui.goggles.copier_too_expensive": "Too Expensive!",
   "create_enchantment_industry.generic.unit.page": "Page",
   "create_enchantment_industry.generic.unit.pages": "Pages",
+  "create_enchantment_industry.ponder.disenchant.header": "Disenchanting and storing experience",
+  "create_enchantment_industry.ponder.disenchant.text_1": "All received items will have their enchantments removed and the removed enchantments will be converted to liquid experience for storage.",
+  "create_enchantment_industry.ponder.disenchant.text_2": "Players standing on the disenchanter will be quickly washed away their experience level, and the washed away experience value will be converted into liquid experience for storage",
   "itemGroup.create_enchantment_industry.base": "Create Enchantment Industry"
 }
