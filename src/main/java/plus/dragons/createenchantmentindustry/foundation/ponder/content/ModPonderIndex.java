@@ -2,6 +2,7 @@ package plus.dragons.createenchantmentindustry.foundation.ponder.content;
 
 import com.simibubi.create.foundation.ponder.PonderRegistrationHelper;
 import com.simibubi.create.foundation.ponder.PonderRegistry;
+import net.minecraft.world.item.Items;
 import plus.dragons.createenchantmentindustry.EnchantmentIndustry;
 import plus.dragons.createenchantmentindustry.entry.ModBlocks;
 import plus.dragons.createenchantmentindustry.entry.ModItems;
@@ -21,7 +22,8 @@ public class ModPonderIndex {
         PonderRegistry.TAGS.forTag(ModPonderTag.EXPERIENCE)
                 .add(ModBlocks.DISENCHANTER)
                 .add(ModBlocks.COPIER)
-                .add(ModItems.ENCHANTING_GUIDE_FOR_BLAZE);
+                .add(ModItems.ENCHANTING_GUIDE_FOR_BLAZE)
+                .add(Items.EXPERIENCE_BOTTLE);
     }
 
 }

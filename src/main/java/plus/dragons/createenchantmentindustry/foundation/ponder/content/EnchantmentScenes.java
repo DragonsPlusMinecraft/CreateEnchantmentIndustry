@@ -1,6 +1,5 @@
 package plus.dragons.createenchantmentindustry.foundation.ponder.content;
 
-import com.simibubi.create.content.contraptions.fluids.tank.FluidTankTileEntity;
 import com.simibubi.create.foundation.ponder.ElementLink;
 import com.simibubi.create.foundation.ponder.SceneBuilder;
 import com.simibubi.create.foundation.ponder.SceneBuildingUtil;
@@ -14,10 +13,6 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.capability.IFluidHandler;
-import plus.dragons.createenchantmentindustry.content.contraptions.enchantments.DisenchanterBlockEntity;
-import plus.dragons.createenchantmentindustry.entry.ModFluids;
 
 import java.util.List;
 import java.util.Random;
@@ -34,7 +29,7 @@ public class EnchantmentScenes {
         scene.idle(5);
         scene.world.showSection(util.select.fromTo(0, 1, 0, 6, 4, 6), Direction.DOWN);
 
-        scene.overlay.showText(80)
+        scene.overlay.showText(100)
                 .text("") // We do not use PonderLocalization. For registerText only
                 .attachKeyFrame()
                 .placeNearTarget()
@@ -44,7 +39,7 @@ public class EnchantmentScenes {
         scene.world.propagatePipeChange(util.grid.at(2,1, 5));
 
         BlockPos beltStart = util.grid.at(6, 2, 1);
-        List<ItemStack> items = Stream.of(Items.DIAMOND_SWORD,Items.DIAMOND_PICKAXE, Items.DIAMOND_CHESTPLATE, Items.ENCHANTED_BOOK, Items.LEATHER_BOOTS).map(Item::getDefaultInstance).toList();
+        List<ItemStack> items = Stream.of(Items.NETHERITE_SWORD,Items.IRON_PICKAXE, Items.DIAMOND_CHESTPLATE, Items.ENCHANTED_BOOK, Items.LEATHER_HELMET, Items.GOLDEN_BOOTS, Items.WOODEN_AXE).map(Item::getDefaultInstance).toList();
         for(var item:items){
             enchantRandomly(item);
             ElementLink<EntityElement> item1 = scene.world.createItemEntity(util.vector.centerOf(6, 5, 1), util.vector.of(0, 0, 0), item);
@@ -52,24 +47,17 @@ public class EnchantmentScenes {
             scene.world.modifyEntity(item1, Entity::discard);
             scene.world.createItemOnBelt(beltStart, Direction.DOWN, item);
             scene.idle(2);
-            /*scene.world.modifyTileEntity(util.grid.at(6, 2, 1), DisenchanterBlockEntity.class, te -> {
-                var fluid = new FluidStack(ModFluids.EXPERIENCE.get().getSource(),200);
-                var tank = te.getInternalTank();
-                tank.allowInsertion();
-                tank.getPrimaryHandler().fill(fluid, IFluidHandler.FluidAction.EXECUTE);
-                tank.forbidInsertion();
-            });*/
         }
 
         scene.idle(80);
 
-        scene.overlay.showText(60)
+        scene.overlay.showText(100)
                 .text("") // We do not use PonderLocalization. For registerText only
                 .attachKeyFrame()
                 .placeNearTarget()
                 .pointAt(util.vector.topOf(1, 2, 1));
 
-        scene.idle(80);
+        scene.idle(120);
     }
 
     private static void enchant(ItemStack itemStack, Enchantment enchantment, int level){
