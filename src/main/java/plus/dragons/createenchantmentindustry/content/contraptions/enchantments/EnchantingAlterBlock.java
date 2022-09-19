@@ -7,7 +7,6 @@ import com.simibubi.create.content.contraptions.wrench.IWrenchable;
 import com.simibubi.create.foundation.block.ITE;
 import com.simibubi.create.foundation.tileEntity.ComparatorUtil;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -16,7 +15,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.pathfinder.PathComputationType;
@@ -24,12 +23,14 @@ import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.jetbrains.annotations.Nullable;
 import plus.dragons.createenchantmentindustry.entry.ModBlockEntities;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class EnchantingAlterBlock extends Block implements IWrenchable, ITE<EnchantingAlterBlockEntity> {
+@SuppressWarnings("deprecation")
+public class EnchantingAlterBlock extends HorizontalDirectionalBlock implements IWrenchable, ITE<EnchantingAlterBlockEntity> {
     public EnchantingAlterBlock(Properties pProperties) {
         super(pProperties);
     }
@@ -46,8 +47,7 @@ public class EnchantingAlterBlock extends Block implements IWrenchable, ITE<Ench
 
     @Override
     public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos blockPos, CollisionContext pContext) {
-        // TODO: Waiting for Model
-        return AllShapes.CASING_13PX.get(Direction.UP);
+        return AllShapes.HEATER_BLOCK_SHAPE;
     }
 
     @Override
@@ -74,7 +74,7 @@ public class EnchantingAlterBlock extends Block implements IWrenchable, ITE<Ench
 
 
     @Override
-    public void setPlacedBy(Level pLevel, BlockPos pPos, BlockState pState, LivingEntity pPlacer, ItemStack pStack) {
+    public void setPlacedBy(Level pLevel, BlockPos pPos, BlockState pState, @Nullable LivingEntity pPlacer, ItemStack pStack) {
         super.setPlacedBy(pLevel, pPos, pState, pPlacer, pStack);
         // TODO Advancement need more investigate
         // AdvancementBehaviour.setPlacedBy(pLevel, pPos, pPlacer);

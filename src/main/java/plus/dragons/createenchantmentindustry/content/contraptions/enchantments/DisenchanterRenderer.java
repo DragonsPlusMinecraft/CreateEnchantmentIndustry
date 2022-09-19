@@ -156,5 +156,4 @@ public class DisenchanterRenderer extends SmartTileEntityRenderer<DisenchanterBl
             buffer, ps, light, true
         );
     }
-    
 }

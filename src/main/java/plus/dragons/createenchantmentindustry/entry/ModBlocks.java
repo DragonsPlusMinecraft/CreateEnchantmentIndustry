@@ -1,6 +1,7 @@
 package plus.dragons.createenchantmentindustry.entry;
 
 import com.simibubi.create.AllTags;
+import com.simibubi.create.Create;
 import com.simibubi.create.content.AllSections;
 import com.simibubi.create.foundation.data.AssetLookup;
 import com.simibubi.create.foundation.data.CreateRegistrate;
@@ -11,6 +12,8 @@ import plus.dragons.createenchantmentindustry.EnchantmentIndustry;
 import plus.dragons.createenchantmentindustry.content.contraptions.enchantments.CopierBlock;
 import plus.dragons.createenchantmentindustry.content.contraptions.enchantments.DisenchanterBlock;
 import plus.dragons.createenchantmentindustry.content.contraptions.enchantments.EnchantingAlterBlock;
+
+import static com.simibubi.create.foundation.data.ModelGen.customItemModel;
 
 
 public class ModBlocks {
@@ -37,7 +40,8 @@ public class ModBlocks {
             .transform(AllTags.pickaxeOnly())
             .addLayer(() -> RenderType::cutoutMipped)
             .blockstate((ctx, pov) -> pov.simpleBlock(ctx.get(), AssetLookup.standardModel(ctx, pov)))
-            .simpleItem()
+            .item()
+            .transform(customItemModel())
             .register();
 
     public static final BlockEntry<EnchantingAlterBlock> BLAZE_ENCHANTING_ALTER = REGISTRATE
@@ -45,7 +49,7 @@ public class ModBlocks {
             .initialProperties(SharedProperties::softMetal)
             .transform(AllTags.pickaxeOnly())
             .addLayer(() -> RenderType::cutoutMipped)
-            .blockstate((ctx, pov) -> pov.simpleBlock(ctx.get(), AssetLookup.standardModel(ctx, pov)))
+            .blockstate((ctx, pov) -> pov.simpleBlock(ctx.get(), pov.models().getExistingFile(Create.asResource("block/blaze_burner/block"))))
             .register();
 
     public static void register() {

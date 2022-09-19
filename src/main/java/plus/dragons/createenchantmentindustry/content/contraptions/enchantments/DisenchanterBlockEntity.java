@@ -30,6 +30,8 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.items.ItemHandlerHelper;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import plus.dragons.createenchantmentindustry.entry.ModFluids;
 
 import java.util.IdentityHashMap;
@@ -282,7 +284,7 @@ public class DisenchanterBlockEntity extends SmartTileEntity implements IHaveGog
         internalTank.getPrimaryHandler()
                 .fill(fluidFromItem, IFluidHandler.FluidAction.EXECUTE);
         internalTank.forbidInsertion();
-        level.levelEvent(1042, getBlockPos(), 0);
+        level.levelEvent(1042, worldPosition, 0);
         notifyUpdate();
         return true;
     }
@@ -357,7 +359,8 @@ public class DisenchanterBlockEntity extends SmartTileEntity implements IHaveGog
     }
 
     @Override
-    public <T> LazyOptional<T> getCapability(Capability<T> capability, Direction side) {
+    @NotNull
+    public <T> LazyOptional<T> getCapability(Capability<T> capability, @Nullable Direction side) {
         if (side != null && side.getAxis()
                 .isHorizontal() && isItemHandlerCap(capability))
             return itemHandlers.get(side)

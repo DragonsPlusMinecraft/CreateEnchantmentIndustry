@@ -8,16 +8,18 @@ import com.simibubi.create.foundation.tileEntity.SmartTileEntity;
 import com.simibubi.create.foundation.tileEntity.TileEntityBehaviour;
 import com.simibubi.create.foundation.tileEntity.behaviour.belt.DirectBeltInputBehaviour;
 import com.simibubi.create.foundation.tileEntity.behaviour.fluid.SmartFluidTankBehaviour;
-import com.simibubi.create.foundation.utility.BlockHelper;
-import com.simibubi.create.foundation.utility.Iterate;
-import com.simibubi.create.foundation.utility.Pair;
-import com.simibubi.create.foundation.utility.VecHelper;
+import com.simibubi.create.foundation.utility.*;
+import com.simibubi.create.foundation.utility.animation.LerpedFloat;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -27,12 +29,15 @@ import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.items.ItemHandlerHelper;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import plus.dragons.createenchantmentindustry.entry.ModFluids;
 import plus.dragons.createenchantmentindustry.foundation.utility.ModLang;
 
 import java.util.IdentityHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 public class EnchantingAlterBlockEntity extends SmartTileEntity implements IHaveGoggleInformation {
 
@@ -42,6 +47,19 @@ public class EnchantingAlterBlockEntity extends SmartTileEntity implements IHave
     ItemStack targetItem = ItemStack.EMPTY;
     int processingTicks;
     Map<Direction, LazyOptional<EnchantingItemHandler>> itemHandlers;
+    //Client only fields for render
+    Random renderRNG = new Random();
+    float flip;
+    float oFlip;
+    float flipT;
+    float flipA;
+    float open;
+    float oOpen;
+    float rot;
+    float oRot;
+    float tRot;
+    LerpedFloat headAnimation;
+    LerpedFloat headAngle;
 
     public EnchantingAlterBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
@@ -50,6 +68,12 @@ public class EnchantingAlterBlockEntity extends SmartTileEntity implements IHave
             EnchantingItemHandler enchantingItemHandler = new EnchantingItemHandler(this, d);
             itemHandlers.put(d, LazyOptional.of(() -> enchantingItemHandler));
         }
+        headAnimation = LerpedFloat.linear();
+        headAngle = LerpedFloat.angular();
+        headAngle.startWithValue((AngleHelper
+            .horizontalAngle(state.getOptionalValue(EnchantingAlterBlock.FACING)
+            .orElse(Direction.SOUTH)) + 180) % 360
+        );
     }
 
     @Override
@@ -65,6 +89,11 @@ public class EnchantingAlterBlockEntity extends SmartTileEntity implements IHave
         super.tick();
 
         boolean onClient = level.isClientSide && !isVirtual();
+        
+        if(onClient) {
+            blazeAnimationTick();
+            bookAnimationTick();
+        }
 
         if (EnchantingGuideItem.getEnchantment(targetItem) == null) {
             if (!onClient) {
@@ -185,6 +214,90 @@ public class EnchantingAlterBlockEntity extends SmartTileEntity implements IHave
         }
 
     }
+    
+    protected void blazeAnimationTick() {
+        boolean active = processingTicks > 0;
+    
+        if (!active) {
+            float target = 0;
+            LocalPlayer player = Minecraft.getInstance().player;
+            if (player != null && !player.isInvisible()) {
+                double x;
+                double z;
+                if (isVirtual()) {
+                    x = -4;
+                    z = -10;
+                } else {
+                    x = player.getX();
+                    z = player.getZ();
+                }
+                double dx = x - (getBlockPos().getX() + 0.5);
+                double dz = z - (getBlockPos().getZ() + 0.5);
+                target = AngleHelper.deg(-Mth.atan2(dz, dx)) - 90;
+            }
+            target = headAngle.getValue() + AngleHelper.getShortestAngleDiff(headAngle.getValue(), target);
+            headAngle.chase(target, .25f, LerpedFloat.Chaser.exp(5));
+            headAngle.tickChaser();
+        } else {
+            headAngle.chase((AngleHelper.horizontalAngle(getBlockState().getOptionalValue(BlazeBurnerBlock.FACING)
+                .orElse(Direction.SOUTH)) + 180) % 360, .125f, LerpedFloat.Chaser.EXP);
+            headAngle.tickChaser();
+        }
+        headAnimation.chase(1, .25f, LerpedFloat.Chaser.exp(.25f));
+        headAnimation.tickChaser();
+    }
+    
+    protected void bookAnimationTick() {
+        oOpen = open;
+        oRot = rot;
+        Vec3 position = VecHelper.getCenterOf(worldPosition);
+        Player player = level.getNearestPlayer(position.x, position.y, position.z, 3.0D, false);
+        if (player != null) {
+            double xDiff = player.getX() - position.x;
+            double zDiff = player.getZ() - position.z;
+            tRot = (float) Mth.atan2(zDiff, xDiff);
+            open += 0.1F;
+            if (open < 0.5F || renderRNG.nextInt(40) == 0) {
+                float oFlipT = flipT;
+                do {
+                    flipT += (float)(renderRNG.nextInt(4) - renderRNG.nextInt(4));
+                } while (oFlipT == flipT);
+            }
+        } else {
+            tRot += 0.02F;
+            open -= 0.1F;
+        }
+        
+        while(rot >= (float)Math.PI) {
+            rot -= ((float)Math.PI * 2F);
+        }
+        
+        while(rot < -(float)Math.PI) {
+            rot += ((float)Math.PI * 2F);
+        }
+        
+        while(tRot >= (float)Math.PI) {
+            tRot -= ((float)Math.PI * 2F);
+        }
+        
+        while(tRot < -(float)Math.PI) {
+            tRot += ((float)Math.PI * 2F);
+        }
+        
+        float rotDiff = tRot - rot;
+        while(rotDiff > Math.PI) {
+            rotDiff -= ((float)Math.PI * 2F);
+        }
+        while(rotDiff < -Math.PI) {
+            rotDiff += ((float)Math.PI * 2F);
+        }
+        
+        rot += rotDiff * 0.4F;
+        open = Mth.clamp(open, 0.0F, 1.0F);
+        oFlip = flip;
+        float flipDiff = Mth.clamp((flipT - flip) * 0.4F, -0.2F, 0.2F);
+        flip += flipA += (flipDiff - flipA) * 0.9F;
+    }
 
     protected boolean continueProcessing() {
         if (level.isClientSide && !isVirtual())
@@ -287,7 +400,8 @@ public class EnchantingAlterBlockEntity extends SmartTileEntity implements IHave
     }
 
     @Override
-    public <T> LazyOptional<T> getCapability(Capability<T> capability, Direction side) {
+    @NotNull
+    public <T> LazyOptional<T> getCapability(Capability<T> capability, @Nullable Direction side) {
         if (side != null && side.getAxis()
                 .isHorizontal() && isItemHandlerCap(capability))
             return itemHandlers.get(side)
