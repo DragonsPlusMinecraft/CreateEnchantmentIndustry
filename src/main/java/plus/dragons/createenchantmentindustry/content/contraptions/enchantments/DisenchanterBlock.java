@@ -54,7 +54,7 @@ public class DisenchanterBlock extends Block implements IWrenchable, ITE<Disench
         return onTileEntityUse(worldIn, pos, te -> {
             ItemStack heldItemStack = te.getHeldItemStack();
             if (heldItemStack.isEmpty()) {
-                if (!worldIn.isClientSide) {
+                if (!worldIn.isClientSide && Disenchanting.valid(heldItemStack)) {
                     te.heldItem = new TransportedItemStack(heldItem);
                     player.setItemInHand(handIn, ItemStack.EMPTY);
                     te.notifyUpdate();
@@ -67,7 +67,6 @@ public class DisenchanterBlock extends Block implements IWrenchable, ITE<Disench
 
     @Override
     public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos blockPos, CollisionContext pContext) {
-        // TODO: Waiting for Model
         return AllShapes.CASING_13PX.get(Direction.UP);
     }
 

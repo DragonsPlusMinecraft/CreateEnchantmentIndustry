@@ -14,11 +14,14 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.ExperienceOrb;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.GrindstoneMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -282,6 +285,7 @@ public class DisenchanterBlockEntity extends SmartTileEntity implements IHaveGog
         internalTank.getPrimaryHandler()
                 .fill(fluidFromItem, IFluidHandler.FluidAction.EXECUTE);
         internalTank.forbidInsertion();
+        level.levelEvent(1042, getBlockPos(), 0);
         notifyUpdate();
         return true;
     }

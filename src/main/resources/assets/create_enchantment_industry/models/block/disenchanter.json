@@ -1,0 +1,94 @@
+{
+	"credit": "By LimonBlaze, made with Blockbench",
+	"parent": "block/block",
+	"textures": {
+		"particle": "create_enchantment_industry:block/disenchanter_side",
+		"side": "create_enchantment_industry:block/disenchanter_side",
+		"top": "create_enchantment_industry:block/disenchanter_top",
+		"bottom": "create:block/copper_casing",
+		"pump": "create:block/pump"
+	},
+	"elements": [
+		{
+			"from": [0, 0, 0],
+			"to": [16, 2, 16],
+			"faces": {
+				"north": {"uv": [0, 14, 16, 16], "texture": "#side"},
+				"east": {"uv": [0, 14, 16, 16], "texture": "#side"},
+				"south": {"uv": [0, 14, 16, 16], "texture": "#side"},
+				"west": {"uv": [0, 14, 16, 16], "texture": "#side"},
+				"up": {"uv": [0, 0, 16, 16], "texture": "#bottom"},
+				"down": {"uv": [0, 0, 16, 16], "texture": "#bottom"}
+			}
+		},
+		{
+			"from": [0, 2, 0],
+			"to": [16, 13, 2],
+			"faces": {
+				"north": {"uv": [0, 3, 16, 14], "texture": "#side"},
+				"east": {"uv": [14, 3, 16, 14], "texture": "#side"},
+				"south": {"uv": [0, 3, 16, 14], "texture": "#side"},
+				"west": {"uv": [0, 3, 2, 14], "texture": "#side"},
+				"up": {"uv": [0, 0, 16, 2], "texture": "#top"}
+			}
+		},
+		{
+			"from": [0, 2, 14],
+			"to": [16, 13, 16],
+			"faces": {
+				"north": {"uv": [0, 3, 16, 14], "texture": "#side"},
+				"east": {"uv": [0, 3, 2, 14], "texture": "#side"},
+				"south": {"uv": [0, 3, 16, 14], "texture": "#side"},
+				"west": {"uv": [14, 3, 16, 14], "texture": "#side"},
+				"up": {"uv": [0, 14, 16, 16], "texture": "#top"}
+			}
+		},
+		{
+			"from": [14, 2, 2],
+			"to": [16, 13, 14],
+			"faces": {
+				"east": {"uv": [2, 3, 14, 14], "texture": "#side"},
+				"west": {"uv": [2, 3, 14, 14], "texture": "#side"},
+				"up": {"uv": [14, 2, 16, 14], "texture": "#top"}
+			}
+		},
+		{
+			"from": [0, 2, 2],
+			"to": [2, 13, 14],
+			"faces": {
+				"east": {"uv": [2, 3, 14, 14], "texture": "#side"},
+				"west": {"uv": [2, 3, 14, 14], "texture": "#side"},
+				"up": {"uv": [0, 2, 2, 14], "texture": "#top"}
+			}
+		},
+		{
+			"from": [2, 12, 2],
+			"to": [14, 13, 14],
+			"faces": {
+				"up": {"uv": [2, 2, 14, 14], "texture": "#top"}
+			}
+		},
+		{
+			"from": [2, 4, 2],
+			"to": [14, 5, 14],
+			"faces": {
+				"up": {"uv": [0, 0, 12, 12], "texture": "#pump"}
+			}
+		}
+	],
+	"groups": [
+		{
+			"name": "static",
+			"origin": [8, 8, 8],
+			"color": 0,
+			"children": [
+				{
+					"name": "drain",
+					"origin": [8, 8, 8],
+					"color": 0,
+					"children": [0, 1, 2, 3, 4, 5, 6]
+				}
+			]
+		}
+	]
+}
