@@ -23,12 +23,14 @@ import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.jetbrains.annotations.Nullable;
 import plus.dragons.createenchantmentindustry.entry.ModBlockEntities;
 import plus.dragons.createenchantmentindustry.entry.ModBlocks;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@SuppressWarnings("deprecation")
 public class DisenchanterBlock extends Block implements IWrenchable, ITE<DisenchanterBlockEntity> {
 
     public DisenchanterBlock(Properties pProperties) {
@@ -83,7 +85,7 @@ public class DisenchanterBlock extends Block implements IWrenchable, ITE<Disench
     }
 
     @Override
-    public void setPlacedBy(Level pLevel, BlockPos pPos, BlockState pState, LivingEntity pPlacer, ItemStack pStack) {
+    public void setPlacedBy(Level pLevel, BlockPos pPos, BlockState pState, @Nullable LivingEntity pPlacer, ItemStack pStack) {
         super.setPlacedBy(pLevel, pPos, pState, pPlacer, pStack);
         // TODO Advancement need more investigate
         // AdvancementBehaviour.setPlacedBy(pLevel, pPos, pPlacer);
