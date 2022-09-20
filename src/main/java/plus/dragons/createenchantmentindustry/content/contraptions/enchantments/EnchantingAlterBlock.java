@@ -15,9 +15,11 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.phys.BlockHitResult;
@@ -44,6 +46,12 @@ public class EnchantingAlterBlock extends HorizontalDirectionalBlock implements 
     public BlockEntityType<? extends EnchantingAlterBlockEntity> getTileEntityType() {
         return ModBlockEntities.BLAZE_ENCHANTING_ALTER.get();
     }
+    
+    @Override
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+        super.createBlockStateDefinition(builder);
+        builder.add(FACING);
+    }
 
     @Override
     public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos blockPos, CollisionContext pContext) {
@@ -68,7 +76,10 @@ public class EnchantingAlterBlock extends HorizontalDirectionalBlock implements 
         ItemStack heldItem = player.getItemInHand(handIn);
         if (!heldItem.isEmpty())
             return InteractionResult.PASS;
-        worldIn.setBlockAndUpdate(pos, AllBlocks.BLAZE_BURNER.getDefaultState().setValue(BlazeBurnerBlock.HEAT_LEVEL, BlazeBurnerBlock.HeatLevel.SMOULDERING));
+        worldIn.setBlockAndUpdate(pos, AllBlocks.BLAZE_BURNER.getDefaultState()
+            .setValue(BlazeBurnerBlock.FACING, state.getValue(FACING))
+            .setValue(BlazeBurnerBlock.HEAT_LEVEL, BlazeBurnerBlock.HeatLevel.SMOULDERING)
+        );
         return InteractionResult.SUCCESS;
     }
 

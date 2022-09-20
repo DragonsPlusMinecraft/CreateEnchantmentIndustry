@@ -50,7 +50,7 @@ public class CopierBlockEntity extends SmartTileEntity implements IHaveGoggleInf
     //TODO: Maybe use FilteringBehavior instead, which will provide better render support and consistency?
     public ItemStack copyTarget;
     public boolean tooExpensive;
-    public boolean sendSplash;
+    boolean sendParticles;
 
     public CopierBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
@@ -75,15 +75,15 @@ public class CopierBlockEntity extends SmartTileEntity implements IHaveGoggleInf
         }
     }
     
-    protected static int SPLASH_PARTICLE_COUNT = 20;
+    protected static int ENCHANT_PARTICLE_COUNT = 20;
     
-    protected void spawnSplash(FluidStack fluid) {
+    protected void spawnParticles() {
         if (isVirtual())
             return;
         Vec3 vec = VecHelper.getCenterOf(worldPosition);
         vec = vec.subtract(0, 11 / 16f, 0);
         ParticleOptions particle = ParticleTypes.ENCHANT;
-        for (int i = 0; i < SPLASH_PARTICLE_COUNT; i++) {
+        for (int i = 0; i < ENCHANT_PARTICLE_COUNT; i++) {
             Vec3 m = VecHelper.offsetRandomly(Vec3.ZERO, level.random, 1f);
             m = new Vec3(m.x, Math.abs(m.y), m.z);
             level.addAlwaysVisibleParticle(particle, vec.x, vec.y, vec.z, m.x, m.y, m.z);
@@ -139,7 +139,7 @@ public class CopierBlockEntity extends SmartTileEntity implements IHaveGoggleInf
         outList.add(result);
         handler.handleProcessingOnItem(transported, TransportedItemStackHandlerBehaviour.TransportedResult.convertToAndLeaveHeld(outList, held));
         tank.getPrimaryHandler().setFluid(fluid);
-        sendSplash = true;
+        sendParticles = true;
         level.playSound(null, worldPosition, SoundEvents.ENCHANTMENT_TABLE_USE, SoundSource.BLOCKS, 1.0F, level.random.nextFloat() * 0.1F + 0.9F);
         notifyUpdate();
         return HOLD;
@@ -155,12 +155,12 @@ public class CopierBlockEntity extends SmartTileEntity implements IHaveGoggleInf
         super.write(compoundTag, clientPacket);
         compoundTag.putInt("ProcessingTicks", processingTicks);
         compoundTag.putBoolean("tooExpensive", tooExpensive);
-        if (sendSplash && clientPacket) {
-            compoundTag.putBoolean("Splash", true);
-            sendSplash = false;
-        }
         if (copyTarget != null)
             compoundTag.put("copyTarget", copyTarget.serializeNBT());
+        if (sendParticles && clientPacket) {
+            compoundTag.putBoolean("SpawnParticles", true);
+            sendParticles = false;
+        }
     }
 
     @Override
@@ -173,8 +173,8 @@ public class CopierBlockEntity extends SmartTileEntity implements IHaveGoggleInf
             copyTarget = ItemStack.of(compoundTag.getCompound("copyTarget"));
         if (!clientPacket)
             return;
-        if (compoundTag.contains("Splash"))
-            spawnSplash(tank.getPrimaryTank().getRenderedFluid());
+        if (compoundTag.contains("SpawnParticles"))
+            spawnParticles();
     }
 
     @Override

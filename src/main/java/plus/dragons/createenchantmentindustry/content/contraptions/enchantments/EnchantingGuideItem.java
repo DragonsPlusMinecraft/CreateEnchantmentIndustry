@@ -1,8 +1,10 @@
 package plus.dragons.createenchantmentindustry.content.contraptions.enchantments;
 
+import com.simibubi.create.content.contraptions.processing.burner.BlazeBurnerBlock;
 import com.simibubi.create.content.contraptions.processing.burner.BlazeBurnerTileEntity;
 import com.simibubi.create.foundation.utility.Pair;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerPlayer;
@@ -25,6 +27,7 @@ import org.jetbrains.annotations.Nullable;
 import plus.dragons.createenchantmentindustry.entry.ModBlocks;
 import plus.dragons.createenchantmentindustry.entry.ModContainerTypes;
 import plus.dragons.createenchantmentindustry.entry.ModItems;
+import plus.dragons.createenchantmentindustry.foundation.utility.ModLang;
 
 import java.util.List;
 
@@ -41,13 +44,22 @@ public class EnchantingGuideItem extends Item implements MenuProvider {
     public InteractionResult useOn(UseOnContext pContext) {
         var level = pContext.getLevel();
         var player = pContext.getPlayer();
+        if (player == null)
+            return InteractionResult.PASS;
         if (player.isShiftKeyDown()) {
             var itemStack = pContext.getItemInHand();
             if (itemStack.is(ModItems.ENCHANTING_GUIDE_FOR_BLAZE.get())) {
                 var blockPos = pContext.getClickedPos();
-                if (EnchantingGuideItem.getEnchantment(itemStack) != null && level.getBlockEntity(blockPos) instanceof BlazeBurnerTileEntity) {
+                var blockState = level.getBlockState(blockPos);
+                var blockEntity = level.getBlockEntity(blockPos);
+                if (EnchantingGuideItem.getEnchantment(itemStack) != null &&
+                    blockState.getBlock() instanceof BlazeBurnerBlock &&
+                    blockEntity instanceof BlazeBurnerTileEntity)
+                {
                     if (!level.isClientSide()) {
-                        level.setBlockAndUpdate(blockPos, ModBlocks.BLAZE_ENCHANTING_ALTER.getDefaultState());
+                        level.setBlockAndUpdate(blockPos, ModBlocks.BLAZE_ENCHANTING_ALTER.getDefaultState()
+                            .setValue(EnchantingAlterBlock.FACING, level.getBlockState(blockPos).getValue(BlazeBurnerBlock.FACING))
+                        );
                         if (level.getBlockEntity(blockPos) instanceof EnchantingAlterBlockEntity enchantingAlterBlockEntity) {
                             var i = itemStack.copy();
                             i.setCount(1);
@@ -79,10 +91,10 @@ public class EnchantingGuideItem extends Item implements MenuProvider {
     @Override
     public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> pTooltipComponents, TooltipFlag pIsAdvanced) {
         super.appendHoverText(pStack, pLevel, pTooltipComponents, pIsAdvanced);
-        pTooltipComponents.add(new TranslatableComponent("create_enchantment_industry.tooltip.guide"));
+        pTooltipComponents.add(ModLang.translate("tooltip.guide_header").component());
         var enchantment = getEnchantment(pStack);
         if (enchantment == null) {
-            pTooltipComponents.add(new TranslatableComponent("create_enchantment_industry.tooltip.guide_not_configured"));
+            pTooltipComponents.add(ModLang.translate("tooltip.guide_not_configured").component());
         } else
             pTooltipComponents.add(enchantment.getFirst().getFullname(enchantment.getSecond()));
     }
@@ -94,13 +106,20 @@ public class EnchantingGuideItem extends Item implements MenuProvider {
         return new EnchantingGuideMenu(ModContainerTypes.ENCHANTING_GUIDE_FOR_BLAZE.get(), pContainerId, pPlayerInventory, heldItem);
     }
 
+    @Nullable
     public static Pair<Enchantment, Integer> getEnchantment(ItemStack itemStack) {
-        var tag = itemStack.getOrCreateTag().get("target");
-        if (tag == null)
+        var tag = itemStack.getTag();
+        if (tag == null || !tag.contains("target", Tag.TAG_COMPOUND))
             return null;
-        var book = ItemStack.of((CompoundTag) tag);
-        var index = itemStack.getOrCreateTag().getInt("index");
-        var result = EnchantmentHelper.getEnchantments(book).entrySet().stream().toList().get(index);
+        var target = (CompoundTag) tag.get("target");
+        if (target == null)
+            return null;
+        var book = ItemStack.of(target);
+        var enchantments = List.copyOf(EnchantmentHelper.getEnchantments(book).entrySet());
+        if (enchantments.isEmpty())
+            return null;
+        var index = tag.getInt("index");
+        var result = enchantments.get(index);
         return Pair.of(result.getKey(), result.getValue());
     }
 }

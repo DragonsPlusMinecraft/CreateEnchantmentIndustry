@@ -77,8 +77,9 @@ public class DisenchanterBlockEntity extends SmartTileEntity implements IHaveGog
 
         boolean onClient = level.isClientSide && !isVirtual();
 
-        if (!onClient && level.getDayTime() % 20 == 0)
+        if (!onClient && level.getGameTime() % 20 == 0) {
             absorbExperienceFromWorld();
+        }
 
         if (heldItem == null) {
             processingTicks = 0;

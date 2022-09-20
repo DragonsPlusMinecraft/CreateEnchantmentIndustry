@@ -51,7 +51,7 @@ public class DisenchanterRenderer extends SmartTileEntityRenderer<DisenchanterBl
         float sideOffset = horizontal ? Mth.lerp(partialTicks, transported.prevSideOffset, transported.sideOffset) : .5f;
         
         Vec3 offsetVec = Vec3.atLowerCornerOf(insertedFrom.getOpposite().getNormal()).scale(.5f - offset);
-        ps.translate(offsetVec.x, offsetVec.y, offsetVec.z);
+        ps.translate(offsetVec.x, 0, offsetVec.z);
         if(horizontal) {
             boolean alongX = insertedFrom.getClockWise().getAxis() == Direction.Axis.X;
             ps.translate(alongX ? sideOffset : 0, 0.005f, alongX ? 0 : -sideOffset);
@@ -81,8 +81,10 @@ public class DisenchanterRenderer extends SmartTileEntityRenderer<DisenchanterBl
             ts.rotateZ(-verticalAngle);
     
         int processingTicks = be.processingTicks;
-        float processingProgress = processingTicks == 0 ? 0
-            : Mth.clamp((processingTicks - partialTicks) / DisenchanterBlockEntity.DISENCHANTER_TIME, 0, 1);
+        float processingProgress = switch(processingTicks) {
+            case 0, DisenchanterBlockEntity.DISENCHANTER_TIME -> 0;
+            default ->  Mth.clamp((processingTicks - partialTicks) / DisenchanterBlockEntity.DISENCHANTER_TIME, 0, 1);
+        };
         ts.rotateY(processingProgress * 360);
         
         for (int i = 0; i <= count; i++) {

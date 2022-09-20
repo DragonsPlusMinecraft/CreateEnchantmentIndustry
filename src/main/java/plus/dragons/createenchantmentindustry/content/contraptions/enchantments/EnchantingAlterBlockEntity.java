@@ -14,9 +14,13 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.particles.ParticleOptions;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
@@ -47,19 +51,14 @@ public class EnchantingAlterBlockEntity extends SmartTileEntity implements IHave
     ItemStack targetItem = ItemStack.EMPTY;
     int processingTicks;
     Map<Direction, LazyOptional<EnchantingItemHandler>> itemHandlers;
-    //Client only fields for render
-    Random renderRNG = new Random();
+    boolean sendParticles;
+    LerpedFloat headAnimation;
+    LerpedFloat headAngle;
+    Random random = new Random();
     float flip;
     float oFlip;
     float flipT;
     float flipA;
-    float open;
-    float oOpen;
-    float rot;
-    float oRot;
-    float tRot;
-    LerpedFloat headAnimation;
-    LerpedFloat headAngle;
 
     public EnchantingAlterBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
@@ -91,8 +90,8 @@ public class EnchantingAlterBlockEntity extends SmartTileEntity implements IHave
         boolean onClient = level.isClientSide && !isVirtual();
         
         if(onClient) {
-            blazeAnimationTick();
-            bookAnimationTick();
+            bookTick();
+            blazeTick();
         }
 
         if (EnchantingGuideItem.getEnchantment(targetItem) == null) {
@@ -215,7 +214,7 @@ public class EnchantingAlterBlockEntity extends SmartTileEntity implements IHave
 
     }
     
-    protected void blazeAnimationTick() {
+    protected void blazeTick() {
         boolean active = processingTicks > 0;
     
         if (!active) {
@@ -245,58 +244,66 @@ public class EnchantingAlterBlockEntity extends SmartTileEntity implements IHave
         }
         headAnimation.chase(1, .25f, LerpedFloat.Chaser.exp(.25f));
         headAnimation.tickChaser();
+        
+        spawnBlazeParticles();
     }
     
-    protected void bookAnimationTick() {
-        oOpen = open;
-        oRot = rot;
-        Vec3 position = VecHelper.getCenterOf(worldPosition);
-        Player player = level.getNearestPlayer(position.x, position.y, position.z, 3.0D, false);
-        if (player != null) {
-            double xDiff = player.getX() - position.x;
-            double zDiff = player.getZ() - position.z;
-            tRot = (float) Mth.atan2(zDiff, xDiff);
-            open += 0.1F;
-            if (open < 0.5F || renderRNG.nextInt(40) == 0) {
-                float oFlipT = flipT;
-                do {
-                    flipT += (float)(renderRNG.nextInt(4) - renderRNG.nextInt(4));
-                } while (oFlipT == flipT);
+    protected void bookTick() {
+        if(random.nextInt(40) == 0) {
+            float oFlipT = flipT;
+            while(oFlipT == flipT) {
+                flipT += (random.nextInt(4) - random.nextInt(4));
             }
-        } else {
-            tRot += 0.02F;
-            open -= 0.1F;
         }
-        
-        while(rot >= (float)Math.PI) {
-            rot -= ((float)Math.PI * 2F);
-        }
-        
-        while(rot < -(float)Math.PI) {
-            rot += ((float)Math.PI * 2F);
-        }
-        
-        while(tRot >= (float)Math.PI) {
-            tRot -= ((float)Math.PI * 2F);
-        }
-        
-        while(tRot < -(float)Math.PI) {
-            tRot += ((float)Math.PI * 2F);
-        }
-        
-        float rotDiff = tRot - rot;
-        while(rotDiff > Math.PI) {
-            rotDiff -= ((float)Math.PI * 2F);
-        }
-        while(rotDiff < -Math.PI) {
-            rotDiff += ((float)Math.PI * 2F);
-        }
-        
-        rot += rotDiff * 0.4F;
-        open = Mth.clamp(open, 0.0F, 1.0F);
         oFlip = flip;
-        float flipDiff = Mth.clamp((flipT - flip) * 0.4F, -0.2F, 0.2F);
-        flip += flipA += (flipDiff - flipA) * 0.9F;
+        float flipDiff = (flipT - flip) * 0.4F;
+        flipDiff = Mth.clamp(flipDiff, -0.2F, 0.2F);
+        flipA += (flipDiff - flipA) * 0.9F;
+        flip += flipA;
+    }
+    
+    protected void spawnBlazeParticles() {
+        if (level == null)
+            return;
+    
+        Vec3 c = VecHelper.getCenterOf(worldPosition);
+        
+        if (random.nextInt(3) == 0) {
+            Vec3 v = c.add(VecHelper.offsetRandomly(Vec3.ZERO, random, .125f).multiply(1, 0, 1));
+            level.addParticle(ParticleTypes.LARGE_SMOKE, v.x, v.y, v.z, 0, 0, 0);
+        }
+        
+        if (random.nextInt(2) == 0) {
+            
+            boolean empty = level.getBlockState(worldPosition.above())
+                .getCollisionShape(level, worldPosition.above())
+                .isEmpty();
+    
+            double yMotion = empty ? .0625f : random.nextDouble() * .0125f;
+            Vec3 v = c.add(
+                VecHelper.offsetRandomly(Vec3.ZERO, random, .5f)
+                    .multiply(1, .25f, 1)
+                    .normalize()
+                    .scale((empty ? .25f : .5) + random.nextDouble() * .125f)
+                )
+                .add(0, .5, 0);
+            level.addParticle(ParticleTypes.FLAME, v.x, v.y, v.z, 0, yMotion, 0);
+        }
+    }
+    
+    protected static int ENCHANT_PARTICLE_COUNT = 20;
+    
+    protected void spawnEnchantParticles() {
+        if (isVirtual())
+            return;
+        Vec3 vec = VecHelper.getCenterOf(worldPosition);
+        vec = vec.add(0, 1, 0);
+        ParticleOptions particle = ParticleTypes.ENCHANT;
+        for (int i = 0; i < ENCHANT_PARTICLE_COUNT; i++) {
+            Vec3 m = VecHelper.offsetRandomly(Vec3.ZERO, level.random, 1f);
+            m = new Vec3(m.x, Math.abs(m.y), m.z);
+            level.addAlwaysVisibleParticle(particle, vec.x, vec.y, vec.z, m.x, m.y, m.z);
+        }
     }
 
     protected boolean continueProcessing() {
@@ -309,8 +316,11 @@ public class EnchantingAlterBlockEntity extends SmartTileEntity implements IHave
 
         Pair<FluidStack, ItemStack> enchantItem = Enchanting.enchant(heldItem.stack, targetItem, true);
         FluidStack fluidFromItem = enchantItem.getFirst();
-
+        
         if (processingTicks > 5) {
+            if (processingTicks % 40 == 0) {
+                level.playSound(null, worldPosition, SoundEvents.BEACON_AMBIENT, SoundSource.BLOCKS, 1.0f, 1.0f);
+            }
             if (internalTank.getPrimaryHandler().getFluid().getFluid() != ModFluids.EXPERIENCE.get().getSource() || internalTank.getPrimaryHandler().getFluidAmount() < fluidFromItem.getAmount()) {
                 processingTicks = ENCHANTING_TIME;
                 return true;
@@ -319,11 +329,11 @@ public class EnchantingAlterBlockEntity extends SmartTileEntity implements IHave
         }
 
         enchantItem = Enchanting.enchant(heldItem.stack, targetItem, true);
-        // award(AllAdvancements.DRAIN);
-
-        // Process finished
+        // award(AllAdvancements.DRAIN);// Process finished
         heldItem.stack = enchantItem.getSecond();
         internalTank.getPrimaryHandler().getFluid().shrink(fluidFromItem.getAmount());
+        sendParticles = true;
+        level.playSound(null, worldPosition, SoundEvents.ENCHANTMENT_TABLE_USE, SoundSource.BLOCKS, ENCHANTING_TIME / (float) processingTicks, 1.0f);
         notifyUpdate();
         return true;
     }
@@ -382,21 +392,29 @@ public class EnchantingAlterBlockEntity extends SmartTileEntity implements IHave
 
     @Override
     public void write(CompoundTag compoundTag, boolean clientPacket) {
+        super.write(compoundTag, clientPacket);
         compoundTag.putInt("ProcessingTicks", processingTicks);
         compoundTag.put("TargetItem", targetItem.serializeNBT());
         if (heldItem != null)
             compoundTag.put("HeldItem", heldItem.serializeNBT());
-        super.write(compoundTag, clientPacket);
+        if (sendParticles && clientPacket) {
+            compoundTag.putBoolean("SpawnParticles", true);
+            sendParticles = false;
+        }
     }
 
     @Override
     protected void read(CompoundTag compoundTag, boolean clientPacket) {
+        super.read(compoundTag, clientPacket);
         heldItem = null;
         processingTicks = compoundTag.getInt("ProcessingTicks");
         targetItem = ItemStack.of(compoundTag.getCompound("TargetItem"));
         if (compoundTag.contains("HeldItem"))
             heldItem = TransportedItemStack.read(compoundTag.getCompound("HeldItem"));
-        super.read(compoundTag, clientPacket);
+        if (!clientPacket)
+            return;
+        if (compoundTag.contains("SpawnParticles"))
+            spawnEnchantParticles();
     }
 
     @Override

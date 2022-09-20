@@ -1,8 +1,8 @@
 package plus.dragons.createenchantmentindustry;
 
-import com.simibubi.create.CreateClient;
 import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.tterrag.registrate.util.nullness.NonNullSupplier;
+import net.minecraft.data.DataGenerator;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraftforge.api.distmarker.Dist;
@@ -12,11 +12,13 @@ import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.forge.event.lifecycle.GatherDataEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import plus.dragons.createenchantmentindustry.content.ItemGroup;
 import plus.dragons.createenchantmentindustry.content.contraptions.fluids.OpenEndedPipeEffects;
 import plus.dragons.createenchantmentindustry.entry.*;
+import plus.dragons.createenchantmentindustry.foundation.data.lang.LangMerger;
 
 @Mod("create_enchantment_industry")
 public class EnchantmentIndustry {
@@ -35,6 +37,7 @@ public class EnchantmentIndustry {
         OpenEndedPipeEffects.register();
 
         modEventBus.addListener(EnchantmentIndustry::init);
+        modEventBus.addListener(EnchantmentIndustry::datagen);
         DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> EnchantmentIndustryClient.onClient(modEventBus, forgeEventBus));
     }
 
@@ -44,10 +47,16 @@ public class EnchantmentIndustry {
         ModBlockEntities.register();
         ModFluids.register();
         ModContainerTypes.register();
+        ModTags.register();
     }
 
     public static void init(final FMLCommonSetupEvent event) {
         ModPackets.registerPackets();
+    }
+    
+    public static void datagen(final GatherDataEvent event) {
+        DataGenerator datagen = event.getGenerator();
+        datagen.addProvider(new LangMerger(datagen));
     }
 
     public static ResourceLocation genRL(String name) {

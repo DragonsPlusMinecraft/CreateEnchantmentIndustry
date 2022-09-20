@@ -18,12 +18,13 @@ import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.items.SlotItemHandler;
+import plus.dragons.createenchantmentindustry.foundation.utility.ModLang;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class EnchantingGuideMenu extends GhostItemContainer<ItemStack> {
-    private static Component NO_ENCHANTMENT = new TranslatableComponent("tooltip.create_enchantment_industry.no_avaliable_enchantment");
+    private static Component NO_ENCHANTMENT = ModLang.translate("gui.enchanting_guide.no_enchantment").component();
 
     // TODO need index switcher
     public int index;
