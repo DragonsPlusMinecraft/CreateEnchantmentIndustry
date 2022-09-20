@@ -1,0 +1,8 @@
+{
+  "replace": false,
+  "values": [
+    "create_enchantment_industry:disenchanter",
+    "create_enchantment_industry:copier_machine",
+    "create_enchantment_industry:blaze_enchanting_alter"
+  ]
+}
