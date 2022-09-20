@@ -1,7 +1,5 @@
 package plus.dragons.createenchantmentindustry.entry;
 
-import com.simibubi.create.AllTags;
-import com.simibubi.create.Create;
 import com.simibubi.create.content.AllSections;
 import com.simibubi.create.foundation.data.AssetLookup;
 import com.simibubi.create.foundation.data.CreateRegistrate;
@@ -12,8 +10,6 @@ import plus.dragons.createenchantmentindustry.EnchantmentIndustry;
 import plus.dragons.createenchantmentindustry.content.contraptions.enchantments.CopierBlock;
 import plus.dragons.createenchantmentindustry.content.contraptions.enchantments.DisenchanterBlock;
 import plus.dragons.createenchantmentindustry.content.contraptions.enchantments.EnchantingAlterBlock;
-
-import static com.simibubi.create.foundation.data.ModelGen.customItemModel;
 
 
 public class ModBlocks {
@@ -28,7 +24,6 @@ public class ModBlocks {
     public static final BlockEntry<DisenchanterBlock> DISENCHANTER = REGISTRATE
             .block("disenchanter", DisenchanterBlock::new)
             .initialProperties(SharedProperties::copperMetal)
-            .transform(AllTags.pickaxeOnly())
             .addLayer(() -> RenderType::cutoutMipped)
             .blockstate((ctx, pov) -> pov.simpleBlock(ctx.get(), AssetLookup.standardModel(ctx, pov)))
             .simpleItem()
@@ -37,19 +32,16 @@ public class ModBlocks {
     public static final BlockEntry<CopierBlock> COPIER = REGISTRATE
             .block("copier_machine", CopierBlock::new)
             .initialProperties(SharedProperties::copperMetal)
-            .transform(AllTags.pickaxeOnly())
             .addLayer(() -> RenderType::cutoutMipped)
             .blockstate((ctx, pov) -> pov.simpleBlock(ctx.get(), AssetLookup.standardModel(ctx, pov)))
-            .item()
-            .transform(customItemModel())
+            .simpleItem()
             .register();
 
     public static final BlockEntry<EnchantingAlterBlock> BLAZE_ENCHANTING_ALTER = REGISTRATE
             .block("blaze_enchanting_alter", EnchantingAlterBlock::new)
             .initialProperties(SharedProperties::softMetal)
-            .transform(AllTags.pickaxeOnly())
             .addLayer(() -> RenderType::cutoutMipped)
-            .blockstate((ctx, pov) -> pov.simpleBlock(ctx.get(), pov.models().getExistingFile(Create.asResource("block/blaze_burner/block"))))
+            .blockstate((ctx, pov) -> pov.simpleBlock(ctx.get(), AssetLookup.standardModel(ctx, pov)))
             .register();
 
     public static void register() {
