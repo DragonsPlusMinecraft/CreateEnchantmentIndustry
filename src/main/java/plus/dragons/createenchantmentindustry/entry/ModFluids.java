@@ -6,6 +6,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.material.Fluid;
+import net.minecraftforge.client.event.EntityViewRenderEvent;
 import net.minecraftforge.fluids.FluidAttributes;
 import net.minecraftforge.fluids.ForgeFlowingFluid;
 import plus.dragons.createenchantmentindustry.EnchantmentIndustry;
@@ -39,6 +40,14 @@ public class ModFluids {
                     .register();
 
     public static void register() {
+    }
+    
+    public static void handleInkFogColors(EntityViewRenderEvent.FogColors event) {
+        if(event.getCamera().getEntity().isEyeInFluid(ModTags.ModFluidTags.INK.tag)) {
+            event.setRed(0);
+            event.setGreen(0);
+            event.setBlue(0);
+        }
     }
 
     /**
