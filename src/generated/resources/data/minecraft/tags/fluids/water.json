@@ -1,0 +1,7 @@
+{
+  "replace": false,
+  "values": [
+    "create_enchantment_industry:flowing_ink",
+    "create_enchantment_industry:ink"
+  ]
+}

@@ -1,0 +1,62 @@
+{
+	"credit": "By LimonBlaze, made with Blockbench",
+	"parent": "block/block",
+	"textures": {
+		"tank": "create:block/spout",
+		"particle": "create:block/copper_plating"
+	},
+	"elements": [
+		{
+			"from": [5, -4, 5],
+			"to": [11, -2, 11],
+			"rotation": {"angle": 0, "axis": "y", "origin": [16.5, 3.5, 16.5]},
+			"faces": {
+				"north": {"uv": [12.5, 7, 15.5, 8], "texture": "#tank"},
+				"east": {"uv": [12.5, 7, 15.5, 8], "texture": "#tank"},
+				"south": {"uv": [12.5, 7, 15.5, 8], "texture": "#tank"},
+				"west": {"uv": [12.5, 7, 15.5, 8], "texture": "#tank"},
+				"down": {"uv": [12.5, 2.5, 15.5, 5.5], "texture": "#tank"}
+			}
+		}
+	],
+	"display": {
+		"thirdperson_righthand": {
+			"rotation": [75, 45, 0],
+			"translation": [0, 2.5, 0],
+			"scale": [0.375, 0.375, 0.375]
+		},
+		"thirdperson_lefthand": {
+			"rotation": [75, 45, 0],
+			"translation": [0, 2.5, 0],
+			"scale": [0.375, 0.375, 0.375]
+		},
+		"firstperson_righthand": {
+			"rotation": [0, 45, 0],
+			"scale": [0.4, 0.4, 0.4]
+		},
+		"firstperson_lefthand": {
+			"rotation": [0, 225, 0],
+			"scale": [0.4, 0.4, 0.4]
+		},
+		"ground": {
+			"translation": [0, 3, 0],
+			"scale": [0.25, 0.25, 0.25]
+		},
+		"gui": {
+			"rotation": [30, 225, 0],
+			"translation": [0, 1, 0],
+			"scale": [0.625, 0.625, 0.625]
+		},
+		"fixed": {
+			"scale": [0.5, 0.5, 0.5]
+		}
+	},
+	"groups": [
+		{
+			"name": "tube",
+			"origin": [16.5, 3.5, 16.5],
+			"color": 0,
+			"children": [0]
+		}
+	]
+}

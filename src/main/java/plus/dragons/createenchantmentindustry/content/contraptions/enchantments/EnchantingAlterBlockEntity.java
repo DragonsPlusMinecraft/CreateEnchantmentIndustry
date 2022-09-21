@@ -8,16 +8,22 @@ import com.simibubi.create.foundation.tileEntity.SmartTileEntity;
 import com.simibubi.create.foundation.tileEntity.TileEntityBehaviour;
 import com.simibubi.create.foundation.tileEntity.behaviour.belt.DirectBeltInputBehaviour;
 import com.simibubi.create.foundation.tileEntity.behaviour.fluid.SmartFluidTankBehaviour;
-import com.simibubi.create.foundation.utility.BlockHelper;
-import com.simibubi.create.foundation.utility.Iterate;
-import com.simibubi.create.foundation.utility.Pair;
-import com.simibubi.create.foundation.utility.VecHelper;
+import com.simibubi.create.foundation.utility.*;
+import com.simibubi.create.foundation.utility.animation.LerpedFloat;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.particles.ParticleOptions;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -27,12 +33,15 @@ import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.items.ItemHandlerHelper;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import plus.dragons.createenchantmentindustry.entry.ModFluids;
 import plus.dragons.createenchantmentindustry.foundation.utility.ModLang;
 
 import java.util.IdentityHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 public class EnchantingAlterBlockEntity extends SmartTileEntity implements IHaveGoggleInformation {
 
@@ -42,6 +51,14 @@ public class EnchantingAlterBlockEntity extends SmartTileEntity implements IHave
     ItemStack targetItem = ItemStack.EMPTY;
     int processingTicks;
     Map<Direction, LazyOptional<EnchantingItemHandler>> itemHandlers;
+    boolean sendParticles;
+    LerpedFloat headAnimation;
+    LerpedFloat headAngle;
+    Random random = new Random();
+    float flip;
+    float oFlip;
+    float flipT;
+    float flipA;
 
     public EnchantingAlterBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
@@ -50,6 +67,12 @@ public class EnchantingAlterBlockEntity extends SmartTileEntity implements IHave
             EnchantingItemHandler enchantingItemHandler = new EnchantingItemHandler(this, d);
             itemHandlers.put(d, LazyOptional.of(() -> enchantingItemHandler));
         }
+        headAnimation = LerpedFloat.linear();
+        headAngle = LerpedFloat.angular();
+        headAngle.startWithValue((AngleHelper
+            .horizontalAngle(state.getOptionalValue(EnchantingAlterBlock.FACING)
+            .orElse(Direction.SOUTH)) + 180) % 360
+        );
     }
 
     @Override
@@ -65,6 +88,11 @@ public class EnchantingAlterBlockEntity extends SmartTileEntity implements IHave
         super.tick();
 
         boolean onClient = level.isClientSide && !isVirtual();
+        
+        if(onClient) {
+            bookTick();
+            blazeTick();
+        }
 
         if (EnchantingGuideItem.getEnchantment(targetItem) == null) {
             if (!onClient) {
@@ -185,6 +213,98 @@ public class EnchantingAlterBlockEntity extends SmartTileEntity implements IHave
         }
 
     }
+    
+    protected void blazeTick() {
+        boolean active = processingTicks > 0;
+    
+        if (!active) {
+            float target = 0;
+            LocalPlayer player = Minecraft.getInstance().player;
+            if (player != null && !player.isInvisible()) {
+                double x;
+                double z;
+                if (isVirtual()) {
+                    x = -4;
+                    z = -10;
+                } else {
+                    x = player.getX();
+                    z = player.getZ();
+                }
+                double dx = x - (getBlockPos().getX() + 0.5);
+                double dz = z - (getBlockPos().getZ() + 0.5);
+                target = AngleHelper.deg(-Mth.atan2(dz, dx)) - 90;
+            }
+            target = headAngle.getValue() + AngleHelper.getShortestAngleDiff(headAngle.getValue(), target);
+            headAngle.chase(target, .25f, LerpedFloat.Chaser.exp(5));
+            headAngle.tickChaser();
+        } else {
+            headAngle.chase((AngleHelper.horizontalAngle(getBlockState().getOptionalValue(BlazeBurnerBlock.FACING)
+                .orElse(Direction.SOUTH)) + 180) % 360, .125f, LerpedFloat.Chaser.EXP);
+            headAngle.tickChaser();
+        }
+        headAnimation.chase(1, .25f, LerpedFloat.Chaser.exp(.25f));
+        headAnimation.tickChaser();
+        
+        spawnBlazeParticles();
+    }
+    
+    protected void bookTick() {
+        if(random.nextInt(40) == 0) {
+            float oFlipT = flipT;
+            while(oFlipT == flipT) {
+                flipT += (random.nextInt(4) - random.nextInt(4));
+            }
+        }
+        oFlip = flip;
+        float flipDiff = (flipT - flip) * 0.4F;
+        flipDiff = Mth.clamp(flipDiff, -0.2F, 0.2F);
+        flipA += (flipDiff - flipA) * 0.9F;
+        flip += flipA;
+    }
+    
+    protected void spawnBlazeParticles() {
+        if (level == null)
+            return;
+    
+        Vec3 c = VecHelper.getCenterOf(worldPosition);
+        
+        if (random.nextInt(3) == 0) {
+            Vec3 v = c.add(VecHelper.offsetRandomly(Vec3.ZERO, random, .125f).multiply(1, 0, 1));
+            level.addParticle(ParticleTypes.LARGE_SMOKE, v.x, v.y, v.z, 0, 0, 0);
+        }
+        
+        if (random.nextInt(2) == 0) {
+            
+            boolean empty = level.getBlockState(worldPosition.above())
+                .getCollisionShape(level, worldPosition.above())
+                .isEmpty();
+    
+            double yMotion = empty ? .0625f : random.nextDouble() * .0125f;
+            Vec3 v = c.add(
+                VecHelper.offsetRandomly(Vec3.ZERO, random, .5f)
+                    .multiply(1, .25f, 1)
+                    .normalize()
+                    .scale((empty ? .25f : .5) + random.nextDouble() * .125f)
+                )
+                .add(0, .5, 0);
+            level.addParticle(ParticleTypes.FLAME, v.x, v.y, v.z, 0, yMotion, 0);
+        }
+    }
+    
+    protected static int ENCHANT_PARTICLE_COUNT = 20;
+    
+    protected void spawnEnchantParticles() {
+        if (isVirtual())
+            return;
+        Vec3 vec = VecHelper.getCenterOf(worldPosition);
+        vec = vec.add(0, 1, 0);
+        ParticleOptions particle = ParticleTypes.ENCHANT;
+        for (int i = 0; i < ENCHANT_PARTICLE_COUNT; i++) {
+            Vec3 m = VecHelper.offsetRandomly(Vec3.ZERO, level.random, 1f);
+            m = new Vec3(m.x, Math.abs(m.y), m.z);
+            level.addAlwaysVisibleParticle(particle, vec.x, vec.y, vec.z, m.x, m.y, m.z);
+        }
+    }
 
     protected boolean continueProcessing() {
         if (level.isClientSide && !isVirtual())
@@ -196,8 +316,11 @@ public class EnchantingAlterBlockEntity extends SmartTileEntity implements IHave
 
         Pair<FluidStack, ItemStack> enchantItem = Enchanting.enchant(heldItem.stack, targetItem, true);
         FluidStack fluidFromItem = enchantItem.getFirst();
-
+        
         if (processingTicks > 5) {
+            if (processingTicks % 40 == 0) {
+                level.playSound(null, worldPosition, SoundEvents.BEACON_AMBIENT, SoundSource.BLOCKS, 1.0f, 1.0f);
+            }
             if (internalTank.getPrimaryHandler().getFluid().getFluid() != ModFluids.EXPERIENCE.get().getSource() || internalTank.getPrimaryHandler().getFluidAmount() < fluidFromItem.getAmount()) {
                 processingTicks = ENCHANTING_TIME;
                 return true;
@@ -206,11 +329,11 @@ public class EnchantingAlterBlockEntity extends SmartTileEntity implements IHave
         }
 
         enchantItem = Enchanting.enchant(heldItem.stack, targetItem, true);
-        // award(AllAdvancements.DRAIN);
-
-        // Process finished
+        // award(AllAdvancements.DRAIN);// Process finished
         heldItem.stack = enchantItem.getSecond();
         internalTank.getPrimaryHandler().getFluid().shrink(fluidFromItem.getAmount());
+        sendParticles = true;
+        level.playSound(null, worldPosition, SoundEvents.ENCHANTMENT_TABLE_USE, SoundSource.BLOCKS, ENCHANTING_TIME / (float) processingTicks, 1.0f);
         notifyUpdate();
         return true;
     }
@@ -269,25 +392,34 @@ public class EnchantingAlterBlockEntity extends SmartTileEntity implements IHave
 
     @Override
     public void write(CompoundTag compoundTag, boolean clientPacket) {
+        super.write(compoundTag, clientPacket);
         compoundTag.putInt("ProcessingTicks", processingTicks);
         compoundTag.put("TargetItem", targetItem.serializeNBT());
         if (heldItem != null)
             compoundTag.put("HeldItem", heldItem.serializeNBT());
-        super.write(compoundTag, clientPacket);
+        if (sendParticles && clientPacket) {
+            compoundTag.putBoolean("SpawnParticles", true);
+            sendParticles = false;
+        }
     }
 
     @Override
     protected void read(CompoundTag compoundTag, boolean clientPacket) {
+        super.read(compoundTag, clientPacket);
         heldItem = null;
         processingTicks = compoundTag.getInt("ProcessingTicks");
         targetItem = ItemStack.of(compoundTag.getCompound("TargetItem"));
         if (compoundTag.contains("HeldItem"))
             heldItem = TransportedItemStack.read(compoundTag.getCompound("HeldItem"));
-        super.read(compoundTag, clientPacket);
+        if (!clientPacket)
+            return;
+        if (compoundTag.contains("SpawnParticles"))
+            spawnEnchantParticles();
     }
 
     @Override
-    public <T> LazyOptional<T> getCapability(Capability<T> capability, Direction side) {
+    @NotNull
+    public <T> LazyOptional<T> getCapability(Capability<T> capability, @Nullable Direction side) {
         if (side != null && side.getAxis()
                 .isHorizontal() && isItemHandlerCap(capability))
             return itemHandlers.get(side)

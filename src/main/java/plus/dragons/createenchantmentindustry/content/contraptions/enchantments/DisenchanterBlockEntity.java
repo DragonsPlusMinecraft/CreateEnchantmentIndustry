@@ -30,6 +30,8 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.items.ItemHandlerHelper;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import plus.dragons.createenchantmentindustry.entry.ModFluids;
 
 import java.util.IdentityHashMap;
@@ -75,8 +77,9 @@ public class DisenchanterBlockEntity extends SmartTileEntity implements IHaveGog
 
         boolean onClient = level.isClientSide && !isVirtual();
 
-        if (!onClient && level.getDayTime() % 20 == 0)
+        if (!onClient && level.getGameTime() % 10 == 0) {
             absorbExperienceFromWorld();
+        }
 
         if (heldItem == null) {
             processingTicks = 0;
@@ -196,10 +199,10 @@ public class DisenchanterBlockEntity extends SmartTileEntity implements IHaveGog
             AtomicInteger sum = new AtomicInteger();
             internalTank.allowInsertion();
             players.forEach(player -> {
-                if (player.totalExperience >= ABSORB_AMOUNT) {
+                if (getPlayerExperience(player) >= ABSORB_AMOUNT) {
                     sum.addAndGet(ABSORB_AMOUNT);
-                } else if (player.totalExperience != 0) {
-                    sum.addAndGet(player.totalExperience);
+                } else if (getPlayerExperience(player) != 0) {
+                    sum.addAndGet(getPlayerExperience(player));
                 }
             });
             if (sum.get() != 0) {
@@ -208,19 +211,19 @@ public class DisenchanterBlockEntity extends SmartTileEntity implements IHaveGog
                 if (inserted != 0) {
                     for (var player : players) {
                         if (inserted >= ABSORB_AMOUNT) {
-                            if (player.totalExperience >= ABSORB_AMOUNT) {
+                            if (getPlayerExperience(player) >= ABSORB_AMOUNT) {
                                 player.giveExperiencePoints(-ABSORB_AMOUNT);
                                 inserted -= ABSORB_AMOUNT;
-                            } else if (player.totalExperience != 0) {
-                                inserted -= player.totalExperience;
+                            } else if (getPlayerExperience(player) != 0) {
+                                inserted -= getPlayerExperience(player);
                                 player.giveExperiencePoints(-player.totalExperience);
                             }
                         } else if (sum.get() > 0) {
-                            if (player.totalExperience >= sum.get()) {
+                            if (getPlayerExperience(player) >= sum.get()) {
                                 player.giveExperiencePoints(-sum.get());
                                 inserted = 0;
                             } else {
-                                inserted -= player.totalExperience;
+                                inserted -= getPlayerExperience(player);
                                 player.giveExperiencePoints(-player.totalExperience);
                             }
                         } else {
@@ -249,6 +252,14 @@ public class DisenchanterBlockEntity extends SmartTileEntity implements IHaveGog
             internalTank.forbidInsertion();
         }
     }
+
+    private int getPlayerExperience(Player player){
+        var level = player.experienceLevel;
+        var total = level<=16? 2 + 6*level*level: level<=31? 2.5*level*level-40.5*level + 350: 4.5*level*level-162.5*level + 2220;
+        return (int) (total + player.experienceProgress * player.getXpNeededForNextLevel());
+    }
+
+
 
     protected boolean continueProcessing() {
         if (level.isClientSide && !isVirtual())
@@ -282,6 +293,7 @@ public class DisenchanterBlockEntity extends SmartTileEntity implements IHaveGog
         internalTank.getPrimaryHandler()
                 .fill(fluidFromItem, IFluidHandler.FluidAction.EXECUTE);
         internalTank.forbidInsertion();
+        level.levelEvent(1042, worldPosition, 0);
         notifyUpdate();
         return true;
     }
@@ -356,7 +368,8 @@ public class DisenchanterBlockEntity extends SmartTileEntity implements IHaveGog
     }
 
     @Override
-    public <T> LazyOptional<T> getCapability(Capability<T> capability, Direction side) {
+    @NotNull
+    public <T> LazyOptional<T> getCapability(Capability<T> capability, @Nullable Direction side) {
         if (side != null && side.getAxis()
                 .isHorizontal() && isItemHandlerCap(capability))
             return itemHandlers.get(side)

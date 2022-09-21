@@ -25,6 +25,7 @@ public class ModBlocks {
             .block("disenchanter", DisenchanterBlock::new)
             .initialProperties(SharedProperties::copperMetal)
             .addLayer(() -> RenderType::cutoutMipped)
+            .transform(ModTags.pickaxeOnly())
             .blockstate((ctx, pov) -> pov.simpleBlock(ctx.get(), AssetLookup.standardModel(ctx, pov)))
             .simpleItem()
             .register();
@@ -33,14 +34,18 @@ public class ModBlocks {
             .block("copier_machine", CopierBlock::new)
             .initialProperties(SharedProperties::copperMetal)
             .addLayer(() -> RenderType::cutoutMipped)
-            .blockstate((ctx, pov) -> pov.simpleBlock(ctx.get(), AssetLookup.standardModel(ctx, pov)))
-            .simpleItem()
+            .transform(ModTags.pickaxeOnly())
+            .blockstate((ctx, pov) -> pov.simpleBlock(ctx.get(), AssetLookup.partialBaseModel(ctx, pov)))
+            .item()
+            .model(AssetLookup::customItemModel)
+            .build()
             .register();
 
     public static final BlockEntry<EnchantingAlterBlock> BLAZE_ENCHANTING_ALTER = REGISTRATE
             .block("blaze_enchanting_alter", EnchantingAlterBlock::new)
             .initialProperties(SharedProperties::softMetal)
             .addLayer(() -> RenderType::cutoutMipped)
+            .transform(ModTags.pickaxeOnly())
             .blockstate((ctx, pov) -> pov.simpleBlock(ctx.get(), AssetLookup.standardModel(ctx, pov)))
             .register();
 

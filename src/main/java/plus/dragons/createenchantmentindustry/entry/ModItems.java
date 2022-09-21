@@ -15,7 +15,9 @@ public class ModItems {
         REGISTRATE.startSection(AllSections.KINETICS);
     }
 
-    public static final ItemEntry<EnchantingGuideItem> ENCHANTING_GUIDE_FOR_BLAZE = REGISTRATE.item("enchanting_guide_for_blaze", EnchantingGuideItem::new).register();
+    public static final ItemEntry<EnchantingGuideItem> ENCHANTING_GUIDE_FOR_BLAZE = REGISTRATE.item("enchanting_guide_for_blaze", EnchantingGuideItem::new)
+            .properties(prop -> prop.stacksTo(1))
+            .register();
 
     public static void register() {
     }

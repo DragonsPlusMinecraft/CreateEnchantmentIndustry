@@ -7,12 +7,17 @@ import com.simibubi.create.foundation.tileEntity.TileEntityBehaviour;
 import com.simibubi.create.foundation.tileEntity.behaviour.belt.BeltProcessingBehaviour;
 import com.simibubi.create.foundation.tileEntity.behaviour.belt.TransportedItemStackHandlerBehaviour;
 import com.simibubi.create.foundation.tileEntity.behaviour.fluid.SmartFluidTankBehaviour;
+import com.simibubi.create.foundation.utility.VecHelper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.particles.ParticleOptions;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.WrittenBookItem;
@@ -20,10 +25,13 @@ import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import plus.dragons.createenchantmentindustry.foundation.utility.ModLang;
 
 import java.util.ArrayList;
@@ -39,8 +47,10 @@ public class CopierBlockEntity extends SmartTileEntity implements IHaveGoggleInf
     protected BeltProcessingBehaviour beltProcessing;
     public int processingTicks;
     SmartFluidTankBehaviour tank;
+    //TODO: Maybe use FilteringBehavior instead, which will provide better render support and consistency?
     public ItemStack copyTarget;
     public boolean tooExpensive;
+    boolean sendParticles;
 
     public CopierBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
@@ -63,20 +73,21 @@ public class CopierBlockEntity extends SmartTileEntity implements IHaveGoggleInf
         if (processingTicks >= 0) {
             processingTicks--;
         }
-
-        if (processingTicks >= 10 && level.isClientSide)
-            spawnProcessingParticles(tank.getPrimaryTank()
-                    .getRenderedFluid());
     }
-
-    protected void spawnProcessingParticles(FluidStack fluid) {
-        // TODO Change After Model is done
+    
+    protected static int ENCHANT_PARTICLE_COUNT = 20;
+    
+    protected void spawnParticles() {
         if (isVirtual())
             return;
-        /*Vec3 vec = VecHelper.getCenterOf(worldPosition);
-        vec = vec.subtract(0, 8 / 16f, 0);
-        ParticleOptions particle = FluidFX.getFluidParticle(fluid);
-        level.addAlwaysVisibleParticle(particle, vec.x, vec.y, vec.z, 0, -.1f, 0);*/
+        Vec3 vec = VecHelper.getCenterOf(worldPosition);
+        vec = vec.subtract(0, 11 / 16f, 0);
+        ParticleOptions particle = ParticleTypes.ENCHANT;
+        for (int i = 0; i < ENCHANT_PARTICLE_COUNT; i++) {
+            Vec3 m = VecHelper.offsetRandomly(Vec3.ZERO, level.random, 1f);
+            m = new Vec3(m.x, Math.abs(m.y), m.z);
+            level.addAlwaysVisibleParticle(particle, vec.x, vec.y, vec.z, m.x, m.y, m.z);
+        }
     }
 
     protected BeltProcessingBehaviour.ProcessingResult onItemReceived(TransportedItemStack transported,
@@ -127,8 +138,9 @@ public class CopierBlockEntity extends SmartTileEntity implements IHaveGoggleInf
             held = transported.copy();
         outList.add(result);
         handler.handleProcessingOnItem(transported, TransportedItemStackHandlerBehaviour.TransportedResult.convertToAndLeaveHeld(outList, held));
-        tank.getPrimaryHandler()
-                .setFluid(fluid);
+        tank.getPrimaryHandler().setFluid(fluid);
+        sendParticles = true;
+        level.playSound(null, worldPosition, SoundEvents.ENCHANTMENT_TABLE_USE, SoundSource.BLOCKS, 1.0F, level.random.nextFloat() * 0.1F + 0.9F);
         notifyUpdate();
         return HOLD;
     }
@@ -145,6 +157,10 @@ public class CopierBlockEntity extends SmartTileEntity implements IHaveGoggleInf
         compoundTag.putBoolean("tooExpensive", tooExpensive);
         if (copyTarget != null)
             compoundTag.put("copyTarget", copyTarget.serializeNBT());
+        if (sendParticles && clientPacket) {
+            compoundTag.putBoolean("SpawnParticles", true);
+            sendParticles = false;
+        }
     }
 
     @Override
@@ -155,10 +171,15 @@ public class CopierBlockEntity extends SmartTileEntity implements IHaveGoggleInf
         tooExpensive = compoundTag.getBoolean("tooExpensive");
         if (compoundTag.contains("copyTarget"))
             copyTarget = ItemStack.of(compoundTag.getCompound("copyTarget"));
+        if (!clientPacket)
+            return;
+        if (compoundTag.contains("SpawnParticles"))
+            spawnParticles();
     }
 
     @Override
-    public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {
+    @NotNull
+    public <T> LazyOptional<T> getCapability(Capability<T> cap, @Nullable Direction side) {
         if (cap == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY && side != Direction.DOWN)
             return tank.getCapability()
                     .cast();

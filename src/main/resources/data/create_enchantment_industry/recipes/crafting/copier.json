@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "A",
+    "B",
+    "C"
+  ],
+  "key": {
+    "A": {
+      "item": "create:copper_casing"
+    },
+    "B": {
+      "item": "minecraft:dried_kelp"
+    },
+    "C": {
+      "item": "create:iron_sheet"
+    }
+
+  },
+  "result": {
+    "item": "create_enchantment_industry:copier_machine"
+  }
+}
