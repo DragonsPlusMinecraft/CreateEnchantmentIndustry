@@ -31,7 +31,7 @@ logoFile="logo.png" #optional
 # A text field displayed in the mod UI
 # credits="Thanks for this example mod goes to Java" #optional
 # A text field displayed in the mod UI
-authors="MarbleGateKeeper" #optional
+authors="MarbleGateKeeper & LimonBlaze" #optional
 # The description text for the mod (multi line!) (#mandatory)
 description='''
 Automatic Enchanting, with Create.

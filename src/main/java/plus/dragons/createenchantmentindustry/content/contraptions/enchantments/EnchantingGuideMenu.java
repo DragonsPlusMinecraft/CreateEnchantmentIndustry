@@ -25,8 +25,6 @@ import java.util.List;
 
 public class EnchantingGuideMenu extends GhostItemContainer<ItemStack> {
     private static Component NO_ENCHANTMENT = ModLang.translate("gui.enchanting_guide.no_enchantment").component();
-
-    // TODO need index switcher
     public int index;
     public SelectionScrollInput scrollInput;
     public Label scrollInputLabel;

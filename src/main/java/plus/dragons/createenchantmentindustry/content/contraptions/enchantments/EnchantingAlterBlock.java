@@ -3,6 +3,7 @@ package plus.dragons.createenchantmentindustry.content.contraptions.enchantments
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.AllShapes;
 import com.simibubi.create.content.contraptions.processing.burner.BlazeBurnerBlock;
+import com.simibubi.create.content.contraptions.relays.belt.transport.TransportedItemStack;
 import com.simibubi.create.content.contraptions.wrench.IWrenchable;
 import com.simibubi.create.foundation.block.ITE;
 import com.simibubi.create.foundation.tileEntity.ComparatorUtil;
@@ -75,7 +76,18 @@ public class EnchantingAlterBlock extends HorizontalDirectionalBlock implements 
     public InteractionResult use(BlockState state, Level worldIn, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hit) {
         ItemStack heldItem = player.getItemInHand(handIn);
         if (!heldItem.isEmpty())
-            return InteractionResult.PASS;
+            return onTileEntityUse(worldIn, pos, te -> {
+                ItemStack heldItemStack = te.getHeldItemStack();
+                if (heldItemStack.isEmpty()) {
+                    if (!worldIn.isClientSide) {
+                        te.heldItem = new TransportedItemStack(heldItem);
+                        player.setItemInHand(handIn, ItemStack.EMPTY);
+                        te.notifyUpdate();
+                        return InteractionResult.SUCCESS;
+                    }
+                }
+                return InteractionResult.FAIL;
+            });
         worldIn.setBlockAndUpdate(pos, AllBlocks.BLAZE_BURNER.getDefaultState()
             .setValue(BlazeBurnerBlock.FACING, state.getValue(FACING))
             .setValue(BlazeBurnerBlock.HEAT_LEVEL, BlazeBurnerBlock.HeatLevel.SMOULDERING)

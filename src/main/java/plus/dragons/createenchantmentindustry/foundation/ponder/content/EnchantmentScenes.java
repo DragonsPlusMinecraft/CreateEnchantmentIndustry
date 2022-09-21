@@ -228,6 +228,9 @@ public class EnchantmentScenes {
                 .withItem(Items.ENCHANTED_BOOK.getDefaultInstance()), 40);
         scene.world.modifyTileEntity(util.grid.at(2,1,5), CreativeFluidTankTileEntity.class, be -> ((CreativeFluidTankTileEntity.CreativeSmartFluidTank) be.getTankInventory())
                 .setContainedFluid(new FluidStack(ModFluids.EXPERIENCE.get().getSource(), 1000)));
+        scene.world.modifyTileEntity(util.grid.at(2,3,2), CopierBlockEntity.class, be ->
+                be.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY).ifPresent(tank->
+                        tank.fill(new FluidStack(ModFluids.EXPERIENCE.get().getSource(),3000), IFluidHandler.FluidAction.EXECUTE)));
         scene.idle(40);
 
         var item = Items.BOOK.getDefaultInstance();
@@ -238,7 +241,7 @@ public class EnchantmentScenes {
         scene.idle(60);
         scene.world.stallBeltItem(beltItem, true);
         scene.world.modifyTileNBT(copier, CopierBlockEntity.class, nbt -> nbt.putInt("ProcessingTicks", 100));
-        scene.idle(100);
+        scene.idle(95);
         scene.world.removeItemsFromBelt(copierPos.below(2));
         scene.world.createItemOnBelt(copierPos.below(2), Direction.UP, Items.ENCHANTED_BOOK.getDefaultInstance());
 
@@ -248,6 +251,9 @@ public class EnchantmentScenes {
                 .withItem(Items.WRITTEN_BOOK.getDefaultInstance()), 40);
         scene.world.modifyTileEntity(util.grid.at(2,1,5), CreativeFluidTankTileEntity.class, be -> ((CreativeFluidTankTileEntity.CreativeSmartFluidTank) be.getTankInventory())
                 .setContainedFluid(new FluidStack(ModFluids.INK.get().getSource(), 1000)));
+        scene.world.modifyTileEntity(util.grid.at(2,3,2), CopierBlockEntity.class, be ->
+                be.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY).ifPresent(tank->
+                        tank.fill(new FluidStack(ModFluids.INK.get().getSource(),3000), IFluidHandler.FluidAction.EXECUTE)));
         scene.idle(40);
 
         item = Items.BOOK.getDefaultInstance();
@@ -258,10 +264,9 @@ public class EnchantmentScenes {
         scene.idle(60);
         scene.world.stallBeltItem(beltItem, true);
         scene.world.modifyTileNBT(copier, CopierBlockEntity.class, nbt -> nbt.putInt("ProcessingTicks", 100));
-        scene.idle(100);
+        scene.idle(95);
         scene.world.removeItemsFromBelt(copierPos.below(2));
         scene.world.createItemOnBelt(copierPos.below(2), Direction.UP, Items.WRITTEN_BOOK.getDefaultInstance());
-
     }
 
     public static void leak(SceneBuilder scene, SceneBuildingUtil util){
