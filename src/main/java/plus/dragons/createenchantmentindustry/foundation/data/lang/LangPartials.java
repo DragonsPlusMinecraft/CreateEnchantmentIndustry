@@ -2,13 +2,10 @@ package plus.dragons.createenchantmentindustry.foundation.data.lang;
 
 import com.google.common.base.Supplier;
 import com.google.gson.JsonElement;
-import com.simibubi.create.AllSoundEvents;
-import com.simibubi.create.Create;
-import com.simibubi.create.foundation.advancement.AllAdvancements;
-import com.simibubi.create.foundation.ponder.PonderLocalization;
 import com.simibubi.create.foundation.utility.FilesHelper;
 import com.simibubi.create.foundation.utility.Lang;
 import plus.dragons.createenchantmentindustry.EnchantmentIndustry;
+import plus.dragons.createenchantmentindustry.foundation.data.advancement.ModAdvancements;
 
 /*
 MIT License
@@ -35,8 +32,7 @@ SOFTWARE.
 */
 
 public enum LangPartials {
-	//TODO: When advancement done, use this for localization
-	//ADVANCEMENTS("Advancements", AllAdvancements::provideLangEntries),
+	ADVANCEMENTS("Advancements", ModAdvancements::provideLangEntries),
 	INTERFACE("UI & Messages"),
 	TOOLTIPS("Item Descriptions"),
 	PONDER("Ponder Content");
