@@ -18,6 +18,8 @@ import org.apache.logging.log4j.Logger;
 import plus.dragons.createenchantmentindustry.content.ItemGroup;
 import plus.dragons.createenchantmentindustry.content.contraptions.fluids.OpenEndedPipeEffects;
 import plus.dragons.createenchantmentindustry.entry.*;
+import plus.dragons.createenchantmentindustry.foundation.data.advancement.ModAdvancements;
+import plus.dragons.createenchantmentindustry.foundation.data.advancement.ModTriggers;
 import plus.dragons.createenchantmentindustry.foundation.data.lang.LangMerger;
 
 @Mod("create_enchantment_industry")
@@ -51,7 +53,11 @@ public class EnchantmentIndustry {
     }
 
     public static void init(final FMLCommonSetupEvent event) {
-        ModPackets.registerPackets();
+        event.enqueueWork(() -> {
+            ModPackets.registerPackets();
+            ModTriggers.register();
+            ModAdvancements.register();
+        });
     }
     
     public static void datagen(final GatherDataEvent event) {
