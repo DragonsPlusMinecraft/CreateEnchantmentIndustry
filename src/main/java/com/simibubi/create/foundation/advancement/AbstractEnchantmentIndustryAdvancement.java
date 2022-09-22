@@ -3,6 +3,9 @@ package com.simibubi.create.foundation.advancement;
 import com.google.gson.JsonObject;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.player.Player;
 import org.jetbrains.annotations.Nullable;
 import plus.dragons.createenchantmentindustry.foundation.data.advancement.SimpleTrigger;
 
@@ -40,6 +43,26 @@ public abstract class AbstractEnchantmentIndustryAdvancement extends CreateAdvan
     
     public String descriptionKey() {
         return descriptionKey;
+    }
+    
+    public boolean isAlreadyAwardedTo(Player player) {
+        if (!(player instanceof ServerPlayer sp))
+            return true;
+        MinecraftServer server = sp.getServer();
+        if (server == null)
+            return true;
+        Advancement advancement = server.getAdvancements().getAdvancement(this.id);
+        if (advancement == null)
+            return true;
+        return sp.getAdvancements().getOrStartProgress(advancement).isDone();
+    }
+    
+    public void awardTo(Player player) {
+        if (!(player instanceof ServerPlayer sp))
+            return;
+        if (this.builtinTrigger == null)
+            throw new UnsupportedOperationException("Advancement [" + id + "] uses external triggers, it cannot be awarded directly");
+        this.builtinTrigger.trigger(sp);
     }
     
     public abstract String title();
