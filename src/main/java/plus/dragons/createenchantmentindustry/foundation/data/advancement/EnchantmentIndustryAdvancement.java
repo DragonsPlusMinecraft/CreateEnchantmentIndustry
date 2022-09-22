@@ -100,6 +100,15 @@ public class EnchantmentIndustryAdvancement extends AbstractEnchantmentIndustryA
             this.builtin = false;
             return this;
         }
+        
+        protected Builder parent(ResourceLocation id) {
+            builder.parent(id);
+            return this;
+        }
+        
+        protected Builder parent(EnchantmentIndustryAdvancement advancement) {
+            return parent(advancement.id);
+        }
     
         protected Builder transform(NonNullUnaryOperator<Advancement.Builder> transform) {
             transform.apply(builder);
