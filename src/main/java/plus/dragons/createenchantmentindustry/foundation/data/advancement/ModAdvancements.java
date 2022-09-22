@@ -26,15 +26,15 @@ import java.util.function.Consumer;
 public class ModAdvancements implements DataProvider {
     private static final Logger LOGGER = LogManager.getLogger();
     private static final Gson GSON = (new GsonBuilder()).setPrettyPrinting().create();
-    public static final List<EnchantmentIndustryAdvancement> ENTRIES = new ArrayList<>();
-    public static final EnchantmentIndustryAdvancement
+    public static final List<ModAdvancement> ENTRIES = new ArrayList<>();
+    public static final ModAdvancement
     START = null,
     //TODO: Add advancements
     END = null;
     
     //Shortcut for builder constructor
-    public static EnchantmentIndustryAdvancement.Builder builder(String id) {
-        return new EnchantmentIndustryAdvancement.Builder(id);
+    public static ModAdvancement.Builder builder(String id) {
+        return new ModAdvancement.Builder(id);
     }
     
     //Datagen
