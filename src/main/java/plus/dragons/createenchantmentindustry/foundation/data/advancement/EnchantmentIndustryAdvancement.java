@@ -41,8 +41,8 @@ public class EnchantmentIndustryAdvancement extends AbstractEnchantmentIndustryA
         private boolean builtin = true;
         private String title = "Untitled";
         private String description = "No Description";
-        private ItemStack icon;
-        private FrameType frame;
+        private ItemStack icon = ItemStack.EMPTY;
+        private FrameType frame = FrameType.TASK;
         private boolean toast = true;
         private boolean announce = false;
         private boolean hide = false;
