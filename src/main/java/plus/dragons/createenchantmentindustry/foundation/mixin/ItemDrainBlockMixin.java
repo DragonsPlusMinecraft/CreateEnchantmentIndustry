@@ -4,7 +4,9 @@ import com.simibubi.create.content.contraptions.fluids.actors.ItemDrainBlock;
 import com.simibubi.create.content.contraptions.fluids.actors.ItemDrainTileEntity;
 import com.simibubi.create.content.contraptions.wrench.IWrenchable;
 import com.simibubi.create.foundation.block.ITE;
+import com.simibubi.create.foundation.utility.VecHelper;
 import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.ExperienceOrb;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -23,12 +25,13 @@ public abstract class ItemDrainBlockMixin extends Block implements ITE<ItemDrain
 
     // Support Experience Drop with Block Break
     @Inject(method = "onRemove", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/Level;removeBlockEntity(Lnet/minecraft/core/BlockPos;)V"))
-    private void injected(BlockState state, Level worldIn, BlockPos pos, BlockState newState, boolean isMoving, CallbackInfo ci) {
-        withTileEntityDo(worldIn, pos, te -> {
-            var tank = ((ItemDrainTileEntityAccessor) te).getInternalTank();
-            if(tank.getPrimaryHandler().getFluid().getFluid().isSame(ModFluids.EXPERIENCE.get().getSource())){
-                var expBall = new ExperienceOrb(worldIn, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, tank.getPrimaryHandler().getFluid().getAmount());
-                worldIn.addFreshEntity(expBall);
+    private void injected(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving, CallbackInfo ci) {
+        if(!(level instanceof ServerLevel serverLevel))
+            return;
+        withTileEntityDo(level, pos, te -> {
+            var fluidStack = ((ItemDrainTileEntityAccessor) te).getInternalTank().getPrimaryHandler().getFluid();
+            if(fluidStack.getFluid().isSame(ModFluids.EXPERIENCE.get().getSource())){
+                ExperienceOrb.award(serverLevel, VecHelper.getCenterOf(pos), fluidStack.getAmount());
             }
         });
     }

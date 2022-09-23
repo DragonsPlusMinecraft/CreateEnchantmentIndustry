@@ -7,7 +7,9 @@ import com.simibubi.create.content.contraptions.fluids.tank.FluidTankTileEntity;
 import com.simibubi.create.content.contraptions.processing.BasinTileEntity;
 import com.simibubi.create.content.contraptions.wrench.IWrenchable;
 import com.simibubi.create.foundation.block.ITE;
+import com.simibubi.create.foundation.utility.VecHelper;
 import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.ExperienceOrb;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -27,31 +29,29 @@ public abstract class FluidTankBlockMixin extends Block implements ITE<BasinTile
 
     // Support Experience Drop with Block Break
     @Inject(method = "onRemove", remap = false, at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/Level;removeBlockEntity(Lnet/minecraft/core/BlockPos;)V"), cancellable = true)
-    private void injected(BlockState state, Level world, BlockPos pos, BlockState newState, boolean var4, CallbackInfo ci) {
-        BlockEntity be = world.getBlockEntity(pos);
+    private void injected(BlockState state, Level level, BlockPos pos, BlockState newState, boolean var4, CallbackInfo ci) {
+        if(!(level instanceof ServerLevel serverLevel))
+            return;
+        BlockEntity be = level.getBlockEntity(pos);
         if (!(be instanceof FluidTankTileEntity tankBE) || be instanceof CreativeFluidTankTileEntity)
             return;
-        var contronllerBE = tankBE.getControllerTE();
-        var fluid = contronllerBE.getFluid(0);
+        var controllerBE = tankBE.getControllerTE();
+        var fluid = controllerBE.getFluid(0);
         var backup = fluid.copy();
-        var maxSize = contronllerBE.getTotalTankSize();
-        if(fluid.getFluid().isSame(ModFluids.EXPERIENCE.get().getSource())){
-            world.removeBlockEntity(pos);
+        var maxSize = controllerBE.getTotalTankSize();
+        if (fluid.getFluid().isSame(ModFluids.EXPERIENCE.get().getSource())) {
+            level.removeBlockEntity(pos);
             ConnectivityHandler.splitMulti(tankBE);
-            if(maxSize==1){
-                var expBall = new ExperienceOrb(world, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, backup.getAmount());
-                world.addFreshEntity(expBall);
+            if (maxSize == 1){
+                ExperienceOrb.award(serverLevel, VecHelper.getCenterOf(pos), backup.getAmount());
             } else {
                 var total = maxSize * (FluidTankTileEntity.getCapacityMultiplier() - 1);
-                var left = backup.getAmount()-total;
-                if(left>0){
-                    var expBall = new ExperienceOrb(world, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, left);
-                    world.addFreshEntity(expBall);
+                var leftover = backup.getAmount() - total;
+                if(leftover > 0){
+                    ExperienceOrb.award(serverLevel, VecHelper.getCenterOf(pos), leftover);
                 }
-
             }
             ci.cancel();
         }
-
     }
 }
