@@ -40,6 +40,7 @@ public class EnchantmentIndustry {
 
         modEventBus.addListener(EnchantmentIndustry::init);
         modEventBus.addListener(EnchantmentIndustry::datagen);
+        forgeEventBus.addListener(ModFluids::handleInkEffect);
         DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> EnchantmentIndustryClient.onClient(modEventBus, forgeEventBus));
     }
 
