@@ -9,7 +9,11 @@
     "BasinBlockMixin",
     "CreateAdvancementConstructor",
     "CreateAdvancementMixin",
-    "FluidTankBlockMixin"
+    "FluidTankBlockMixin",
+    "ItemDrainBlockMixin",
+    "ItemDrainTileEntityAccessor",
+    "SpoutBlockMixin",
+    "SpoutTileEntityAccessor"
   ],
   "client": [
     "CameraMixin"

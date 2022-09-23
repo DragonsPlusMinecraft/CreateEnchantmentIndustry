@@ -1,6 +1,7 @@
 package plus.dragons.createenchantmentindustry.foundation.mixin;
 
 import com.simibubi.create.api.connectivity.ConnectivityHandler;
+import com.simibubi.create.content.contraptions.fluids.tank.CreativeFluidTankTileEntity;
 import com.simibubi.create.content.contraptions.fluids.tank.FluidTankBlock;
 import com.simibubi.create.content.contraptions.fluids.tank.FluidTankTileEntity;
 import com.simibubi.create.content.contraptions.processing.BasinTileEntity;
@@ -25,22 +26,24 @@ public abstract class FluidTankBlockMixin extends Block implements ITE<BasinTile
     }
 
     // Support Experience Drop with Block Break
-    @SuppressWarnings("all")
     @Inject(method = "onRemove", remap = false, at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/Level;removeBlockEntity(Lnet/minecraft/core/BlockPos;)V"), cancellable = true)
     private void injected(BlockState state, Level world, BlockPos pos, BlockState newState, boolean var4, CallbackInfo ci) {
-        BlockEntity te = world.getBlockEntity(pos);
-        if (!(te instanceof FluidTankTileEntity))
+        BlockEntity be = world.getBlockEntity(pos);
+        if (!(be instanceof FluidTankTileEntity tankBE) || be instanceof CreativeFluidTankTileEntity)
             return;
-        FluidTankTileEntity tankTE = (FluidTankTileEntity) te;
-        var fluid = tankTE.getFluid(0);
+        var contronllerBE = tankBE.getControllerTE();
+        var fluid = contronllerBE.getFluid(0);
+        var backup = fluid.copy();
+        var maxSize = contronllerBE.getTotalTankSize();
         if(fluid.getFluid().isSame(ModFluids.EXPERIENCE.get().getSource())){
             world.removeBlockEntity(pos);
-            ConnectivityHandler.splitMulti(tankTE);
-            if(!tankTE.isController()){
-                var expBall = new ExperienceOrb(world, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, fluid.getAmount());
+            ConnectivityHandler.splitMulti(tankBE);
+            if(maxSize==1){
+                var expBall = new ExperienceOrb(world, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, backup.getAmount());
                 world.addFreshEntity(expBall);
             } else {
-                var left = Math.max(0,fluid.getAmount() - (tankTE.getTotalTankSize() - 1) * tankTE.getCapacityMultiplier());
+                var total = maxSize * (FluidTankTileEntity.getCapacityMultiplier() - 1);
+                var left = backup.getAmount()-total;
                 if(left>0){
                     var expBall = new ExperienceOrb(world, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, left);
                     world.addFreshEntity(expBall);
