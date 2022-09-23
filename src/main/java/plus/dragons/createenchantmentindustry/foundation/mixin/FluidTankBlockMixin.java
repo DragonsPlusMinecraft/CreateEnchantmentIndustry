@@ -28,7 +28,7 @@ public abstract class FluidTankBlockMixin extends Block implements ITE<BasinTile
     }
 
     // Support Experience Drop with Block Break
-    @Inject(method = "onRemove", remap = false, at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/Level;removeBlockEntity(Lnet/minecraft/core/BlockPos;)V"), cancellable = true)
+    @Inject(method = "onRemove", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/Level;removeBlockEntity(Lnet/minecraft/core/BlockPos;)V"), cancellable = true)
     private void injected(BlockState state, Level level, BlockPos pos, BlockState newState, boolean var4, CallbackInfo ci) {
         if(!(level instanceof ServerLevel serverLevel))
             return;

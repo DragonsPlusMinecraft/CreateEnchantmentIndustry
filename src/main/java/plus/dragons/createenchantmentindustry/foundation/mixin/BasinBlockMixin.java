@@ -17,7 +17,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import plus.dragons.createenchantmentindustry.entry.ModFluids;
 
-@Mixin(BasinBlock.class)
+@Mixin(value = BasinBlock.class)
 public abstract class BasinBlockMixin extends Block implements ITE<BasinTileEntity>, IWrenchable {
     public BasinBlockMixin(Properties pProperties) {
         super(pProperties);

@@ -18,7 +18,7 @@ import plus.dragons.createenchantmentindustry.entry.ModFluids;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 @ParametersAreNonnullByDefault
-@Mixin(SpoutBlock.class)
+@Mixin(value = SpoutBlock.class)
 public abstract class SpoutBlockMixin extends Block implements IWrenchable, ITE<SpoutTileEntity>{
     public SpoutBlockMixin(Properties pProperties) {
         super(pProperties);
