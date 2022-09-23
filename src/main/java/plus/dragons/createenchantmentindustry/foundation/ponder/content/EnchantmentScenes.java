@@ -37,7 +37,6 @@ import java.util.Random;
 import java.util.stream.Stream;
 
 public class EnchantmentScenes {
-    //TODO
     public static void disenchant(SceneBuilder scene, SceneBuildingUtil util){
         scene.title("disenchant", ""); // We do not use PonderLocalization. For title only
         scene.configureBasePlate(0, 0, 7);
