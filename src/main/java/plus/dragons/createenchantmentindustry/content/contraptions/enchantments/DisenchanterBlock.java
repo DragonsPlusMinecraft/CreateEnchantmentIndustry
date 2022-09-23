@@ -10,6 +10,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.ExperienceOrb;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -26,6 +27,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 import plus.dragons.createenchantmentindustry.entry.ModBlockEntities;
 import plus.dragons.createenchantmentindustry.entry.ModBlocks;
+import plus.dragons.createenchantmentindustry.entry.ModFluids;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -80,6 +82,11 @@ public class DisenchanterBlock extends Block implements IWrenchable, ITE<Disench
             ItemStack heldItemStack = te.getHeldItemStack();
             if (!heldItemStack.isEmpty())
                 Containers.dropItemStack(worldIn, pos.getX(), pos.getY(), pos.getZ(), heldItemStack);
+            var tank = te.internalTank.getPrimaryHandler();
+            if(tank.getFluid().getFluid().isSame(ModFluids.EXPERIENCE.get().getSource())){
+                var expBall = new ExperienceOrb(worldIn, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, tank.getFluid().getAmount());
+                worldIn.addFreshEntity(expBall);
+            }
         });
         worldIn.removeBlockEntity(pos);
     }
