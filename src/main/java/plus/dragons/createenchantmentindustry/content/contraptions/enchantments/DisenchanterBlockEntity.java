@@ -375,7 +375,7 @@ public class DisenchanterBlockEntity extends SmartTileEntity implements IHaveGog
             return itemHandlers.get(side)
                     .cast();
 
-        if ((side == Direction.DOWN || side == null) && isFluidHandlerCap(capability))
+        if ((side != Direction.UP) && isFluidHandlerCap(capability))
             return internalTank.getCapability()
                     .cast();
         return super.getCapability(capability, side);
