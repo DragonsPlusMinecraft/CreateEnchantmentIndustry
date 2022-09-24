@@ -30,6 +30,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 import plus.dragons.createenchantmentindustry.entry.ModBlockEntities;
 import plus.dragons.createenchantmentindustry.entry.ModFluids;
+import plus.dragons.createenchantmentindustry.entry.ModItems;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -82,24 +83,39 @@ public class BlazeEnchanterBlock extends HorizontalDirectionalBlock implements I
     @Override
     public InteractionResult use(BlockState state, Level worldIn, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hit) {
         ItemStack heldItem = player.getItemInHand(handIn);
-        if (!heldItem.isEmpty())
+        if (!heldItem.isEmpty()){
             return onTileEntityUse(worldIn, pos, te -> {
+                if(heldItem.is(ModItems.ENCHANTING_GUIDE_FOR_BLAZE.get()) && EnchantingGuideItem.getEnchantment(heldItem)!=null){
+                    if (!worldIn.isClientSide) {
+                        var target = te.targetItem.copy();
+                        te.targetItem = heldItem;
+                        if(!player.getAbilities().instabuild)
+                            player.setItemInHand(handIn, target);
+                        te.notifyUpdate();
+                    }
+                    return InteractionResult.SUCCESS;
+                }
                 ItemStack heldItemStack = te.getHeldItemStack();
                 if (heldItemStack.isEmpty()) {
                     if (!worldIn.isClientSide) {
                         te.heldItem = new TransportedItemStack(heldItem);
-                        player.setItemInHand(handIn, ItemStack.EMPTY);
+                        if(!player.getAbilities().instabuild)
+                            player.setItemInHand(handIn, ItemStack.EMPTY);
                         te.notifyUpdate();
-                        return InteractionResult.SUCCESS;
                     }
+                    return InteractionResult.SUCCESS;
                 }
                 return InteractionResult.FAIL;
             });
-        worldIn.setBlockAndUpdate(pos, AllBlocks.BLAZE_BURNER.getDefaultState()
-            .setValue(BlazeBurnerBlock.FACING, state.getValue(FACING))
-            .setValue(BlazeBurnerBlock.HEAT_LEVEL, BlazeBurnerBlock.HeatLevel.SMOULDERING)
-        );
-        return InteractionResult.SUCCESS;
+        }
+        else if (player.isShiftKeyDown() && heldItem.isEmpty()){
+            if(!player.level.isClientSide())
+                worldIn.setBlockAndUpdate(pos, AllBlocks.BLAZE_BURNER.getDefaultState()
+                    .setValue(BlazeBurnerBlock.FACING, state.getValue(FACING))
+                    .setValue(BlazeBurnerBlock.HEAT_LEVEL, BlazeBurnerBlock.HeatLevel.SMOULDERING));
+            return InteractionResult.SUCCESS;
+        }
+        return InteractionResult.PASS;
     }
 
 
@@ -107,6 +123,7 @@ public class BlazeEnchanterBlock extends HorizontalDirectionalBlock implements I
     public void setPlacedBy(Level pLevel, BlockPos pPos, BlockState pState, @Nullable LivingEntity pPlacer, ItemStack pStack) {
         super.setPlacedBy(pLevel, pPos, pState, pPlacer, pStack);
         // TODO Advancement need more investigate
+        // It should be trigger at somewhere else
         // AdvancementBehaviour.setPlacedBy(pLevel, pPos, pPlacer);
     }
 
