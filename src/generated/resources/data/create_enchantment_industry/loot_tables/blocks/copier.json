@@ -7,7 +7,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "create_enchantment_industry:copier_machine"
+          "name": "create_enchantment_industry:copier"
         }
       ],
       "conditions": [

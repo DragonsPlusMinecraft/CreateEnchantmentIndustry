@@ -6,7 +6,6 @@ import com.simibubi.create.foundation.utility.Pair;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -57,13 +56,13 @@ public class EnchantingGuideItem extends Item implements MenuProvider {
                     blockEntity instanceof BlazeBurnerTileEntity)
                 {
                     if (!level.isClientSide()) {
-                        level.setBlockAndUpdate(blockPos, ModBlocks.BLAZE_ENCHANTING_ALTER.getDefaultState()
-                            .setValue(EnchantingAlterBlock.FACING, level.getBlockState(blockPos).getValue(BlazeBurnerBlock.FACING))
+                        level.setBlockAndUpdate(blockPos, ModBlocks.BLAZE_ENCHANTER.getDefaultState()
+                            .setValue(BlazeEnchanterBlock.FACING, level.getBlockState(blockPos).getValue(BlazeBurnerBlock.FACING))
                         );
-                        if (level.getBlockEntity(blockPos) instanceof EnchantingAlterBlockEntity enchantingAlterBlockEntity) {
+                        if (level.getBlockEntity(blockPos) instanceof BlazeEnchanterBlockEntity blazeEnchanterBlockEntity) {
                             var i = itemStack.copy();
                             i.setCount(1);
-                            enchantingAlterBlockEntity.setTargetItem(i);
+                            blazeEnchanterBlockEntity.setTargetItem(i);
                         }
                         if (!player.getAbilities().instabuild)
                             itemStack.shrink(1);

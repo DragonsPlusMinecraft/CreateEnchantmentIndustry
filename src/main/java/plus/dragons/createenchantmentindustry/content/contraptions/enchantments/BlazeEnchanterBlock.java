@@ -25,7 +25,6 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
@@ -36,18 +35,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 @SuppressWarnings("deprecation")
-public class EnchantingAlterBlock extends HorizontalDirectionalBlock implements IWrenchable, ITE<EnchantingAlterBlockEntity> {
-    public EnchantingAlterBlock(Properties pProperties) {
+public class BlazeEnchanterBlock extends HorizontalDirectionalBlock implements IWrenchable, ITE<BlazeEnchanterBlockEntity> {
+    public BlazeEnchanterBlock(Properties pProperties) {
         super(pProperties);
     }
 
     @Override
-    public Class<EnchantingAlterBlockEntity> getTileEntityClass() {
-        return EnchantingAlterBlockEntity.class;
+    public Class<BlazeEnchanterBlockEntity> getTileEntityClass() {
+        return BlazeEnchanterBlockEntity.class;
     }
 
     @Override
-    public BlockEntityType<? extends EnchantingAlterBlockEntity> getTileEntityType() {
+    public BlockEntityType<? extends BlazeEnchanterBlockEntity> getTileEntityType() {
         return ModBlockEntities.BLAZE_ENCHANTING_ALTER.get();
     }
     

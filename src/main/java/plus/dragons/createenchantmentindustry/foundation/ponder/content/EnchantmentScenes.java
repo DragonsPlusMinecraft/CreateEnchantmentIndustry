@@ -5,7 +5,6 @@ import com.simibubi.create.content.contraptions.fluids.actors.SpoutTileEntity;
 import com.simibubi.create.content.contraptions.fluids.tank.CreativeFluidTankTileEntity;
 import com.simibubi.create.content.contraptions.fluids.tank.FluidTankTileEntity;
 import com.simibubi.create.content.contraptions.processing.burner.BlazeBurnerBlock;
-import com.simibubi.create.foundation.fluid.SmartFluidTank;
 import com.simibubi.create.foundation.ponder.*;
 import com.simibubi.create.foundation.ponder.element.BeltItemElement;
 import com.simibubi.create.foundation.ponder.element.EntityElement;
@@ -25,7 +24,7 @@ import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
 import plus.dragons.createenchantmentindustry.content.contraptions.enchantments.CopierBlockEntity;
-import plus.dragons.createenchantmentindustry.content.contraptions.enchantments.EnchantingAlterBlockEntity;
+import plus.dragons.createenchantmentindustry.content.contraptions.enchantments.BlazeEnchanterBlockEntity;
 import plus.dragons.createenchantmentindustry.entry.ModBlocks;
 import plus.dragons.createenchantmentindustry.entry.ModFluids;
 import plus.dragons.createenchantmentindustry.entry.ModItems;
@@ -90,8 +89,8 @@ public class EnchantmentScenes {
                 .placeNearTarget()
                 .pointAt(util.vector.topOf(1, 1, 1));
         scene.idle(40);
-        scene.world.setBlock(util.grid.at(1,1,1), ModBlocks.BLAZE_ENCHANTING_ALTER.getDefaultState(),false);
-        scene.world.modifyTileEntity(util.grid.at(1,1,1), EnchantingAlterBlockEntity.class,be-> be.setTargetItem(enchantingGuide(Enchantments.MENDING,1)));
+        scene.world.setBlock(util.grid.at(1,1,1), ModBlocks.BLAZE_ENCHANTER.getDefaultState(),false);
+        scene.world.modifyTileEntity(util.grid.at(1,1,1), BlazeEnchanterBlockEntity.class, be-> be.setTargetItem(enchantingGuide(Enchantments.MENDING,1)));
         scene.overlay.showControls(new InputWindowElement(util.vector.centerOf(1, 1, 1), Pointing.DOWN).whileSneaking().rightClick()
                 .withItem(ModItems.ENCHANTING_GUIDE_FOR_BLAZE.asStack()), 40);
         scene.idle(50);
@@ -116,22 +115,22 @@ public class EnchantmentScenes {
         scene.world.setKineticSpeed(util.select.everywhere(), 80F);
         scene.world.setKineticSpeed(util.select.fromTo(0,2,7,5,2,7), -80F);
         scene.world.setKineticSpeed(util.select.fromTo(7,2,2,7,2,7), -80F);
-        scene.world.modifyTileEntity(util.grid.at(1,2,0), EnchantingAlterBlockEntity.class,be-> {
+        scene.world.modifyTileEntity(util.grid.at(1,2,0), BlazeEnchanterBlockEntity.class, be-> {
             be.setTargetItem(enchantingGuide(Enchantments.MENDING,1));
             be.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY).ifPresent(tank->
                     tank.fill(new FluidStack(ModFluids.EXPERIENCE.get().getSource(), 1000), IFluidHandler.FluidAction.EXECUTE));
         });
-        scene.world.modifyTileEntity(util.grid.at(0,2,6), EnchantingAlterBlockEntity.class,be-> {
+        scene.world.modifyTileEntity(util.grid.at(0,2,6), BlazeEnchanterBlockEntity.class, be-> {
             be.setTargetItem(enchantingGuide(Enchantments.UNBREAKING,3));
             be.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY).ifPresent(tank->
                     tank.fill(new FluidStack(ModFluids.EXPERIENCE.get().getSource(), 1000), IFluidHandler.FluidAction.EXECUTE));
         });
-        scene.world.modifyTileEntity(util.grid.at(6,2,7), EnchantingAlterBlockEntity.class,be-> {
+        scene.world.modifyTileEntity(util.grid.at(6,2,7), BlazeEnchanterBlockEntity.class, be-> {
             be.setTargetItem(enchantingGuide(Enchantments.THORNS,1));
             be.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY).ifPresent(tank->
                     tank.fill(new FluidStack(ModFluids.EXPERIENCE.get().getSource(), 1000), IFluidHandler.FluidAction.EXECUTE));
         });
-        scene.world.modifyTileEntity(util.grid.at(7,2,1), EnchantingAlterBlockEntity.class,be-> {
+        scene.world.modifyTileEntity(util.grid.at(7,2,1), BlazeEnchanterBlockEntity.class, be-> {
             be.setTargetItem(enchantingGuide(Enchantments.ALL_DAMAGE_PROTECTION,3));
             be.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY).ifPresent(tank->
                     tank.fill(new FluidStack(ModFluids.EXPERIENCE.get().getSource(), 1000), IFluidHandler.FluidAction.EXECUTE));

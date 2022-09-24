@@ -15,7 +15,7 @@ public class ModItems {
     private static final CreateRegistrate REGISTRATE = EnchantmentIndustry.registrate()
             .creativeModeTab(() -> Create.BASE_CREATIVE_TAB).startSection(AllSections.KINETICS);
 
-    public static final ItemEntry<EnchantingGuideItem> ENCHANTING_GUIDE_FOR_BLAZE = REGISTRATE.item("enchanting_guide_for_blaze", EnchantingGuideItem::new)
+    public static final ItemEntry<EnchantingGuideItem> ENCHANTING_GUIDE_FOR_BLAZE = REGISTRATE.item("enchanting_guide", EnchantingGuideItem::new)
             .properties(prop -> prop.stacksTo(1))
             .register();
 

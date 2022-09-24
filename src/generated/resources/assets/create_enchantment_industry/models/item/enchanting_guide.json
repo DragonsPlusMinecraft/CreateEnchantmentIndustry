@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "create_enchantment_industry:item/enchanting_guide"
+  }
+}

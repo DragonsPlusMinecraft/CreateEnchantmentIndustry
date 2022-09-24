@@ -29,18 +29,18 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.client.ForgeHooksClient;
 import plus.dragons.createenchantmentindustry.EnchantmentIndustry;
 
-public class EnchantingAlterRenderer extends SmartTileEntityRenderer<EnchantingAlterBlockEntity> {
-    public static final Material BOOK_MATERIAL = ForgeHooksClient.getBlockMaterial(EnchantmentIndustry.genRL("block/enchanting_alter_book"));
+public class BlazeEnchanterRenderer extends SmartTileEntityRenderer<BlazeEnchanterBlockEntity> {
+    public static final Material BOOK_MATERIAL = ForgeHooksClient.getBlockMaterial(EnchantmentIndustry.genRL("block/blaze_enchanter_book"));
     private static final float PI = 3.14159265358979323846f;
     private final BookModel bookModel;
     
-    public EnchantingAlterRenderer(BlockEntityRendererProvider.Context context) {
+    public BlazeEnchanterRenderer(BlockEntityRendererProvider.Context context) {
         super(context);
         this.bookModel = new BookModel(context.bakeLayer(ModelLayers.BOOK));
     }
     
     @Override
-    protected void renderSafe(EnchantingAlterBlockEntity be, float partialTicks, PoseStack ps, MultiBufferSource buffer, int light, int overlay) {
+    protected void renderSafe(BlazeEnchanterBlockEntity be, float partialTicks, PoseStack ps, MultiBufferSource buffer, int light, int overlay) {
         super.renderSafe(be, partialTicks, ps, buffer, light, overlay);
         float horizontalAngle = AngleHelper.rad(be.headAngle.getValue(partialTicks));
         float animation = be.headAnimation.getValue(partialTicks) * .175f;
@@ -54,7 +54,7 @@ public class EnchantingAlterRenderer extends SmartTileEntityRenderer<EnchantingA
         ps.popPose();
     }
     
-    protected void renderItem(EnchantingAlterBlockEntity be, float partialTicks,
+    protected void renderItem(BlazeEnchanterBlockEntity be, float partialTicks,
                               PoseStack ps, MultiBufferSource buffer,
                               int light, int overlay) {
         TransportedItemStack transported = be.heldItem;
@@ -69,7 +69,7 @@ public class EnchantingAlterRenderer extends SmartTileEntityRenderer<EnchantingA
         float beltOffset = horizontal ? Mth.lerp(partialTicks, transported.prevBeltPosition, transported.beltPosition) : .5f;
         float processingProgress = be.processingTicks <= 0
             ? 0
-            : (EnchantingAlterBlockEntity.ENCHANTING_TIME - be.processingTicks + partialTicks) / 40;
+            : (BlazeEnchanterBlockEntity.ENCHANTING_TIME - be.processingTicks + partialTicks) / 40;
         float movingProgress = Mth.sin((1 - 2 * Mth.abs(.5f - beltOffset)) * PI / 2) ;
         float verticalOffset = movingProgress * (5 + Mth.sin(processingProgress * 2 * PI)) / 8;
         ps.translate(.5f, 13 / 16f + verticalOffset, .5f);
@@ -97,7 +97,7 @@ public class EnchantingAlterRenderer extends SmartTileEntityRenderer<EnchantingA
         ps.popPose();
     }
     
-    protected void renderBlaze(EnchantingAlterBlockEntity be, BlockState blockState,
+    protected void renderBlaze(BlazeEnchanterBlockEntity be, BlockState blockState,
                                float horizontalAngle, float animation,
                                PoseStack ps, MultiBufferSource buffer) {
         
@@ -140,7 +140,7 @@ public class EnchantingAlterRenderer extends SmartTileEntityRenderer<EnchantingA
         ps.popPose();
     }
     
-    protected void renderBook(EnchantingAlterBlockEntity be,
+    protected void renderBook(BlazeEnchanterBlockEntity be,
                               float horizontalAngle, float partialTicks,
                               PoseStack ps, MultiBufferSource buffer,
                               int light, int overlay) {

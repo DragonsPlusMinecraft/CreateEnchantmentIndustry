@@ -10,7 +10,7 @@ import net.minecraft.client.renderer.RenderType;
 import plus.dragons.createenchantmentindustry.EnchantmentIndustry;
 import plus.dragons.createenchantmentindustry.content.contraptions.enchantments.CopierBlock;
 import plus.dragons.createenchantmentindustry.content.contraptions.enchantments.DisenchanterBlock;
-import plus.dragons.createenchantmentindustry.content.contraptions.enchantments.EnchantingAlterBlock;
+import plus.dragons.createenchantmentindustry.content.contraptions.enchantments.BlazeEnchanterBlock;
 
 
 public class ModBlocks {
@@ -28,7 +28,7 @@ public class ModBlocks {
             .register();
 
     public static final BlockEntry<CopierBlock> COPIER = REGISTRATE
-            .block("copier_machine", CopierBlock::new)
+            .block("copier", CopierBlock::new)
             .initialProperties(SharedProperties::copperMetal)
             .addLayer(() -> RenderType::cutoutMipped)
             .transform(ModTags.pickaxeOnly())
@@ -38,8 +38,8 @@ public class ModBlocks {
             .build()
             .register();
 
-    public static final BlockEntry<EnchantingAlterBlock> BLAZE_ENCHANTING_ALTER = REGISTRATE
-            .block("blaze_enchanting_alter", EnchantingAlterBlock::new)
+    public static final BlockEntry<BlazeEnchanterBlock> BLAZE_ENCHANTER = REGISTRATE
+            .block("blaze_enchanter", BlazeEnchanterBlock::new)
             .initialProperties(SharedProperties::softMetal)
             .addLayer(() -> RenderType::cutoutMipped)
             .transform(ModTags.pickaxeOnly())
