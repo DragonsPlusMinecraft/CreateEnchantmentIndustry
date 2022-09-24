@@ -9,6 +9,7 @@
     "BasinBlockMixin",
     "CreateAdvancementConstructor",
     "CreateAdvancementMixin",
+    "DeployerFakePlayerMixin",
     "FluidTankBlockMixin",
     "ItemDrainBlockMixin",
     "ItemDrainTileEntityAccessor",
