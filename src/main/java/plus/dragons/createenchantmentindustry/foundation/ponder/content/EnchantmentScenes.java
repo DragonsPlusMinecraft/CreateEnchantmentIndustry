@@ -49,16 +49,16 @@ public class EnchantmentScenes {
                 .text("") // We do not use PonderLocalization. For registerText only
                 .attachKeyFrame()
                 .placeNearTarget()
-                .pointAt(util.vector.topOf(1, 2, 1));
+                .pointAt(util.vector.topOf(1, 1, 1));
 
         // Must propagatePipeChange first or it won't work correctly
          scene.world.propagatePipeChange(util.grid.at(2,1, 5));
 
-        BlockPos beltStart = util.grid.at(6, 2, 1);
+        BlockPos beltStart = util.grid.at(6, 1, 1);
         List<ItemStack> items = Stream.of(Items.NETHERITE_SWORD,Items.IRON_PICKAXE, Items.DIAMOND_CHESTPLATE, Items.ENCHANTED_BOOK, Items.LEATHER_HELMET, Items.GOLDEN_BOOTS, Items.WOODEN_AXE).map(Item::getDefaultInstance).toList();
         for(var item:items){
             enchantRandomly(item);
-            ElementLink<EntityElement> itemEntity = scene.world.createItemEntity(util.vector.centerOf(6, 5, 1), util.vector.of(0, 0, 0), item);
+            ElementLink<EntityElement> itemEntity = scene.world.createItemEntity(util.vector.centerOf(6, 4, 1), util.vector.of(0, 0, 0), item);
             scene.idle(13);
             scene.world.modifyEntity(itemEntity, Entity::discard);
             scene.world.createItemOnBelt(beltStart, Direction.DOWN, item);
@@ -71,7 +71,7 @@ public class EnchantmentScenes {
                 .text("") // We do not use PonderLocalization. For registerText only
                 .attachKeyFrame()
                 .placeNearTarget()
-                .pointAt(util.vector.topOf(1, 2, 1));
+                .pointAt(util.vector.topOf(1, 1, 1));
 
         scene.idle(120);
     }

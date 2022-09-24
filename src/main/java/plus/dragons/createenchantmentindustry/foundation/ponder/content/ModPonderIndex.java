@@ -1,6 +1,7 @@
 package plus.dragons.createenchantmentindustry.foundation.ponder.content;
 
 import com.simibubi.create.AllBlocks;
+import com.simibubi.create.AllItems;
 import com.simibubi.create.foundation.ponder.PonderRegistrationHelper;
 import com.simibubi.create.foundation.ponder.PonderRegistry;
 import plus.dragons.createenchantmentindustry.EnchantmentIndustry;
@@ -13,16 +14,18 @@ public class ModPonderIndex {
 
     public static void register() {
         HELPER.forComponents(ModBlocks.DISENCHANTER)
-                .addStoryBoard("disenchant",EnchantmentScenes::disenchant, ModPonderTag.EXPERIENCE)
-                .addStoryBoard("experience_bottle",EnchantmentScenes::handleExperienceBottle, ModPonderTag.EXPERIENCE)
-                .addStoryBoard("leak",EnchantmentScenes::leak);
+                .addStoryBoard("disenchant",EnchantmentScenes::disenchant, ModPonderTag.EXPERIENCE);
 
         HELPER.forComponents(ModBlocks.COPIER)
                 .addStoryBoard("copy",EnchantmentScenes::copy, ModPonderTag.EXPERIENCE);
 
         HELPER.forComponents(ModItems.ENCHANTING_GUIDE_FOR_BLAZE)
-                .addStoryBoard("alter_transform",EnchantmentScenes::transformBlazeBurner, ModPonderTag.EXPERIENCE)
-                .addStoryBoard("alter_enchant",EnchantmentScenes::enchant, ModPonderTag.EXPERIENCE);
+                .addStoryBoard("enchanter_transform",EnchantmentScenes::transformBlazeBurner, ModPonderTag.EXPERIENCE)
+                .addStoryBoard("enchant",EnchantmentScenes::enchant, ModPonderTag.EXPERIENCE);
+
+        HELPER.forComponents(AllItems.EXP_NUGGET)
+                .addStoryBoard("experience_bottle",EnchantmentScenes::handleExperienceBottle, ModPonderTag.EXPERIENCE)
+                .addStoryBoard("leak",EnchantmentScenes::leak);
     }
 
     public static void registerTags() {
@@ -30,6 +33,7 @@ public class ModPonderIndex {
                 .add(ModBlocks.DISENCHANTER)
                 .add(ModBlocks.COPIER)
                 .add(ModItems.ENCHANTING_GUIDE_FOR_BLAZE)
+                .add(AllItems.EXP_NUGGET)
                 .add(AllBlocks.ITEM_DRAIN)
                 .add(AllBlocks.SPOUT);
     }

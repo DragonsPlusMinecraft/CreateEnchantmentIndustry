@@ -12,7 +12,7 @@ import java.util.Map;
 
 public class Disenchanting {
 
-    private static Map<Integer, Integer> EXPECTED_VALUE_CACHE = new HashMap<>();
+    private static final Map<Integer, Integer> EXPECTED_VALUE_CACHE = new HashMap<>();
 
     public static boolean valid(ItemStack itemStack) {
         return !EnchantmentHelper.getEnchantments(itemStack).isEmpty();
