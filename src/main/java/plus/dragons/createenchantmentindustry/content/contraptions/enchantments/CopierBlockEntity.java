@@ -47,7 +47,6 @@ public class CopierBlockEntity extends SmartTileEntity implements IHaveGoggleInf
     protected BeltProcessingBehaviour beltProcessing;
     public int processingTicks;
     SmartFluidTankBehaviour tank;
-    //TODO: Maybe use FilteringBehavior instead, which will provide better render support and consistency?
     public ItemStack copyTarget;
     public boolean tooExpensive;
     boolean sendParticles;
@@ -188,7 +187,6 @@ public class CopierBlockEntity extends SmartTileEntity implements IHaveGoggleInf
 
     @Override
     protected AABB createRenderBoundingBox() {
-        // TODO: Change after model is done.
         return super.createRenderBoundingBox().expandTowards(0, -2, 0);
     }
 

@@ -13,11 +13,10 @@
       "item": "minecraft:dried_kelp"
     },
     "C": {
-      "item": "create:iron_sheet"
+      "tag": "forge:plates/iron"
     }
-
   },
   "result": {
-    "item": "create_enchantment_industry:copier_machine"
+    "item": "create_enchantment_industry:copier"
   }
 }

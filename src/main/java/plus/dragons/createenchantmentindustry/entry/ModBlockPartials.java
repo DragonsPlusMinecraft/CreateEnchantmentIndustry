@@ -6,9 +6,9 @@ import plus.dragons.createenchantmentindustry.EnchantmentIndustry;
 public class ModBlockPartials {
     
     public static final PartialModel
-        COPIER_MACHINE_TOP = block("copier_machine/top"),
-        COPIER_MACHINE_MIDDLE = block("copier_machine/middle"),
-        COPIER_MACHINE_BOTTOM = block("copier_machine/bottom");
+        COPIER_TOP = block("copier/top"),
+        COPIER_MIDDLE = block("copier/middle"),
+        COPIER_BOTTOM = block("copier/bottom");
     
     private static PartialModel block(String path) {
         return new PartialModel(EnchantmentIndustry.genRL("block/" + path));

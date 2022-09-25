@@ -11,6 +11,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.ExperienceOrb;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -28,23 +29,25 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 import plus.dragons.createenchantmentindustry.entry.ModBlockEntities;
+import plus.dragons.createenchantmentindustry.entry.ModFluids;
+import plus.dragons.createenchantmentindustry.entry.ModItems;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @SuppressWarnings("deprecation")
-public class EnchantingAlterBlock extends HorizontalDirectionalBlock implements IWrenchable, ITE<EnchantingAlterBlockEntity> {
-    public EnchantingAlterBlock(Properties pProperties) {
+public class BlazeEnchanterBlock extends HorizontalDirectionalBlock implements IWrenchable, ITE<BlazeEnchanterBlockEntity> {
+    public BlazeEnchanterBlock(Properties pProperties) {
         super(pProperties);
     }
 
     @Override
-    public Class<EnchantingAlterBlockEntity> getTileEntityClass() {
-        return EnchantingAlterBlockEntity.class;
+    public Class<BlazeEnchanterBlockEntity> getTileEntityClass() {
+        return BlazeEnchanterBlockEntity.class;
     }
 
     @Override
-    public BlockEntityType<? extends EnchantingAlterBlockEntity> getTileEntityType() {
+    public BlockEntityType<? extends BlazeEnchanterBlockEntity> getTileEntityType() {
         return ModBlockEntities.BLAZE_ENCHANTING_ALTER.get();
     }
     
@@ -68,6 +71,11 @@ public class EnchantingAlterBlock extends HorizontalDirectionalBlock implements 
             if (!heldItemStack.isEmpty())
                 Containers.dropItemStack(worldIn, pos.getX(), pos.getY(), pos.getZ(), heldItemStack);
             Containers.dropItemStack(worldIn, pos.getX(), pos.getY(), pos.getZ(), te.targetItem);
+            var tank = te.internalTank.getPrimaryHandler();
+            if(tank.getFluid().getFluid().isSame(ModFluids.EXPERIENCE.get().getSource())){
+                var expBall = new ExperienceOrb(worldIn, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, tank.getFluid().getAmount());
+                worldIn.addFreshEntity(expBall);
+            }
         });
         worldIn.removeBlockEntity(pos);
     }
@@ -75,24 +83,39 @@ public class EnchantingAlterBlock extends HorizontalDirectionalBlock implements 
     @Override
     public InteractionResult use(BlockState state, Level worldIn, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hit) {
         ItemStack heldItem = player.getItemInHand(handIn);
-        if (!heldItem.isEmpty())
+        if (!heldItem.isEmpty()){
             return onTileEntityUse(worldIn, pos, te -> {
+                if(heldItem.is(ModItems.ENCHANTING_GUIDE_FOR_BLAZE.get()) && EnchantingGuideItem.getEnchantment(heldItem)!=null){
+                    if (!worldIn.isClientSide) {
+                        var target = te.targetItem.copy();
+                        te.targetItem = heldItem;
+                        if(!player.getAbilities().instabuild)
+                            player.setItemInHand(handIn, target);
+                        te.notifyUpdate();
+                    }
+                    return InteractionResult.SUCCESS;
+                }
                 ItemStack heldItemStack = te.getHeldItemStack();
                 if (heldItemStack.isEmpty()) {
                     if (!worldIn.isClientSide) {
                         te.heldItem = new TransportedItemStack(heldItem);
-                        player.setItemInHand(handIn, ItemStack.EMPTY);
+                        if(!player.getAbilities().instabuild)
+                            player.setItemInHand(handIn, ItemStack.EMPTY);
                         te.notifyUpdate();
-                        return InteractionResult.SUCCESS;
                     }
+                    return InteractionResult.SUCCESS;
                 }
                 return InteractionResult.FAIL;
             });
-        worldIn.setBlockAndUpdate(pos, AllBlocks.BLAZE_BURNER.getDefaultState()
-            .setValue(BlazeBurnerBlock.FACING, state.getValue(FACING))
-            .setValue(BlazeBurnerBlock.HEAT_LEVEL, BlazeBurnerBlock.HeatLevel.SMOULDERING)
-        );
-        return InteractionResult.SUCCESS;
+        }
+        else if (player.isShiftKeyDown() && heldItem.isEmpty()){
+            if(!player.level.isClientSide())
+                worldIn.setBlockAndUpdate(pos, AllBlocks.BLAZE_BURNER.getDefaultState()
+                    .setValue(BlazeBurnerBlock.FACING, state.getValue(FACING))
+                    .setValue(BlazeBurnerBlock.HEAT_LEVEL, BlazeBurnerBlock.HeatLevel.SMOULDERING));
+            return InteractionResult.SUCCESS;
+        }
+        return InteractionResult.PASS;
     }
 
 
@@ -100,6 +123,7 @@ public class EnchantingAlterBlock extends HorizontalDirectionalBlock implements 
     public void setPlacedBy(Level pLevel, BlockPos pPos, BlockState pState, @Nullable LivingEntity pPlacer, ItemStack pStack) {
         super.setPlacedBy(pLevel, pPos, pState, pPlacer, pStack);
         // TODO Advancement need more investigate
+        // It should be trigger at somewhere else
         // AdvancementBehaviour.setPlacedBy(pLevel, pPos, pPlacer);
     }
 
@@ -132,5 +156,10 @@ public class EnchantingAlterBlock extends HorizontalDirectionalBlock implements 
     @Override
     public boolean isPathfindable(BlockState state, BlockGetter reader, BlockPos pos, PathComputationType type) {
         return false;
+    }
+
+    @Override
+    public int getLightEmission(BlockState state, BlockGetter level, BlockPos pos) {
+        return 15;
     }
 }

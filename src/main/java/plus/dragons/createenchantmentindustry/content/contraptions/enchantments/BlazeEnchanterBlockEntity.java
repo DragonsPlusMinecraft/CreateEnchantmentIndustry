@@ -23,7 +23,6 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.item.ItemEntity;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -43,7 +42,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
-public class EnchantingAlterBlockEntity extends SmartTileEntity implements IHaveGoggleInformation {
+public class BlazeEnchanterBlockEntity extends SmartTileEntity implements IHaveGoggleInformation {
 
     public static final int ENCHANTING_TIME = 200;
     SmartFluidTankBehaviour internalTank;
@@ -60,7 +59,7 @@ public class EnchantingAlterBlockEntity extends SmartTileEntity implements IHave
     float flipT;
     float flipA;
 
-    public EnchantingAlterBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
+    public BlazeEnchanterBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
         itemHandlers = new IdentityHashMap<>();
         for (Direction d : Iterate.horizontalDirections) {
@@ -70,7 +69,7 @@ public class EnchantingAlterBlockEntity extends SmartTileEntity implements IHave
         headAnimation = LerpedFloat.linear();
         headAngle = LerpedFloat.angular();
         headAngle.startWithValue((AngleHelper
-            .horizontalAngle(state.getOptionalValue(EnchantingAlterBlock.FACING)
+            .horizontalAngle(state.getOptionalValue(BlazeEnchanterBlock.FACING)
             .orElse(Direction.SOUTH)) + 180) % 360
         );
     }
@@ -433,7 +432,7 @@ public class EnchantingAlterBlockEntity extends SmartTileEntity implements IHave
 
     @Override
     public boolean addToGoggleTooltip(List<Component> tooltip, boolean isPlayerSneaking) {
-        ModLang.translate("gui.goggles.enchanting_alter").forGoggles(tooltip);
+        ModLang.translate("gui.goggles.blaze_enchanter").forGoggles(tooltip);
         if (targetItem != null) {
             var e = EnchantingGuideItem.getEnchantment(targetItem);
             tooltip.add(new TextComponent("     ").append(e.getFirst().getFullname(e.getSecond())));

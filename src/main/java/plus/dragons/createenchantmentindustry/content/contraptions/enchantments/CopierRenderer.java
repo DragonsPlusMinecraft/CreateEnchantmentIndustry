@@ -19,7 +19,7 @@ public class CopierRenderer extends SmartTileEntityRenderer<CopierBlockEntity> {
         super(context);
     }
     
-    private static final PartialModel[] TUBE = { ModBlockPartials.COPIER_MACHINE_TOP, ModBlockPartials.COPIER_MACHINE_MIDDLE};
+    private static final PartialModel[] TUBE = { ModBlockPartials.COPIER_TOP, ModBlockPartials.COPIER_MIDDLE};
     
     @Override
     protected void renderSafe(CopierBlockEntity be, float partialTicks, PoseStack ms, MultiBufferSource buffer, int light, int overlay) {
@@ -71,7 +71,7 @@ public class CopierRenderer extends SmartTileEntityRenderer<CopierBlockEntity> {
         
         BlockState blockState = be.getBlockState();
         CachedBufferer
-            .partial(ModBlockPartials.COPIER_MACHINE_BOTTOM, blockState)
+            .partial(ModBlockPartials.COPIER_BOTTOM, blockState)
             .translate(0, squeeze / 2f, 0)
             .light(light)
             .renderInto(ms, buffer.getBuffer(RenderType.solid()));

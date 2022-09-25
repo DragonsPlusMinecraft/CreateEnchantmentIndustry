@@ -7,10 +7,10 @@ import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemHandlerHelper;
 
 public class EnchantingItemHandler implements IItemHandler {
-    private EnchantingAlterBlockEntity be;
+    private BlazeEnchanterBlockEntity be;
     private Direction side;
 
-    public EnchantingItemHandler(EnchantingAlterBlockEntity be, Direction side) {
+    public EnchantingItemHandler(BlazeEnchanterBlockEntity be, Direction side) {
         this.be = be;
         this.side = side;
     }

@@ -1,27 +1,31 @@
 {
-	"_": "Missing Localizations: 4",
+	"_": "Missing Localizations: 0",
 
 	"_": "->------------------------]  Game Elements  [------------------------<-",
 
-	"block.create_enchantment_industry.blaze_enchanting_alter": "烈焰人附魔祭坛",
-	"block.create_enchantment_industry.copier_machine": "复印机",
-	"block.create_enchantment_industry.disenchanter": "祛魔台",
+	"block.create_enchantment_industry.blaze_enchanter": "烈焰人附魔室",
+	"block.create_enchantment_industry.copier": "复印机",
+	"block.create_enchantment_industry.disenchanter": "祛魔池",
 	"block.create_enchantment_industry.ink": "墨水",
 
 	"fluid.create_enchantment_industry.experience": "液态经验",
 
-	"item.create_enchantment_industry.enchanting_guide_for_blaze": "烈焰人用附魔指南",
+	"item.create_enchantment_industry.enchanting_guide": "附魔指南",
 	"item.create_enchantment_industry.ink_bucket": "墨水桶",
+
+
+	"_": "->------------------------]  Advancements  [------------------------<-",
+
 
 
 	"_": "->------------------------]  UI & Messages  [------------------------<-",
 
 	"itemGroup.create_enchantment_industry.base": "机械动力：附魔工业",
 
-	"create_enchantment_industry.gui.enchanting_guide.no_enchantment": "UNLOCALIZED: No Available Enchantment",
+	"create_enchantment_industry.gui.enchanting_guide.no_enchantment": "无可用附魔",
 	"create_enchantment_industry.gui.goggles.copier_machine": "复印物品：",
 	"create_enchantment_industry.gui.goggles.copier_no_target": "无",
-	"create_enchantment_industry.gui.goggles.enchanting_alter": "当前附魔：",
+	"create_enchantment_industry.gui.goggles.blaze_enchanter": "当前附魔：",
 	"create_enchantment_industry.gui.goggles.copier_too_expensive": "过于昂贵！",
 
 	"create_enchantment_industry.generic.unit.page": "页",
@@ -30,28 +34,29 @@
 
 	"_": "->------------------------]  Item Descriptions  [------------------------<-",
 
-	"create_enchantment_industry.enchanting_guide_for_blaze.tooltip": "UNLOCALIZED: ENCHANTING GUIDE FOR BLAZE",
-	"create_enchantment_industry.tooltip.guide_header": "UNLOCALIZED: Current Enchantment:",
-	"create_enchantment_industry.tooltip.guide_not_configured": "UNLOCALIZED: Not Configured",
+	"create_enchantment_industry.enchanting_guide.tooltip": "附魔指南",
+
+	"create_enchantment_industry.tooltip.guide_header": "当前附魔：",
+	"create_enchantment_industry.tooltip.guide_not_configured": "未设定",
 
 
 	"_": "->------------------------]  Ponder Content  [------------------------<-",
 
-	"create_enchantment_industry.ponder.disenchant.header": "祛魔台使用",
+	"create_enchantment_industry.ponder.disenchant.header": "祛魔池使用",
 	"create_enchantment_industry.ponder.disenchant.text_1": "所有接收的物品都将被祛除附魔，被去除的附魔将被折算成液态经验存储。",
-	"create_enchantment_industry.ponder.disenchant.text_2": "站在祛魔台上方的玩家将被快速洗去经验等级，所洗去的经验值将被转换为液态经验存储",
+	"create_enchantment_industry.ponder.disenchant.text_2": "站在祛魔池上方的玩家将被快速洗去经验等级，所洗去的经验值将被转换为液态经验存储",
 
 	"create_enchantment_industry.ponder.experience_bottle.header": "处理附魔之瓶",
 	"create_enchantment_industry.ponder.experience_bottle.text_1": "附魔之瓶能在分液池处被排空。",
 	"create_enchantment_industry.ponder.experience_bottle.text_2": "附魔之瓶也能通过注液器制造。",
 
 	"create_enchantment_industry.ponder.transform.header": "使用附魔指南",
-	"create_enchantment_industry.ponder.transform.text_1": "手持配置好的附魔指南潜行右键烈焰人烈焰人燃烧室",
-	"create_enchantment_industry.ponder.transform.text_2": "如需取回附魔指南，请空手右键烈焰人附魔祭坛",
+	"create_enchantment_industry.ponder.transform.text_1": "手持配置好的附魔指南潜行右键烈焰人燃烧室",
+	"create_enchantment_industry.ponder.transform.text_2": "如需取回附魔指南，请空手右键烈焰人附魔室",
 
 	"create_enchantment_industry.ponder.copy.header": "复印机使用",
 
-	"create_enchantment_industry.ponder.enchant.header": "烈焰人附魔祭坛使用",
+	"create_enchantment_industry.ponder.enchant.header": "烈焰人附魔室使用",
 
 	"create_enchantment_industry.ponder.leak.header": "噢不！漏出来了！",
 	"create_enchantment_industry.ponder.leak.text_1": "I have a tank full of experience",

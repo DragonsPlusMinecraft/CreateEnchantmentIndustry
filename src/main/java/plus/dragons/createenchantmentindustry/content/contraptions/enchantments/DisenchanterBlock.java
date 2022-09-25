@@ -10,6 +10,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.ExperienceOrb;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -26,6 +27,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 import plus.dragons.createenchantmentindustry.entry.ModBlockEntities;
 import plus.dragons.createenchantmentindustry.entry.ModBlocks;
+import plus.dragons.createenchantmentindustry.entry.ModFluids;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,21 +52,31 @@ public class DisenchanterBlock extends Block implements IWrenchable, ITE<Disench
     @Override
     public InteractionResult use(BlockState state, Level worldIn, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hit) {
         ItemStack heldItem = player.getItemInHand(handIn);
-        if (!Disenchanting.valid(heldItem) && heldItem.isEmpty())
+        var type = Disenchanting.test(heldItem);
+        if (type == Disenchanting.Type.NONE || heldItem.isEmpty())
             return InteractionResult.PASS;
-
-        return onTileEntityUse(worldIn, pos, te -> {
-            ItemStack heldItemStack = te.getHeldItemStack();
-            if (heldItemStack.isEmpty()) {
-                if (!worldIn.isClientSide && Disenchanting.valid(heldItemStack)) {
-                    te.heldItem = new TransportedItemStack(heldItem);
-                    player.setItemInHand(handIn, ItemStack.EMPTY);
-                    te.notifyUpdate();
-                    return InteractionResult.SUCCESS;
+        else if(type == Disenchanting.Type.BUILTIN){
+            if(!worldIn.isClientSide){
+                if(worldIn.getBlockEntity(pos) instanceof DisenchanterBlockEntity disenchanterBlockEntity){
+                    var result = Disenchanting.handleBuiltIn(disenchanterBlockEntity ,heldItem,false);
+                    player.setItemInHand(handIn,result);
                 }
             }
-            return InteractionResult.FAIL;
-        });
+            return InteractionResult.SUCCESS;
+        } else {
+            return onTileEntityUse(worldIn, pos, te -> {
+                ItemStack heldItemStack = te.getHeldItemStack();
+                if (heldItemStack.isEmpty()) {
+                    if (!worldIn.isClientSide) {
+                        te.heldItem = new TransportedItemStack(heldItem);
+                        player.setItemInHand(handIn, ItemStack.EMPTY);
+                        te.notifyUpdate();
+                    }
+                    return InteractionResult.SUCCESS;
+                }
+                return InteractionResult.FAIL;
+            });
+        }
     }
 
     @Override
@@ -80,6 +92,11 @@ public class DisenchanterBlock extends Block implements IWrenchable, ITE<Disench
             ItemStack heldItemStack = te.getHeldItemStack();
             if (!heldItemStack.isEmpty())
                 Containers.dropItemStack(worldIn, pos.getX(), pos.getY(), pos.getZ(), heldItemStack);
+            var tank = te.getInternalTank().getPrimaryHandler();
+            if(tank.getFluid().getFluid().isSame(ModFluids.EXPERIENCE.get().getSource())){
+                var expBall = new ExperienceOrb(worldIn, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, tank.getFluid().getAmount());
+                worldIn.addFreshEntity(expBall);
+            }
         });
         worldIn.removeBlockEntity(pos);
     }

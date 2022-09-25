@@ -33,7 +33,12 @@ public class CopyingBook {
     public static ItemStack print(ItemStack target, int requiredAmount, ItemStack stack, FluidStack availableFluid) {
         stack.shrink(1);
         availableFluid.shrink(requiredAmount);
-        return target.copy();
+        if(target.is(Items.WRITTEN_BOOK)){
+            var ret = target.copy();
+            target.getOrCreateTag().putInt("generation",0);
+            return ret;
+        }
+        else return target.copy();
     }
 
     public static boolean isTooExpensive(ItemStack target, int limit) {

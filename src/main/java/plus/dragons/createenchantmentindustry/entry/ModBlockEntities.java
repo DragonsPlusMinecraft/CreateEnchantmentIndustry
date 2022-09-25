@@ -18,10 +18,10 @@ public class ModBlockEntities {
             .renderer(() -> CopierRenderer::new)
             .register();
 
-    public static final BlockEntityEntry<EnchantingAlterBlockEntity> BLAZE_ENCHANTING_ALTER = EnchantmentIndustry.registrate()
-            .tileEntity("blaze_enchanting_later", EnchantingAlterBlockEntity::new)
-            .validBlocks(ModBlocks.BLAZE_ENCHANTING_ALTER)
-            .renderer(() -> EnchantingAlterRenderer::new)
+    public static final BlockEntityEntry<BlazeEnchanterBlockEntity> BLAZE_ENCHANTING_ALTER = EnchantmentIndustry.registrate()
+            .tileEntity("blaze_enchanting_later", BlazeEnchanterBlockEntity::new)
+            .validBlocks(ModBlocks.BLAZE_ENCHANTER)
+            .renderer(() -> BlazeEnchanterRenderer::new)
             .register();
 
     public static void register() {

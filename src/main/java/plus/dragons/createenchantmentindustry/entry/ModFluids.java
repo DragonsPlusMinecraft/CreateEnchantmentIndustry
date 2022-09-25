@@ -4,9 +4,12 @@ import com.simibubi.create.content.contraptions.fluids.VirtualFluid;
 import com.tterrag.registrate.util.entry.FluidEntry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.material.Fluid;
-import net.minecraftforge.client.event.EntityViewRenderEvent;
+import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.fluids.FluidAttributes;
 import net.minecraftforge.fluids.ForgeFlowingFluid;
 import plus.dragons.createenchantmentindustry.EnchantmentIndustry;
@@ -42,14 +45,14 @@ public class ModFluids {
     public static void register() {
     }
     
-    public static void handleInkFogColors(EntityViewRenderEvent.FogColors event) {
-        if(event.getCamera().getEntity().isEyeInFluid(ModTags.ModFluidTags.INK.tag)) {
-            event.setRed(0);
-            event.setGreen(0);
-            event.setBlue(0);
+    public static void handleInkEffect(LivingEvent.LivingUpdateEvent event) {
+        LivingEntity entity = event.getEntityLiving();
+        if (entity.tickCount % 20 != 0) return;
+        if (entity.isEyeInFluid(ModTags.ModFluidTags.INK.tag())) {
+            entity.addEffect(new MobEffectInstance(MobEffects.BLINDNESS, 100, 0, true, false, false));
         }
     }
-
+    
     /**
      * Removing alpha from tint prevents optifine from forcibly applying biome
      * colors to modded fluids (Makes translucent fluids disappear)

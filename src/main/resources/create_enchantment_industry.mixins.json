@@ -6,8 +6,16 @@
   "refmap": "create_enchantment_industry.refmap.json",
   "mixins": [
     "AllFluidsMixin",
+    "BasinBlockMixin",
     "CreateAdvancementConstructor",
-    "CreateAdvancementMixin"
+    "CreateAdvancementMixin",
+    "CreateItemGroupBaseMixin",
+    "DeployerFakePlayerMixin",
+    "FluidTankBlockMixin",
+    "ItemDrainBlockMixin",
+    "ItemDrainTileEntityAccessor",
+    "SpoutBlockMixin",
+    "SpoutTileEntityAccessor"
   ],
   "client": [
     "CameraMixin"
