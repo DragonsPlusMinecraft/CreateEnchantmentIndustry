@@ -182,7 +182,7 @@ public class DisenchanterBlockEntity extends SmartTileEntity implements IHaveGog
         }
 
         if (heldItem.prevBeltPosition < .5f && heldItem.beltPosition >= .5f) {
-            if (!Disenchanting.valid(heldItem.stack))
+            if (Disenchanting.test(heldItem.stack) == Disenchanting.Type.NONE)
                 return;
             heldItem.beltPosition = .5f;
             if (onClient)
@@ -266,10 +266,19 @@ public class DisenchanterBlockEntity extends SmartTileEntity implements IHaveGog
             return true;
         if (processingTicks < 5)
             return true;
-        if (!Disenchanting.valid(heldItem.stack))
+        var type = Disenchanting.test(heldItem.stack);
+        if (type == Disenchanting.Type.NONE)
             return false;
 
-        Pair<FluidStack, ItemStack> stackPair = Disenchanting.disenchant(heldItem.stack, true);
+        Pair<FluidStack, ItemStack> stackPair;
+
+        try{
+            stackPair = Disenchanting.disenchant(type,heldItem.stack, true);
+        } catch (IllegalArgumentException e){
+            e.printStackTrace();
+            return false;
+        }
+
         FluidStack fluidFromItem = stackPair.getFirst();
 
         if (processingTicks > 5) {
@@ -284,7 +293,7 @@ public class DisenchanterBlockEntity extends SmartTileEntity implements IHaveGog
             return true;
         }
 
-        stackPair = Disenchanting.disenchant(heldItem.stack, true);
+        stackPair = Disenchanting.disenchant(type,heldItem.stack, true);
         // award(AllAdvancements.DRAIN);
 
         // Process finished
@@ -313,7 +322,11 @@ public class DisenchanterBlockEntity extends SmartTileEntity implements IHaveGog
         if (!getHeldItemStack().isEmpty())
             return inserted;
 
-        if (inserted.getCount() > 1 && Disenchanting.valid(inserted)) {
+        if(Disenchanting.isBuiltIn(transportedStack.stack)){
+            return Disenchanting.handleBuiltIn(this,transportedStack.stack,simulate);
+        }
+
+        if (inserted.getCount() > 1 && Disenchanting.test(inserted) != Disenchanting.Type.NONE) {
             returned = ItemHandlerHelper.copyStackWithSize(inserted, inserted.getCount() - 1);
             inserted = ItemHandlerHelper.copyStackWithSize(inserted, 1);
         }

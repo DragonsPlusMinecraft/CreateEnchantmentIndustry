@@ -31,8 +31,13 @@ public class DisenchanterItemHandler implements IItemHandler {
                 .isEmpty())
             return stack;
 
+        // Build-in handling logic
+        if(Disenchanting.isBuiltIn(stack)){
+            return Disenchanting.handleBuiltIn(be,stack,simulate);
+        }
+
         ItemStack returned = ItemStack.EMPTY;
-        if (stack.getCount() > 1 && Disenchanting.valid(stack)) {
+        if (stack.getCount() > 1 && Disenchanting.test(stack)!= Disenchanting.Type.NONE) {
             returned = ItemHandlerHelper.copyStackWithSize(stack, stack.getCount() - 1);
             stack = ItemHandlerHelper.copyStackWithSize(stack, 1);
         }
