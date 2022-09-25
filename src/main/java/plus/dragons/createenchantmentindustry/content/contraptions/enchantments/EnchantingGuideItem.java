@@ -47,7 +47,7 @@ public class EnchantingGuideItem extends Item implements MenuProvider {
             return InteractionResult.PASS;
         if (player.isShiftKeyDown()) {
             var itemStack = pContext.getItemInHand();
-            if (itemStack.is(ModItems.ENCHANTING_GUIDE_FOR_BLAZE.get())) {
+            if (itemStack.is(ModItems.ENCHANTING_GUIDE.get())) {
                 var blockPos = pContext.getClickedPos();
                 var blockState = level.getBlockState(blockPos);
                 var blockEntity = level.getBlockEntity(blockPos);

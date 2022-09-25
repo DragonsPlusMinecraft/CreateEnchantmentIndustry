@@ -6,6 +6,7 @@ import com.simibubi.create.foundation.utility.Components;
 import com.tterrag.registrate.util.entry.ItemProviderEntry;
 import com.tterrag.registrate.util.nullness.NonNullUnaryOperator;
 import net.minecraft.advancements.Advancement;
+import net.minecraft.advancements.AdvancementRewards;
 import net.minecraft.advancements.CriterionTriggerInstance;
 import net.minecraft.advancements.FrameType;
 import net.minecraft.resources.ResourceLocation;
@@ -17,6 +18,7 @@ import org.jetbrains.annotations.Nullable;
 import plus.dragons.createenchantmentindustry.EnchantmentIndustry;
 import plus.dragons.createenchantmentindustry.foundation.mixin.CreateAdvancementConstructor;
 
+import java.util.Map;
 import java.util.StringJoiner;
 import java.util.function.Consumer;
 
@@ -30,14 +32,17 @@ public class ModAdvancement {
     protected final String title;
     protected final String description;
     @Nullable
+    protected final ModAdvancement parent;
+    @Nullable
     protected final CreateAdvancement createAdvancement;
     protected Advancement advancement;
     
-    protected ModAdvancement(String id, Advancement.Builder builder, boolean builtin, String title, String description) {
+    protected ModAdvancement(String id, Advancement.Builder builder, @Nullable ModAdvancement parent, boolean builtin, String title, String description) {
         this.id = EnchantmentIndustry.genRL(id);
         this.builder = builder;
+        this.parent = parent;
         if(builtin) {
-            this.builtinTrigger = ModTriggers.addSimple(id + "_builtin");
+            this.builtinTrigger = ModTriggers.addSimple("builtin/" + id);
             this.builder.addCriterion("builtin", builtinTrigger.instance());
         } else this.builtinTrigger = null;
         this.createAdvancement = CreateAdvancementConstructor.createInstance(id, $ -> $);
@@ -96,6 +101,7 @@ public class ModAdvancement {
     }
     
     public void save(Consumer<Advancement> consumer) {
+        if (parent != null) builder.parent(parent.advancement);
         advancement = builder.save(consumer, id.toString());
     }
     
@@ -109,6 +115,8 @@ public class ModAdvancement {
         private final ResourceLocation background;
         private final String id;
         private final Advancement.Builder builder = Advancement.Builder.advancement();
+        @Nullable
+        private ModAdvancement parent;
         private boolean builtin = true;
         private String title = "Untitled";
         private String description = "No Description";
@@ -173,12 +181,12 @@ public class ModAdvancement {
         }
         
         protected Builder parent(ResourceLocation id) {
-            builder.parent(id);
+            builder.parent(new Advancement(id, null, null, AdvancementRewards.EMPTY, Map.of(), new String[0][0]));
             return this;
         }
         
         protected Builder parent(ModAdvancement advancement) {
-            builder.parent(advancement.advancement);
+            this.parent = advancement;
             return this;
         }
     
@@ -188,11 +196,12 @@ public class ModAdvancement {
         }
     
         protected ModAdvancement build() {
-            ModAdvancement advancement = new ModAdvancement(id, builder, builtin, title, description);
+            if (hide) description += "\u00A77\n(Hidden Advancement)";
+            ModAdvancement advancement = new ModAdvancement(id, builder, parent, builtin, title, description);
             builder.display(
                 icon,
                 Components.translatable(advancement.titleKey),
-                Components.translatable(advancement.descriptionKey),
+                Components.translatable(advancement.descriptionKey).withStyle(s -> s.withColor(0xDBA213)),
                 background,
                 frame,
                 toast,

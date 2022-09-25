@@ -44,7 +44,7 @@ public class Enchanting {
     }
 
     private static Pair<Enchantment, Integer> getTargetEnchantment(ItemStack itemStack) {
-        if (itemStack.is(ModItems.ENCHANTING_GUIDE_FOR_BLAZE.get()))
+        if (itemStack.is(ModItems.ENCHANTING_GUIDE.get()))
             return EnchantingGuideItem.getEnchantment(itemStack);
         else throw new RuntimeException("TargetItem is not an enchanting guide for blaze!");
     }

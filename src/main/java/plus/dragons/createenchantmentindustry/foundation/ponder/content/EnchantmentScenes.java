@@ -92,7 +92,7 @@ public class EnchantmentScenes {
         scene.world.setBlock(util.grid.at(1,1,1), ModBlocks.BLAZE_ENCHANTER.getDefaultState(),false);
         scene.world.modifyTileEntity(util.grid.at(1,1,1), BlazeEnchanterBlockEntity.class, be-> be.setTargetItem(enchantingGuide(Enchantments.MENDING,1)));
         scene.overlay.showControls(new InputWindowElement(util.vector.centerOf(1, 1, 1), Pointing.DOWN).whileSneaking().rightClick()
-                .withItem(ModItems.ENCHANTING_GUIDE_FOR_BLAZE.asStack()), 40);
+                .withItem(ModItems.ENCHANTING_GUIDE.asStack()), 40);
         scene.idle(50);
         scene.overlay.showText(40)
                 .text("") // We do not use PonderLocalization. For registerText only
@@ -339,7 +339,7 @@ public class EnchantmentScenes {
     }
 
     private static ItemStack enchantingGuide(Enchantment enchantment, int level){
-        var ret = ModItems.ENCHANTING_GUIDE_FOR_BLAZE.asStack();
+        var ret = ModItems.ENCHANTING_GUIDE.asStack();
         ret.getOrCreateTag().putInt("index",0);
         var book =  Items.ENCHANTED_BOOK.getDefaultInstance();
         EnchantmentHelper.setEnchantments(Map.of(enchantment,level),book);

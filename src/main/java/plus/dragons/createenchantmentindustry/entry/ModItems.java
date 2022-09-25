@@ -15,7 +15,7 @@ public class ModItems {
     private static final CreateRegistrate REGISTRATE = EnchantmentIndustry.registrate()
             .creativeModeTab(() -> Create.BASE_CREATIVE_TAB).startSection(AllSections.KINETICS);
 
-    public static final ItemEntry<EnchantingGuideItem> ENCHANTING_GUIDE_FOR_BLAZE = REGISTRATE.item("enchanting_guide", EnchantingGuideItem::new)
+    public static final ItemEntry<EnchantingGuideItem> ENCHANTING_GUIDE = REGISTRATE.item("enchanting_guide", EnchantingGuideItem::new)
             .properties(prop -> prop.stacksTo(1))
             .register();
 
@@ -23,7 +23,7 @@ public class ModItems {
         if (event.getItemGroup() == Create.BASE_CREATIVE_TAB) {
             event.addInsertion(AllBlocks.ITEM_DRAIN.get(), ModBlocks.DISENCHANTER.asStack());
             event.addInsertion(AllBlocks.SPOUT.get(), ModBlocks.COPIER.asStack());
-            event.addInsertion(AllBlocks.BLAZE_BURNER.get(), ENCHANTING_GUIDE_FOR_BLAZE.asStack());
+            event.addInsertion(AllBlocks.BLAZE_BURNER.get(), ENCHANTING_GUIDE.asStack());
             event.addInsertion(AllFluids.CHOCOLATE.get().getBucket(), ModFluids.INK.get().getBucket().getDefaultInstance());
         }
     }

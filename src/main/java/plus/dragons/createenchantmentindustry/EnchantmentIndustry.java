@@ -55,8 +55,8 @@ public class EnchantmentIndustry {
     public static void init(final FMLCommonSetupEvent event) {
         event.enqueueWork(() -> {
             ModPackets.registerPackets();
-            ModTriggers.register();
             ModAdvancements.register();
+            ModTriggers.register();
             OpenEndedPipeEffects.register();
         });
     }
@@ -64,6 +64,7 @@ public class EnchantmentIndustry {
     public static void datagen(final GatherDataEvent event) {
         DataGenerator datagen = event.getGenerator();
         datagen.addProvider(new LangMerger(datagen));
+        datagen.addProvider(new ModAdvancements(datagen));
     }
 
     public static ResourceLocation genRL(String name) {

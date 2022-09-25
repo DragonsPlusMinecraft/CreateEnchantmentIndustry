@@ -1,0 +1,30 @@
+{
+  "parent": "create_enchantment_industry:a_shower_experience",
+  "display": {
+    "icon": {
+      "item": "create:copper_valve_handle"
+    },
+    "title": {
+      "translate": "advancement.create_enchantment_industry.experienced_recycler"
+    },
+    "description": {
+      "color": "#DBA213",
+      "translate": "advancement.create_enchantment_industry.experienced_recycler.desc"
+    },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "builtin": {
+      "trigger": "create_enchantment_industry:builtin/experienced_recycler",
+      "conditions": {}
+    }
+  },
+  "requirements": [
+    [
+      "builtin"
+    ]
+  ]
+}

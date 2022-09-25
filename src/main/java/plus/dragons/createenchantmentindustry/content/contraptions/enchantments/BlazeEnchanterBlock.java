@@ -85,7 +85,7 @@ public class BlazeEnchanterBlock extends HorizontalDirectionalBlock implements I
         ItemStack heldItem = player.getItemInHand(handIn);
         if (!heldItem.isEmpty()){
             return onTileEntityUse(worldIn, pos, te -> {
-                if(heldItem.is(ModItems.ENCHANTING_GUIDE_FOR_BLAZE.get()) && EnchantingGuideItem.getEnchantment(heldItem)!=null){
+                if(heldItem.is(ModItems.ENCHANTING_GUIDE.get()) && EnchantingGuideItem.getEnchantment(heldItem)!=null){
                     if (!worldIn.isClientSide) {
                         var target = te.targetItem.copy();
                         te.targetItem = heldItem;

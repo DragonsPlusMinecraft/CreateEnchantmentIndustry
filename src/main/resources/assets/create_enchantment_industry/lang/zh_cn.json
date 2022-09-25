@@ -1,5 +1,5 @@
 {
-	"_": "Missing Localizations: 5",
+	"_": "Missing Localizations: 0",
 
 	"_": "->------------------------]  Game Elements  [------------------------<-",
 
@@ -9,7 +9,6 @@
 	"block.create_enchantment_industry.ink": "墨水",
 
 	"fluid.create_enchantment_industry.experience": "液态经验",
-
 	"fluid.create_enchantment_industry.hyper_experience": "超经验",
 
 	"item.create_enchantment_industry.enchanting_guide": "附魔指南",
@@ -18,6 +17,34 @@
 
 	"_": "->------------------------]  Advancements  [------------------------<-",
 
+	"advancement.create_enchantment_industry.experienced_engineer": "UNLOCALIZED: Experienced Engineer",
+	"advancement.create_enchantment_industry.experienced_engineer.desc": "UNLOCALIZED: Get some Nuggets of Experience from crushing ores or killing mobs using deployer",
+	"advancement.create_enchantment_industry.black_as_ink": "UNLOCALIZED: Black as Ink!",
+	"advancement.create_enchantment_industry.black_as_ink.desc": "UNLOCALIZED: Get a bucket of Ink for your copying business",
+	"advancement.create_enchantment_industry.copiable_masterpiece": "UNLOCALIZED: copiable_masterpiece",
+	"advancement.create_enchantment_industry.copiable_masterpiece.desc": "UNLOCALIZED: Copy a Written Book using Copier",
+	"advancement.create_enchantment_industry.copiable_mystery": "UNLOCALIZED: Copiable Mystery",
+	"advancement.create_enchantment_industry.copiable_mystery.desc": "UNLOCALIZED: Copy a Enchanted Book using Copier",
+	"advancement.create_enchantment_industry.relic_restoration": "UNLOCALIZED: Relic Restoration",
+	"advancement.create_enchantment_industry.relic_restoration.desc": "UNLOCALIZED: Make brand new copy from a tattered book",
+	"advancement.create_enchantment_industry.great_publisher": "UNLOCALIZED: Great Publisher",
+	"advancement.create_enchantment_industry.great_publisher.desc": "UNLOCALIZED: Copy 1000 books using Copier",
+	"advancement.create_enchantment_industry.experimental": "UNLOCALIZED: Experimental",
+	"advancement.create_enchantment_industry.experimental.desc": "UNLOCALIZED: Get some Liquid Experience for your enchanting experiment!",
+	"advancement.create_enchantment_industry.gone_with_the_foil": "UNLOCALIZED: Gone with the Foil",
+	"advancement.create_enchantment_industry.gone_with_the_foil.desc": "UNLOCALIZED: Watch an enchanted item be disenchanted by a Disenchanter",
+	"advancement.create_enchantment_industry.spirit_taking": "UNLOCALIZED: Spirit Taking",
+	"advancement.create_enchantment_industry.spirit_taking.desc": "UNLOCALIZED: Get your experience absorbed by a Disenchanter",
+	"advancement.create_enchantment_industry.a_shower_experience": "UNLOCALIZED: A Shower \"Experience\"",
+	"advancement.create_enchantment_industry.a_shower_experience.desc": "UNLOCALIZED: Break a Fluid Pipe and bathe in the leaked experience",
+	"advancement.create_enchantment_industry.experienced_recycler": "UNLOCALIZED: Experienced Recycler",
+	"advancement.create_enchantment_industry.experienced_recycler.desc": "UNLOCALIZED: Recycle 1,000,000 mB of experience from Disenchanter",
+	"advancement.create_enchantment_industry.blazes_new_job": "UNLOCALIZED: Blaze's New Job",
+	"advancement.create_enchantment_industry.blazes_new_job.desc": "UNLOCALIZED: Give your Blaze Burner a Enchanting Guide and turn it into a Blaze Enchanter",
+	"advancement.create_enchantment_industry.first_order": "UNLOCALIZED: First Order",
+	"advancement.create_enchantment_industry.first_order.desc": "UNLOCALIZED: Add a new enchantment to an unenchanted item using Blaze Enchanter",
+	"advancement.create_enchantment_industry.additional_order": "UNLOCALIZED: Additional Order",
+	"advancement.create_enchantment_industry.additional_order.desc": "UNLOCALIZED: Add a new enchantment to an enchanted item using Blaze Enchanter",
 
 
 	"_": "->------------------------]  UI & Messages  [------------------------<-",

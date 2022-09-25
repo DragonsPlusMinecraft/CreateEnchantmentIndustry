@@ -8,6 +8,7 @@
 	"block.create_enchantment_industry.ink": "Ink",
 
 	"fluid.create_enchantment_industry.experience": "Liquid Experience",
+	"fluid.create_enchantment_industry.hyper_experience": "Hyper Experience",
 
 	"item.create_enchantment_industry.enchanting_guide": "Enchanting Guide",
 	"item.create_enchantment_industry.ink_bucket": "Ink Bucket",
@@ -15,6 +16,34 @@
 
 	"_": "->------------------------]  Advancements  [------------------------<-",
 
+	"advancement.create_enchantment_industry.experienced_engineer": "Experienced Engineer",
+	"advancement.create_enchantment_industry.experienced_engineer.desc": "Get some Nuggets of Experience from crushing ores or killing mobs using deployer",
+	"advancement.create_enchantment_industry.black_as_ink": "Black as Ink!",
+	"advancement.create_enchantment_industry.black_as_ink.desc": "Get a bucket of Ink for your copying business",
+	"advancement.create_enchantment_industry.copiable_masterpiece": "Copiable Masterpiece",
+	"advancement.create_enchantment_industry.copiable_masterpiece.desc": "Copy a Written Book using Copier",
+	"advancement.create_enchantment_industry.copiable_mystery": "Copiable Mystery",
+	"advancement.create_enchantment_industry.copiable_mystery.desc": "Copy a Enchanted Book using Copier",
+	"advancement.create_enchantment_industry.relic_restoration": "Relic Restoration",
+	"advancement.create_enchantment_industry.relic_restoration.desc": "Make brand new copy from a tattered book",
+	"advancement.create_enchantment_industry.great_publisher": "Great Publisher",
+	"advancement.create_enchantment_industry.great_publisher.desc": "Copy 1000 books using Copier",
+	"advancement.create_enchantment_industry.experimental": "Experimental",
+	"advancement.create_enchantment_industry.experimental.desc": "Get some Liquid Experience for your enchanting experiment!",
+	"advancement.create_enchantment_industry.gone_with_the_foil": "Gone with the Foil",
+	"advancement.create_enchantment_industry.gone_with_the_foil.desc": "Watch an enchanted item be disenchanted by a Disenchanter",
+	"advancement.create_enchantment_industry.spirit_taking": "Spirit Taking",
+	"advancement.create_enchantment_industry.spirit_taking.desc": "Get your experience absorbed by a Disenchanter",
+	"advancement.create_enchantment_industry.a_shower_experience": "A Shower \"Experience\"",
+	"advancement.create_enchantment_industry.a_shower_experience.desc": "Break a Fluid Pipe and bathe in the leaked experience",
+	"advancement.create_enchantment_industry.experienced_recycler": "Experienced Recycler",
+	"advancement.create_enchantment_industry.experienced_recycler.desc": "Recycle 1,000,000 mB of experience from Disenchanter",
+	"advancement.create_enchantment_industry.blazes_new_job": "Blaze's New Job",
+	"advancement.create_enchantment_industry.blazes_new_job.desc": "Give your Blaze Burner a Enchanting Guide and turn it into a Blaze Enchanter",
+	"advancement.create_enchantment_industry.first_order": "First Order",
+	"advancement.create_enchantment_industry.first_order.desc": "Add a new enchantment to an unenchanted item using Blaze Enchanter",
+	"advancement.create_enchantment_industry.additional_order": "Additional Order",
+	"advancement.create_enchantment_industry.additional_order.desc": "Add a new enchantment to an enchanted item using Blaze Enchanter",
 
 
 	"_": "->------------------------]  UI & Messages  [------------------------<-",

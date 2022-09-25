@@ -32,8 +32,6 @@ public class ModFluids {
             EnchantmentIndustry.registrate().virtualFluid("hyper_experience", HYPER_EXPERIENCE_STILL_RL, HYPER_EXPERIENCE_FLOW_RL)
                     .lang("Hyper Experience")
                     .attributes(builder -> builder.luminosity(15))
-                    .bucket()
-                    .build()
                     .register();
     
     public static final ResourceLocation INK_STILL_RL = EnchantmentIndustry.genRL("fluid/ink_still");
