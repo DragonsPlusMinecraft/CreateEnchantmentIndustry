@@ -32,7 +32,8 @@ public class EnchantingItemHandler implements IItemHandler {
             return stack;
 
         ItemStack returned = ItemStack.EMPTY;
-        if (stack.getCount() > 1 && Enchanting.valid(stack, be.targetItem)) {
+
+        if (stack.getCount() > 1 && Enchanting.valid(stack, be.targetItem,be.hyper())) {
             returned = ItemHandlerHelper.copyStackWithSize(stack, stack.getCount() - 1);
             stack = ItemHandlerHelper.copyStackWithSize(stack, 1);
         }

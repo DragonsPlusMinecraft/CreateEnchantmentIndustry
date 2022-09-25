@@ -94,28 +94,44 @@ public class BlazeEnchanterBlock extends HorizontalDirectionalBlock implements I
                         te.notifyUpdate();
                     }
                     return InteractionResult.SUCCESS;
-                }
-                ItemStack heldItemStack = te.getHeldItemStack();
-                if (heldItemStack.isEmpty()) {
-                    if (!worldIn.isClientSide) {
-                        te.heldItem = new TransportedItemStack(heldItem);
-                        if(!player.getAbilities().instabuild)
-                            player.setItemInHand(handIn, ItemStack.EMPTY);
-                        te.notifyUpdate();
+                } else if(Enchanting.valid(heldItem,te.targetItem,te.hyper())){
+                    ItemStack heldItemStack = te.getHeldItemStack();
+                    if (heldItemStack.isEmpty()) {
+                        if (!worldIn.isClientSide) {
+                            te.heldItem = new TransportedItemStack(heldItem);
+                            if(!player.getAbilities().instabuild)
+                                player.setItemInHand(handIn, ItemStack.EMPTY);
+                            te.notifyUpdate();
+                        }
+                        return InteractionResult.SUCCESS;
                     }
-                    return InteractionResult.SUCCESS;
+                    return InteractionResult.FAIL;
                 }
-                return InteractionResult.FAIL;
+                else return InteractionResult.PASS;
             });
         }
-        else if (player.isShiftKeyDown() && heldItem.isEmpty()){
-            if(!player.level.isClientSide())
-                worldIn.setBlockAndUpdate(pos, AllBlocks.BLAZE_BURNER.getDefaultState()
-                    .setValue(BlazeBurnerBlock.FACING, state.getValue(FACING))
-                    .setValue(BlazeBurnerBlock.HEAT_LEVEL, BlazeBurnerBlock.HeatLevel.SMOULDERING));
-            return InteractionResult.SUCCESS;
+        else {
+            if(player.isShiftKeyDown()){
+                if(!player.level.isClientSide())
+                    worldIn.setBlockAndUpdate(pos, AllBlocks.BLAZE_BURNER.getDefaultState()
+                            .setValue(BlazeBurnerBlock.FACING, state.getValue(FACING))
+                            .setValue(BlazeBurnerBlock.HEAT_LEVEL, BlazeBurnerBlock.HeatLevel.SMOULDERING));
+                return InteractionResult.SUCCESS;
+            } else {
+                return onTileEntityUse(worldIn, pos, te -> {
+                    ItemStack heldItemStack = te.getHeldItemStack();
+                    if (!heldItemStack.isEmpty()) {
+                        if (!worldIn.isClientSide) {
+                            te.heldItem = null;
+                            player.setItemInHand(handIn, heldItemStack);
+                            te.notifyUpdate();
+                        }
+                        return InteractionResult.SUCCESS;
+                    }
+                    return InteractionResult.PASS;
+                });
+            }
         }
-        return InteractionResult.PASS;
     }
 
 
