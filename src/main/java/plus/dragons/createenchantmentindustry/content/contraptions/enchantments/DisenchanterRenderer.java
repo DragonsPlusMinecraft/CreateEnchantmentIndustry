@@ -133,10 +133,11 @@ public class DisenchanterRenderer extends SmartTileEntityRenderer<DisenchanterBl
     
         Direction insertedFrom = transported.insertedFrom;
         boolean horizontal = insertedFrom.getAxis().isHorizontal();
+
         var type = Disenchanting.test(transported.stack);
-        
-        FluidStack resultFluidStack = Disenchanting.disenchant(type,transported.stack, true).getFirst();
-        if (resultFluidStack.isEmpty()) return;
+        if(type == Disenchanting.Type.NONE) return;
+
+        FluidStack resultFluidStack = Disenchanting.disenchant(type,transported.stack).getFirst();
         
         int processingTicks = be.processingTicks;
         float processingProgress = processingTicks == 0 ? 0

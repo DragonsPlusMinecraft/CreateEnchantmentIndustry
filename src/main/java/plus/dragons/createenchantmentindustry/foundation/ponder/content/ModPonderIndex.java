@@ -24,6 +24,8 @@ public class ModPonderIndex {
                 .addStoryBoard("enchant",EnchantmentScenes::enchant, ModPonderTag.EXPERIENCE);
 
         HELPER.forComponents(AllItems.EXP_NUGGET)
+                .addStoryBoard("experience_nugget_drop",EnchantmentScenes::dropExperienceNugget, ModPonderTag.EXPERIENCE)
+                .addStoryBoard("collect_experience_nugget",EnchantmentScenes::handleExperienceNugget, ModPonderTag.EXPERIENCE)
                 .addStoryBoard("experience_bottle",EnchantmentScenes::handleExperienceBottle, ModPonderTag.EXPERIENCE)
                 .addStoryBoard("leak",EnchantmentScenes::leak);
     }

@@ -273,7 +273,7 @@ public class DisenchanterBlockEntity extends SmartTileEntity implements IHaveGog
         Pair<FluidStack, ItemStack> stackPair;
 
         try{
-            stackPair = Disenchanting.disenchant(type,heldItem.stack, true);
+            stackPair = Disenchanting.disenchant(type,heldItem.stack);
         } catch (IllegalArgumentException e){
             e.printStackTrace();
             return false;
@@ -293,7 +293,7 @@ public class DisenchanterBlockEntity extends SmartTileEntity implements IHaveGog
             return true;
         }
 
-        stackPair = Disenchanting.disenchant(type,heldItem.stack, true);
+        stackPair = Disenchanting.disenchant(type,heldItem.stack);
         // award(AllAdvancements.DRAIN);
 
         // Process finished

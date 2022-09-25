@@ -158,6 +158,14 @@ public class EnchantmentScenes {
         scene.idle(400);
     }
 
+    public static void handleExperienceNugget(SceneBuilder scene, SceneBuildingUtil util){
+
+    }
+
+    public static void dropExperienceNugget(SceneBuilder scene, SceneBuildingUtil util){
+
+    }
+
     public static void handleExperienceBottle(SceneBuilder scene, SceneBuildingUtil util){
         scene.title("experience_bottle", ""); // We do not use PonderLocalization. For title only
         scene.configureBasePlate(0, 0, 6);

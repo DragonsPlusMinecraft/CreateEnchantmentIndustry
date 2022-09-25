@@ -26,37 +26,42 @@ public class Disenchanting {
 
     public static Type test(ItemStack itemStack) {
         if(isBuiltIn(itemStack)) return Type.BUILTIN;
-        if(!EnchantmentHelper.getEnchantments(itemStack).entrySet().stream().filter(entry->!entry.getKey().isCurse()).collect(Collectors.toList()).isEmpty()) return Type.DISENCHANT;
+        if(!EnchantmentHelper.getEnchantments(itemStack).keySet().stream().filter(enchantment->!enchantment.isCurse()).collect(Collectors.toList()).isEmpty()) return Type.DISENCHANT;
         // TODO Recipe
         return Type.NONE;
     }
 
-    public static Pair<FluidStack, ItemStack> disenchant(Type type, ItemStack stack, boolean simulate) {
+    // Produce result only. Do not modify stack.
+    // stack always has count of 1.
+    public static Pair<FluidStack, ItemStack> disenchant(Type type, ItemStack stack) {
         if(type==Type.DISENCHANT) {
             FluidStack resultingFluid = new FluidStack(ModFluids.EXPERIENCE.get().getSource(), getExperienceFromItem(stack));
-            ItemStack resultingItem = disenchantItem(stack, simulate);
+            ItemStack resultingItem = disenchantItem(stack);
             return Pair.of(resultingFluid, resultingItem);
         }
         else if(type==Type.RECIPE) {
-            // TODO
+            // TODO For Recipe
             return Pair.of(null,null);
         }
         else if(type==Type.BUILTIN) throw new IllegalArgumentException("BUilT-IN DISENCHANTING Type requires special handling and it should not be passed in this method.");
         throw new IllegalArgumentException("NONE DISENCHANTING Type cannot be handled.");
     }
 
-    public static ItemStack disenchantItem(ItemStack itemStack, boolean simulate) {
+    public static ItemStack disenchantItem(ItemStack itemStack) {
+        var enchants = new HashMap<>(EnchantmentHelper.getEnchantments(itemStack));
+        enchants.entrySet().removeIf(enchant->!enchant.getKey().isCurse());
+        var noCurse = enchants.isEmpty();
         if (itemStack.is(Items.ENCHANTED_BOOK)) {
-            if (simulate) return Items.BOOK.getDefaultInstance();
-            else {
-                itemStack = Items.BOOK.getDefaultInstance();
-                return itemStack;
+            if(noCurse){
+                return Items.BOOK.getDefaultInstance();
+            } else {
+                var ret = Items.ENCHANTED_BOOK.getDefaultInstance();
+                EnchantmentHelper.setEnchantments(enchants,ret);
+                return ret;
             }
         } else {
-            ItemStack ret;
-            if (simulate) ret = itemStack.copy();
-            else ret = itemStack;
-            EnchantmentHelper.setEnchantments(new HashMap<>(), ret);
+            ItemStack ret = itemStack.copy();
+            EnchantmentHelper.setEnchantments(enchants, ret);
             return ret;
         }
     }
