@@ -176,6 +176,11 @@ public class BlazeEnchanterBlock extends HorizontalDirectionalBlock implements I
 
     @Override
     public int getLightEmission(BlockState state, BlockGetter level, BlockPos pos) {
-        return 15;
+        var te = level.getBlockEntity(pos);
+        if(te instanceof BlazeEnchanterBlockEntity blazeEnchanterBlockEntity){
+            if(blazeEnchanterBlockEntity.hyper()) return 15;
+            else if(blazeEnchanterBlockEntity.internalTank.isEmpty()) return 7;
+            else return 11;
+        } else return 0;
     }
 }

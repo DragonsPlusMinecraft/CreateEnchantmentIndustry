@@ -1,5 +1,6 @@
 package plus.dragons.createenchantmentindustry.content.contraptions.enchantments;
 
+import com.simibubi.create.AllBlocks;
 import com.simibubi.create.AllShapes;
 import com.simibubi.create.content.contraptions.wrench.IWrenchable;
 import com.simibubi.create.foundation.block.ITE;
@@ -15,6 +16,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -54,6 +56,12 @@ public class CopierBlock extends Block implements IWrenchable, ITE<CopierBlockEn
         var ret = new ArrayList<ItemStack>();
         ret.add(ModBlocks.COPIER.asStack());
         return ret;
+    }
+
+    @Override
+    public boolean canSurvive(BlockState state, LevelReader worldIn, BlockPos pos) {
+        // TODO check it tomorrow I gotta sleep.
+        return !AllBlocks.BASIN.has(worldIn.getBlockState(pos.below()));
     }
 
 
