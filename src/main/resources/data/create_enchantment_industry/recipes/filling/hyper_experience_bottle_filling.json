@@ -1,0 +1,17 @@
+{
+  "type": "create:filling",
+  "ingredients": [
+    {
+      "item": "minecraft:glass_bottle"
+    },
+    {
+      "fluid": "create_enchantment_industry:hyper_experience",
+      "amount": 10
+    }
+  ],
+  "results": [
+    {
+      "item": "create_enchantment_industry:bottled_hyper_experience"
+    }
+  ]
+}

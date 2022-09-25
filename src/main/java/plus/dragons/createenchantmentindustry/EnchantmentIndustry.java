@@ -42,6 +42,7 @@ public class EnchantmentIndustry {
         ModItems.register();
         ModBlocks.register();
         ModBlockEntities.register();
+        ModEntityTypes.register();
         ModFluids.register();
         ModContainerTypes.register();
         ModTags.register();
