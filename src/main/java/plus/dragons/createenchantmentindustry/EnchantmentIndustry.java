@@ -31,6 +31,7 @@ public class EnchantmentIndustry {
         IEventBus forgeEventBus = MinecraftForge.EVENT_BUS;
 
         initAllEntries();
+        ModRecipeTypes.register(modEventBus);
 
         addForgeEventListeners(forgeEventBus);
         modEventBus.addListener(EnchantmentIndustry::init);
@@ -46,6 +47,7 @@ public class EnchantmentIndustry {
         ModFluids.register();
         ModContainerTypes.register();
         ModTags.register();
+
     }
     
     private void addForgeEventListeners(IEventBus forgeEventBus) {

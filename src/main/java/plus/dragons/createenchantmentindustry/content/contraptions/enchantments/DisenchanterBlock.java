@@ -52,7 +52,7 @@ public class DisenchanterBlock extends Block implements IWrenchable, ITE<Disench
     @Override
     public InteractionResult use(BlockState state, Level worldIn, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hit) {
         ItemStack heldItem = player.getItemInHand(handIn);
-        var type = Disenchanting.test(heldItem);
+        var type = Disenchanting.test(heldItem,worldIn);
         if (type == Disenchanting.Type.NONE || heldItem.isEmpty())
             return InteractionResult.PASS;
         else if(type == Disenchanting.Type.BUILTIN){

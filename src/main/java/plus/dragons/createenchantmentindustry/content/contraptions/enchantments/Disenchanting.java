@@ -5,9 +5,13 @@ import com.simibubi.create.foundation.utility.Pair;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.minecraftforge.items.ItemStackHandler;
+import net.minecraftforge.items.wrapper.RecipeWrapper;
 import plus.dragons.createenchantmentindustry.entry.ModFluids;
+import plus.dragons.createenchantmentindustry.entry.ModRecipeTypes;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -22,26 +26,32 @@ public class Disenchanting {
         NONE
     }
 
+    static RecipeWrapper wrapper = new RecipeWrapper(new ItemStackHandler(1));
+
     private static final Map<Integer, Integer> EXPECTED_VALUE_CACHE = new HashMap<>();
 
-    public static Type test(ItemStack itemStack) {
+    public static Type test(ItemStack itemStack, Level level) {
         if(isBuiltIn(itemStack)) return Type.BUILTIN;
         if(!EnchantmentHelper.getEnchantments(itemStack).keySet().stream().filter(enchantment->!enchantment.isCurse()).collect(Collectors.toList()).isEmpty()) return Type.DISENCHANT;
-        // TODO Recipe
+        wrapper.setItem(0, itemStack);
+        if(ModRecipeTypes.DISENCHANT.find(wrapper, level).isPresent()) return Type.RECIPE;
         return Type.NONE;
     }
 
     // Produce result only. Do not modify stack.
     // stack always has count of 1.
-    public static Pair<FluidStack, ItemStack> disenchant(Type type, ItemStack stack) {
+    public static Pair<FluidStack, ItemStack> disenchant(Type type, ItemStack stack, Level level) {
         if(type==Type.DISENCHANT) {
             FluidStack resultingFluid = new FluidStack(ModFluids.EXPERIENCE.get().getSource(), getExperienceFromItem(stack));
             ItemStack resultingItem = disenchantItem(stack);
             return Pair.of(resultingFluid, resultingItem);
         }
         else if(type==Type.RECIPE) {
-            // TODO For Recipe
-            return Pair.of(null,null);
+            wrapper.setItem(0, stack);
+            var r = (DisenchantRecipe) ModRecipeTypes.DISENCHANT.find(wrapper, level).get();
+            var i = r.getResultItem().copy();
+            var f = r.getResultingFluid().copy();
+            return Pair.of(f,i);
         }
         else if(type==Type.BUILTIN) throw new IllegalArgumentException("BUilT-IN DISENCHANTING Type requires special handling and it should not be passed in this method.");
         throw new IllegalArgumentException("NONE DISENCHANTING Type cannot be handled.");
