@@ -34,7 +34,7 @@ public class Disenchanting {
         if(isBuiltIn(itemStack)) return Type.BUILTIN;
         if(!EnchantmentHelper.getEnchantments(itemStack).keySet().stream().filter(enchantment->!enchantment.isCurse()).collect(Collectors.toList()).isEmpty()) return Type.DISENCHANT;
         wrapper.setItem(0, itemStack);
-        if(ModRecipeTypes.DISENCHANT.find(wrapper, level).isPresent()) return Type.RECIPE;
+        if(ModRecipeTypes.DISENCHANTING.find(wrapper, level).isPresent()) return Type.RECIPE;
         return Type.NONE;
     }
 
@@ -48,7 +48,7 @@ public class Disenchanting {
         }
         else if(type==Type.RECIPE) {
             wrapper.setItem(0, stack);
-            var r = (DisenchantRecipe) ModRecipeTypes.DISENCHANT.find(wrapper, level).get();
+            var r = (DisenchantRecipe) ModRecipeTypes.DISENCHANTING.find(wrapper, level).get();
             var i = r.getResultItem().copy();
             var f = r.getResultingFluid().copy();
             return Pair.of(f,i);

@@ -1,6 +1,5 @@
 package plus.dragons.createenchantmentindustry.entry;
 
-import com.simibubi.create.AllRecipeTypes;
 import com.simibubi.create.Create;
 import com.simibubi.create.content.contraptions.processing.ProcessingRecipeBuilder;
 import com.simibubi.create.content.contraptions.processing.ProcessingRecipeSerializer;
@@ -26,7 +25,7 @@ import java.util.Optional;
 import java.util.function.Supplier;
 
 public enum ModRecipeTypes implements IRecipeTypeInfo {
-    DISENCHANT(DisenchantRecipe::new);
+    DISENCHANTING(DisenchantRecipe::new);
 
     private final ResourceLocation id;
     private final RegistryObject<RecipeSerializer<?>> serializerObject;

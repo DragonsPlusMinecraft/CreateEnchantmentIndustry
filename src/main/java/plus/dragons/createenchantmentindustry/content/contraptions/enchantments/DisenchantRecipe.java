@@ -11,7 +11,7 @@ import plus.dragons.createenchantmentindustry.entry.ModRecipeTypes;
 public class DisenchantRecipe extends ProcessingRecipe<RecipeWrapper> {
 
     public DisenchantRecipe(ProcessingRecipeBuilder.ProcessingRecipeParams params) {
-        super(ModRecipeTypes.DISENCHANT, params);
+        super(ModRecipeTypes.DISENCHANTING, params);
     }
 
     @Override
