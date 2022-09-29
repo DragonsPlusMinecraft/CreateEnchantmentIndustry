@@ -1,6 +1,9 @@
 package plus.dragons.createenchantmentindustry.foundation.ponder.content;
 
+import com.google.common.collect.Lists;
 import com.simibubi.create.AllBlocks;
+import com.simibubi.create.AllItems;
+import com.simibubi.create.content.contraptions.components.deployer.DeployerTileEntity;
 import com.simibubi.create.content.contraptions.fluids.actors.SpoutTileEntity;
 import com.simibubi.create.content.contraptions.fluids.tank.CreativeFluidTankTileEntity;
 import com.simibubi.create.content.contraptions.fluids.tank.FluidTankTileEntity;
@@ -9,16 +12,25 @@ import com.simibubi.create.foundation.ponder.*;
 import com.simibubi.create.foundation.ponder.element.BeltItemElement;
 import com.simibubi.create.foundation.ponder.element.EntityElement;
 import com.simibubi.create.foundation.ponder.element.InputWindowElement;
+import com.simibubi.create.foundation.ponder.instruction.EmitParticlesInstruction;
+import com.simibubi.create.foundation.utility.NBTHelper;
 import com.simibubi.create.foundation.utility.Pointing;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.particles.BlockParticleOption;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.animal.Sheep;
+import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
@@ -159,11 +171,97 @@ public class EnchantmentScenes {
     }
 
     public static void handleExperienceNugget(SceneBuilder scene, SceneBuildingUtil util){
+        scene.title("absorb_experience_nugget", ""); // We do not use PonderLocalization. For title only
+        scene.configureBasePlate(0, 0, 5);
+        scene.scaleSceneView(.68f);
+        scene.world.setKineticSpeed(util.select.everywhere(), 32f);
+        scene.world.setKineticSpeed(util.select.fromTo(0,1,2,2,1,4), -32f);
+        scene.showBasePlate();
+        scene.idle(5);
+        scene.world.showSection(util.select.fromTo(0, 1, 0, 4, 1, 4), Direction.DOWN);
 
+        var poses = Lists.newArrayList(util.grid.at(2,1, 0),util.grid.at(0,1, 2),util.grid.at(2,1, 4),util.grid.at(4,1, 2));
+        for(var pos: poses){
+            var item = AllItems.EXP_NUGGET.asStack(64);
+            ElementLink<EntityElement> itemEntity = scene.world.createItemEntity(Vec3.atCenterOf(pos.above(3)), util.vector.of(0, 0, 0), item);
+            scene.idle(13);
+            scene.world.modifyEntity(itemEntity, Entity::discard);
+            scene.world.createItemOnBelt(pos, Direction.DOWN, item);
+            scene.idle(10);
+        }
+
+        scene.overlay.showText(60)
+                .text("") // We do not use PonderLocalization. For registerText only
+                .placeNearTarget()
+                .pointAt(util.vector.topOf(2, 1, 2));
+
+        scene.idle(60);
     }
 
     public static void dropExperienceNugget(SceneBuilder scene, SceneBuildingUtil util){
+        scene.title("drop_experience_nugget", ""); // We do not use PonderLocalization. For title only
+        scene.configureBasePlate(0, 0, 3);
+        scene.showBasePlate();
+        scene.idle(5);
+        scene.world.showSection(util.select.fromTo(0, 1, 0, 2, 1, 2), Direction.DOWN);
+        BlockPos deployerPos = util.grid.at(1, 1, 2);
+        Selection deployerSelection = util.select.position(deployerPos);
 
+        ItemStack sword = new ItemStack(Items.NETHERITE_SWORD);
+        scene.idle(10);
+        scene.world.modifyTileNBT(deployerSelection, DeployerTileEntity.class, nbt -> {
+            nbt.put("HeldItem", sword.serializeNBT());
+            nbt.putString("mode", "PUNCH");
+        });
+        scene.idle(30);
+        scene.world.setKineticSpeed(util.select.everywhere(), 32f);
+
+        scene.addKeyframe();
+        ElementLink<EntityElement> sheep = scene.world.createEntity(w -> {
+            Sheep entity = EntityType.SHEEP.create(w);
+            entity.setColor(DyeColor.PINK);
+            Vec3 p = util.vector.topOf(util.grid.at(1, 0, 0));
+            entity.setPos(p.x, p.y, p.z);
+            entity.xo = p.x;
+            entity.yo = p.y;
+            entity.zo = p.z;
+            entity.animationPosition = 0;
+            entity.yRotO = 210;
+            entity.setYRot(210);
+            entity.yHeadRotO = 210;
+            entity.yHeadRot = 210;
+            return entity;
+        });
+        scene.idle(5);
+        scene.world.moveDeployer(deployerPos, 1, 25);
+        scene.idle(26);
+        scene.world.modifyEntity(sheep, Entity::discard);
+        scene.effects.emitParticles(util.vector.topOf(deployerPos.west(2))
+                        .add(0, -.25, 0),
+                EmitParticlesInstruction.Emitter.withinBlockSpace(new BlockParticleOption(ParticleTypes.BLOCK, Blocks.PINK_WOOL.defaultBlockState()),
+                        util.vector.of(0, 0, 0)),
+                25, 1);
+        scene.world.moveDeployer(deployerPos, -1, 25);
+
+        scene.overlay.showText(60)
+                .text("") // We do not use PonderLocalization. For registerText only
+                .placeNearTarget()
+                .pointAt(util.vector.topOf(2, 1, 2));
+
+        scene.world.flapFunnel(deployerPos.north(), true);
+        scene.world.createItemEntity(util.vector.centerOf(deployerPos.west())
+                .subtract(0, .45, 0), util.vector.of(-0.1, 0, 0), new ItemStack(Items.PINK_WOOL));
+        scene.idle(10);
+
+        scene.world.flapFunnel(deployerPos.north(), true);
+        scene.world.createItemEntity(util.vector.centerOf(deployerPos.west())
+                .subtract(0, .45, 0), util.vector.of(-0.1, 0, 0), new ItemStack(Items.MUTTON));
+        scene.idle(10);
+
+        scene.world.flapFunnel(deployerPos.north(), true);
+        scene.world.createItemEntity(util.vector.centerOf(deployerPos.west())
+                .subtract(0, .45, 0), util.vector.of(-0.1, 0, 0), AllItems.EXP_NUGGET.asStack());
+        scene.idle(40);
     }
 
     public static void handleExperienceBottle(SceneBuilder scene, SceneBuildingUtil util){
