@@ -7,9 +7,12 @@
 	"block.create_enchantment_industry.disenchanter": "Disenchanter",
 	"block.create_enchantment_industry.ink": "Ink",
 
+	"entity.create_enchantment_industry.bottled_hyper_experience": "Bottled Hyper Experience",
+
 	"fluid.create_enchantment_industry.experience": "Liquid Experience",
 	"fluid.create_enchantment_industry.hyper_experience": "Hyper Experience",
 
+	"item.create_enchantment_industry.bottled_hyper_experience": "Bottled Hyper Experience",
 	"item.create_enchantment_industry.enchanting_guide": "Enchanting Guide",
 	"item.create_enchantment_industry.ink_bucket": "Ink Bucket",
 
@@ -85,6 +88,12 @@
 	"create_enchantment_industry.ponder.copy.header": "Using Copier",
 
 	"create_enchantment_industry.ponder.enchant.header": "Enchanting",
+
+	"create_enchantment_industry.ponder.drop_experience_nugget.header": "Maybe A Exp-farm?",
+	"create_enchantment_industry.ponder.drop_experience_nugget.text_1": "When mob is killed by deployer, experience nuggets are dropped.",
+
+	"create_enchantment_industry.ponder.absorb_experience_nugget.header": "Converting Experience Nugget to Liquid",
+	"create_enchantment_industry.ponder.absorb_experience_nugget.text_1": "Experience nugget can be absorbed by disenchanter.",
 
 	"create_enchantment_industry.ponder.leak.header": "Oh no! It's leaking!",
 	"create_enchantment_industry.ponder.leak.text_1": "I have a tank full of experience",

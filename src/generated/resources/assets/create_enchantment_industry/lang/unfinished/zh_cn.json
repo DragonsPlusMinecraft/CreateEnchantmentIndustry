@@ -1,5 +1,5 @@
 {
-	"_": "Missing Localizations: 0",
+	"_": "Missing Localizations: 6",
 
 	"_": "->------------------------]  Game Elements  [------------------------<-",
 
@@ -8,9 +8,12 @@
 	"block.create_enchantment_industry.disenchanter": "祛魔池",
 	"block.create_enchantment_industry.ink": "墨水",
 
+	"entity.create_enchantment_industry.bottled_hyper_experience": "UNLOCALIZED: Bottled Hyper Experience",
+
 	"fluid.create_enchantment_industry.experience": "液态经验",
 	"fluid.create_enchantment_industry.hyper_experience": "超经验",
 
+	"item.create_enchantment_industry.bottled_hyper_experience": "UNLOCALIZED: Bottled Hyper Experience",
 	"item.create_enchantment_industry.enchanting_guide": "附魔指南",
 	"item.create_enchantment_industry.ink_bucket": "墨水桶",
 
@@ -86,6 +89,12 @@
 	"create_enchantment_industry.ponder.copy.header": "复印机使用",
 
 	"create_enchantment_industry.ponder.enchant.header": "烈焰人附魔室使用",
+
+	"create_enchantment_industry.ponder.drop_experience_nugget.header": "UNLOCALIZED: Maybe A Exp-farm?",
+	"create_enchantment_industry.ponder.drop_experience_nugget.text_1": "UNLOCALIZED: When mob is killed by deployer, experience nuggets are dropped.",
+
+	"create_enchantment_industry.ponder.absorb_experience_nugget.header": "UNLOCALIZED: Converting Experience Nugget to Liquid",
+	"create_enchantment_industry.ponder.absorb_experience_nugget.text_1": "UNLOCALIZED: Experience nugget can be absorbed by disenchanter.",
 
 	"create_enchantment_industry.ponder.leak.header": "噢不！漏出来了！",
 	"create_enchantment_industry.ponder.leak.text_1": "I have a tank full of experience",
