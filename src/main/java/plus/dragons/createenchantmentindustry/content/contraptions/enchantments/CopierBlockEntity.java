@@ -2,6 +2,7 @@ package plus.dragons.createenchantmentindustry.content.contraptions.enchantments
 
 import com.simibubi.create.content.contraptions.goggles.IHaveGoggleInformation;
 import com.simibubi.create.content.contraptions.relays.belt.transport.TransportedItemStack;
+import com.simibubi.create.foundation.advancement.AdvancementBehaviour;
 import com.simibubi.create.foundation.tileEntity.SmartTileEntity;
 import com.simibubi.create.foundation.tileEntity.TileEntityBehaviour;
 import com.simibubi.create.foundation.tileEntity.behaviour.belt.BeltProcessingBehaviour;
@@ -32,6 +33,9 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import plus.dragons.createenchantmentindustry.foundation.data.advancement.ModAdvancements;
+import plus.dragons.createenchantmentindustry.foundation.data.advancement.ModTriggers;
+import plus.dragons.createenchantmentindustry.foundation.mixin.AdvancementBehaviourAccessor;
 import plus.dragons.createenchantmentindustry.foundation.utility.ModLang;
 
 import java.util.ArrayList;
@@ -63,7 +67,10 @@ public class CopierBlockEntity extends SmartTileEntity implements IHaveGoggleInf
         behaviours.add(tank = SmartFluidTankBehaviour.single(this, TANK_CAPACITY));
         behaviours.add(beltProcessing = new BeltProcessingBehaviour(this).whenItemEnters(this::onItemReceived)
                 .whileItemHeld(this::whenItemHeld));
-        // registerAwardables(behaviours, AllAdvancements.SPOUT, AllAdvancements.FOODS);
+        registerAwardables(behaviours,
+                ModAdvancements.COPIABLE_MASTERPIECE.asCreateAdvancement(),
+                ModAdvancements.COPIABLE_MYSTERY.asCreateAdvancement(),
+                ModAdvancements.RELIC_RESTORATION.asCreateAdvancement());
     }
 
     public void tick() {
@@ -125,6 +132,23 @@ public class CopierBlockEntity extends SmartTileEntity implements IHaveGoggleInf
             processingTicks = COPYING_TIME;
             notifyUpdate();
             return HOLD;
+        }
+
+        // Award Advancement
+        var item = copyTarget.copy();
+        if(!level.isClientSide()){
+            if(item.is(Items.WRITTEN_BOOK)){
+                award(ModAdvancements.COPIABLE_MASTERPIECE.asCreateAdvancement());
+                if(item.getOrCreateTag().getInt("generation")==3)
+                    award(ModAdvancements.RELIC_RESTORATION.asCreateAdvancement());
+            }
+            else award(ModAdvancements.COPIABLE_MYSTERY.asCreateAdvancement());
+            var advancementBehaviour = getBehaviour(AdvancementBehaviour.TYPE);
+            var playerId = ((AdvancementBehaviourAccessor) advancementBehaviour).getPlayerId();
+            if(playerId!=null){
+                var player = level.getPlayerByUUID(playerId);
+                ModTriggers.BOOK_PRINTED.trigger(player,1);
+            }
         }
 
         // Process finished

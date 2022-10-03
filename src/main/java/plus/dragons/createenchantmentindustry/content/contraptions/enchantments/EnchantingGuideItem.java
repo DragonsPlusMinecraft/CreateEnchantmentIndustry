@@ -2,6 +2,7 @@ package plus.dragons.createenchantmentindustry.content.contraptions.enchantments
 
 import com.simibubi.create.content.contraptions.processing.burner.BlazeBurnerBlock;
 import com.simibubi.create.content.contraptions.processing.burner.BlazeBurnerTileEntity;
+import com.simibubi.create.foundation.advancement.AdvancementBehaviour;
 import com.simibubi.create.foundation.utility.Pair;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
@@ -64,6 +65,7 @@ public class EnchantingGuideItem extends Item implements MenuProvider {
                             i.setCount(1);
                             blazeEnchanterBlockEntity.setTargetItem(i);
                         }
+                        AdvancementBehaviour.setPlacedBy(pContext.getLevel(), blockPos, player);
                         if (!player.getAbilities().instabuild)
                             itemStack.shrink(1);
                     }

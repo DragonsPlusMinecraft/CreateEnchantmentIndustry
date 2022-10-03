@@ -17,14 +17,22 @@
     "hidden": false
   },
   "criteria": {
-    "builtin": {
-      "trigger": "create_enchantment_industry:builtin/black_as_ink",
-      "conditions": {}
+    "have_bucket_of_ink": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "create_enchantment_industry:ink_bucket"
+            ]
+          }
+        ]
+      }
     }
   },
   "requirements": [
     [
-      "builtin"
+      "have_bucket_of_ink"
     ]
   ]
 }

@@ -48,7 +48,7 @@ public class ModAdvancements implements DataProvider {
         .title("Experienced Engineer")
         .description("Get some Nuggets of Experience from crushing ores or killing mobs using deployer")
         .icon(AllItems.EXP_NUGGET)
-        .externalTrigger("has_experience_nugget", InventoryChangeTrigger.TriggerInstance.hasItems(AllItems.EXP_NUGGET.get()))
+        .externalTrigger("have_experience_nugget", InventoryChangeTrigger.TriggerInstance.hasItems(AllItems.EXP_NUGGET.get()))
         .parent(Create.asResource("display_board_0"))
         .build(),
     // Copier Branch
@@ -56,6 +56,7 @@ public class ModAdvancements implements DataProvider {
         .title("Black as Ink!")
         .description("Get a bucket of Ink for your copying business")
         .icon(ModFluids.INK.get().getBucket())
+        .externalTrigger("have_bucket_of_ink", InventoryChangeTrigger.TriggerInstance.hasItems(ModFluids.INK.get().getBucket()))
         .parent(EXPERIENCED_ENGINEER)
         .build(),
     COPIABLE_MASTERPIECE = builder("copiable_masterpiece")
@@ -82,12 +83,14 @@ public class ModAdvancements implements DataProvider {
     GREAT_PUBLISHER = builder("great_publisher")
         .title("Great Publisher")
         .description("Copy 1000 books using Copier")
+        .externalTrigger("book_copied", AccumulativeTrigger.TriggerInstance.ofBook(1000))
         .icon(ModBlocks.COPIER)
         .announce(true)
         .frame(FrameType.CHALLENGE)
         .parent(RELIC_RESTORATION)
         .build(),
     // Disenchanter Branch
+    // TODO Advancements below are not in place
     EXPERIMENTAL = builder("experimental")
         .title("Experimental")
         .description("Get some Liquid Experience for your enchanting experiment!")
@@ -119,6 +122,7 @@ public class ModAdvancements implements DataProvider {
         .title("Experienced Recycler")
         .description("Recycle 1,000,000 mB of experience from Disenchanter")
         .icon(AllBlocks.COPPER_VALVE_HANDLE)
+        .externalTrigger("experience_recycled", AccumulativeTrigger.TriggerInstance.ofExperienceDisenchanted(1000000))
         .announce(true)
         .frame(FrameType.CHALLENGE)
         .parent(A_SHOWER_EXPERIENCE)
@@ -146,19 +150,19 @@ public class ModAdvancements implements DataProvider {
         .parent(FIRST_ORDER)
         .build(),
     END = null;
-    
+
     //Shortcut for builder constructor
     public static ModAdvancement.Builder builder(String id) {
         return new ModAdvancement.Builder(id);
     }
-    
+
     //Datagen
     private final DataGenerator generator;
-    
+
     public ModAdvancements(DataGenerator generator) {
         this.generator = generator;
     }
-    
+
     @Override
     public void run(HashCache cache) {
         Path path = this.generator.getOutputFolder();
@@ -180,12 +184,12 @@ public class ModAdvancements implements DataProvider {
             advancement.save(consumer);
         }
     }
-    
+
     @Override
     public String getName() {
         return "Create: Enchantment Industry Advancements";
     }
-    
+
     public static JsonObject provideLangEntries() {
         JsonObject object = new JsonObject();
         for (var advancement : ENTRIES) {
@@ -193,7 +197,7 @@ public class ModAdvancements implements DataProvider {
         }
         return object;
     }
-    
+
     public static void register() {}
-    
+
 }

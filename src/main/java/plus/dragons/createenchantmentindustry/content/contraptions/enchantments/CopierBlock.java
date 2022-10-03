@@ -3,6 +3,7 @@ package plus.dragons.createenchantmentindustry.content.contraptions.enchantments
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.AllShapes;
 import com.simibubi.create.content.contraptions.wrench.IWrenchable;
+import com.simibubi.create.foundation.advancement.AdvancementBehaviour;
 import com.simibubi.create.foundation.block.ITE;
 import com.simibubi.create.foundation.tileEntity.ComparatorUtil;
 import net.minecraft.core.BlockPos;
@@ -47,8 +48,7 @@ public class CopierBlock extends Block implements IWrenchable, ITE<CopierBlockEn
     @Override
     public void setPlacedBy(Level pLevel, BlockPos pPos, BlockState pState, @Nullable LivingEntity pPlacer, ItemStack pStack) {
         super.setPlacedBy(pLevel, pPos, pState, pPlacer, pStack);
-        // TODO Advancement need more investigate
-        // AdvancementBehaviour.setPlacedBy(pLevel, pPos, pPlacer);
+        AdvancementBehaviour.setPlacedBy(pLevel, pPos, pPlacer);
     }
 
     @Override
@@ -81,7 +81,7 @@ public class CopierBlock extends Block implements IWrenchable, ITE<CopierBlockEn
                     return InteractionResult.SUCCESS;
                 } else return InteractionResult.PASS;
             });
-        } else if (heldItem.is(Items.ENCHANTED_BOOK) || heldItem.is(Items.WRITTEN_BOOK)) {
+        } else if ((heldItem.is(Items.ENCHANTED_BOOK) || heldItem.is(Items.WRITTEN_BOOK)) && heldItem.getCount()==1) {
             return onTileEntityUse(world, pos, be -> {
                 if (be.copyTarget == null) {
                     if (!player.getAbilities().instabuild) player.setItemInHand(hand, ItemStack.EMPTY);

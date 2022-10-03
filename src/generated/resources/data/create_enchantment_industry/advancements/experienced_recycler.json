@@ -17,14 +17,18 @@
     "hidden": false
   },
   "criteria": {
-    "builtin": {
-      "trigger": "create_enchantment_industry:builtin/experienced_recycler",
-      "conditions": {}
+    "experience_recycled": {
+      "trigger": "create_enchantment_industry:disenchanted",
+      "conditions": {
+        "requirement": {
+          "min": 1000000
+        }
+      }
     }
   },
   "requirements": [
     [
-      "builtin"
+      "experience_recycled"
     ]
   ]
 }

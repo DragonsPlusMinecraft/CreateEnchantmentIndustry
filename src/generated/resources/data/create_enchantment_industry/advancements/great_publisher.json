@@ -17,14 +17,18 @@
     "hidden": false
   },
   "criteria": {
-    "builtin": {
-      "trigger": "create_enchantment_industry:builtin/great_publisher",
-      "conditions": {}
+    "book_copied": {
+      "trigger": "create_enchantment_industry:book_printed",
+      "conditions": {
+        "requirement": {
+          "min": 1000
+        }
+      }
     }
   },
   "requirements": [
     [
-      "builtin"
+      "book_copied"
     ]
   ]
 }

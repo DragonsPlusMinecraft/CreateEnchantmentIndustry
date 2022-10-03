@@ -7,7 +7,7 @@ import net.minecraft.resources.ResourceLocation;
 @MethodsReturnNonnullByDefault
 public class SimpleTrigger extends SimpleCreateTrigger {
     private ResourceLocation id;
-    
+
     public SimpleTrigger(ResourceLocation id) {
         super("");
         this.id = id;

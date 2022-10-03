@@ -3,6 +3,7 @@ package plus.dragons.createenchantmentindustry.content.contraptions.enchantments
 import com.simibubi.create.AllShapes;
 import com.simibubi.create.content.contraptions.relays.belt.transport.TransportedItemStack;
 import com.simibubi.create.content.contraptions.wrench.IWrenchable;
+import com.simibubi.create.foundation.advancement.AdvancementBehaviour;
 import com.simibubi.create.foundation.block.ITE;
 import com.simibubi.create.foundation.tileEntity.ComparatorUtil;
 import net.minecraft.core.BlockPos;
@@ -104,8 +105,7 @@ public class DisenchanterBlock extends Block implements IWrenchable, ITE<Disench
     @Override
     public void setPlacedBy(Level pLevel, BlockPos pPos, BlockState pState, @Nullable LivingEntity pPlacer, ItemStack pStack) {
         super.setPlacedBy(pLevel, pPos, pState, pPlacer, pStack);
-        // TODO Advancement need more investigate
-        // AdvancementBehaviour.setPlacedBy(pLevel, pPos, pPlacer);
+        AdvancementBehaviour.setPlacedBy(pLevel, pPos, pPlacer);
     }
 
     public List<ItemStack> getDrops(BlockState pState, LootContext.Builder pBuilder) {
