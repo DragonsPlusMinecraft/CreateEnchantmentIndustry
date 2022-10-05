@@ -24,6 +24,15 @@ public class ModFluids {
                     .lang("Liquid Experience")
                     .attributes(builder -> builder.luminosity(15))
                     .register();
+
+    public static final ResourceLocation HYPER_EXPERIENCE_STILL_RL = EnchantmentIndustry.genRL("fluid/hyper_experience_still");
+    public static final ResourceLocation HYPER_EXPERIENCE_FLOW_RL = EnchantmentIndustry.genRL("fluid/hyper_experience_flow");
+
+    public static final FluidEntry<VirtualFluid> HYPER_EXPERIENCE =
+            EnchantmentIndustry.registrate().virtualFluid("hyper_experience", HYPER_EXPERIENCE_STILL_RL, HYPER_EXPERIENCE_FLOW_RL)
+                    .lang("Hyper Experience")
+                    .attributes(builder -> builder.luminosity(15))
+                    .register();
     
     public static final ResourceLocation INK_STILL_RL = EnchantmentIndustry.genRL("fluid/ink_still");
     public static final ResourceLocation INK_FLOW_RL = EnchantmentIndustry.genRL("fluid/ink_flow");

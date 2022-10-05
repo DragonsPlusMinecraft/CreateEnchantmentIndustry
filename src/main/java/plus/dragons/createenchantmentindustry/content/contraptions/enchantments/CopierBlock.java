@@ -1,7 +1,9 @@
 package plus.dragons.createenchantmentindustry.content.contraptions.enchantments;
 
+import com.simibubi.create.AllBlocks;
 import com.simibubi.create.AllShapes;
 import com.simibubi.create.content.contraptions.wrench.IWrenchable;
+import com.simibubi.create.foundation.advancement.AdvancementBehaviour;
 import com.simibubi.create.foundation.block.ITE;
 import com.simibubi.create.foundation.tileEntity.ComparatorUtil;
 import net.minecraft.core.BlockPos;
@@ -15,6 +17,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -45,8 +48,7 @@ public class CopierBlock extends Block implements IWrenchable, ITE<CopierBlockEn
     @Override
     public void setPlacedBy(Level pLevel, BlockPos pPos, BlockState pState, @Nullable LivingEntity pPlacer, ItemStack pStack) {
         super.setPlacedBy(pLevel, pPos, pState, pPlacer, pStack);
-        // TODO Advancement need more investigate
-        // AdvancementBehaviour.setPlacedBy(pLevel, pPos, pPlacer);
+        AdvancementBehaviour.setPlacedBy(pLevel, pPos, pPlacer);
     }
 
     @Override
@@ -54,6 +56,12 @@ public class CopierBlock extends Block implements IWrenchable, ITE<CopierBlockEn
         var ret = new ArrayList<ItemStack>();
         ret.add(ModBlocks.COPIER.asStack());
         return ret;
+    }
+
+    @Override
+    public boolean canSurvive(BlockState state, LevelReader worldIn, BlockPos pos) {
+        // TODO check it tomorrow I gotta sleep.
+        return !AllBlocks.BASIN.has(worldIn.getBlockState(pos.below()));
     }
 
 
@@ -73,7 +81,7 @@ public class CopierBlock extends Block implements IWrenchable, ITE<CopierBlockEn
                     return InteractionResult.SUCCESS;
                 } else return InteractionResult.PASS;
             });
-        } else if (heldItem.is(Items.ENCHANTED_BOOK) || heldItem.is(Items.WRITTEN_BOOK)) {
+        } else if ((heldItem.is(Items.ENCHANTED_BOOK) || heldItem.is(Items.WRITTEN_BOOK)) && heldItem.getCount()==1) {
             return onTileEntityUse(world, pos, be -> {
                 if (be.copyTarget == null) {
                     if (!player.getAbilities().instabuild) player.setItemInHand(hand, ItemStack.EMPTY);

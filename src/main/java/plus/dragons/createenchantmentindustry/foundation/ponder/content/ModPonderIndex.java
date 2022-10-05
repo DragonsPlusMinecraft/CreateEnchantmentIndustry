@@ -19,7 +19,7 @@ public class ModPonderIndex {
         HELPER.forComponents(ModBlocks.COPIER)
                 .addStoryBoard("copy",EnchantmentScenes::copy, ModPonderTag.EXPERIENCE);
 
-        HELPER.forComponents(ModItems.ENCHANTING_GUIDE_FOR_BLAZE)
+        HELPER.forComponents(ModItems.ENCHANTING_GUIDE)
                 .addStoryBoard("enchanter_transform",EnchantmentScenes::transformBlazeBurner, ModPonderTag.EXPERIENCE)
                 .addStoryBoard("enchant",EnchantmentScenes::enchant, ModPonderTag.EXPERIENCE);
 
@@ -34,7 +34,7 @@ public class ModPonderIndex {
         PonderRegistry.TAGS.forTag(ModPonderTag.EXPERIENCE)
                 .add(ModBlocks.DISENCHANTER)
                 .add(ModBlocks.COPIER)
-                .add(ModItems.ENCHANTING_GUIDE_FOR_BLAZE)
+                .add(ModItems.ENCHANTING_GUIDE)
                 .add(AllItems.EXP_NUGGET)
                 .add(AllBlocks.ITEM_DRAIN)
                 .add(AllBlocks.SPOUT);

@@ -1,0 +1,31 @@
+{
+  "parent": "create_enchantment_industry:first_order",
+  "display": {
+    "icon": {
+      "item": "minecraft:netherite_sword",
+      "nbt": "{Damage:0,Enchantments:[{id:\"minecraft:smite\",lvl:5s}]}"
+    },
+    "title": {
+      "translate": "advancement.create_enchantment_industry.additional_order"
+    },
+    "description": {
+      "color": "#DBA213",
+      "translate": "advancement.create_enchantment_industry.additional_order.desc"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": false,
+    "hidden": false
+  },
+  "criteria": {
+    "builtin": {
+      "trigger": "create_enchantment_industry:builtin/additional_order",
+      "conditions": {}
+    }
+  },
+  "requirements": [
+    [
+      "builtin"
+    ]
+  ]
+}

@@ -37,7 +37,7 @@ public class DisenchanterItemHandler implements IItemHandler {
         }
 
         ItemStack returned = ItemStack.EMPTY;
-        if (stack.getCount() > 1 && Disenchanting.test(stack)!= Disenchanting.Type.NONE) {
+        if (stack.getCount() > 1 && Disenchanting.test(stack,be.getLevel())!= Disenchanting.Type.NONE) {
             returned = ItemHandlerHelper.copyStackWithSize(stack, stack.getCount() - 1);
             stack = ItemHandlerHelper.copyStackWithSize(stack, 1);
         }

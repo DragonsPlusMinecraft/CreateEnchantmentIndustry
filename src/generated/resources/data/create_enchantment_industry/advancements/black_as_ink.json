@@ -1,0 +1,38 @@
+{
+  "parent": "create_enchantment_industry:experienced_engineer",
+  "display": {
+    "icon": {
+      "item": "create_enchantment_industry:ink_bucket"
+    },
+    "title": {
+      "translate": "advancement.create_enchantment_industry.black_as_ink"
+    },
+    "description": {
+      "color": "#DBA213",
+      "translate": "advancement.create_enchantment_industry.black_as_ink.desc"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": false,
+    "hidden": false
+  },
+  "criteria": {
+    "have_bucket_of_ink": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "create_enchantment_industry:ink_bucket"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "have_bucket_of_ink"
+    ]
+  ]
+}

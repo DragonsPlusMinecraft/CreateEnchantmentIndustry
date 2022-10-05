@@ -1,0 +1,38 @@
+{
+  "parent": "create:display_board_0",
+  "display": {
+    "icon": {
+      "item": "create:experience_nugget"
+    },
+    "title": {
+      "translate": "advancement.create_enchantment_industry.experienced_engineer"
+    },
+    "description": {
+      "color": "#DBA213",
+      "translate": "advancement.create_enchantment_industry.experienced_engineer.desc"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": false,
+    "hidden": false
+  },
+  "criteria": {
+    "have_experience_nugget": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "create:experience_nugget"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "have_experience_nugget"
+    ]
+  ]
+}

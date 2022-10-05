@@ -1,6 +1,4 @@
 {
-	"_": "Missing Localizations: 5",
-
 	"_": "->------------------------]  Game Elements  [------------------------<-",
 
 	"block.create_enchantment_industry.blaze_enchanter": "烈焰人附魔室",
@@ -8,14 +6,46 @@
 	"block.create_enchantment_industry.disenchanter": "祛魔池",
 	"block.create_enchantment_industry.ink": "墨水",
 
-	"fluid.create_enchantment_industry.experience": "液态经验",
+	"entity.create_enchantment_industry.bottled_hyper_experience": "瓶装超经验",
 
+	"fluid.create_enchantment_industry.experience": "液态经验",
+	"fluid.create_enchantment_industry.hyper_experience": "超经验",
+
+	"item.create_enchantment_industry.bottled_hyper_experience": "瓶装超经验",
 	"item.create_enchantment_industry.enchanting_guide": "附魔指南",
 	"item.create_enchantment_industry.ink_bucket": "墨水桶",
 
 
 	"_": "->------------------------]  Advancements  [------------------------<-",
 
+	"advancement.create_enchantment_industry.experienced_engineer": "“经验丰富”的工程师",
+	"advancement.create_enchantment_industry.experienced_engineer.desc": "通过粉碎矿物或机械手击杀生物之类途径获取一些经验颗粒",
+	"advancement.create_enchantment_industry.black_as_ink": "漆黑如墨！",
+	"advancement.create_enchantment_industry.black_as_ink.desc": "获取一桶墨水来开启你的复印大业",
+	"advancement.create_enchantment_industry.copiable_masterpiece": "可复制的杰作",
+	"advancement.create_enchantment_industry.copiable_masterpiece.desc": "用复印机复制一本成书",
+	"advancement.create_enchantment_industry.copiable_mystery": "可复制的奥秘",
+	"advancement.create_enchantment_industry.copiable_mystery.desc": "用复印机复制一本附魔书",
+	"advancement.create_enchantment_industry.relic_restoration": "文物复原",
+	"advancement.create_enchantment_industry.relic_restoration.desc": "复印一本破烂不堪的成书",
+	"advancement.create_enchantment_industry.great_publisher": "大出版商",
+	"advancement.create_enchantment_industry.great_publisher.desc": "复印一百本书",
+	"advancement.create_enchantment_industry.experimental": "实验性质",
+	"advancement.create_enchantment_industry.experimental.desc": "获取一些液态经验来完成你的附魔实验",
+	"advancement.create_enchantment_industry.gone_with_the_foil": "消失的箔",
+	"advancement.create_enchantment_industry.gone_with_the_foil.desc": "观看祛魔池的祛魔过程",
+	"advancement.create_enchantment_industry.spirit_taking": "摄魂术士",
+	"advancement.create_enchantment_industry.spirit_taking.desc": "让驱魔池吸取你的经验值",
+	"advancement.create_enchantment_industry.a_shower_experience": "淋浴“经验”",
+	"advancement.create_enchantment_industry.a_shower_experience.desc": "打破管道，享受沐浴在液态经验中",
+	"advancement.create_enchantment_industry.experienced_recycler": "专家级回收员",
+	"advancement.create_enchantment_industry.experienced_recycler.desc": "使用祛魔池回收 1,000,000 mB 液态经验",
+	"advancement.create_enchantment_industry.blazes_new_job": "烈焰人的新工作",
+	"advancement.create_enchantment_industry.blazes_new_job.desc": "给烈焰人燃烧室一本附魔指南，将其转化为烈焰人附魔室",
+	"advancement.create_enchantment_industry.first_order": "第一批次",
+	"advancement.create_enchantment_industry.first_order.desc": "使用烈焰人燃烧室为未附魔物品附魔",
+	"advancement.create_enchantment_industry.additional_order": "额外订单",
+	"advancement.create_enchantment_industry.additional_order.desc": "使用烈焰人燃烧室为已附魔物品附魔",
 
 
 	"_": "->------------------------]  UI & Messages  [------------------------<-",
@@ -57,6 +87,12 @@
 	"create_enchantment_industry.ponder.copy.header": "复印机使用",
 
 	"create_enchantment_industry.ponder.enchant.header": "烈焰人附魔室使用",
+
+	"create_enchantment_industry.ponder.drop_experience_nugget.header": "...经验农场？",
+	"create_enchantment_industry.ponder.drop_experience_nugget.text_1": "机械手杀死生物时将掉落经验颗粒。",
+
+	"create_enchantment_industry.ponder.absorb_experience_nugget.header": "融化经验颗粒",
+	"create_enchantment_industry.ponder.absorb_experience_nugget.text_1": "经验颗粒可被祛魔池吸收。",
 
 	"create_enchantment_industry.ponder.leak.header": "噢不！漏出来了！",
 	"create_enchantment_industry.ponder.leak.text_1": "I have a tank full of experience",

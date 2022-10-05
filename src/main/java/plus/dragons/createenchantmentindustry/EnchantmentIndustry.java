@@ -1,5 +1,6 @@
 package plus.dragons.createenchantmentindustry;
 
+import com.simibubi.create.foundation.advancement.AllTriggers;
 import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.tterrag.registrate.util.nullness.NonNullSupplier;
 import net.minecraft.data.DataGenerator;
@@ -31,6 +32,7 @@ public class EnchantmentIndustry {
         IEventBus forgeEventBus = MinecraftForge.EVENT_BUS;
 
         initAllEntries();
+        ModRecipeTypes.register(modEventBus);
 
         addForgeEventListeners(forgeEventBus);
         modEventBus.addListener(EnchantmentIndustry::init);
@@ -42,9 +44,11 @@ public class EnchantmentIndustry {
         ModItems.register();
         ModBlocks.register();
         ModBlockEntities.register();
+        ModEntityTypes.register();
         ModFluids.register();
         ModContainerTypes.register();
         ModTags.register();
+
     }
     
     private void addForgeEventListeners(IEventBus forgeEventBus) {
@@ -55,8 +59,8 @@ public class EnchantmentIndustry {
     public static void init(final FMLCommonSetupEvent event) {
         event.enqueueWork(() -> {
             ModPackets.registerPackets();
-            ModTriggers.register();
             ModAdvancements.register();
+            ModTriggers.register();
             OpenEndedPipeEffects.register();
         });
     }
@@ -64,6 +68,7 @@ public class EnchantmentIndustry {
     public static void datagen(final GatherDataEvent event) {
         DataGenerator datagen = event.getGenerator();
         datagen.addProvider(new LangMerger(datagen));
+        datagen.addProvider(new ModAdvancements(datagen));
     }
 
     public static ResourceLocation genRL(String name) {

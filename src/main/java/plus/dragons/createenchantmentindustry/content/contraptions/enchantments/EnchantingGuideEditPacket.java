@@ -39,7 +39,7 @@ public class EnchantingGuideEditPacket extends SimplePacketBase {
                     ServerPlayer sender = context.get()
                             .getSender();
                     ItemStack mainHandItem = sender.getMainHandItem();
-                    if (!ModItems.ENCHANTING_GUIDE_FOR_BLAZE.isIn(mainHandItem))
+                    if (!ModItems.ENCHANTING_GUIDE.isIn(mainHandItem))
                         return;
 
                     CompoundTag tag = mainHandItem.getOrCreateTag();

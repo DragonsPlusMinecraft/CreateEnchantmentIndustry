@@ -2,6 +2,7 @@ package plus.dragons.createenchantmentindustry.entry;
 
 import com.simibubi.create.Create;
 import com.simibubi.create.content.AllSections;
+import com.simibubi.create.content.contraptions.components.AssemblyOperatorBlockItem;
 import com.simibubi.create.foundation.data.AssetLookup;
 import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.simibubi.create.foundation.data.SharedProperties;
@@ -33,7 +34,7 @@ public class ModBlocks {
             .addLayer(() -> RenderType::cutoutMipped)
             .transform(ModTags.pickaxeOnly())
             .blockstate((ctx, pov) -> pov.simpleBlock(ctx.get(), AssetLookup.partialBaseModel(ctx, pov)))
-            .item()
+            .item(AssemblyOperatorBlockItem::new)
             .model(AssetLookup::customItemModel)
             .build()
             .register();

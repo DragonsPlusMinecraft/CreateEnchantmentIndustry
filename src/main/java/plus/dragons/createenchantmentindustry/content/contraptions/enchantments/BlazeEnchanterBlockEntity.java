@@ -202,7 +202,7 @@ public class BlazeEnchanterBlockEntity extends SmartTileEntity implements IHaveG
         }
 
         if (heldItem.prevBeltPosition < .5f && heldItem.beltPosition >= .5f) {
-            if (!Enchanting.valid(heldItem.stack, targetItem))
+            if (!Enchanting.valid(heldItem.stack, targetItem, hyper()))
                 return;
             heldItem.beltPosition = .5f;
             if (onClient)
@@ -310,24 +310,24 @@ public class BlazeEnchanterBlockEntity extends SmartTileEntity implements IHaveG
             return true;
         if (processingTicks < 5)
             return true;
-        if (!Enchanting.valid(heldItem.stack, targetItem))
+        if (!Enchanting.valid(heldItem.stack, targetItem, hyper()))
             return false;
 
-        Pair<FluidStack, ItemStack> enchantItem = Enchanting.enchant(heldItem.stack, targetItem, true);
+        Pair<FluidStack, ItemStack> enchantItem = Enchanting.enchant(heldItem.stack, targetItem, true, hyper());
         FluidStack fluidFromItem = enchantItem.getFirst();
         
         if (processingTicks > 5) {
             if (processingTicks % 40 == 0) {
                 level.playSound(null, worldPosition, SoundEvents.BEACON_AMBIENT, SoundSource.BLOCKS, 1.0f, 1.0f);
             }
-            if (internalTank.getPrimaryHandler().getFluid().getFluid() != ModFluids.EXPERIENCE.get().getSource() || internalTank.getPrimaryHandler().getFluidAmount() < fluidFromItem.getAmount()) {
+            if ((internalTank.getPrimaryHandler().getFluid().getFluid() != ModFluids.EXPERIENCE.get().getSource() && internalTank.getPrimaryHandler().getFluid().getFluid() != ModFluids.HYPER_EXPERIENCE.get().getSource()) || internalTank.getPrimaryHandler().getFluidAmount() < fluidFromItem.getAmount()) {
                 processingTicks = ENCHANTING_TIME;
                 return true;
             }
             return true;
         }
 
-        enchantItem = Enchanting.enchant(heldItem.stack, targetItem, true);
+        enchantItem = Enchanting.enchant(heldItem.stack, targetItem, true, hyper());
         // award(AllAdvancements.DRAIN);// Process finished
         heldItem.stack = enchantItem.getSecond();
         internalTank.getPrimaryHandler().getFluid().shrink(fluidFromItem.getAmount());
@@ -352,7 +352,7 @@ public class BlazeEnchanterBlockEntity extends SmartTileEntity implements IHaveG
         if (!getHeldItemStack().isEmpty())
             return inserted;
 
-        if (inserted.getCount() > 1 && Enchanting.valid(targetItem, inserted)) {
+        if (inserted.getCount() > 1 && Enchanting.valid(targetItem, inserted, hyper())) {
             returned = ItemHandlerHelper.copyStackWithSize(inserted, inserted.getCount() - 1);
             inserted = ItemHandlerHelper.copyStackWithSize(inserted, 1);
         }
@@ -387,6 +387,10 @@ public class BlazeEnchanterBlockEntity extends SmartTileEntity implements IHaveG
         super.setRemoved();
         for (LazyOptional<EnchantingItemHandler> lazyOptional : itemHandlers.values())
             lazyOptional.invalidate();
+    }
+
+    public boolean hyper(){
+        return internalTank.getPrimaryHandler().getFluid().getFluid().isSame(ModFluids.HYPER_EXPERIENCE.get().getSource());
     }
 
     @Override
@@ -435,7 +439,7 @@ public class BlazeEnchanterBlockEntity extends SmartTileEntity implements IHaveG
         ModLang.translate("gui.goggles.blaze_enchanter").forGoggles(tooltip);
         if (targetItem != null) {
             var e = EnchantingGuideItem.getEnchantment(targetItem);
-            tooltip.add(new TextComponent("     ").append(e.getFirst().getFullname(e.getSecond())));
+            tooltip.add(new TextComponent("     ").append(e.getFirst().getFullname(e.getSecond() + (hyper()?1:0))));
         }
         containedFluidTooltip(tooltip, isPlayerSneaking, getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY));
         return true;

@@ -85,7 +85,7 @@ public class BlazeEnchanterBlock extends HorizontalDirectionalBlock implements I
         ItemStack heldItem = player.getItemInHand(handIn);
         if (!heldItem.isEmpty()){
             return onTileEntityUse(worldIn, pos, te -> {
-                if(heldItem.is(ModItems.ENCHANTING_GUIDE_FOR_BLAZE.get()) && EnchantingGuideItem.getEnchantment(heldItem)!=null){
+                if(heldItem.is(ModItems.ENCHANTING_GUIDE.get()) && EnchantingGuideItem.getEnchantment(heldItem)!=null){
                     if (!worldIn.isClientSide) {
                         var target = te.targetItem.copy();
                         te.targetItem = heldItem;
@@ -94,28 +94,44 @@ public class BlazeEnchanterBlock extends HorizontalDirectionalBlock implements I
                         te.notifyUpdate();
                     }
                     return InteractionResult.SUCCESS;
-                }
-                ItemStack heldItemStack = te.getHeldItemStack();
-                if (heldItemStack.isEmpty()) {
-                    if (!worldIn.isClientSide) {
-                        te.heldItem = new TransportedItemStack(heldItem);
-                        if(!player.getAbilities().instabuild)
-                            player.setItemInHand(handIn, ItemStack.EMPTY);
-                        te.notifyUpdate();
+                } else if(Enchanting.valid(heldItem,te.targetItem,te.hyper())){
+                    ItemStack heldItemStack = te.getHeldItemStack();
+                    if (heldItemStack.isEmpty()) {
+                        if (!worldIn.isClientSide) {
+                            te.heldItem = new TransportedItemStack(heldItem);
+                            if(!player.getAbilities().instabuild)
+                                player.setItemInHand(handIn, ItemStack.EMPTY);
+                            te.notifyUpdate();
+                        }
+                        return InteractionResult.SUCCESS;
                     }
-                    return InteractionResult.SUCCESS;
+                    return InteractionResult.FAIL;
                 }
-                return InteractionResult.FAIL;
+                else return InteractionResult.PASS;
             });
         }
-        else if (player.isShiftKeyDown() && heldItem.isEmpty()){
-            if(!player.level.isClientSide())
-                worldIn.setBlockAndUpdate(pos, AllBlocks.BLAZE_BURNER.getDefaultState()
-                    .setValue(BlazeBurnerBlock.FACING, state.getValue(FACING))
-                    .setValue(BlazeBurnerBlock.HEAT_LEVEL, BlazeBurnerBlock.HeatLevel.SMOULDERING));
-            return InteractionResult.SUCCESS;
+        else {
+            if(player.isShiftKeyDown()){
+                if(!player.level.isClientSide())
+                    worldIn.setBlockAndUpdate(pos, AllBlocks.BLAZE_BURNER.getDefaultState()
+                            .setValue(BlazeBurnerBlock.FACING, state.getValue(FACING))
+                            .setValue(BlazeBurnerBlock.HEAT_LEVEL, BlazeBurnerBlock.HeatLevel.SMOULDERING));
+                return InteractionResult.SUCCESS;
+            } else {
+                return onTileEntityUse(worldIn, pos, te -> {
+                    ItemStack heldItemStack = te.getHeldItemStack();
+                    if (!heldItemStack.isEmpty()) {
+                        if (!worldIn.isClientSide) {
+                            te.heldItem = null;
+                            player.setItemInHand(handIn, heldItemStack);
+                            te.notifyUpdate();
+                        }
+                        return InteractionResult.SUCCESS;
+                    }
+                    return InteractionResult.PASS;
+                });
+            }
         }
-        return InteractionResult.PASS;
     }
 
 
@@ -160,6 +176,11 @@ public class BlazeEnchanterBlock extends HorizontalDirectionalBlock implements I
 
     @Override
     public int getLightEmission(BlockState state, BlockGetter level, BlockPos pos) {
-        return 15;
+        var te = level.getBlockEntity(pos);
+        if(te instanceof BlazeEnchanterBlockEntity blazeEnchanterBlockEntity){
+            if(blazeEnchanterBlockEntity.hyper()) return 15;
+            else if(blazeEnchanterBlockEntity.internalTank.isEmpty()) return 7;
+            else return 11;
+        } else return 0;
     }
 }

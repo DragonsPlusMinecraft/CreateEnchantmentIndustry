@@ -1,0 +1,30 @@
+{
+  "parent": "create_enchantment_industry:experienced_engineer",
+  "display": {
+    "icon": {
+      "item": "create_enchantment_industry:enchanting_guide"
+    },
+    "title": {
+      "translate": "advancement.create_enchantment_industry.blazes_new_job"
+    },
+    "description": {
+      "color": "#DBA213",
+      "translate": "advancement.create_enchantment_industry.blazes_new_job.desc"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": false,
+    "hidden": false
+  },
+  "criteria": {
+    "builtin": {
+      "trigger": "create_enchantment_industry:builtin/blazes_new_job",
+      "conditions": {}
+    }
+  },
+  "requirements": [
+    [
+      "builtin"
+    ]
+  ]
+}
