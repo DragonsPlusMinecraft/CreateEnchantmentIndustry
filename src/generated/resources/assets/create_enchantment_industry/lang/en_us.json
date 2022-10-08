@@ -7,10 +7,10 @@
 	"block.create_enchantment_industry.disenchanter": "Disenchanter",
 	"block.create_enchantment_industry.ink": "Ink",
 
-	"entity.create_enchantment_industry.bottled_hyper_experience": "Bottled Hyper Experience",
+	"entity.create_enchantment_industry.bottled_hyper_experience": "Bottle O' Hyper Enchanting",
 
 	"fluid.create_enchantment_industry.experience": "Liquid Experience",
-	"fluid.create_enchantment_industry.hyper_experience": "Hyper Experience",
+	"fluid.create_enchantment_industry.hyper_experience": "Liquid Hyper Experience",
 
 	"item.create_enchantment_industry.bottled_hyper_experience": "Bottled Hyper Experience",
 	"item.create_enchantment_industry.enchanting_guide": "Enchanting Guide",

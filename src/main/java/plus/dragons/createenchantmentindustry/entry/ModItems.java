@@ -21,6 +21,7 @@ public class ModItems {
             .register();
 
     public static final ItemEntry<HyperExpBottleItem> HYPER_EXP_BOTTLE = REGISTRATE.item("bottled_hyper_experience", HyperExpBottleItem::new)
+            .lang("Bottle O' Hyper Enchanting")
             .register();
 
     public static void fillCreateItemGroup(FillCreateItemGroupEvent event) {

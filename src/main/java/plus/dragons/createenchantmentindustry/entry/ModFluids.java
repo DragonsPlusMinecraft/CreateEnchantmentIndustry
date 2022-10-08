@@ -30,7 +30,7 @@ public class ModFluids {
 
     public static final FluidEntry<VirtualFluid> HYPER_EXPERIENCE =
             EnchantmentIndustry.registrate().virtualFluid("hyper_experience", HYPER_EXPERIENCE_STILL_RL, HYPER_EXPERIENCE_FLOW_RL)
-                    .lang("Hyper Experience")
+                    .lang("Liquid Hyper Experience")
                     .attributes(builder -> builder.luminosity(15))
                     .register();
     
