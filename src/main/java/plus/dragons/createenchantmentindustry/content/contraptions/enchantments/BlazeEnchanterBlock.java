@@ -7,7 +7,9 @@ import com.simibubi.create.content.contraptions.relays.belt.transport.Transporte
 import com.simibubi.create.content.contraptions.wrench.IWrenchable;
 import com.simibubi.create.foundation.block.ITE;
 import com.simibubi.create.foundation.tileEntity.ComparatorUtil;
+import com.simibubi.create.foundation.utility.Lang;
 import net.minecraft.core.BlockPos;
+import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -22,6 +24,7 @@ import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.phys.BlockHitResult;
@@ -37,8 +40,11 @@ import java.util.List;
 
 @SuppressWarnings("deprecation")
 public class BlazeEnchanterBlock extends HorizontalDirectionalBlock implements IWrenchable, ITE<BlazeEnchanterBlockEntity> {
+
+    public static final EnumProperty<HeatLevel> HEAT_LEVEL = EnumProperty.create("blaze", HeatLevel.class);
     public BlazeEnchanterBlock(Properties pProperties) {
         super(pProperties);
+        registerDefaultState(defaultBlockState().setValue(HEAT_LEVEL, HeatLevel.SMOULDERING));
     }
 
     @Override
@@ -54,7 +60,7 @@ public class BlazeEnchanterBlock extends HorizontalDirectionalBlock implements I
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         super.createBlockStateDefinition(builder);
-        builder.add(FACING);
+        builder.add(HEAT_LEVEL, FACING);
     }
 
     @Override
@@ -182,5 +188,26 @@ public class BlazeEnchanterBlock extends HorizontalDirectionalBlock implements I
             else if(blazeEnchanterBlockEntity.internalTank.isEmpty()) return 7;
             else return 11;
         } else return 0;
+    }
+
+    public enum HeatLevel implements StringRepresentable {
+        SMOULDERING, KINDLED, SEETHING,;
+
+        public static HeatLevel byIndex(int index) {
+            return values()[index];
+        }
+
+        public HeatLevel nextActiveLevel() {
+            return byIndex(ordinal() % (values().length - 1) + 1);
+        }
+
+        public boolean isAtLeast(HeatLevel heatLevel) {
+            return this.ordinal() >= heatLevel.ordinal();
+        }
+
+        @Override
+        public String getSerializedName() {
+            return Lang.asId(name());
+        }
     }
 }

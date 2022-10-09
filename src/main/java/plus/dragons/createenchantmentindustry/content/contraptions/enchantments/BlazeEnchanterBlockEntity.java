@@ -24,6 +24,7 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
@@ -34,6 +35,7 @@ import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.items.ItemHandlerHelper;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import plus.dragons.createenchantmentindustry.entry.ModBlocks;
 import plus.dragons.createenchantmentindustry.entry.ModFluids;
 import plus.dragons.createenchantmentindustry.foundation.utility.ModLang;
 
@@ -78,7 +80,15 @@ public class BlazeEnchanterBlockEntity extends SmartTileEntity implements IHaveG
     public void addBehaviours(List<TileEntityBehaviour> behaviours) {
         behaviours.add(new DirectBeltInputBehaviour(this).allowingBeltFunnels()
                 .setInsertionHandler(this::tryInsertingFromSide));
-        behaviours.add(internalTank = SmartFluidTankBehaviour.single(this, 3000));
+        behaviours.add(internalTank = SmartFluidTankBehaviour.single(this, 3000).whenFluidUpdates(()->{
+            var fluid = internalTank.getPrimaryHandler().getFluid().getFluid();
+            if(fluid.isSame(ModFluids.EXPERIENCE.get().getSource()))
+                trySetBlockState(level,worldPosition, BlazeEnchanterBlock.HeatLevel.KINDLED);
+            else if(fluid.isSame(ModFluids.HYPER_EXPERIENCE.get().getSource()))
+                trySetBlockState(level,worldPosition, BlazeEnchanterBlock.HeatLevel.SEETHING);
+            else
+                trySetBlockState(level,worldPosition, BlazeEnchanterBlock.HeatLevel.SMOULDERING);
+        }));
         // registerAwardables(behaviours, AllAdvancements.DRAIN, AllAdvancements.CHAINED_DRAIN);
     }
 
@@ -444,4 +454,9 @@ public class BlazeEnchanterBlockEntity extends SmartTileEntity implements IHaveG
         containedFluidTooltip(tooltip, isPlayerSneaking, getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY));
         return true;
     }
+
+    public static void trySetBlockState(Level level, BlockPos pos, BlazeEnchanterBlock.HeatLevel heatLevel){
+        level.setBlockAndUpdate(pos, ModBlocks.BLAZE_ENCHANTER.getDefaultState().setValue(BlazeEnchanterBlock.HEAT_LEVEL,heatLevel));
+    }
+
 }
