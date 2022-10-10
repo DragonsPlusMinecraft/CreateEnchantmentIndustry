@@ -19,7 +19,7 @@ import plus.dragons.createenchantmentindustry.content.contraptions.enchantments.
 public class ModEntityTypes {
 
     public static final EntityEntry<HyperExpBottle> HYPER_EXP_BOTTLE = register("bottled_hyper_experience", HyperExpBottle::new, () -> ThrownItemRenderer<HyperExpBottle>::new,
-            MobCategory.MISC, 5, Integer.MAX_VALUE, false, true, HyperExpBottle::build).register();
+            MobCategory.MISC, 4, 10, false, true, HyperExpBottle::build).register();
 
     private static <T extends Entity> CreateEntityBuilder<T, ?> register(String name, EntityType.EntityFactory<T> factory,
                                                                          NonNullSupplier<NonNullFunction<EntityRendererProvider.Context, EntityRenderer<? super T>>> renderer,
