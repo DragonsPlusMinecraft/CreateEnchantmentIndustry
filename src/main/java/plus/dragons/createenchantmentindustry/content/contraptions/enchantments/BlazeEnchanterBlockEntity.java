@@ -24,6 +24,7 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -37,6 +38,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import plus.dragons.createenchantmentindustry.entry.ModBlocks;
 import plus.dragons.createenchantmentindustry.entry.ModFluids;
+import plus.dragons.createenchantmentindustry.foundation.data.advancement.ModAdvancements;
 import plus.dragons.createenchantmentindustry.foundation.utility.ModLang;
 
 import java.util.IdentityHashMap;
@@ -89,7 +91,9 @@ public class BlazeEnchanterBlockEntity extends SmartTileEntity implements IHaveG
             else
                 trySetBlockState(level,worldPosition, BlazeEnchanterBlock.HeatLevel.SMOULDERING);
         }));
-        // registerAwardables(behaviours, AllAdvancements.DRAIN, AllAdvancements.CHAINED_DRAIN);
+        registerAwardables(behaviours,
+                ModAdvancements.FIRST_ORDER.asCreateAdvancement(),
+                ModAdvancements.ADDITIONAL_ORDER.asCreateAdvancement());
     }
 
     @Override
@@ -337,8 +341,14 @@ public class BlazeEnchanterBlockEntity extends SmartTileEntity implements IHaveG
             return true;
         }
 
+        // Advancement
+        if(EnchantmentHelper.getEnchantments(heldItem.stack).isEmpty())
+            award(ModAdvancements.FIRST_ORDER.asCreateAdvancement());
+        else
+            award(ModAdvancements.ADDITIONAL_ORDER.asCreateAdvancement());
+
+        // Process finished
         enchantItem = Enchanting.enchant(heldItem.stack, targetItem, true, hyper());
-        // award(AllAdvancements.DRAIN);// Process finished
         heldItem.stack = enchantItem.getSecond();
         internalTank.getPrimaryHandler().getFluid().shrink(fluidFromItem.getAmount());
         sendParticles = true;

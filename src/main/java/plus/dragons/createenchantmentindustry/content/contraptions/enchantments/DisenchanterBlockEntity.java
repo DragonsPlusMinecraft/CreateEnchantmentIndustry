@@ -2,6 +2,7 @@ package plus.dragons.createenchantmentindustry.content.contraptions.enchantments
 
 import com.simibubi.create.content.contraptions.goggles.IHaveGoggleInformation;
 import com.simibubi.create.content.contraptions.relays.belt.transport.TransportedItemStack;
+import com.simibubi.create.foundation.advancement.AdvancementBehaviour;
 import com.simibubi.create.foundation.tileEntity.SmartTileEntity;
 import com.simibubi.create.foundation.tileEntity.TileEntityBehaviour;
 import com.simibubi.create.foundation.tileEntity.behaviour.belt.DirectBeltInputBehaviour;
@@ -14,6 +15,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.ExperienceOrb;
 import net.minecraft.world.entity.LivingEntity;
@@ -33,6 +35,9 @@ import net.minecraftforge.items.ItemHandlerHelper;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import plus.dragons.createenchantmentindustry.entry.ModFluids;
+import plus.dragons.createenchantmentindustry.foundation.data.advancement.ModAdvancements;
+import plus.dragons.createenchantmentindustry.foundation.data.advancement.ModTriggers;
+import plus.dragons.createenchantmentindustry.foundation.mixin.AdvancementBehaviourAccessor;
 
 import java.util.IdentityHashMap;
 import java.util.List;
@@ -68,7 +73,9 @@ public class DisenchanterBlockEntity extends SmartTileEntity implements IHaveGog
         behaviours.add(internalTank = SmartFluidTankBehaviour.single(this, 1500)
                 .allowExtraction()
                 .forbidInsertion());
-        // registerAwardables(behaviours, AllAdvancements.DRAIN, AllAdvancements.CHAINED_DRAIN);
+        registerAwardables(behaviours,
+                ModAdvancements.EXPERIMENTAL.asCreateAdvancement(),
+                ModAdvancements.GONE_WITH_THE_FOIL.asCreateAdvancement());
     }
 
     @Override
@@ -218,6 +225,7 @@ public class DisenchanterBlockEntity extends SmartTileEntity implements IHaveGog
                                 inserted -= getPlayerExperience(player);
                                 player.giveExperiencePoints(-player.totalExperience);
                             }
+                            ModAdvancements.SPIRIT_TAKING.getTrigger().trigger((ServerPlayer) player);
                         } else if (sum.get() > 0) {
                             if (getPlayerExperience(player) >= sum.get()) {
                                 player.giveExperiencePoints(-sum.get());
@@ -226,6 +234,7 @@ public class DisenchanterBlockEntity extends SmartTileEntity implements IHaveGog
                                 inserted -= getPlayerExperience(player);
                                 player.giveExperiencePoints(-player.totalExperience);
                             }
+                            ModAdvancements.SPIRIT_TAKING.getTrigger().trigger((ServerPlayer) player);
                         } else {
                             break;
                         }
@@ -294,7 +303,16 @@ public class DisenchanterBlockEntity extends SmartTileEntity implements IHaveGog
         }
 
         stackPair = Disenchanting.disenchant(type,heldItem.stack,level);
-        // award(AllAdvancements.DRAIN);
+
+        // Advancement
+        award(ModAdvancements.EXPERIMENTAL.asCreateAdvancement());
+        award(ModAdvancements.GONE_WITH_THE_FOIL.asCreateAdvancement());
+        var advancementBehaviour = getBehaviour(AdvancementBehaviour.TYPE);
+        var playerId = ((AdvancementBehaviourAccessor) advancementBehaviour).getPlayerId();
+        if(playerId!=null){
+            var player = level.getPlayerByUUID(playerId);
+            ModTriggers.DISENCHANTED.trigger(player,fluidFromItem.getAmount());
+        }
 
         // Process finished
         heldItem.stack = stackPair.getSecond();

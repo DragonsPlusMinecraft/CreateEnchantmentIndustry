@@ -1,6 +1,7 @@
 package plus.dragons.createenchantmentindustry.content.contraptions.fluids;
 
 import com.simibubi.create.content.contraptions.fluids.OpenEndedPipe;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.ExperienceOrb;
 import net.minecraft.world.entity.LivingEntity;
@@ -14,13 +15,14 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.PlayerXpEvent;
 import net.minecraftforge.fluids.FluidStack;
 import plus.dragons.createenchantmentindustry.entry.ModFluids;
+import plus.dragons.createenchantmentindustry.foundation.data.advancement.ModAdvancements;
 
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
 public class OpenEndedPipeEffects {
-    private static Random RNG = new Random();
+    private static final Random RNG = new Random();
 
     public static void register() {
         OpenEndedPipe.registerEffectHandler(new ExperienceEffect());
@@ -50,6 +52,7 @@ public class OpenEndedPipeEffects {
                 var amount = fluid.getAmount() / players.size();
                 var left = fluid.getAmount() % players.size();
                 players.forEach(player -> {
+                    ModAdvancements.A_SHOWER_EXPERIENCE.getTrigger().trigger((ServerPlayer) player);
                     player.giveExperiencePoints(amount);
                     var expBall = new ExperienceOrb(player.level,player.getX(),player.getY(),player.getZ(),amount);
                     if (MinecraftForge.EVENT_BUS.post(new PlayerXpEvent.PickupXp(player, expBall))) return;
