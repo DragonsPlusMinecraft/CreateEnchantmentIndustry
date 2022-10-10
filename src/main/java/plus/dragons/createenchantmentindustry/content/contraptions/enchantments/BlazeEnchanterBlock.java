@@ -1,6 +1,7 @@
 package plus.dragons.createenchantmentindustry.content.contraptions.enchantments;
 
 import com.simibubi.create.AllBlocks;
+import com.simibubi.create.AllItems;
 import com.simibubi.create.AllShapes;
 import com.simibubi.create.content.contraptions.processing.burner.BlazeBurnerBlock;
 import com.simibubi.create.content.contraptions.relays.belt.transport.TransportedItemStack;
@@ -37,6 +38,7 @@ import plus.dragons.createenchantmentindustry.entry.ModItems;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 @SuppressWarnings("deprecation")
 public class BlazeEnchanterBlock extends HorizontalDirectionalBlock implements IWrenchable, ITE<BlazeEnchanterBlockEntity> {
@@ -112,16 +114,23 @@ public class BlazeEnchanterBlock extends HorizontalDirectionalBlock implements I
                         return InteractionResult.SUCCESS;
                     }
                     return InteractionResult.FAIL;
+                } else if (AllItems.GOGGLES.isIn(heldItem)){
+                    if (te.goggles)
+                        return InteractionResult.PASS;
+                    te.goggles = true;
+                    te.notifyUpdate();
+                    return InteractionResult.SUCCESS;
                 }
                 else return InteractionResult.PASS;
             });
         }
         else {
             if(player.isShiftKeyDown()){
-                if(!player.level.isClientSide())
+                if(!player.level.isClientSide()){
                     worldIn.setBlockAndUpdate(pos, AllBlocks.BLAZE_BURNER.getDefaultState()
                             .setValue(BlazeBurnerBlock.FACING, state.getValue(FACING))
                             .setValue(BlazeBurnerBlock.HEAT_LEVEL, BlazeBurnerBlock.HeatLevel.SMOULDERING));
+                }
                 return InteractionResult.SUCCESS;
             } else {
                 return onTileEntityUse(worldIn, pos, te -> {
@@ -133,8 +142,11 @@ public class BlazeEnchanterBlock extends HorizontalDirectionalBlock implements I
                             te.notifyUpdate();
                         }
                         return InteractionResult.SUCCESS;
-                    }
-                    return InteractionResult.PASS;
+                    } if (!te.goggles)
+                        return InteractionResult.PASS;
+                    te.goggles = false;
+                    te.notifyUpdate();
+                    return InteractionResult.SUCCESS;
                 });
             }
         }

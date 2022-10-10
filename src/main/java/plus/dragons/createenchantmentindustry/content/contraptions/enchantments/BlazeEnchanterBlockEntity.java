@@ -62,6 +62,7 @@ public class BlazeEnchanterBlockEntity extends SmartTileEntity implements IHaveG
     float oFlip;
     float flipT;
     float flipA;
+    public boolean goggles;
 
     public BlazeEnchanterBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
@@ -76,6 +77,7 @@ public class BlazeEnchanterBlockEntity extends SmartTileEntity implements IHaveG
             .horizontalAngle(state.getOptionalValue(BlazeEnchanterBlock.FACING)
             .orElse(Direction.SOUTH)) + 180) % 360
         );
+        goggles = false;
     }
 
     @Override
@@ -418,6 +420,7 @@ public class BlazeEnchanterBlockEntity extends SmartTileEntity implements IHaveG
         super.write(compoundTag, clientPacket);
         compoundTag.putInt("ProcessingTicks", processingTicks);
         compoundTag.put("TargetItem", targetItem.serializeNBT());
+        compoundTag.putBoolean("Goggles", goggles);
         if (heldItem != null)
             compoundTag.put("HeldItem", heldItem.serializeNBT());
         if (sendParticles && clientPacket) {
@@ -432,6 +435,7 @@ public class BlazeEnchanterBlockEntity extends SmartTileEntity implements IHaveG
         heldItem = null;
         processingTicks = compoundTag.getInt("ProcessingTicks");
         targetItem = ItemStack.of(compoundTag.getCompound("TargetItem"));
+        goggles = compoundTag.contains("Goggles");
         if (compoundTag.contains("HeldItem"))
             heldItem = TransportedItemStack.read(compoundTag.getCompound("HeldItem"));
         if (!clientPacket)

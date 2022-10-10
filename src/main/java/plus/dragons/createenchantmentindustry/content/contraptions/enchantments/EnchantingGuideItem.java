@@ -61,10 +61,10 @@ public class EnchantingGuideItem extends Item implements MenuProvider {
                         level.setBlockAndUpdate(blockPos, ModBlocks.BLAZE_ENCHANTER.getDefaultState()
                             .setValue(BlazeEnchanterBlock.FACING, level.getBlockState(blockPos).getValue(BlazeBurnerBlock.FACING))
                         );
-                        if (level.getBlockEntity(blockPos) instanceof BlazeEnchanterBlockEntity blazeEnchanterBlockEntity) {
+                        if (level.getBlockEntity(blockPos) instanceof BlazeEnchanterBlockEntity tileEntity) {
                             var i = itemStack.copy();
                             i.setCount(1);
-                            blazeEnchanterBlockEntity.setTargetItem(i);
+                            tileEntity.setTargetItem(i);
                         }
                         AdvancementBehaviour.setPlacedBy(pContext.getLevel(), blockPos, player);
                         ModAdvancements.BLAZES_NEW_JOB.getTrigger().trigger((ServerPlayer) player);
