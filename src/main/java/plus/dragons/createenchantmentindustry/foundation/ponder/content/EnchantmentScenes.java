@@ -389,8 +389,10 @@ public class EnchantmentScenes {
         scene.world.modifyTileEntity(util.grid.at(2,1,5), CreativeFluidTankTileEntity.class, be -> ((CreativeFluidTankTileEntity.CreativeSmartFluidTank) be.getTankInventory())
                 .setContainedFluid(new FluidStack(ModFluids.INK.get().getSource(), 1000)));
         scene.world.modifyTileEntity(util.grid.at(2,3,2), CopierBlockEntity.class, be ->
-                be.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY).ifPresent(tank->
-                        tank.fill(new FluidStack(ModFluids.INK.get().getSource(),3000), IFluidHandler.FluidAction.EXECUTE)));
+                be.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY).ifPresent(tank->{
+                    tank.drain(3000, IFluidHandler.FluidAction.EXECUTE);
+                    tank.fill(new FluidStack(ModFluids.INK.get().getSource(),3000), IFluidHandler.FluidAction.EXECUTE);
+                }));
         scene.idle(40);
 
         item = Items.BOOK.getDefaultInstance();
