@@ -5,8 +5,8 @@
   "block.create_enchantment_industry.ink": "\u029EuI",
   "entity.create_enchantment_industry.bottled_hyper_experience": "\u01DD\u0254u\u01DD\u0131\u0279\u01DDdx\u018E \u0279\u01DDd\u028EH p\u01DD\u05DF\u0287\u0287o\u15FA",
   "fluid.create_enchantment_industry.experience": "\u01DD\u0254u\u01DD\u0131\u0279\u01DDdx\u018E p\u0131nb\u0131\uA780",
-  "fluid.create_enchantment_industry.hyper_experience": "\u01DD\u0254u\u01DD\u0131\u0279\u01DDdx\u018E \u0279\u01DDd\u028EH",
-  "item.create_enchantment_industry.bottled_hyper_experience": "\u01DD\u0254u\u01DD\u0131\u0279\u01DDdx\u018E \u0279\u01DDd\u028EH p\u01DD\u05DF\u0287\u0287o\u15FA",
+  "fluid.create_enchantment_industry.hyper_experience": "\u01DD\u0254u\u01DD\u0131\u0279\u01DDdx\u018E \u0279\u01DDd\u028EH p\u0131nb\u0131\uA780",
+  "item.create_enchantment_industry.bottled_hyper_experience": "bu\u0131\u0287u\u0250\u0265\u0254u\u018E \u0279\u01DDd\u028EH ,O \u01DD\u05DF\u0287\u0287o\u15FA",
   "item.create_enchantment_industry.enchanting_guide": "\u01DDp\u0131n\u2141 bu\u0131\u0287u\u0250\u0265\u0254u\u018E",
   "item.create_enchantment_industry.ink_bucket": "\u0287\u01DD\u029E\u0254n\u15FA \u029EuI"
 }

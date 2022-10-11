@@ -1,4 +1,6 @@
 {
+	"_": "Missing Localizations: 3",
+
 	"_": "->------------------------]  Game Elements  [------------------------<-",
 
 	"block.create_enchantment_industry.blaze_enchanter": "烈焰人附魔室",
@@ -87,6 +89,10 @@
 	"create_enchantment_industry.ponder.copy.header": "复印机使用",
 
 	"create_enchantment_industry.ponder.enchant.header": "烈焰人附魔室使用",
+
+	"create_enchantment_industry.ponder.hyper_enchant.header": "超越附魔",
+	"create_enchantment_industry.ponder.hyper_enchant.text_1": "这是一罐液态超经验",
+	"create_enchantment_industry.ponder.hyper_enchant.text_2": "超经验可以让烈焰人附魔室进入超级燃烧状态，此状态下产出的附魔的等级将比设定附魔高出一个等级",
 
 	"create_enchantment_industry.ponder.drop_experience_nugget.header": "...经验农场？",
 	"create_enchantment_industry.ponder.drop_experience_nugget.text_1": "机械手杀死生物时将掉落经验颗粒。",

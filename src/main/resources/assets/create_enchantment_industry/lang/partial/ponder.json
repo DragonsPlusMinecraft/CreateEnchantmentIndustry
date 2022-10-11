@@ -15,6 +15,10 @@
 
   "create_enchantment_industry.ponder.enchant.header": "Enchanting",
 
+  "create_enchantment_industry.ponder.hyper_enchant.header": "Hyper-enchanting",
+  "create_enchantment_industry.ponder.hyper_enchant.text_1": "This is liquid hyper experience",
+  "create_enchantment_industry.ponder.hyper_enchant.text_2": "Hyper experience can make the Blaze Enchanter into seething state, and the level of the enchantment produced in this state will be one level higher than the set enchantment",
+
   "create_enchantment_industry.ponder.drop_experience_nugget.header": "Maybe A Exp-farm?",
   "create_enchantment_industry.ponder.drop_experience_nugget.text_1": "When mob is killed by deployer, experience nuggets are dropped.",
 
