@@ -2,15 +2,9 @@
 c0ff48e264cee8f91b5234e773e5f97d3b609306 assets/create_enchantment_industry/blockstates/copier.json
 a1335bc0782d6c7f46f406ce244a6c9ed9834bf5 assets/create_enchantment_industry/blockstates/disenchanter.json
 b63dc2eab1c329bb4002e7c3287d821af69aa90c assets/create_enchantment_industry/blockstates/ink.json
-<<<<<<< Updated upstream
 cc9d34144b7f92e911331bd4dbb9281b6ad5999d assets/create_enchantment_industry/lang/en_ud.json
-4370effc1ea7844a5d92b71a3c593befd416147f assets/create_enchantment_industry/lang/en_us.json
-def1c8d6815158c18072ff614c3c4d5a9c32be24 assets/create_enchantment_industry/lang/unfinished/zh_cn.json
-=======
-3b851d089e0a9f12c6b3aa1c29210a4893f1e5d6 assets/create_enchantment_industry/lang/en_ud.json
-0128daadd3fc277f1f93b9d8fc7b612b4a80cd74 assets/create_enchantment_industry/lang/en_us.json
-aef5bf855a36ba6b14f60b3af123b8acff36e09c assets/create_enchantment_industry/lang/unfinished/zh_cn.json
->>>>>>> Stashed changes
+d06d239e0a8638db999be26c6bc8f02b77f7f3cd assets/create_enchantment_industry/lang/en_us.json
+c076f70482c6fc2a6e9169123e7e5679cfb8565b assets/create_enchantment_industry/lang/unfinished/zh_cn.json
 72bab3e61c27067cf20b1b30676d8033f7a9dba6 assets/create_enchantment_industry/models/block/ink.json
 ba00213daae6d7995612f1b2f6a470c8da8457f3 assets/create_enchantment_industry/models/item/copier.json
 195ab660af357921002bf9fce54d63cdfbcccdd7 assets/create_enchantment_industry/models/item/disenchanter.json

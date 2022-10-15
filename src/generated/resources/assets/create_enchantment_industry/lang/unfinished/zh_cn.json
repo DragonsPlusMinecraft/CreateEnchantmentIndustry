@@ -1,5 +1,5 @@
 {
-	"_": "Missing Localizations: 0",
+	"_": "Missing Localizations: 1",
 
 	"_": "->------------------------]  Game Elements  [------------------------<-",
 
@@ -64,7 +64,7 @@
 
 	"_": "->------------------------]  Item Descriptions  [------------------------<-",
 
-	"create_enchantment_industry.enchanting_guide.tooltip": "附魔指南",
+	"create_enchantment_industry.enchanting_guide.tooltip": "UNLOCALIZED: ENCHANTING GUIDE TOOLTIPS",
 
 	"create_enchantment_industry.tooltip.guide_header": "当前附魔：",
 	"create_enchantment_industry.tooltip.guide_not_configured": "未设定",
