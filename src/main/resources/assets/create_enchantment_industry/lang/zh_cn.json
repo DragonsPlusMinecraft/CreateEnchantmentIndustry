@@ -52,8 +52,6 @@
 
 	"_": "->------------------------]  UI & Messages  [------------------------<-",
 
-	"itemGroup.create_enchantment_industry.base": "机械动力：附魔工业",
-
 	"create_enchantment_industry.gui.enchanting_guide.no_enchantment": "无可用附魔",
 	"create_enchantment_industry.gui.goggles.copier_machine": "复印物品：",
 	"create_enchantment_industry.gui.goggles.copier_no_target": "无",

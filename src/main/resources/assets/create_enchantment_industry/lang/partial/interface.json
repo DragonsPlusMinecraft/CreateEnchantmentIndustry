@@ -1,6 +1,4 @@
 {
-  "itemGroup.create_enchantment_industry.base": "Create Enchantment Industry",
-
   "create_enchantment_industry.gui.enchanting_guide.no_enchantment": "No Available Enchantment",
   "create_enchantment_industry.gui.goggles.copier_machine": "Object to be copied:",
   "create_enchantment_industry.gui.goggles.copier_no_target": "None",
