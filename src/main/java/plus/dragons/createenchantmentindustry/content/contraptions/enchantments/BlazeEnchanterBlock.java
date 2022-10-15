@@ -38,7 +38,6 @@ import plus.dragons.createenchantmentindustry.entry.ModItems;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 @SuppressWarnings("deprecation")
 public class BlazeEnchanterBlock extends HorizontalDirectionalBlock implements IWrenchable, ITE<BlazeEnchanterBlockEntity> {
@@ -93,7 +92,7 @@ public class BlazeEnchanterBlock extends HorizontalDirectionalBlock implements I
         ItemStack heldItem = player.getItemInHand(handIn);
         if (!heldItem.isEmpty()){
             return onTileEntityUse(worldIn, pos, te -> {
-                if(heldItem.is(ModItems.ENCHANTING_GUIDE.get()) && EnchantingGuideItem.getEnchantment(heldItem)!=null){
+                if(heldItem.is(ModItems.ENCHANTING_GUIDE.get()) && EnchantingGuideItem.getEnchantment(heldItem) != null){
                     if (!worldIn.isClientSide) {
                         var target = te.targetItem.copy();
                         te.targetItem = heldItem;
@@ -102,7 +101,7 @@ public class BlazeEnchanterBlock extends HorizontalDirectionalBlock implements I
                         te.notifyUpdate();
                     }
                     return InteractionResult.SUCCESS;
-                } else if(Enchanting.valid(heldItem,te.targetItem,te.hyper())){
+                } else if(Enchanting.valid(heldItem, te.targetItem, te.hyper())) {
                     ItemStack heldItemStack = te.getHeldItemStack();
                     if (heldItemStack.isEmpty()) {
                         if (!worldIn.isClientSide) {
@@ -114,7 +113,7 @@ public class BlazeEnchanterBlock extends HorizontalDirectionalBlock implements I
                         return InteractionResult.SUCCESS;
                     }
                     return InteractionResult.FAIL;
-                } else if (AllItems.GOGGLES.isIn(heldItem)){
+                } else if (AllItems.GOGGLES.isIn(heldItem)) {
                     if (te.goggles)
                         return InteractionResult.PASS;
                     te.goggles = true;
@@ -123,8 +122,7 @@ public class BlazeEnchanterBlock extends HorizontalDirectionalBlock implements I
                 }
                 else return InteractionResult.PASS;
             });
-        }
-        else {
+        } else {
             if(player.isShiftKeyDown()){
                 if(!player.level.isClientSide()){
                     worldIn.setBlockAndUpdate(pos, AllBlocks.BLAZE_BURNER.getDefaultState()

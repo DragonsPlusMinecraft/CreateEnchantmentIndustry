@@ -42,7 +42,7 @@ public class HyperExpBottle extends ThrowableItemProjectile {
      * Gets the amount of gravity to apply to the thrown entity with each tick.
      */
     protected float getGravity() {
-        return 0.01F;
+        return 0.07F;
     }
 
     /**
@@ -53,9 +53,10 @@ public class HyperExpBottle extends ThrowableItemProjectile {
         super.onHit(pResult);
         if (this.level instanceof ServerLevel) {
             this.level.levelEvent(2002, this.blockPosition(), PotionUtils.getColor(Potions.WATER));
-            ExperienceOrb.award((ServerLevel)this.level, this.position(), 100);
+            int amount = 30 + this.level.random.nextInt(50) + this.level.random.nextInt(50);
+            ExperienceOrb.award((ServerLevel)this.level, this.position(), amount);
             this.discard();
         }
-
     }
+    
 }

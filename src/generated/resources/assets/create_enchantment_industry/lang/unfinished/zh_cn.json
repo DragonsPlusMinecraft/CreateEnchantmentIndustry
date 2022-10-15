@@ -1,5 +1,5 @@
 {
-	"_": "Missing Localizations: 3",
+	"_": "Missing Localizations: 0",
 
 	"_": "->------------------------]  Game Elements  [------------------------<-",
 
@@ -8,13 +8,13 @@
 	"block.create_enchantment_industry.disenchanter": "祛魔池",
 	"block.create_enchantment_industry.ink": "墨水",
 
-	"entity.create_enchantment_industry.bottled_hyper_experience": "超级附魔之瓶",
+	"entity.create_enchantment_industry.hyper_experience_bottle": "超越附魔之瓶",
 
 	"fluid.create_enchantment_industry.experience": "液态经验",
 	"fluid.create_enchantment_industry.hyper_experience": "液态超经验",
 
-	"item.create_enchantment_industry.bottled_hyper_experience": "瓶装超经验",
 	"item.create_enchantment_industry.enchanting_guide": "附魔指南",
+	"item.create_enchantment_industry.hyper_experience_bottle": "超越附魔之瓶",
 	"item.create_enchantment_industry.ink_bucket": "墨水桶",
 
 
@@ -90,9 +90,9 @@
 
 	"create_enchantment_industry.ponder.enchant.header": "烈焰人附魔室使用",
 
-	"create_enchantment_industry.ponder.hyper_enchant.header": "UNLOCALIZED: Hyper-enchanting",
-	"create_enchantment_industry.ponder.hyper_enchant.text_1": "UNLOCALIZED: This is liquid hyper experience",
-	"create_enchantment_industry.ponder.hyper_enchant.text_2": "UNLOCALIZED: Hyper experience can make the Blaze Enchanter into seething state, and the level of the enchantment produced in this state will be one level higher than the set enchantment",
+	"create_enchantment_industry.ponder.hyper_enchant.header": "超越附魔",
+	"create_enchantment_industry.ponder.hyper_enchant.text_1": "这是一罐液态超经验",
+	"create_enchantment_industry.ponder.hyper_enchant.text_2": "超经验可以让烈焰人附魔室进入超级燃烧状态，此状态下产出的附魔的等级将比设定附魔高出一个等级",
 
 	"create_enchantment_industry.ponder.drop_experience_nugget.header": "...经验农场？",
 	"create_enchantment_industry.ponder.drop_experience_nugget.text_1": "机械手杀死生物时将掉落经验颗粒。",

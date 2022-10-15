@@ -1,5 +1,5 @@
 {
-	"_": "Missing Localizations: 3",
+	"_": "Missing Localizations: 0",
 
 	"_": "->------------------------]  Game Elements  [------------------------<-",
 
@@ -8,13 +8,13 @@
 	"block.create_enchantment_industry.disenchanter": "祛魔池",
 	"block.create_enchantment_industry.ink": "墨水",
 
-	"entity.create_enchantment_industry.bottled_hyper_experience": "超级附魔之瓶",
+	"entity.create_enchantment_industry.hyper_experience_bottle": "超越附魔之瓶",
 
 	"fluid.create_enchantment_industry.experience": "液态经验",
 	"fluid.create_enchantment_industry.hyper_experience": "液态超经验",
 
-	"item.create_enchantment_industry.bottled_hyper_experience": "瓶装超经验",
 	"item.create_enchantment_industry.enchanting_guide": "附魔指南",
+	"item.create_enchantment_industry.hyper_experience_bottle": "超越附魔之瓶",
 	"item.create_enchantment_industry.ink_bucket": "墨水桶",
 
 

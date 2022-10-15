@@ -1,6 +1,5 @@
 package plus.dragons.createenchantmentindustry.entry;
 
-import com.simibubi.create.content.contraptions.components.actors.SeatEntity;
 import com.simibubi.create.foundation.data.CreateEntityBuilder;
 import com.simibubi.create.foundation.utility.Lang;
 import com.tterrag.registrate.util.entry.EntityEntry;
@@ -18,8 +17,8 @@ import plus.dragons.createenchantmentindustry.content.contraptions.enchantments.
 
 public class ModEntityTypes {
 
-    public static final EntityEntry<HyperExpBottle> HYPER_EXP_BOTTLE = register("bottled_hyper_experience", HyperExpBottle::new, () -> ThrownItemRenderer<HyperExpBottle>::new,
-            MobCategory.MISC, 4, 10, false, true, HyperExpBottle::build).register();
+    public static final EntityEntry<HyperExpBottle> HYPER_EXP_BOTTLE = register("hyper_experience_bottle", HyperExpBottle::new, () -> ThrownItemRenderer<HyperExpBottle>::new,
+            MobCategory.MISC, 4, 10, true, false, HyperExpBottle::build).register();
 
     private static <T extends Entity> CreateEntityBuilder<T, ?> register(String name, EntityType.EntityFactory<T> factory,
                                                                          NonNullSupplier<NonNullFunction<EntityRendererProvider.Context, EntityRenderer<? super T>>> renderer,
