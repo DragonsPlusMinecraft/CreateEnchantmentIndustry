@@ -21,6 +21,7 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.entity.ItemRenderer;
+import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.resources.model.Material;
 import net.minecraft.core.Direction;
 import net.minecraft.util.Mth;
@@ -28,6 +29,9 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.client.ForgeHooksClient;
 import plus.dragons.createenchantmentindustry.EnchantmentIndustry;
+import plus.dragons.createenchantmentindustry.content.contraptions.enchantments.BlazeEnchanterBlock.HeatLevel;
+
+import static plus.dragons.createenchantmentindustry.content.contraptions.enchantments.BlazeEnchanterBlockEntity.ENCHANTING_TIME;
 
 public class BlazeEnchanterRenderer extends SmartTileEntityRenderer<BlazeEnchanterBlockEntity> {
     public static final Material BOOK_MATERIAL = ForgeHooksClient.getBlockMaterial(EnchantmentIndustry.genRL("block/blaze_enchanter_book"));
@@ -47,16 +51,16 @@ public class BlazeEnchanterRenderer extends SmartTileEntityRenderer<BlazeEnchant
         
         ps.pushPose();
     
-        renderItem(be, partialTicks, ps, buffer, light, overlay);
-        renderBlaze(be, be.getBlockState(), horizontalAngle, animation, ps, buffer);
-        renderBook(be, horizontalAngle, partialTicks, ps, buffer, light, overlay);
+        renderItem(be, partialTicks, animation, ps, buffer);
+        renderBlaze(be, horizontalAngle, animation, ps, buffer);
+        renderBook(be, partialTicks, horizontalAngle, ps, buffer);
         
         ps.popPose();
     }
     
-    protected void renderItem(BlazeEnchanterBlockEntity be, float partialTicks,
-                              PoseStack ps, MultiBufferSource buffer,
-                              int light, int overlay) {
+    protected void renderItem(BlazeEnchanterBlockEntity be,
+                              float partialTicks, float animation,
+                              PoseStack ps, MultiBufferSource buffer) {
         TransportedItemStack transported = be.heldItem;
         if(transported == null)
             return;
@@ -65,14 +69,17 @@ public class BlazeEnchanterRenderer extends SmartTileEntityRenderer<BlazeEnchant
         boolean horizontal = insertedFrom.getAxis().isHorizontal();
         
         ps.pushPose();
-        
+    
+        HeatLevel heatLevel = be.getBlockState().getValue(BlazeEnchanterBlock.HEAT_LEVEL);
+        boolean active = be.processingTicks > 0 && be.processingTicks < 200;
+        float renderTick = AnimationTickHolder.getRenderTime(be.getLevel()) + (be.hashCode() % 13) * 16f;
         float beltOffset = horizontal ? Mth.lerp(partialTicks, transported.prevBeltPosition, transported.beltPosition) : .5f;
-        float processingProgress = be.processingTicks <= 0
-            ? 0
-            : (BlazeEnchanterBlockEntity.ENCHANTING_TIME - be.processingTicks + partialTicks) / 40;
-        float movingProgress = Mth.sin((1 - 2 * Mth.abs(.5f - beltOffset)) * PI / 2) ;
-        float verticalOffset = movingProgress * (5 + Mth.sin(processingProgress * 2 * PI)) / 8;
-        ps.translate(.5f, 13 / 16f + verticalOffset, .5f);
+        float movingProgress = Mth.sin((1 - 2 * Mth.abs(.5f - beltOffset)) * PI / 2);
+        float verticalOffsetMult = heatLevel.isAtLeast(HeatLevel.KINDLED) ? 64 : 16;
+        float verticalOffset = movingProgress * 5 / 8
+            + Mth.sin((renderTick / 16f) % (2 * PI)) / verticalOffsetMult
+            + animation * .75f;
+        ps.translate(.5f, 3 / 4f + verticalOffset, .5f);
         
         Vec3 offsetVec = Vec3.atLowerCornerOf(insertedFrom.getOpposite().getNormal()).scale(.5f - beltOffset);
         ps.translate(offsetVec.x, 0, offsetVec.z);
@@ -84,66 +91,84 @@ public class BlazeEnchanterRenderer extends SmartTileEntityRenderer<BlazeEnchant
             ps.translate(alongX ? sideOffset : 0, 0, alongX ? 0 : -sideOffset);
         }
         
-        float rotProgress = processingProgress - Mth.floor(processingProgress);
-        float rotX = rotProgress * 2 * PI + PI / 2;
-        float rotY = rotProgress * 2 * PI + PI + transported.angle * movingProgress;
-        float rotZ = rotProgress * 2 * PI;
+        float rot = active
+            ? (ENCHANTING_TIME - be.processingTicks + partialTicks) / 16 % (2 * PI)
+            : renderTick / 16f % (2 * PI);
+        float rotX = active ? rot + PI / 2 : 0;
+        float rotY = rot + PI + transported.angle * movingProgress;
+        float rotZ = active ? rot : 0;
         ps.mulPose(Quaternion.fromXYZ(rotX, rotY, rotZ));
+        
         ps.scale(0.5f, 0.5f, 0.5f);
     
         ItemRenderer itemRenderer = Minecraft.getInstance().getItemRenderer();
-        itemRenderer.renderStatic(transported.stack, ItemTransforms.TransformType.FIXED, light, overlay, ps, buffer, 0);
+        itemRenderer.renderStatic(transported.stack, ItemTransforms.TransformType.FIXED, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, ps, buffer, 0);
         
         ps.popPose();
     }
     
-    protected void renderBlaze(BlazeEnchanterBlockEntity be, BlockState blockState,
+    protected void renderBlaze(BlazeEnchanterBlockEntity be,
                                float horizontalAngle, float animation,
                                PoseStack ps, MultiBufferSource buffer) {
-        
-        boolean working = be.processingTicks > 0;
+        BlockState blockState = be.getBlockState();
+        HeatLevel heatLevel = blockState.getValue(BlazeEnchanterBlock.HEAT_LEVEL);
+        boolean smouldering = heatLevel == HeatLevel.SMOULDERING;
+        boolean active = be.processingTicks > 0 && be.processingTicks < 200;
         float time = AnimationTickHolder.getRenderTime(be.getLevel());
         float renderTick = time + (be.hashCode() % 13) * 16f;
-        float offsetMult = 64;
-        float offset = Mth.sin((renderTick / 16f) % (2 * PI)) / offsetMult;
-        float offset1 = Mth.sin((renderTick / 16f + PI) % (2 * PI)) / offsetMult;
-        float offset2 = Mth.sin((renderTick / 16f + PI / 2) % (2 * PI)) / offsetMult;
-    
+        float offsetMult = heatLevel.isAtLeast(HeatLevel.KINDLED) ? 64 : 16;
+        float offset = Mth.sin((float) ((renderTick / 16f) % (2 * Math.PI))) / offsetMult;
+        float offset1 = Mth.sin((float) ((renderTick / 16f + Math.PI) % (2 * Math.PI))) / offsetMult;
+        float offset2 = Mth.sin((float) ((renderTick / 16f + Math.PI / 2) % (2 * Math.PI))) / offsetMult;
+        float headY = offset + (animation * .75f);
         VertexConsumer solid = buffer.getBuffer(RenderType.solid());
         
         ps.pushPose();
-        ps.translate(0, 3 / 8f, 0);
+        ps.translate(0, .125, 0);
         
-        PartialModel blazeModel = working ? AllBlockPartials.BLAZE_ACTIVE : AllBlockPartials.BLAZE_IDLE;
+        PartialModel blazeModel = switch(heatLevel) {
+            case SEETHING -> active ? AllBlockPartials.BLAZE_SUPER_ACTIVE : AllBlockPartials.BLAZE_SUPER;
+            case KINDLED -> active ? AllBlockPartials.BLAZE_ACTIVE : AllBlockPartials.BLAZE_IDLE;
+            default -> AllBlockPartials.BLAZE_INERT;
+        };
         
-        float headY = offset - (animation * .75f);
-        //Head
-        draw(CachedBufferer
-            .partial(blazeModel, blockState)
-            .translate(0, headY, 0),
-            horizontalAngle, ps, solid
-        );
-        //Rods
-        PartialModel rods = AllBlockPartials.BLAZE_BURNER_RODS;
-        PartialModel rods2 =AllBlockPartials.BLAZE_BURNER_RODS_2;
-        draw(CachedBufferer
-            .partial(rods, blockState)
-            .translate(0, offset1 + animation - 1 / 8f, 0),
-            0, ps, solid
-        );
-        draw(CachedBufferer
-            .partial(rods2, blockState)
-            .translate(0, offset2 + animation - 7 / 16f, 0),
-            0, ps, solid
-        );
+        SuperByteBuffer blazeBuffer = CachedBufferer.partial(blazeModel, blockState);
+        blazeBuffer.translate(0, headY, 0);
+        draw(blazeBuffer, horizontalAngle, ps, solid);
+        
+        if (be.goggles) {
+            PartialModel gogglesModel = blazeModel == AllBlockPartials.BLAZE_INERT
+                ? AllBlockPartials.BLAZE_GOGGLES_SMALL : AllBlockPartials.BLAZE_GOGGLES;
+            
+            SuperByteBuffer gogglesBuffer = CachedBufferer.partial(gogglesModel, blockState);
+            gogglesBuffer.translate(0, headY + 8 / 16f, 0);
+            draw(gogglesBuffer, horizontalAngle, ps, solid);
+        }
+        
+        if (!smouldering) {
+            PartialModel rodsModel = heatLevel == HeatLevel.SEETHING
+                ? AllBlockPartials.BLAZE_BURNER_SUPER_RODS
+                : AllBlockPartials.BLAZE_BURNER_RODS;
+            PartialModel rodsModel2 = heatLevel == HeatLevel.SEETHING
+                ? AllBlockPartials.BLAZE_BURNER_SUPER_RODS_2
+                : AllBlockPartials.BLAZE_BURNER_RODS_2;
+            SuperByteBuffer rodsBuffer = CachedBufferer.partial(rodsModel, blockState);
+            rodsBuffer.translate(0, offset1 + animation + .125f, 0)
+                .light(LightTexture.FULL_BRIGHT)
+                .renderInto(ps, solid);
+        
+            SuperByteBuffer rodsBuffer2 = CachedBufferer.partial(rodsModel2, blockState);
+            rodsBuffer2.translate(0, offset2 + animation - 3 / 16f, 0)
+                .light(LightTexture.FULL_BRIGHT)
+                .renderInto(ps, solid);
+        }
         
         ps.popPose();
     }
     
     protected void renderBook(BlazeEnchanterBlockEntity be,
-                              float horizontalAngle, float partialTicks,
-                              PoseStack ps, MultiBufferSource buffer,
-                              int light, int overlay) {
+                              float partialTicks, float horizontalAngle,
+                              PoseStack ps, MultiBufferSource buffer) {
         ps.pushPose();
         
         ps.translate(0.5, 0.25, 0.5);
@@ -156,7 +181,7 @@ public class BlazeEnchanterRenderer extends SmartTileEntityRenderer<BlazeEnchant
         float page1 = Mth.frac(flip + 0.75f) * 1.6f - 0.3f;
         this.bookModel.setupAnim(time, Mth.clamp(page0, 0.0f, 1.0f), Mth.clamp(page1, 0.0f, 1.0f), 1);
         VertexConsumer vertexconsumer = BOOK_MATERIAL.buffer(buffer, RenderType::entitySolid);
-        this.bookModel.render(ps, vertexconsumer, light, overlay, 1.0f, 1.0f, 1.0f, 1.0f);
+        this.bookModel.render(ps, vertexconsumer, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, 1.0f, 1.0f, 1.0f, 1.0f);
         
         ps.popPose();
     }
@@ -166,4 +191,5 @@ public class BlazeEnchanterRenderer extends SmartTileEntityRenderer<BlazeEnchant
             .light(LightTexture.FULL_BRIGHT)
             .renderInto(ps, vc);
     }
+    
 }

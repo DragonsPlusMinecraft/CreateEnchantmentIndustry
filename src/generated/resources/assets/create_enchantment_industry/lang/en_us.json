@@ -7,13 +7,13 @@
 	"block.create_enchantment_industry.disenchanter": "Disenchanter",
 	"block.create_enchantment_industry.ink": "Ink",
 
-	"entity.create_enchantment_industry.bottled_hyper_experience": "Bottled Hyper Experience",
+	"entity.create_enchantment_industry.hyper_experience_bottle": "Hyper Experience Bottle",
 
 	"fluid.create_enchantment_industry.experience": "Liquid Experience",
-	"fluid.create_enchantment_industry.hyper_experience": "Hyper Experience",
+	"fluid.create_enchantment_industry.hyper_experience": "Liquid Hyper Experience",
 
-	"item.create_enchantment_industry.bottled_hyper_experience": "Bottled Hyper Experience",
 	"item.create_enchantment_industry.enchanting_guide": "Enchanting Guide",
+	"item.create_enchantment_industry.hyper_experience_bottle": "Bottle O' Hyper Enchanting",
 	"item.create_enchantment_industry.ink_bucket": "Ink Bucket",
 
 
@@ -51,8 +51,6 @@
 
 	"_": "->------------------------]  UI & Messages  [------------------------<-",
 
-	"itemGroup.create_enchantment_industry.base": "Create Enchantment Industry",
-
 	"create_enchantment_industry.gui.enchanting_guide.no_enchantment": "No Available Enchantment",
 	"create_enchantment_industry.gui.goggles.copier_machine": "Object to be copied:",
 	"create_enchantment_industry.gui.goggles.copier_no_target": "None",
@@ -88,6 +86,10 @@
 	"create_enchantment_industry.ponder.copy.header": "Using Copier",
 
 	"create_enchantment_industry.ponder.enchant.header": "Enchanting",
+
+	"create_enchantment_industry.ponder.hyper_enchant.header": "Hyper-enchanting",
+	"create_enchantment_industry.ponder.hyper_enchant.text_1": "This is liquid hyper experience",
+	"create_enchantment_industry.ponder.hyper_enchant.text_2": "Hyper experience can make the Blaze Enchanter into seething state, and the level of the enchantment produced in this state will be one level higher than the set enchantment",
 
 	"create_enchantment_industry.ponder.drop_experience_nugget.header": "Maybe A Exp-farm?",
 	"create_enchantment_industry.ponder.drop_experience_nugget.text_1": "When mob is killed by deployer, experience nuggets are dropped.",

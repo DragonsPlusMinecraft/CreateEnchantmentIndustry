@@ -21,7 +21,8 @@ public class ModPonderIndex {
 
         HELPER.forComponents(ModItems.ENCHANTING_GUIDE)
                 .addStoryBoard("enchanter_transform",EnchantmentScenes::transformBlazeBurner, ModPonderTag.EXPERIENCE)
-                .addStoryBoard("enchant",EnchantmentScenes::enchant, ModPonderTag.EXPERIENCE);
+                .addStoryBoard("enchant",EnchantmentScenes::enchant, ModPonderTag.EXPERIENCE)
+                .addStoryBoard("hyper_enchant",EnchantmentScenes::hyperEnchant, ModPonderTag.EXPERIENCE);
 
         HELPER.forComponents(AllItems.EXP_NUGGET)
                 .addStoryBoard("experience_nugget_drop",EnchantmentScenes::dropExperienceNugget, ModPonderTag.EXPERIENCE)
@@ -36,6 +37,7 @@ public class ModPonderIndex {
                 .add(ModBlocks.COPIER)
                 .add(ModItems.ENCHANTING_GUIDE)
                 .add(AllItems.EXP_NUGGET)
+                .add(ModItems.HYPER_EXP_BOTTLE)
                 .add(AllBlocks.ITEM_DRAIN)
                 .add(AllBlocks.SPOUT);
     }

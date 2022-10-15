@@ -170,6 +170,39 @@ public class EnchantmentScenes {
         scene.idle(400);
     }
 
+    public static void hyperEnchant(SceneBuilder scene, SceneBuildingUtil util){
+        scene.title("hyper_enchant", ""); // We do not use PonderLocalization. For title only
+        scene.configureBasePlate(0, 0, 5);
+        scene.scaleSceneView(.68f);
+        scene.showBasePlate();
+        scene.idle(5);
+        scene.world.modifyTileEntity(util.grid.at(3,1,1), CreativeFluidTankTileEntity.class, be -> ((CreativeFluidTankTileEntity.CreativeSmartFluidTank) be.getTankInventory())
+                .setContainedFluid(new FluidStack(ModFluids.EXPERIENCE.get().getSource(), 1000)));
+        scene.world.modifyTileEntity(util.grid.at(3,1,3), CreativeFluidTankTileEntity.class, be -> ((CreativeFluidTankTileEntity.CreativeSmartFluidTank) be.getTankInventory())
+                .setContainedFluid(new FluidStack(ModFluids.HYPER_EXPERIENCE.get().getSource(), 1000)));
+        scene.world.propagatePipeChange(util.grid.at(2,1, 1));
+        scene.world.propagatePipeChange(util.grid.at(2,1, 3));
+        scene.world.showSection(util.select.fromTo(0, 1, 0, 4, 3, 4), Direction.DOWN);
+
+        scene.overlay.showText(60)
+                .text("") // We do not use PonderLocalization. For registerText only
+                .attachKeyFrame()
+                .placeNearTarget()
+                .pointAt(util.vector.topOf(3, 3, 3));
+        scene.overlay.showOutline(PonderPalette.BLUE, new Object(), util.select.fromTo(3, 1, 3, 3, 3, 3), 80);
+        scene.idle(90);
+
+        scene.world.setKineticSpeed(util.select.everywhere(), 128F);
+        scene.idle(40);
+
+        scene.overlay.showText(80)
+                .text("") // We do not use PonderLocalization. For registerText only
+                .attachKeyFrame()
+                .placeNearTarget()
+                .pointAt(util.vector.topOf(1, 2, 3));
+        scene.idle(90);
+    }
+
     public static void handleExperienceNugget(SceneBuilder scene, SceneBuildingUtil util){
         scene.title("absorb_experience_nugget", ""); // We do not use PonderLocalization. For title only
         scene.configureBasePlate(0, 0, 5);
@@ -356,8 +389,10 @@ public class EnchantmentScenes {
         scene.world.modifyTileEntity(util.grid.at(2,1,5), CreativeFluidTankTileEntity.class, be -> ((CreativeFluidTankTileEntity.CreativeSmartFluidTank) be.getTankInventory())
                 .setContainedFluid(new FluidStack(ModFluids.INK.get().getSource(), 1000)));
         scene.world.modifyTileEntity(util.grid.at(2,3,2), CopierBlockEntity.class, be ->
-                be.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY).ifPresent(tank->
-                        tank.fill(new FluidStack(ModFluids.INK.get().getSource(),3000), IFluidHandler.FluidAction.EXECUTE)));
+                be.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY).ifPresent(tank->{
+                    tank.drain(3000, IFluidHandler.FluidAction.EXECUTE);
+                    tank.fill(new FluidStack(ModFluids.INK.get().getSource(),3000), IFluidHandler.FluidAction.EXECUTE);
+                }));
         scene.idle(40);
 
         item = Items.BOOK.getDefaultInstance();

@@ -27,6 +27,7 @@ import org.jetbrains.annotations.Nullable;
 import plus.dragons.createenchantmentindustry.entry.ModBlocks;
 import plus.dragons.createenchantmentindustry.entry.ModContainerTypes;
 import plus.dragons.createenchantmentindustry.entry.ModItems;
+import plus.dragons.createenchantmentindustry.foundation.data.advancement.ModAdvancements;
 import plus.dragons.createenchantmentindustry.foundation.utility.ModLang;
 
 import java.util.List;
@@ -60,12 +61,13 @@ public class EnchantingGuideItem extends Item implements MenuProvider {
                         level.setBlockAndUpdate(blockPos, ModBlocks.BLAZE_ENCHANTER.getDefaultState()
                             .setValue(BlazeEnchanterBlock.FACING, level.getBlockState(blockPos).getValue(BlazeBurnerBlock.FACING))
                         );
-                        if (level.getBlockEntity(blockPos) instanceof BlazeEnchanterBlockEntity blazeEnchanterBlockEntity) {
+                        if (level.getBlockEntity(blockPos) instanceof BlazeEnchanterBlockEntity tileEntity) {
                             var i = itemStack.copy();
                             i.setCount(1);
-                            blazeEnchanterBlockEntity.setTargetItem(i);
+                            tileEntity.setTargetItem(i);
                         }
                         AdvancementBehaviour.setPlacedBy(pContext.getLevel(), blockPos, player);
+                        ModAdvancements.BLAZES_NEW_JOB.getTrigger().trigger((ServerPlayer) player);
                         if (!player.getAbilities().instabuild)
                             itemStack.shrink(1);
                     }

@@ -1,13 +1,16 @@
 package plus.dragons.createenchantmentindustry.content.contraptions.enchantments;
 
 import com.simibubi.create.AllBlocks;
+import com.simibubi.create.AllItems;
 import com.simibubi.create.AllShapes;
 import com.simibubi.create.content.contraptions.processing.burner.BlazeBurnerBlock;
 import com.simibubi.create.content.contraptions.relays.belt.transport.TransportedItemStack;
 import com.simibubi.create.content.contraptions.wrench.IWrenchable;
 import com.simibubi.create.foundation.block.ITE;
 import com.simibubi.create.foundation.tileEntity.ComparatorUtil;
+import com.simibubi.create.foundation.utility.Lang;
 import net.minecraft.core.BlockPos;
+import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -22,6 +25,7 @@ import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.phys.BlockHitResult;
@@ -37,8 +41,11 @@ import java.util.List;
 
 @SuppressWarnings("deprecation")
 public class BlazeEnchanterBlock extends HorizontalDirectionalBlock implements IWrenchable, ITE<BlazeEnchanterBlockEntity> {
+
+    public static final EnumProperty<HeatLevel> HEAT_LEVEL = EnumProperty.create("blaze", HeatLevel.class);
     public BlazeEnchanterBlock(Properties pProperties) {
         super(pProperties);
+        registerDefaultState(defaultBlockState().setValue(HEAT_LEVEL, HeatLevel.SMOULDERING));
     }
 
     @Override
@@ -54,7 +61,7 @@ public class BlazeEnchanterBlock extends HorizontalDirectionalBlock implements I
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         super.createBlockStateDefinition(builder);
-        builder.add(FACING);
+        builder.add(HEAT_LEVEL, FACING);
     }
 
     @Override
@@ -85,7 +92,7 @@ public class BlazeEnchanterBlock extends HorizontalDirectionalBlock implements I
         ItemStack heldItem = player.getItemInHand(handIn);
         if (!heldItem.isEmpty()){
             return onTileEntityUse(worldIn, pos, te -> {
-                if(heldItem.is(ModItems.ENCHANTING_GUIDE.get()) && EnchantingGuideItem.getEnchantment(heldItem)!=null){
+                if(heldItem.is(ModItems.ENCHANTING_GUIDE.get()) && EnchantingGuideItem.getEnchantment(heldItem) != null){
                     if (!worldIn.isClientSide) {
                         var target = te.targetItem.copy();
                         te.targetItem = heldItem;
@@ -94,7 +101,7 @@ public class BlazeEnchanterBlock extends HorizontalDirectionalBlock implements I
                         te.notifyUpdate();
                     }
                     return InteractionResult.SUCCESS;
-                } else if(Enchanting.valid(heldItem,te.targetItem,te.hyper())){
+                } else if(Enchanting.valid(heldItem, te.targetItem, te.hyper())) {
                     ItemStack heldItemStack = te.getHeldItemStack();
                     if (heldItemStack.isEmpty()) {
                         if (!worldIn.isClientSide) {
@@ -106,16 +113,22 @@ public class BlazeEnchanterBlock extends HorizontalDirectionalBlock implements I
                         return InteractionResult.SUCCESS;
                     }
                     return InteractionResult.FAIL;
+                } else if (AllItems.GOGGLES.isIn(heldItem)) {
+                    if (te.goggles)
+                        return InteractionResult.PASS;
+                    te.goggles = true;
+                    te.notifyUpdate();
+                    return InteractionResult.SUCCESS;
                 }
                 else return InteractionResult.PASS;
             });
-        }
-        else {
+        } else {
             if(player.isShiftKeyDown()){
-                if(!player.level.isClientSide())
+                if(!player.level.isClientSide()){
                     worldIn.setBlockAndUpdate(pos, AllBlocks.BLAZE_BURNER.getDefaultState()
                             .setValue(BlazeBurnerBlock.FACING, state.getValue(FACING))
                             .setValue(BlazeBurnerBlock.HEAT_LEVEL, BlazeBurnerBlock.HeatLevel.SMOULDERING));
+                }
                 return InteractionResult.SUCCESS;
             } else {
                 return onTileEntityUse(worldIn, pos, te -> {
@@ -127,8 +140,11 @@ public class BlazeEnchanterBlock extends HorizontalDirectionalBlock implements I
                             te.notifyUpdate();
                         }
                         return InteractionResult.SUCCESS;
-                    }
-                    return InteractionResult.PASS;
+                    } if (!te.goggles)
+                        return InteractionResult.PASS;
+                    te.goggles = false;
+                    te.notifyUpdate();
+                    return InteractionResult.SUCCESS;
                 });
             }
         }
@@ -182,5 +198,26 @@ public class BlazeEnchanterBlock extends HorizontalDirectionalBlock implements I
             else if(blazeEnchanterBlockEntity.internalTank.isEmpty()) return 7;
             else return 11;
         } else return 0;
+    }
+
+    public enum HeatLevel implements StringRepresentable {
+        SMOULDERING, KINDLED, SEETHING,;
+
+        public static HeatLevel byIndex(int index) {
+            return values()[index];
+        }
+
+        public HeatLevel nextActiveLevel() {
+            return byIndex(ordinal() % (values().length - 1) + 1);
+        }
+
+        public boolean isAtLeast(HeatLevel heatLevel) {
+            return this.ordinal() >= heatLevel.ordinal();
+        }
+
+        @Override
+        public String getSerializedName() {
+            return Lang.asId(name());
+        }
     }
 }

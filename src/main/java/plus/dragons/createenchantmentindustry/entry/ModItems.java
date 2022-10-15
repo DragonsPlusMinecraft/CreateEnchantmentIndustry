@@ -6,6 +6,7 @@ import com.simibubi.create.Create;
 import com.simibubi.create.content.AllSections;
 import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.tterrag.registrate.util.entry.ItemEntry;
+import net.minecraft.world.item.Rarity;
 import plus.dragons.createenchantmentindustry.EnchantmentIndustry;
 import plus.dragons.createenchantmentindustry.content.contraptions.enchantments.EnchantingGuideItem;
 import plus.dragons.createenchantmentindustry.api.event.FillCreateItemGroupEvent;
@@ -20,7 +21,9 @@ public class ModItems {
             .properties(prop -> prop.stacksTo(1))
             .register();
 
-    public static final ItemEntry<HyperExpBottleItem> HYPER_EXP_BOTTLE = REGISTRATE.item("bottled_hyper_experience", HyperExpBottleItem::new)
+    public static final ItemEntry<HyperExpBottleItem> HYPER_EXP_BOTTLE = REGISTRATE.item("hyper_experience_bottle", HyperExpBottleItem::new)
+            .properties(prop -> prop.rarity(Rarity.RARE))
+            .lang("Bottle O' Hyper Enchanting")
             .register();
 
     public static void fillCreateItemGroup(FillCreateItemGroupEvent event) {
@@ -29,7 +32,7 @@ public class ModItems {
             event.addInsertion(AllBlocks.SPOUT.get(), ModBlocks.COPIER.asStack());
             event.addInsertion(AllBlocks.BLAZE_BURNER.get(), ENCHANTING_GUIDE.asStack());
             event.addInsertion(AllFluids.CHOCOLATE.get().getBucket(), ModFluids.INK.get().getBucket().getDefaultInstance());
-            event.addInsertion(ModFluids.INK.get().getBucket(), HYPER_EXP_BOTTLE.asStack());
+            event.addInsertion(AllFluids.CHOCOLATE.get().getBucket(), HYPER_EXP_BOTTLE.asStack());
         }
     }
     

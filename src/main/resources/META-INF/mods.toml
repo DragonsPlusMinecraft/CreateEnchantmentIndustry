@@ -29,7 +29,7 @@ displayName="Create Enchantment Industry" #mandatory
 # A file name (in the root of the mod JAR) containing a logo for display
 logoFile="logo.png" #optional
 # A text field displayed in the mod UI
-# credits="Thanks for this example mod goes to Java" #optional
+#credits="Thanks for this example mod goes to Java" #optional
 # A text field displayed in the mod UI
 authors="MarbleGateKeeper & LimonBlaze" #optional
 # The description text for the mod (multi line!) (#mandatory)
