@@ -21,7 +21,7 @@ apply plugin: 'org.spongepowered.mixin'
 
 version = mod_version
 group = 'plus.dragons.createenchantmentindustry' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
-archivesBaseName = "create_enchantment_industry-for-create-${create_version}"
+archivesBaseName = "create_enchantment_industry-for-create-${artifact_minecraft_version}-${create_version}-${create_version_build}"
 
 // Mojang ships Java 17 to end users in 1.18+, so your mod should target Java 17.
 java.toolchain.languageVersion = JavaLanguageVersion.of(17)
@@ -158,7 +158,7 @@ dependencies {
 
     // Examples using mod jars from ./libs
     // implementation fg.deobf("blank:coolmod-${mc_version}:${coolmod_version}")
-    implementation fg.deobf("com.simibubi.create:create-${create_minecraft_version}:${create_version}:all") { transitive = false }
+    implementation fg.deobf("com.simibubi.create:create-${create_minecraft_version}:${create_version}-${create_version_build}:all") { transitive = false }
     implementation fg.deobf("com.jozufozu.flywheel:flywheel-forge-${flywheel_minecraft_version}:${flywheel_version}")
     compileOnly fg.deobf("com.tterrag.registrate:Registrate:${registrate_version}")
 
