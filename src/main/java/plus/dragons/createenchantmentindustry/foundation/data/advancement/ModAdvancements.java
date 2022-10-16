@@ -12,6 +12,7 @@ import net.minecraft.Util;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.FrameType;
 import net.minecraft.advancements.critereon.InventoryChangeTrigger;
+import net.minecraft.data.CachedOutput;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.DataProvider;
 import net.minecraft.data.HashCache;
@@ -89,8 +90,6 @@ public class ModAdvancements implements DataProvider {
         .frame(FrameType.CHALLENGE)
         .parent(RELIC_RESTORATION)
         .build(),
-    // Disenchanter Branch
-    // TODO Advancements below are not in place
     EXPERIMENTAL = builder("experimental")
         .title("Experimental")
         .description("Get some Liquid Experience for your enchanting experiment!")
@@ -164,7 +163,7 @@ public class ModAdvancements implements DataProvider {
     }
 
     @Override
-    public void run(HashCache cache) {
+    public void run(CachedOutput cache) {
         Path path = this.generator.getOutputFolder();
         Set<ResourceLocation> set = Sets.newHashSet();
         Consumer<Advancement> consumer = advancement -> {
@@ -175,7 +174,7 @@ public class ModAdvancements implements DataProvider {
                 + advancement.getId().getPath() + ".json"
             );
             try {
-                DataProvider.save(GSON, cache, advancement.deconstruct().serializeToJson(), advancementPath);
+                DataProvider.saveStable(cache, advancement.deconstruct().serializeToJson(), advancementPath);
             } catch (IOException ioexception) {
                 LOGGER.error("Couldn't save advancement {}", advancementPath, ioexception);
             }

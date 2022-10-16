@@ -1,12 +1,12 @@
 package plus.dragons.createenchantmentindustry.content.contraptions.fluids;
 
-import net.minecraftforge.client.event.EntityViewRenderEvent;
+import net.minecraftforge.client.event.ViewportEvent;
 
 public interface InkRenderingCamera {
     
     boolean isInInk();
     
-    static void handleInkFogColor(EntityViewRenderEvent.FogColors event) {
+    static void handleInkFogColor(ViewportEvent.ComputeFogColor event) {
         if (((InkRenderingCamera)event.getCamera()).isInInk()) {
             event.setRed(0);
             event.setGreen(0);

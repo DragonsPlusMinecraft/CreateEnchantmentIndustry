@@ -19,10 +19,10 @@ public class DeployerFakePlayerMixin {
         if (xp <= 0) return;
         DeployerFakePlayer player = (DeployerFakePlayer) event.getAttackingPlayer();
         assert player != null;
-        int amount = xp / 3 + (event.getEntityLiving().getRandom().nextInt(3) < xp % 3 ? 1 : 0);
+        int amount = xp / 3 + (event.getAttackingPlayer().getRandom().nextInt(3) < xp % 3 ? 1 : 0);
         if (amount <= 0) return;
         Item nugget = AllItems.EXP_NUGGET.get();
-        int maxStackSize = nugget.getItemStackLimit(nugget.getDefaultInstance());
+        int maxStackSize = nugget.getMaxStackSize(nugget.getDefaultInstance());
         for (int i = amount / maxStackSize; i > 0; --i) {
             player.getInventory().placeItemBackInInventory(new ItemStack(nugget, maxStackSize));
         }

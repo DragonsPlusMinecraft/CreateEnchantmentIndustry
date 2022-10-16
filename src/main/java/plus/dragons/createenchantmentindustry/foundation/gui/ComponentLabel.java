@@ -52,7 +52,9 @@ public class ComponentLabel extends Label {
         while(texts.hasNext()) {
             //Add components to list
             Component component = texts.next();
-            String content = component.getContents();
+            // TODO fix this
+            // String content = component.getContents();
+            String content = component.getString();
             int widthPx = font.width(Components.literal(content).setStyle(text.getStyle()));
             if(totalWidthPx < maxWidthPx) {
                 result.add(component);

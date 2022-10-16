@@ -19,6 +19,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.animal.Sheep;
@@ -468,7 +469,7 @@ public class EnchantmentScenes {
         if(itemStack.is(Items.ENCHANTED_BOOK)){
             enchantItem(itemStack, Enchantments.MENDING,1);
         }
-        else EnchantmentHelper.enchantItem(new Random(),itemStack,30,true);
+        else EnchantmentHelper.enchantItem(RandomSource.create(),itemStack,30,true);
     }
 
     private static ItemStack enchantingGuide(Enchantment enchantment, int level){

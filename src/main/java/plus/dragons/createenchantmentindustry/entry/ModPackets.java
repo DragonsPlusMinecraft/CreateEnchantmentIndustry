@@ -73,7 +73,7 @@ public enum ModPackets {
             channel.messageBuilder(type, index++, direction)
                     .encoder(encoder)
                     .decoder(decoder)
-                    .consumer(handler)
+                    .consumerNetworkThread(handler)
                     .add();
         }
     }

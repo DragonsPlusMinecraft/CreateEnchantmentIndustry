@@ -1,5 +1,7 @@
 package plus.dragons.createenchantmentindustry.foundation.data.lang;
 
+import com.google.common.hash.Hashing;
+import com.google.common.hash.HashingOutputStream;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
@@ -7,6 +9,7 @@ import com.google.gson.JsonObject;
 import com.mojang.logging.LogUtils;
 import com.simibubi.create.foundation.ponder.PonderScene;
 import com.simibubi.create.foundation.utility.FilesHelper;
+import net.minecraft.data.CachedOutput;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.DataProvider;
 import net.minecraft.data.HashCache;
@@ -18,6 +21,7 @@ import org.slf4j.Logger;
 import plus.dragons.createenchantmentindustry.EnchantmentIndustry;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
@@ -89,7 +93,7 @@ public class LangMerger implements DataProvider {
 	}
 
 	@Override
-	public void run(HashCache cache) throws IOException {
+	public void run(CachedOutput cache) throws IOException {
 		Path path = this.gen.getOutputFolder()
 			.resolve("assets/" + EnchantmentIndustry.MOD_ID + "/lang/" + "en_us.json");
 
@@ -237,9 +241,10 @@ public class LangMerger implements DataProvider {
 				.getAsJsonObject());
 	}
 
-	private void save(HashCache cache, List<Object> dataIn, int missingKeys, Path target, String message)
+	private void save(CachedOutput cache, List<Object> dataIn, int missingKeys, Path target, String message)
 		throws IOException {
-		String data = createString(dataIn, missingKeys);
+		// TODO check if the change is made rightfully
+		/*String data = createString(dataIn, missingKeys);
 //		data = JavaUnicodeEscaper.outsideOf(0, 0x7f)
 //			.translate(data);
 		String hash = DataProvider.SHA1.hashUnencodedChars(data)
@@ -254,7 +259,15 @@ public class LangMerger implements DataProvider {
 			}
 		}
 
-		cache.putNew(target, hash);
+		cache.putNew(target, hash);*/
+		ByteArrayOutputStream bytearrayoutputstream = new ByteArrayOutputStream();
+		HashingOutputStream hashingoutputstream = new HashingOutputStream(Hashing.sha1(), bytearrayoutputstream);
+
+		Writer writer = new OutputStreamWriter(hashingoutputstream, StandardCharsets.UTF_8);
+		writer.append(createString(dataIn, missingKeys));
+		writer.close();
+
+		cache.writeIfNeeded(target, bytearrayoutputstream.toByteArray(), hashingoutputstream.hash());
 	}
 
 	protected String createString(List<Object> data, int missingKeys) {

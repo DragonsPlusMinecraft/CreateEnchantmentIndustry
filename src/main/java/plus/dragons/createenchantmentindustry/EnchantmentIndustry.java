@@ -1,18 +1,17 @@
 package plus.dragons.createenchantmentindustry;
 
-import com.simibubi.create.foundation.advancement.AllTriggers;
 import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.tterrag.registrate.util.nullness.NonNullSupplier;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.data.event.GatherDataEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import net.minecraftforge.forge.event.lifecycle.GatherDataEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import plus.dragons.createenchantmentindustry.content.contraptions.fluids.OpenEndedPipeEffects;
@@ -67,8 +66,8 @@ public class EnchantmentIndustry {
     
     public static void datagen(final GatherDataEvent event) {
         DataGenerator datagen = event.getGenerator();
-        datagen.addProvider(new LangMerger(datagen));
-        datagen.addProvider(new ModAdvancements(datagen));
+        datagen.addProvider(true,new LangMerger(datagen));
+        datagen.addProvider(true,new ModAdvancements(datagen));
     }
 
     public static ResourceLocation genRL(String name) {

@@ -18,7 +18,6 @@ import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
@@ -281,7 +280,7 @@ public class BlazeEnchanterBlockEntity extends SmartTileEntity implements IHaveG
             return;
         BlazeEnchanterBlock.HeatLevel heatLevel = getBlockState().getValue(BlazeEnchanterBlock.HEAT_LEVEL);
     
-        Random r = level.getRandom();
+        var r = level.random;
     
         Vec3 c = VecHelper.getCenterOf(worldPosition);
         Vec3 v = c.add(VecHelper.offsetRandomly(Vec3.ZERO, r, .125f)
@@ -468,7 +467,7 @@ public class BlazeEnchanterBlockEntity extends SmartTileEntity implements IHaveG
         ModLang.translate("gui.goggles.blaze_enchanter").forGoggles(tooltip);
         Pair<Enchantment, Integer> ei;
         if (targetItem != null && (ei = EnchantingGuideItem.getEnchantment(targetItem)) != null) {
-            tooltip.add(new TextComponent("     ").append(ei.getFirst().getFullname(ei.getSecond() + (hyper()? 1 : 0))));
+            tooltip.add(Components.literal("     ").append(ei.getFirst().getFullname(ei.getSecond() + (hyper()? 1 : 0))));
         }
         containedFluidTooltip(tooltip, isPlayerSneaking, getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY));
         return true;

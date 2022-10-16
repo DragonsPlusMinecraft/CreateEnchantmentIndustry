@@ -8,6 +8,7 @@ import com.simibubi.create.foundation.tileEntity.TileEntityBehaviour;
 import com.simibubi.create.foundation.tileEntity.behaviour.belt.BeltProcessingBehaviour;
 import com.simibubi.create.foundation.tileEntity.behaviour.belt.TransportedItemStackHandlerBehaviour;
 import com.simibubi.create.foundation.tileEntity.behaviour.fluid.SmartFluidTankBehaviour;
+import com.simibubi.create.foundation.utility.Components;
 import com.simibubi.create.foundation.utility.VecHelper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
@@ -16,7 +17,6 @@ import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.item.ItemStack;
@@ -242,7 +242,7 @@ public class CopierBlockEntity extends SmartTileEntity implements IHaveGoggleInf
                 b.forGoggles(tooltip, 1);
                 var map = EnchantmentHelper.getEnchantments(copyTarget);
                 for (var e : map.entrySet()) {
-                    tooltip.add(new TextComponent("     ").append(e.getKey().getFullname(e.getValue())).withStyle(ChatFormatting.DARK_GRAY));
+                    tooltip.add(Components.literal("     ").append(e.getKey().getFullname(e.getValue())).withStyle(ChatFormatting.DARK_GRAY));
                 }
             }
         }
