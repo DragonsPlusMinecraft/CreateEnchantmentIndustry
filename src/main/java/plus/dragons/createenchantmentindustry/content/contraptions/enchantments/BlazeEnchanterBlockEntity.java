@@ -11,6 +11,7 @@ import com.simibubi.create.foundation.tileEntity.behaviour.fluid.SmartFluidTankB
 import com.simibubi.create.foundation.utility.*;
 import com.simibubi.create.foundation.utility.animation.LerpedFloat;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -322,11 +323,15 @@ public class BlazeEnchanterBlockEntity extends SmartTileEntity implements IHaveG
             m = new Vec3(m.x, Math.abs(m.y), m.z);
             level.addAlwaysVisibleParticle(particle, vec.x, vec.y, vec.z, m.x, m.y, m.z);
         }
+        level.playLocalSound(vec.x, vec.y, vec.z, SoundEvents.ENCHANTMENT_TABLE_USE, SoundSource.BLOCKS, 1f, level.random.nextFloat() * .1f + .9f, true);
     }
 
     protected boolean continueProcessing() {
-        if (level.isClientSide && !isVirtual())
+        if (level.isClientSide && !isVirtual()) {
+            if (processingTicks > 0 && processingTicks < 200 && level.getGameTime() % 80L == 0L)
+                ((ClientLevel)level).playLocalSound(worldPosition, SoundEvents.BEACON_AMBIENT, SoundSource.BLOCKS, 1.0f, 1.0f, true);
             return true;
+        }
         if (processingTicks < 5)
             return true;
         if (!Enchanting.valid(heldItem.stack, targetItem, hyper()))
@@ -336,9 +341,6 @@ public class BlazeEnchanterBlockEntity extends SmartTileEntity implements IHaveG
         FluidStack fluidFromItem = enchantItem.getFirst();
         
         if (processingTicks > 5) {
-            if (processingTicks % 40 == 0) {
-                level.playSound(null, worldPosition, SoundEvents.BEACON_AMBIENT, SoundSource.BLOCKS, 1.0f, 1.0f);
-            }
             var tankFluid = internalTank.getPrimaryHandler().getFluid().getFluid();
             if ((!ModFluids.EXPERIENCE.is(tankFluid) && !ModFluids.HYPER_EXPERIENCE.is(tankFluid) ||
                 internalTank.getPrimaryHandler().getFluidAmount() < fluidFromItem.getAmount())) {
@@ -358,7 +360,6 @@ public class BlazeEnchanterBlockEntity extends SmartTileEntity implements IHaveG
         heldItem.stack = enchantItem.getSecond();
         internalTank.getPrimaryHandler().getFluid().shrink(fluidFromItem.getAmount());
         sendParticles = true;
-        level.playSound(null, worldPosition, SoundEvents.ENCHANTMENT_TABLE_USE, SoundSource.BLOCKS, ENCHANTING_TIME / (float) processingTicks, 1.0f);
         notifyUpdate();
         return true;
     }

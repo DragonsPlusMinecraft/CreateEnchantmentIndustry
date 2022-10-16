@@ -94,6 +94,7 @@ public class CopierBlockEntity extends SmartTileEntity implements IHaveGoggleInf
             m = new Vec3(m.x, Math.abs(m.y), m.z);
             level.addAlwaysVisibleParticle(particle, vec.x, vec.y, vec.z, m.x, m.y, m.z);
         }
+        level.playLocalSound(vec.x, vec.y, vec.z, SoundEvents.ENCHANTMENT_TABLE_USE, SoundSource.BLOCKS, 1f, level.random.nextFloat() * .1f + .9f, true);
     }
 
     protected BeltProcessingBehaviour.ProcessingResult onItemReceived(TransportedItemStack transported,
@@ -163,7 +164,6 @@ public class CopierBlockEntity extends SmartTileEntity implements IHaveGoggleInf
         handler.handleProcessingOnItem(transported, TransportedItemStackHandlerBehaviour.TransportedResult.convertToAndLeaveHeld(outList, held));
         tank.getPrimaryHandler().setFluid(fluid);
         sendParticles = true;
-        level.playSound(null, worldPosition, SoundEvents.ENCHANTMENT_TABLE_USE, SoundSource.BLOCKS, 1.0F, level.random.nextFloat() * 0.1F + 0.9F);
         notifyUpdate();
         return HOLD;
     }
