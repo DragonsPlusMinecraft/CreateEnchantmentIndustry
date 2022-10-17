@@ -1,25 +1,25 @@
 {
   "parent": "create_enchantment_industry:experienced_engineer",
+  "criteria": {
+    "builtin": {
+      "conditions": {},
+      "trigger": "create_enchantment_industry:builtin/experimental"
+    }
+  },
   "display": {
-    "icon": {
-      "item": "minecraft:experience_bottle"
-    },
-    "title": {
-      "translate": "advancement.create_enchantment_industry.experimental"
-    },
+    "announce_to_chat": false,
     "description": {
       "color": "#DBA213",
       "translate": "advancement.create_enchantment_industry.experimental.desc"
     },
     "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "minecraft:experience_bottle"
+    },
     "show_toast": true,
-    "announce_to_chat": false,
-    "hidden": false
-  },
-  "criteria": {
-    "builtin": {
-      "trigger": "create_enchantment_industry:builtin/experimental",
-      "conditions": {}
+    "title": {
+      "translate": "advancement.create_enchantment_industry.experimental"
     }
   },
   "requirements": [

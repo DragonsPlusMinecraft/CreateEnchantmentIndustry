@@ -7,6 +7,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.mojang.logging.LogUtils;
+import com.simibubi.create.Create;
 import com.simibubi.create.foundation.ponder.PonderScene;
 import com.simibubi.create.foundation.utility.FilesHelper;
 import net.minecraft.data.CachedOutput;
@@ -14,6 +15,7 @@ import net.minecraft.data.DataGenerator;
 import net.minecraft.data.DataProvider;
 import net.minecraft.data.HashCache;
 import net.minecraft.util.GsonHelper;
+import org.apache.commons.lang3.mutable.MutableBoolean;
 import org.apache.commons.lang3.mutable.MutableInt;
 import org.apache.commons.lang3.mutable.MutableObject;
 import org.apache.commons.lang3.tuple.Pair;
@@ -137,12 +139,33 @@ public class LangMerger implements DataProvider {
 
 	private void collectExistingEntries(Path path) throws IOException {
 		if (!Files.exists(path)) {
-			LOGGER.warn("Nothing to merge! It appears no lang was generated before me.");
+			Create.LOGGER.warn("Nothing to merge! It appears no lang was generated before me.");
 			return;
 		}
 
 		try (BufferedReader reader = Files.newBufferedReader(path)) {
 			JsonObject jsonobject = GsonHelper.fromJson(GSON, reader, JsonObject.class);
+
+			/*
+			 * Erase additional sections from previous lang in case registrate did not
+			 * create a new one (this assumes advancements to be the first section after
+			 * game elements)
+			 */
+			Set<String> keysToRemove = new HashSet<>();
+			MutableBoolean startErasing = new MutableBoolean();
+			jsonobject.entrySet()
+					.stream()
+					.forEachOrdered(entry -> {
+						String key = entry.getKey();
+						if (key.startsWith("advancement"))
+							startErasing.setTrue();
+						if (startErasing.isFalse())
+							return;
+						keysToRemove.add(key);
+					});
+			jsonobject.remove("_");
+			keysToRemove.forEach(jsonobject::remove);
+
 			addAll("Game Elements", jsonobject);
 			reader.close();
 		}
@@ -242,24 +265,9 @@ public class LangMerger implements DataProvider {
 	}
 
 	private void save(CachedOutput cache, List<Object> dataIn, int missingKeys, Path target, String message)
-		throws IOException {
-		// TODO check if the change is made rightfully
-		/*String data = createString(dataIn, missingKeys);
-//		data = JavaUnicodeEscaper.outsideOf(0, 0x7f)
-//			.translate(data);
-		String hash = DataProvider.SHA1.hashUnencodedChars(data)
-			.toString();
-		if (!Objects.equals(cache.getHash(target), hash) || !Files.exists(target)) {
-			Files.createDirectories(target.getParent());
+			throws IOException {
+		Create.LOGGER.info(message);
 
-			try (BufferedWriter bufferedwriter = Files.newBufferedWriter(target)) {
-				LOGGER.info(message);
-				bufferedwriter.write(data);
-				bufferedwriter.close();
-			}
-		}
-
-		cache.putNew(target, hash);*/
 		ByteArrayOutputStream bytearrayoutputstream = new ByteArrayOutputStream();
 		HashingOutputStream hashingoutputstream = new HashingOutputStream(Hashing.sha1(), bytearrayoutputstream);
 

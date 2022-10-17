@@ -1,25 +1,25 @@
 {
   "parent": "create_enchantment_industry:spirit_taking",
+  "criteria": {
+    "builtin": {
+      "conditions": {},
+      "trigger": "create_enchantment_industry:builtin/a_shower_experience"
+    }
+  },
   "display": {
-    "icon": {
-      "item": "create:fluid_pipe"
-    },
-    "title": {
-      "translate": "advancement.create_enchantment_industry.a_shower_experience"
-    },
+    "announce_to_chat": true,
     "description": {
       "color": "#DBA213",
       "translate": "advancement.create_enchantment_industry.a_shower_experience.desc"
     },
     "frame": "goal",
+    "hidden": false,
+    "icon": {
+      "item": "create:fluid_pipe"
+    },
     "show_toast": true,
-    "announce_to_chat": true,
-    "hidden": false
-  },
-  "criteria": {
-    "builtin": {
-      "trigger": "create_enchantment_industry:builtin/a_shower_experience",
-      "conditions": {}
+    "title": {
+      "translate": "advancement.create_enchantment_industry.a_shower_experience"
     }
   },
   "requirements": [

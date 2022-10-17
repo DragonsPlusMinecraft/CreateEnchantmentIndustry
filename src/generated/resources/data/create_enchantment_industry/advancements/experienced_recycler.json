@@ -1,29 +1,29 @@
 {
   "parent": "create_enchantment_industry:a_shower_experience",
+  "criteria": {
+    "experience_recycled": {
+      "conditions": {
+        "requirement": {
+          "min": 1000000
+        }
+      },
+      "trigger": "create_enchantment_industry:disenchanted"
+    }
+  },
   "display": {
-    "icon": {
-      "item": "create:copper_valve_handle"
-    },
-    "title": {
-      "translate": "advancement.create_enchantment_industry.experienced_recycler"
-    },
+    "announce_to_chat": true,
     "description": {
       "color": "#DBA213",
       "translate": "advancement.create_enchantment_industry.experienced_recycler.desc"
     },
     "frame": "challenge",
+    "hidden": false,
+    "icon": {
+      "item": "create:copper_valve_handle"
+    },
     "show_toast": true,
-    "announce_to_chat": true,
-    "hidden": false
-  },
-  "criteria": {
-    "experience_recycled": {
-      "trigger": "create_enchantment_industry:disenchanted",
-      "conditions": {
-        "requirement": {
-          "min": 1000000
-        }
-      }
+    "title": {
+      "translate": "advancement.create_enchantment_industry.experienced_recycler"
     }
   },
   "requirements": [

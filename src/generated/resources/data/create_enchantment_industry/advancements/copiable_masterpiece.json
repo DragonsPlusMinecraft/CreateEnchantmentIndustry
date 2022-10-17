@@ -1,25 +1,25 @@
 {
   "parent": "create_enchantment_industry:black_as_ink",
+  "criteria": {
+    "builtin": {
+      "conditions": {},
+      "trigger": "create_enchantment_industry:builtin/copiable_masterpiece"
+    }
+  },
   "display": {
-    "icon": {
-      "item": "minecraft:written_book"
-    },
-    "title": {
-      "translate": "advancement.create_enchantment_industry.copiable_masterpiece"
-    },
+    "announce_to_chat": false,
     "description": {
       "color": "#DBA213",
       "translate": "advancement.create_enchantment_industry.copiable_masterpiece.desc"
     },
     "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "minecraft:written_book"
+    },
     "show_toast": true,
-    "announce_to_chat": false,
-    "hidden": false
-  },
-  "criteria": {
-    "builtin": {
-      "trigger": "create_enchantment_industry:builtin/copiable_masterpiece",
-      "conditions": {}
+    "title": {
+      "translate": "advancement.create_enchantment_industry.copiable_masterpiece"
     }
   },
   "requirements": [

@@ -6,6 +6,7 @@ import com.simibubi.create.AllShapes;
 import com.simibubi.create.content.contraptions.processing.burner.BlazeBurnerBlock;
 import com.simibubi.create.content.contraptions.relays.belt.transport.TransportedItemStack;
 import com.simibubi.create.content.contraptions.wrench.IWrenchable;
+import com.simibubi.create.foundation.advancement.AdvancementBehaviour;
 import com.simibubi.create.foundation.block.ITE;
 import com.simibubi.create.foundation.tileEntity.ComparatorUtil;
 import com.simibubi.create.foundation.utility.Lang;
@@ -154,9 +155,7 @@ public class BlazeEnchanterBlock extends HorizontalDirectionalBlock implements I
     @Override
     public void setPlacedBy(Level pLevel, BlockPos pPos, BlockState pState, @Nullable LivingEntity pPlacer, ItemStack pStack) {
         super.setPlacedBy(pLevel, pPos, pState, pPlacer, pStack);
-        // TODO Advancement need more investigate
-        // It should be trigger at somewhere else
-        // AdvancementBehaviour.setPlacedBy(pLevel, pPos, pPlacer);
+        AdvancementBehaviour.setPlacedBy(pLevel, pPos, pPlacer);
     }
 
     @Override
@@ -164,7 +163,6 @@ public class BlazeEnchanterBlock extends HorizontalDirectionalBlock implements I
         return new ItemStack(AllBlocks.BLAZE_BURNER.get());
     }
 
-    // TODO: When create itself change it, change it.
     @Override
     public boolean hasAnalogOutputSignal(BlockState state) {
         return true;
@@ -178,13 +176,11 @@ public class BlazeEnchanterBlock extends HorizontalDirectionalBlock implements I
         return ret;
     }
 
-    // TODO: When create itself change it, change it.
     @Override
     public int getAnalogOutputSignal(BlockState blockState, Level worldIn, BlockPos pos) {
         return ComparatorUtil.levelOfSmartFluidTank(worldIn, pos);
     }
 
-    // TODO: When create itself change it, change it.
     @Override
     public boolean isPathfindable(BlockState state, BlockGetter reader, BlockPos pos, PathComputationType type) {
         return false;
