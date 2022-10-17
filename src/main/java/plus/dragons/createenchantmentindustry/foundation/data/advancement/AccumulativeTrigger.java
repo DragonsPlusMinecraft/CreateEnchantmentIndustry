@@ -69,7 +69,6 @@ public class AccumulativeTrigger extends SimpleCriterionTrigger<AccumulativeTrig
             data = HashBasedTable.create();
         }
 
-        // TODO serialization hasn't been tested yet
         @SuppressWarnings("unchecked")
         public static AccumulativeData load(CompoundTag compoundNBT){
             AccumulativeData ret = new AccumulativeData();

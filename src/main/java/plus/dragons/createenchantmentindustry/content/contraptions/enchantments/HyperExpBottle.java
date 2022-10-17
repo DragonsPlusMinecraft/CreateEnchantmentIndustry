@@ -49,7 +49,6 @@ public class HyperExpBottle extends ThrowableItemProjectile {
      * Called when this EntityFireball hits a block or entity.
      */
     protected void onHit(HitResult pResult) {
-        // TODO need changes
         super.onHit(pResult);
         if (this.level instanceof ServerLevel) {
             this.level.levelEvent(2002, this.blockPosition(), PotionUtils.getColor(Potions.WATER));

@@ -90,7 +90,6 @@ public class ModAdvancements implements DataProvider {
         .parent(RELIC_RESTORATION)
         .build(),
     // Disenchanter Branch
-    // TODO Advancements below are not in place
     EXPERIMENTAL = builder("experimental")
         .title("Experimental")
         .description("Get some Liquid Experience for your enchanting experiment!")
