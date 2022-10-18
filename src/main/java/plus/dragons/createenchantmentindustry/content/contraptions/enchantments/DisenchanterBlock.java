@@ -114,19 +114,16 @@ public class DisenchanterBlock extends Block implements IWrenchable, ITE<Disench
         return ret;
     }
 
-    // TODO: When create itself change it, change it.
     @Override
     public boolean hasAnalogOutputSignal(BlockState state) {
         return true;
     }
 
-    // TODO: When create itself change it, change it.
     @Override
     public int getAnalogOutputSignal(BlockState blockState, Level worldIn, BlockPos pos) {
         return ComparatorUtil.levelOfSmartFluidTank(worldIn, pos);
     }
 
-    // TODO: When create itself change it, change it.
     @Override
     public boolean isPathfindable(BlockState state, BlockGetter reader, BlockPos pos, PathComputationType type) {
         return false;

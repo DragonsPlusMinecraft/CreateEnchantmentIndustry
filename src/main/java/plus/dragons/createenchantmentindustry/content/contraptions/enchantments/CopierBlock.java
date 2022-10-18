@@ -60,7 +60,6 @@ public class CopierBlock extends Block implements IWrenchable, ITE<CopierBlockEn
 
     @Override
     public boolean canSurvive(BlockState state, LevelReader worldIn, BlockPos pos) {
-        // TODO check it tomorrow I gotta sleep.
         return !AllBlocks.BASIN.has(worldIn.getBlockState(pos.below()));
     }
 
@@ -115,19 +114,16 @@ public class CopierBlock extends Block implements IWrenchable, ITE<CopierBlockEn
         worldIn.removeBlockEntity(pos);
     }
 
-    // TODO: When create itself change it, change it.
     @Override
     public boolean hasAnalogOutputSignal(BlockState state) {
         return true;
     }
 
-    // TODO: When create itself change it, change it.
     @Override
     public int getAnalogOutputSignal(BlockState blockState, Level worldIn, BlockPos pos) {
         return ComparatorUtil.levelOfSmartFluidTank(worldIn, pos);
     }
 
-    // TODO: When create itself change it, change it.
     @Override
     public boolean isPathfindable(BlockState state, BlockGetter reader, BlockPos pos, PathComputationType type) {
         return false;
