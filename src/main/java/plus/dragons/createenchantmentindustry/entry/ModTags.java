@@ -88,7 +88,7 @@ public interface ModTags<T, P extends RegistrateTagsProvider<T>> {
         }
         
         ModBlockTags(boolean datagen) {
-            this(EnchantmentIndustry.MOD_ID, datagen);
+            this(EnchantmentIndustry.ID, datagen);
         }
     
         @Override
@@ -125,7 +125,7 @@ public interface ModTags<T, P extends RegistrateTagsProvider<T>> {
         }
     
         ModItemTags(boolean datagen) {
-            this(EnchantmentIndustry.MOD_ID, datagen);
+            this(EnchantmentIndustry.ID, datagen);
         }
     
         @Override
@@ -152,7 +152,7 @@ public interface ModTags<T, P extends RegistrateTagsProvider<T>> {
         }
     
         ModFluidTags(boolean datagen) {
-            this(EnchantmentIndustry.MOD_ID, datagen);
+            this(EnchantmentIndustry.ID, datagen);
         }
     
         @Override

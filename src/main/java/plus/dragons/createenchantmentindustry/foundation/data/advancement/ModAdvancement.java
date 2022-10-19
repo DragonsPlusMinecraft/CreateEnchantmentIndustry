@@ -47,7 +47,7 @@ public class ModAdvancement {
         } else this.builtinTrigger = null;
         this.createAdvancement = CreateAdvancementConstructor.createInstance(id, $ -> $);
         ((ModdedCreateAdvancement)createAdvancement).fromModAdvancement(this);
-        this.titleKey = new StringJoiner(".").add("advancement").add(EnchantmentIndustry.MOD_ID).add(id).toString();
+        this.titleKey = new StringJoiner(".").add("advancement").add(EnchantmentIndustry.ID).add(id).toString();
         this.descriptionKey = titleKey + ".desc";this.title = title;
         this.description = description;
     }

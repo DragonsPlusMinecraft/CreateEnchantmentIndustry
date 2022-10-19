@@ -102,7 +102,7 @@ public class BlazeEnchanterBlock extends HorizontalDirectionalBlock implements I
                         te.notifyUpdate();
                     }
                     return InteractionResult.SUCCESS;
-                } else if(Enchanting.valid(heldItem, te.targetItem, te.hyper())) {
+                } else if(Enchanting.getValidEnchantment(heldItem, te.targetItem, te.hyper()) != null) {
                     ItemStack heldItemStack = te.getHeldItemStack();
                     if (heldItemStack.isEmpty()) {
                         if (!worldIn.isClientSide) {

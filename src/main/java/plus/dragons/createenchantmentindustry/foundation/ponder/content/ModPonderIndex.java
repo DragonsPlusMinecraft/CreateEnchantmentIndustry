@@ -10,7 +10,7 @@ import plus.dragons.createenchantmentindustry.entry.ModItems;
 import plus.dragons.createenchantmentindustry.foundation.ponder.ModPonderTag;
 
 public class ModPonderIndex {
-    static final PonderRegistrationHelper HELPER = new PonderRegistrationHelper(EnchantmentIndustry.MOD_ID);
+    static final PonderRegistrationHelper HELPER = new PonderRegistrationHelper(EnchantmentIndustry.ID);
 
     public static void register() {
         HELPER.forComponents(ModBlocks.DISENCHANTER)

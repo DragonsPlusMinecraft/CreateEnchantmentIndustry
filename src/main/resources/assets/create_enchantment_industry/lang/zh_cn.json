@@ -58,7 +58,10 @@
 	"create_enchantment_industry.gui.goggles.copier_machine": "复印物品：",
 	"create_enchantment_industry.gui.goggles.copier_no_target": "无",
 	"create_enchantment_industry.gui.goggles.blaze_enchanter": "当前附魔：",
-	"create_enchantment_industry.gui.goggles.copier_too_expensive": "过于昂贵！",
+	"create_enchantment_industry.gui.goggles.invalid_target": "无效目标",
+	"create_enchantment_industry.gui.goggles.xp_consumption": "消耗经验：%s mB",
+	"create_enchantment_industry.gui.goggles.ink_consumption": "消耗墨水：%s mB",
+	"create_enchantment_industry.gui.goggles.too_expensive": "过于昂贵！",
 
 	"create_enchantment_industry.generic.unit.page": "页",
 	"create_enchantment_industry.generic.unit.pages": "页",

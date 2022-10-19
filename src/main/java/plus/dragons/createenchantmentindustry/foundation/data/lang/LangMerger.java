@@ -91,7 +91,7 @@ public class LangMerger implements DataProvider {
 	@Override
 	public void run(HashCache cache) throws IOException {
 		Path path = this.gen.getOutputFolder()
-			.resolve("assets/" + EnchantmentIndustry.MOD_ID + "/lang/" + "en_us.json");
+			.resolve("assets/" + EnchantmentIndustry.ID + "/lang/" + "en_us.json");
 
 		for (Pair<String, JsonElement> pair : getAllLocalizationFiles()) {
 			if (!pair.getRight()
@@ -125,7 +125,7 @@ public class LangMerger implements DataProvider {
 		for (Entry<String, List<Object>> localization : populatedLangData.entrySet()) {
 			String key = localization.getKey();
 			Path populatedLangPath = this.gen.getOutputFolder()
-				.resolve("assets/" + EnchantmentIndustry.MOD_ID + "/lang/unfinished/" + key);
+				.resolve("assets/" + EnchantmentIndustry.ID + "/lang/unfinished/" + key);
 			save(cache, localization.getValue(), missingTranslationTally.get(key)
 				.intValue(), populatedLangPath, "Populating " + key + " with missing entries...");
 		}
@@ -211,7 +211,7 @@ public class LangMerger implements DataProvider {
 	private List<Pair<String, JsonElement>> getAllLocalizationFiles() {
 		ArrayList<Pair<String, JsonElement>> list = new ArrayList<>();
 
-		String filepath = "assets/" + EnchantmentIndustry.MOD_ID + "/lang/";
+		String filepath = "assets/" + EnchantmentIndustry.ID + "/lang/";
 		try (InputStream resourceStream = ClassLoader.getSystemResourceAsStream(filepath)) {
 			BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(resourceStream));
 			while (true) {

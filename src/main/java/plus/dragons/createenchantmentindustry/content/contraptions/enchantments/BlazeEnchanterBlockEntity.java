@@ -10,6 +10,7 @@ import com.simibubi.create.foundation.tileEntity.behaviour.belt.DirectBeltInputB
 import com.simibubi.create.foundation.tileEntity.behaviour.fluid.SmartFluidTankBehaviour;
 import com.simibubi.create.foundation.utility.*;
 import com.simibubi.create.foundation.utility.animation.LerpedFloat;
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.player.LocalPlayer;
@@ -38,6 +39,7 @@ import net.minecraftforge.items.ItemHandlerHelper;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import plus.dragons.createenchantmentindustry.entry.ModFluids;
+import plus.dragons.createenchantmentindustry.foundation.config.ModConfigs;
 import plus.dragons.createenchantmentindustry.foundation.data.advancement.ModAdvancements;
 import plus.dragons.createenchantmentindustry.foundation.utility.ModLang;
 
@@ -84,15 +86,17 @@ public class BlazeEnchanterBlockEntity extends SmartTileEntity implements IHaveG
     public void addBehaviours(List<TileEntityBehaviour> behaviours) {
         behaviours.add(new DirectBeltInputBehaviour(this).allowingBeltFunnels()
                 .setInsertionHandler(this::tryInsertingFromSide));
-        behaviours.add(internalTank = SmartFluidTankBehaviour.single(this, 3000).whenFluidUpdates(() -> {
-            var fluid = internalTank.getPrimaryHandler().getFluid().getFluid();
-            if(ModFluids.EXPERIENCE.is(fluid))
-                updateHeatLevel(BlazeEnchanterBlock.HeatLevel.KINDLED);
-            else if(ModFluids.HYPER_EXPERIENCE.is(fluid))
-                updateHeatLevel(BlazeEnchanterBlock.HeatLevel.SEETHING);
-            else
-                updateHeatLevel(BlazeEnchanterBlock.HeatLevel.SMOULDERING);
-        }));
+        behaviours.add(internalTank = SmartFluidTankBehaviour
+            .single(this, ModConfigs.SERVER.blazeEnchanterTankCapacity.get())
+            .whenFluidUpdates(() -> {
+                var fluid = internalTank.getPrimaryHandler().getFluid().getFluid();
+                if(ModFluids.EXPERIENCE.is(fluid))
+                    updateHeatLevel(BlazeEnchanterBlock.HeatLevel.KINDLED);
+                else if(ModFluids.HYPER_EXPERIENCE.is(fluid))
+                    updateHeatLevel(BlazeEnchanterBlock.HeatLevel.SEETHING);
+                else
+                    updateHeatLevel(BlazeEnchanterBlock.HeatLevel.SMOULDERING);
+            }));
         registerAwardables(behaviours,
                 ModAdvancements.FIRST_ORDER.asCreateAdvancement(),
                 ModAdvancements.ADDITIONAL_ORDER.asCreateAdvancement());
@@ -218,7 +222,7 @@ public class BlazeEnchanterBlockEntity extends SmartTileEntity implements IHaveG
         }
 
         if (heldItem.prevBeltPosition < .5f && heldItem.beltPosition >= .5f) {
-            if (!Enchanting.valid(heldItem.stack, targetItem, hyper()))
+            if (Enchanting.getValidEnchantment(heldItem.stack, targetItem, hyper()) == null)
                 return;
             heldItem.beltPosition = .5f;
             if (onClient)
@@ -335,17 +339,22 @@ public class BlazeEnchanterBlockEntity extends SmartTileEntity implements IHaveG
         }
         if (processingTicks < 5)
             return true;
-        if (!Enchanting.valid(heldItem.stack, targetItem, hyper()))
-            return false;
-
+        
         boolean hyper = hyper();
-        Pair<FluidStack, ItemStack> enchantItem = Enchanting.enchant(heldItem.stack, targetItem, true, hyper);
-        FluidStack fluidFromItem = enchantItem.getFirst();
+        Pair<Enchantment, Integer> entry = Enchanting.getValidEnchantment(heldItem.stack, targetItem, hyper);
+        if (entry == null)
+            return false;
+        
+        FluidStack exp = new FluidStack(hyper
+            ? ModFluids.HYPER_EXPERIENCE.get().getSource()
+            : ModFluids.EXPERIENCE.get().getSource(),
+            Enchanting.getExperienceConsumption(entry.getFirst(), entry.getSecond())
+        );
         
         if (processingTicks > 5) {
             var tankFluid = internalTank.getPrimaryHandler().getFluid().getFluid();
             if ((!ModFluids.EXPERIENCE.is(tankFluid) && !ModFluids.HYPER_EXPERIENCE.is(tankFluid) ||
-                internalTank.getPrimaryHandler().getFluidAmount() < fluidFromItem.getAmount())) {
+                internalTank.getPrimaryHandler().getFluidAmount() < exp.getAmount())) {
                 processingTicks = ENCHANTING_TIME;
             }
             return true;
@@ -360,9 +369,8 @@ public class BlazeEnchanterBlockEntity extends SmartTileEntity implements IHaveG
             award(ModAdvancements.HYPOTHETICAL_EXTENSION.asCreateAdvancement());
 
         // Process finished
-        enchantItem = Enchanting.enchant(heldItem.stack, targetItem, true, hyper());
-        heldItem.stack = enchantItem.getSecond();
-        internalTank.getPrimaryHandler().getFluid().shrink(fluidFromItem.getAmount());
+        Enchanting.enchantItem(heldItem.stack, entry);
+        internalTank.getPrimaryHandler().getFluid().shrink(exp.getAmount());
         sendParticles = true;
         notifyUpdate();
         return true;
@@ -383,7 +391,7 @@ public class BlazeEnchanterBlockEntity extends SmartTileEntity implements IHaveG
         if (!getHeldItemStack().isEmpty())
             return inserted;
 
-        if (inserted.getCount() > 1 && Enchanting.valid(targetItem, inserted, hyper())) {
+        if (inserted.getCount() > 1 && Enchanting.getValidEnchantment(heldItem.stack, targetItem, hyper()) != null) {
             returned = ItemHandlerHelper.copyStackWithSize(inserted, inserted.getCount() - 1);
             inserted = ItemHandlerHelper.copyStackWithSize(inserted, 1);
         }
@@ -470,9 +478,27 @@ public class BlazeEnchanterBlockEntity extends SmartTileEntity implements IHaveG
     @Override
     public boolean addToGoggleTooltip(List<Component> tooltip, boolean isPlayerSneaking) {
         ModLang.translate("gui.goggles.blaze_enchanter").forGoggles(tooltip);
-        Pair<Enchantment, Integer> ei;
-        if (targetItem != null && (ei = EnchantingGuideItem.getEnchantment(targetItem)) != null) {
-            tooltip.add(new TextComponent("     ").append(ei.getFirst().getFullname(ei.getSecond() + (hyper()? 1 : 0))));
+        if (targetItem != null) {
+            EnchantmentEntry entry = Enchanting.getTargetEnchantment(targetItem, hyper());
+            if (entry != null) {
+                tooltip.add(new TextComponent("     ")
+                    .append(entry.getFirst().getFullname(entry.getSecond())));
+                if (!entry.valid())
+                    tooltip.add(new TextComponent("     ")
+                        .append(ModLang.translate("gui.goggles.invalid_target").component())
+                        .withStyle(ChatFormatting.RED));
+                else {
+                    int consumption = Enchanting.getExperienceConsumption(entry.getFirst(), entry.getSecond());
+                    if (consumption > ModConfigs.SERVER.blazeEnchanterTankCapacity.get())
+                        tooltip.add(new TextComponent("     ").append(ModLang.translate("gui.goggles.too_expensive")
+                            .component())
+                            .withStyle(ChatFormatting.RED));
+                    else
+                        tooltip.add(new TextComponent("     ")
+                            .append(ModLang.translate("gui.goggles.xp_consumption", consumption).component())
+                            .withStyle(ChatFormatting.GREEN));
+                }
+            }
         }
         containedFluidTooltip(tooltip, isPlayerSneaking, getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY));
         return true;

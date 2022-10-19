@@ -1,55 +1,82 @@
 package plus.dragons.createenchantmentindustry.content.contraptions.enchantments;
 
 import com.simibubi.create.foundation.utility.Pair;
+import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
-import net.minecraftforge.fluids.FluidStack;
-import plus.dragons.createenchantmentindustry.entry.ModFluids;
+import org.jetbrains.annotations.Nullable;
 import plus.dragons.createenchantmentindustry.entry.ModItems;
 
 public class Enchanting {
-
-    public static boolean valid(ItemStack itemStack, ItemStack targetItem, boolean hyper) {
-        var enchantmentPair = getTargetEnchantment(targetItem);
-        var enchantment = enchantmentPair.getFirst();
-        if (!enchantment.canEnchant(itemStack)) return false;
+    
+    @Nullable
+    public static EnchantmentEntry getTargetEnchantment(ItemStack itemStack, boolean hyper) {
+        if (itemStack.is(ModItems.ENCHANTING_GUIDE.get())) {
+            var result = EnchantingGuideItem.getEnchantment(itemStack);
+            if (!hyper || result == null)
+                return result;
+            else {
+                var enchantment = result.getFirst();
+                int level = result.getSecond() + 1;
+                return EnchantmentEntry.of(enchantment, level);
+            }
+        } else
+            throw new RuntimeException("TargetItem is not an enchanting guide for blaze!");
+    }
+    
+    @Nullable
+    public static EnchantmentEntry getValidEnchantment(ItemStack itemStack, ItemStack targetItem, boolean hyper) {
+        var entry = getTargetEnchantment(targetItem, hyper);
+        if (entry == null || !entry.valid())
+            return null;
+        var enchantment = entry.getFirst();
+        if (!enchantment.canEnchant(itemStack))
+            return null;
+        int level = entry.getSecond();
         var map = EnchantmentHelper.getEnchantments(itemStack);
         for (var e : map.entrySet()) {
             if (!e.getKey().isCompatibleWith(enchantment))
-                return false;
-            if (e.getKey() == enchantment && e.getValue() >= enchantmentPair.getSecond() + (hyper? 1: 0))
-                return false;
+                return null;
+            if (e.getKey() == enchantment && e.getValue() >= entry.getSecond() + level)
+                return null;
         }
-        return true;
+        return entry;
     }
 
-    public static Pair<FluidStack, ItemStack> enchant(ItemStack stack, ItemStack targetItem, boolean simulate, boolean hyper) {
-        var enchantment = getTargetEnchantment(targetItem);
-        var resultingFluid = new FluidStack(hyper?ModFluids.HYPER_EXPERIENCE.get().getSource():ModFluids.EXPERIENCE.get().getSource(), getExperienceFromEnchantment(enchantment));
-        var resultingItem = enchantItem(stack, enchantment, simulate, hyper);
-        return Pair.of(resultingFluid, resultingItem);
+    public static void enchantItem(ItemStack itemStack, Pair<Enchantment, Integer> enchantment) {
+        var map = EnchantmentHelper.getEnchantments(itemStack);
+        map.put(enchantment.getFirst(), enchantment.getSecond());
+        EnchantmentHelper.setEnchantments(map, itemStack);
     }
-
-    public static ItemStack enchantItem(ItemStack itemStack, Pair<Enchantment, Integer> enchantment, boolean simulate, boolean hyper) {
-        var result = itemStack.copy();
-        var map = EnchantmentHelper.getEnchantments(result);
-        map.put(enchantment.getFirst(), enchantment.getSecond() + (hyper? 1: 0));
-        EnchantmentHelper.setEnchantments(map, result);
-        if (simulate) return result;
-        else {
-            itemStack = result;
-            return itemStack;
+    
+    public static int expPointFromLevel(int level) {
+        if (level >= 32) {
+            return (int) (4.5 * level * level - 162.5 * level + 2220);
+        } else {
+            return level >= 17
+                ? (int) (2.5 * level * level - 40.5 * level + 350)
+                : level * level + 6 * level;
         }
     }
-
-    private static Pair<Enchantment, Integer> getTargetEnchantment(ItemStack itemStack) {
-        if (itemStack.is(ModItems.ENCHANTING_GUIDE.get()))
-            return EnchantingGuideItem.getEnchantment(itemStack);
-        else throw new RuntimeException("TargetItem is not an enchanting guide for blaze!");
+    
+    public static int expPointForNextLevel(int level) {
+        if (level >= 31) {
+            return 9 * level - 158;
+        } else {
+            return level >= 16
+                ? 5 * level -38
+                : 2 * level + 7;
+        }
     }
-
-    private static int getExperienceFromEnchantment(Pair<Enchantment, Integer> enchantmentPair) {
-        return enchantmentPair.getFirst().getMaxCost(enchantmentPair.getSecond());
+    
+    public static int getExperienceConsumption(Enchantment enchantment, int level) {
+        int startLevel = enchantment.getMaxCost(level);
+        float cost = Mth.sqrt((float) level / enchantment.getRarity().getWeight());
+        int levelCost = Mth.ceil(cost);
+        int endLevel = startLevel - levelCost;
+        return expPointFromLevel(startLevel) - expPointFromLevel(endLevel)
+            + (int) (expPointForNextLevel(endLevel) * (cost - levelCost));
     }
+    
 }

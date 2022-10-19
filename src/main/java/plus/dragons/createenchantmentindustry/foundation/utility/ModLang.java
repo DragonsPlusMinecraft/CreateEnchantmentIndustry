@@ -12,7 +12,7 @@ import plus.dragons.createenchantmentindustry.EnchantmentIndustry;
 public class ModLang {
 
     public static LangBuilder builder() {
-        return new ModLangBuilder(EnchantmentIndustry.MOD_ID);
+        return new ModLangBuilder(EnchantmentIndustry.ID);
     }
 
 

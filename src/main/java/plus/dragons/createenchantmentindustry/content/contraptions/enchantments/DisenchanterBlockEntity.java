@@ -35,6 +35,7 @@ import net.minecraftforge.items.ItemHandlerHelper;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import plus.dragons.createenchantmentindustry.entry.ModFluids;
+import plus.dragons.createenchantmentindustry.foundation.config.ModConfigs;
 import plus.dragons.createenchantmentindustry.foundation.data.advancement.ModAdvancements;
 import plus.dragons.createenchantmentindustry.foundation.data.advancement.ModTriggers;
 import plus.dragons.createenchantmentindustry.foundation.mixin.AdvancementBehaviourAccessor;
@@ -70,7 +71,7 @@ public class DisenchanterBlockEntity extends SmartTileEntity implements IHaveGog
     public void addBehaviours(List<TileEntityBehaviour> behaviours) {
         behaviours.add(new DirectBeltInputBehaviour(this).allowingBeltFunnels()
                 .setInsertionHandler(this::tryInsertingFromSide));
-        behaviours.add(internalTank = SmartFluidTankBehaviour.single(this, 1500)
+        behaviours.add(internalTank = SmartFluidTankBehaviour.single(this, ModConfigs.SERVER.disenchanterTankCapacity.get())
                 .allowExtraction()
                 .forbidInsertion());
         registerAwardables(behaviours,
@@ -264,8 +265,9 @@ public class DisenchanterBlockEntity extends SmartTileEntity implements IHaveGog
 
     private int getPlayerExperience(Player player){
         var level = player.experienceLevel;
-        if(player.experienceLevel==0 && player.experienceProgress==0) return 0;
-        var total = level<=16? 2 + 6*level*level: level<=31? 2.5*level*level-40.5*level + 350: 4.5*level*level-162.5*level + 2220;
+        if(player.experienceLevel == 0 && player.experienceProgress == 0)
+            return 0;
+        var total = Enchanting.expPointFromLevel(level);
         return (int) (total + player.experienceProgress * player.getXpNeededForNextLevel());
     }
 

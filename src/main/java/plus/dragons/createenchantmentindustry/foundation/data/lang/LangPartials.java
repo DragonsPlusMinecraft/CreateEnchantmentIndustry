@@ -60,7 +60,7 @@ public enum LangPartials {
 
 	private JsonElement fromResource() {
 		String fileName = Lang.asId(name());
-		String filepath = "assets/" + EnchantmentIndustry.MOD_ID + "/lang/partial/" + fileName + ".json";
+		String filepath = "assets/" + EnchantmentIndustry.ID + "/lang/partial/" + fileName + ".json";
 		JsonElement element = FilesHelper.loadJsonResource(filepath);
 		if (element == null)
 			throw new IllegalStateException(String.format("Could not find default lang file: %s", filepath));

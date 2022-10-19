@@ -27,7 +27,7 @@ public enum ModGuiTextures implements ScreenElement {
     }
     
     ModGuiTextures(String location, int startX, int startY, int width, int height) {
-        this(EnchantmentIndustry.MOD_ID, location, startX, startY, width, height);
+        this(EnchantmentIndustry.ID, location, startX, startY, width, height);
     }
     
     ModGuiTextures(String location, int width, int height) {

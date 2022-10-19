@@ -30,6 +30,7 @@ import org.jetbrains.annotations.Nullable;
 import plus.dragons.createenchantmentindustry.entry.ModBlockEntities;
 import plus.dragons.createenchantmentindustry.entry.ModBlocks;
 import plus.dragons.createenchantmentindustry.entry.ModFluids;
+import plus.dragons.createenchantmentindustry.foundation.config.ModConfigs;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -87,7 +88,7 @@ public class CopierBlock extends Block implements IWrenchable, ITE<CopierBlockEn
                 } else {
                     player.setItemInHand(hand, be.copyTarget);
                 }
-                be.tooExpensive = CopyingBook.isTooExpensive(heldItem, CopierBlockEntity.TANK_CAPACITY);
+                be.tooExpensive = CopyingBook.isTooExpensive(heldItem, ModConfigs.SERVER.copierTankCapacity.get());
                 be.copyTarget = heldItem;
                 be.processingTicks = -1;
                 be.notifyUpdate();

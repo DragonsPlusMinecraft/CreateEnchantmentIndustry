@@ -33,6 +33,7 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import plus.dragons.createenchantmentindustry.foundation.config.ModConfigs;
 import plus.dragons.createenchantmentindustry.foundation.data.advancement.ModAdvancements;
 import plus.dragons.createenchantmentindustry.foundation.data.advancement.ModTriggers;
 import plus.dragons.createenchantmentindustry.foundation.mixin.AdvancementBehaviourAccessor;
@@ -47,7 +48,6 @@ import static com.simibubi.create.foundation.tileEntity.behaviour.belt.BeltProce
 public class CopierBlockEntity extends SmartTileEntity implements IHaveGoggleInformation {
 
     public static final int COPYING_TIME = 100;
-    public static final int TANK_CAPACITY = 3000;
     protected BeltProcessingBehaviour beltProcessing;
     public int processingTicks;
     SmartFluidTankBehaviour tank;
@@ -64,7 +64,7 @@ public class CopierBlockEntity extends SmartTileEntity implements IHaveGoggleInf
 
     @Override
     public void addBehaviours(List<TileEntityBehaviour> behaviours) {
-        behaviours.add(tank = SmartFluidTankBehaviour.single(this, TANK_CAPACITY));
+        behaviours.add(tank = SmartFluidTankBehaviour.single(this, ModConfigs.SERVER.copierTankCapacity.get()));
         behaviours.add(beltProcessing = new BeltProcessingBehaviour(this).whenItemEnters(this::onItemReceived)
                 .whileItemHeld(this::whenItemHeld));
         registerAwardables(behaviours,
@@ -232,17 +232,33 @@ public class CopierBlockEntity extends SmartTileEntity implements IHaveGoggleInf
                                 .text(" ")
                                 .add(page == 1 ? ModLang.translate("generic.unit.page") : ModLang.translate("generic.unit.pages"))
                                 .style(ChatFormatting.DARK_GRAY));
-                if (CopyingBook.isTooExpensive(copyTarget, TANK_CAPACITY))
-                    b.text(" ").add(ModLang.translate("gui.goggles.copier_too_expensive").style(ChatFormatting.RED));
                 b.forGoggles(tooltip, 1);
+                if (CopyingBook.isTooExpensive(copyTarget, ModConfigs.SERVER.copierTankCapacity.get()))
+                    tooltip.add(new TextComponent("     ").append(ModLang.translate(
+                        "gui.goggles.too_expensive").component()
+                    ).withStyle(ChatFormatting.RED));
+                else
+                    tooltip.add(new TextComponent("     ").append(ModLang.translate(
+                        "gui.goggles.ink_consumption",
+                        CopyingBook.getExperienceFromItem(copyTarget)).component()
+                    ).withStyle(ChatFormatting.DARK_GRAY));
             } else if (copyTarget.is(Items.ENCHANTED_BOOK)) {
                 var b = ModLang.itemName(copyTarget).style(ChatFormatting.LIGHT_PURPLE);
-                if (CopyingBook.isTooExpensive(copyTarget, TANK_CAPACITY))
-                    b.text(" ").add(ModLang.translate("gui.goggles.copier_too_expensive").style(ChatFormatting.RED));
                 b.forGoggles(tooltip, 1);
+                boolean tooExpensive = CopyingBook.isTooExpensive(copyTarget, ModConfigs.SERVER.copierTankCapacity.get());
+                if (tooExpensive)
+                    tooltip.add(new TextComponent("     ").append(ModLang.translate(
+                        "gui.goggles.too_expensive").component()
+                    ).withStyle(ChatFormatting.RED));
+                else
+                    tooltip.add(new TextComponent("     ").append(ModLang.translate(
+                        "gui.goggles.xp_consumption",
+                        CopyingBook.getExperienceFromItem(copyTarget)).component()
+                    ).withStyle(ChatFormatting.GREEN));
                 var map = EnchantmentHelper.getEnchantments(copyTarget);
                 for (var e : map.entrySet()) {
-                    tooltip.add(new TextComponent("     ").append(e.getKey().getFullname(e.getValue())).withStyle(ChatFormatting.DARK_GRAY));
+                    Component name = e.getKey().getFullname(e.getValue());
+                    tooltip.add(new TextComponent("     ").append(name).withStyle(name.getStyle()));
                 }
             }
         }

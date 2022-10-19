@@ -1,5 +1,5 @@
 {
-	"_": "Missing Localizations: 2",
+	"_": "Missing Localizations: 5",
 
 	"_": "->------------------------]  Game Elements  [------------------------<-",
 
@@ -58,7 +58,10 @@
 	"create_enchantment_industry.gui.goggles.copier_machine": "인쇄될 내용:",
 	"create_enchantment_industry.gui.goggles.copier_no_target": "없음",
 	"create_enchantment_industry.gui.goggles.blaze_enchanter": "현재 마법:",
-	"create_enchantment_industry.gui.goggles.copier_too_expensive": "너무 비쌉니다!",
+	"create_enchantment_industry.gui.goggles.invalid_target": "UNLOCALIZED: Invalid Target",
+	"create_enchantment_industry.gui.goggles.xp_consumption": "UNLOCALIZED: Consumes Experience: %s mB",
+	"create_enchantment_industry.gui.goggles.ink_consumption": "UNLOCALIZED: Consumes Ink: %s mB",
+	"create_enchantment_industry.gui.goggles.too_expensive": "너무 비쌉니다!",
 
 	"create_enchantment_industry.generic.unit.page": "쪽",
 	"create_enchantment_industry.generic.unit.pages": "쪽",
