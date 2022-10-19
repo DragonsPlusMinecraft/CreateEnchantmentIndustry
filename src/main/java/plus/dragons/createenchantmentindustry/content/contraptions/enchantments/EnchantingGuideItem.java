@@ -101,7 +101,12 @@ public class EnchantingGuideItem extends Item implements MenuProvider {
         } else
             pTooltipComponents.add(enchantment.getFirst().getFullname(enchantment.getSecond()));
     }
-
+    
+    @Override
+    public boolean isFoil(ItemStack pStack) {
+        return getEnchantment(pStack) != null;
+    }
+    
     @Nullable
     @Override
     public AbstractContainerMenu createMenu(int pContainerId, Inventory pPlayerInventory, Player pPlayer) {

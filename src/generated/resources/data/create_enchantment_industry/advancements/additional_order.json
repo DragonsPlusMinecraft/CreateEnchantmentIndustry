@@ -2,8 +2,8 @@
   "parent": "create_enchantment_industry:first_order",
   "display": {
     "icon": {
-      "item": "minecraft:netherite_sword",
-      "nbt": "{Damage:0,Enchantments:[{id:\"minecraft:smite\",lvl:5s}]}"
+      "item": "minecraft:golden_helmet",
+      "nbt": "{Damage:0,Enchantments:[{id:\"minecraft:protection\",lvl:5s}]}"
     },
     "title": {
       "translate": "advancement.create_enchantment_industry.additional_order"

@@ -48,6 +48,8 @@
 	"advancement.create_enchantment_industry.first_order.desc": "使用烈焰人燃烧室为未附魔物品附魔",
 	"advancement.create_enchantment_industry.additional_order": "追加订单",
 	"advancement.create_enchantment_industry.additional_order.desc": "使用烈焰人燃烧室为已附魔物品附魔",
+	"advancement.create_enchantment_industry.hypothetical_extension": "假想延拓",
+	"advancement.create_enchantment_industry.hypothetical_extension.desc": "使用烈焰人燃烧室为物品完成超越附魔",
 
 
 	"_": "->------------------------]  UI & Messages  [------------------------<-",
@@ -64,8 +66,11 @@
 
 	"_": "->------------------------]  Item Descriptions  [------------------------<-",
 
+	"create_enchantment_industry.enchanting_guide.tooltip": "ENCHANTING GUIDE TOOLTIPS",
+
 	"create_enchantment_industry.tooltip.guide_header": "当前附魔：",
 	"create_enchantment_industry.tooltip.guide_not_configured": "未设定",
+
 
 	"_": "->------------------------]  Ponder Content  [------------------------<-",
 

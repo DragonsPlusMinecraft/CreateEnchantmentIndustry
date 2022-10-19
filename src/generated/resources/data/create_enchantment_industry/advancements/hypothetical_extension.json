@@ -1,16 +1,16 @@
 {
-  "parent": "create_enchantment_industry:blazes_new_job",
+  "parent": "create_enchantment_industry:additional_order",
   "display": {
     "icon": {
-      "item": "minecraft:golden_helmet",
+      "item": "minecraft:diamond_helmet",
       "nbt": "{Damage:0}"
     },
     "title": {
-      "translate": "advancement.create_enchantment_industry.first_order"
+      "translate": "advancement.create_enchantment_industry.hypothetical_extension"
     },
     "description": {
       "color": "#DBA213",
-      "translate": "advancement.create_enchantment_industry.first_order.desc"
+      "translate": "advancement.create_enchantment_industry.hypothetical_extension.desc"
     },
     "frame": "task",
     "show_toast": true,
@@ -19,7 +19,7 @@
   },
   "criteria": {
     "builtin": {
-      "trigger": "create_enchantment_industry:builtin/first_order",
+      "trigger": "create_enchantment_industry:builtin/hypothetical_extension",
       "conditions": {}
     }
   },
