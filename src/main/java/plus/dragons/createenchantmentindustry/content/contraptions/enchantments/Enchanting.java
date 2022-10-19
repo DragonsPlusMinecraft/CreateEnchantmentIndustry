@@ -6,13 +6,13 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import org.jetbrains.annotations.Nullable;
-import plus.dragons.createenchantmentindustry.entry.ModItems;
+import plus.dragons.createenchantmentindustry.entry.CeiItems;
 
 public class Enchanting {
     
     @Nullable
     public static EnchantmentEntry getTargetEnchantment(ItemStack itemStack, boolean hyper) {
-        if (itemStack.is(ModItems.ENCHANTING_GUIDE.get())) {
+        if (itemStack.is(CeiItems.ENCHANTING_GUIDE.get())) {
             var result = EnchantingGuideItem.getEnchantment(itemStack);
             if (!hyper || result == null)
                 return result;

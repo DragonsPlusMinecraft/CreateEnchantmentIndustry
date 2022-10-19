@@ -6,7 +6,7 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraftforge.registries.ForgeRegistries;
 import plus.dragons.createenchantmentindustry.EnchantmentIndustry;
-import plus.dragons.createenchantmentindustry.foundation.config.ModConfigs;
+import plus.dragons.createenchantmentindustry.foundation.config.CeiConfigs;
 
 public class EnchantmentEntry extends Pair<Enchantment, Integer> {
     
@@ -32,7 +32,7 @@ public class EnchantmentEntry extends Pair<Enchantment, Integer> {
         if (enchantment.getMaxLevel() == 1 && level > 1 &&
             !ForgeRegistries.ENCHANTMENTS.tags().getTag(HYPER_ENCHANTABLE).contains(enchantment))
             return false;
-        return level <= maxLevel + ModConfigs.SERVER.maxHyperEnchantingLevelExtension.get();
+        return level <= maxLevel + CeiConfigs.SERVER.maxHyperEnchantingLevelExtension.get();
     }
     
 }

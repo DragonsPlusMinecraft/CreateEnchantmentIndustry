@@ -5,13 +5,13 @@ import com.simibubi.create.content.contraptions.processing.ProcessingRecipeBuild
 import net.minecraft.world.level.Level;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.items.wrapper.RecipeWrapper;
-import plus.dragons.createenchantmentindustry.entry.ModFluids;
-import plus.dragons.createenchantmentindustry.entry.ModRecipeTypes;
+import plus.dragons.createenchantmentindustry.entry.CeiFluids;
+import plus.dragons.createenchantmentindustry.entry.CeiRecipeTypes;
 
 public class DisenchantRecipe extends ProcessingRecipe<RecipeWrapper> {
 
     public DisenchantRecipe(ProcessingRecipeBuilder.ProcessingRecipeParams params) {
-        super(ModRecipeTypes.DISENCHANTING, params);
+        super(CeiRecipeTypes.DISENCHANTING, params);
     }
 
     @Override
@@ -38,7 +38,7 @@ public class DisenchantRecipe extends ProcessingRecipe<RecipeWrapper> {
     public FluidStack getResultingFluid() {
         if (fluidResults.isEmpty())
             throw new IllegalStateException("Emptying Recipe: " + id.toString() + " has no fluid output!");
-        if(!fluidResults.get(0).getFluid().isSame(ModFluids.EXPERIENCE.get().getSource()))
+        if(!fluidResults.get(0).getFluid().isSame(CeiFluids.EXPERIENCE.get().getSource()))
             throw new IllegalStateException("Illegal Recipe: " + id.toString() + " has wrong type of fluid output!");
         return fluidResults.get(0);
     }

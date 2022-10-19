@@ -26,9 +26,9 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
-import plus.dragons.createenchantmentindustry.entry.ModBlockEntities;
-import plus.dragons.createenchantmentindustry.entry.ModBlocks;
-import plus.dragons.createenchantmentindustry.entry.ModFluids;
+import plus.dragons.createenchantmentindustry.entry.CeiBlockEntities;
+import plus.dragons.createenchantmentindustry.entry.CeiBlocks;
+import plus.dragons.createenchantmentindustry.entry.CeiFluids;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,7 +47,7 @@ public class DisenchanterBlock extends Block implements IWrenchable, ITE<Disench
 
     @Override
     public BlockEntityType<? extends DisenchanterBlockEntity> getTileEntityType() {
-        return ModBlockEntities.DISENCHANTER.get();
+        return CeiBlockEntities.DISENCHANTER.get();
     }
 
     @Override
@@ -94,7 +94,7 @@ public class DisenchanterBlock extends Block implements IWrenchable, ITE<Disench
             if (!heldItemStack.isEmpty())
                 Containers.dropItemStack(worldIn, pos.getX(), pos.getY(), pos.getZ(), heldItemStack);
             var tank = te.getInternalTank().getPrimaryHandler();
-            if(tank.getFluid().getFluid().isSame(ModFluids.EXPERIENCE.get().getSource())){
+            if(tank.getFluid().getFluid().isSame(CeiFluids.EXPERIENCE.get().getSource())){
                 var expBall = new ExperienceOrb(worldIn, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, tank.getFluid().getAmount());
                 worldIn.addFreshEntity(expBall);
             }
@@ -110,7 +110,7 @@ public class DisenchanterBlock extends Block implements IWrenchable, ITE<Disench
 
     public List<ItemStack> getDrops(BlockState pState, LootContext.Builder pBuilder) {
         var ret = new ArrayList<ItemStack>();
-        ret.add(ModBlocks.DISENCHANTER.asStack());
+        ret.add(CeiBlocks.DISENCHANTER.asStack());
         return ret;
     }
 

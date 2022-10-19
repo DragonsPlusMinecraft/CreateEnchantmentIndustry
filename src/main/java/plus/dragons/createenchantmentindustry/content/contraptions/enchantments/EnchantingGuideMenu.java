@@ -17,10 +17,10 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.items.SlotItemHandler;
-import plus.dragons.createenchantmentindustry.foundation.utility.ModLang;
+import plus.dragons.createenchantmentindustry.foundation.utility.CeiLang;
 
 public class EnchantingGuideMenu extends GhostItemContainer<ItemStack> {
-    private static final Component NO_ENCHANTMENT = ModLang.translate("gui.enchanting_guide.no_enchantment").component();
+    private static final Component NO_ENCHANTMENT = CeiLang.translate("gui.enchanting_guide.no_enchantment").component();
     ImmutableList<Component> enchantments = ImmutableList.of(NO_ENCHANTMENT);
 
     public EnchantingGuideMenu(MenuType<?> type, int id, Inventory inv, FriendlyByteBuf extraData) {

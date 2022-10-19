@@ -103,11 +103,11 @@ public class AccumulativeTrigger extends SimpleCriterionTrigger<AccumulativeTrig
         private final MinMaxBounds.Ints requirement;
 
         public static AccumulativeTrigger.TriggerInstance ofBook(int requirement){
-            return new AccumulativeTrigger.TriggerInstance(ModTriggers.BOOK_PRINTED.id, EntityPredicate.Composite.ANY, MinMaxBounds.Ints.atLeast(requirement));
+            return new AccumulativeTrigger.TriggerInstance(CeiTriggers.BOOK_PRINTED.id, EntityPredicate.Composite.ANY, MinMaxBounds.Ints.atLeast(requirement));
         }
 
         public static AccumulativeTrigger.TriggerInstance ofExperienceDisenchanted(int requirement){
-            return new AccumulativeTrigger.TriggerInstance(ModTriggers.DISENCHANTED.id, EntityPredicate.Composite.ANY, MinMaxBounds.Ints.atLeast(requirement));
+            return new AccumulativeTrigger.TriggerInstance(CeiTriggers.DISENCHANTED.id, EntityPredicate.Composite.ANY, MinMaxBounds.Ints.atLeast(requirement));
         }
 
         public TriggerInstance(ResourceLocation pCriterion, EntityPredicate.Composite pPlayer, MinMaxBounds.Ints requirement) {

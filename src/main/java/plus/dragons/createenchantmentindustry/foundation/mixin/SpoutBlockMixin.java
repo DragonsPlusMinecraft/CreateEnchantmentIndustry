@@ -13,7 +13,7 @@ import com.simibubi.create.foundation.block.ITE;
 import net.minecraft.world.level.block.state.BlockState;
 import org.spongepowered.asm.mixin.Mixin;
 
-import plus.dragons.createenchantmentindustry.entry.ModFluids;
+import plus.dragons.createenchantmentindustry.entry.CeiFluids;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
@@ -31,7 +31,7 @@ public abstract class SpoutBlockMixin extends Block implements IWrenchable, ITE<
             return;
         withTileEntityDo(level, pos, te -> {
             var fluidStack = ((SpoutTileEntityAccessor) te).getTank().getPrimaryHandler().getFluid();
-            if(fluidStack.getFluid().isSame(ModFluids.EXPERIENCE.get().getSource())){
+            if(fluidStack.getFluid().isSame(CeiFluids.EXPERIENCE.get().getSource())){
                 ExperienceOrb.award(serverLevel, VecHelper.getCenterOf(pos), fluidStack.getAmount());
             }
         });

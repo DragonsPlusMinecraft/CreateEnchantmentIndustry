@@ -19,7 +19,7 @@ import java.util.function.Supplier;
 
 import static net.minecraftforge.network.NetworkDirection.PLAY_TO_SERVER;
 
-public enum ModPackets {
+public enum CeiPackets {
 
     // Client to Server
     CONFIGURE_ENCHANTING_GUIDE_FOR_BLAZE(EnchantingGuideEditPacket.class, EnchantingGuideEditPacket::new, PLAY_TO_SERVER);
@@ -29,11 +29,11 @@ public enum ModPackets {
     public static final String NETWORK_VERSION_STR = String.valueOf(NETWORK_VERSION);
     public static SimpleChannel channel;
 
-    private ModPackets.LoadedPacket<?> packet;
+    private CeiPackets.LoadedPacket<?> packet;
 
-    <T extends SimplePacketBase> ModPackets(Class<T> type, Function<FriendlyByteBuf, T> factory,
+    <T extends SimplePacketBase> CeiPackets(Class<T> type, Function<FriendlyByteBuf, T> factory,
                                             NetworkDirection direction) {
-        packet = new ModPackets.LoadedPacket<>(type, factory, direction);
+        packet = new CeiPackets.LoadedPacket<>(type, factory, direction);
     }
 
     public static void registerPackets() {
@@ -42,7 +42,7 @@ public enum ModPackets {
                 .clientAcceptedVersions(NETWORK_VERSION_STR::equals)
                 .networkProtocolVersion(() -> NETWORK_VERSION_STR)
                 .simpleChannel();
-        for (ModPackets packet : values())
+        for (CeiPackets packet : values())
             packet.packet.register();
     }
 

@@ -34,10 +34,10 @@ import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.items.ItemHandlerHelper;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import plus.dragons.createenchantmentindustry.entry.ModFluids;
-import plus.dragons.createenchantmentindustry.foundation.config.ModConfigs;
-import plus.dragons.createenchantmentindustry.foundation.data.advancement.ModAdvancements;
-import plus.dragons.createenchantmentindustry.foundation.data.advancement.ModTriggers;
+import plus.dragons.createenchantmentindustry.entry.CeiFluids;
+import plus.dragons.createenchantmentindustry.foundation.config.CeiConfigs;
+import plus.dragons.createenchantmentindustry.foundation.data.advancement.CeiAdvancements;
+import plus.dragons.createenchantmentindustry.foundation.data.advancement.CeiTriggers;
 import plus.dragons.createenchantmentindustry.foundation.mixin.AdvancementBehaviourAccessor;
 
 import java.util.IdentityHashMap;
@@ -71,12 +71,12 @@ public class DisenchanterBlockEntity extends SmartTileEntity implements IHaveGog
     public void addBehaviours(List<TileEntityBehaviour> behaviours) {
         behaviours.add(new DirectBeltInputBehaviour(this).allowingBeltFunnels()
                 .setInsertionHandler(this::tryInsertingFromSide));
-        behaviours.add(internalTank = SmartFluidTankBehaviour.single(this, ModConfigs.SERVER.disenchanterTankCapacity.get())
+        behaviours.add(internalTank = SmartFluidTankBehaviour.single(this, CeiConfigs.SERVER.disenchanterTankCapacity.get())
                 .allowExtraction()
                 .forbidInsertion());
         registerAwardables(behaviours,
-                ModAdvancements.EXPERIMENTAL.asCreateAdvancement(),
-                ModAdvancements.GONE_WITH_THE_FOIL.asCreateAdvancement());
+                CeiAdvancements.EXPERIMENTAL.asCreateAdvancement(),
+                CeiAdvancements.GONE_WITH_THE_FOIL.asCreateAdvancement());
     }
 
     @Override
@@ -214,7 +214,7 @@ public class DisenchanterBlockEntity extends SmartTileEntity implements IHaveGog
                 }
             });
             if (sum.get() != 0) {
-                var fluidStack = new FluidStack(ModFluids.EXPERIENCE.get().getSource(), sum.get());
+                var fluidStack = new FluidStack(CeiFluids.EXPERIENCE.get().getSource(), sum.get());
                 var inserted = internalTank.getPrimaryHandler().fill(fluidStack, IFluidHandler.FluidAction.EXECUTE);
                 if (inserted != 0) {
                     for (var player : players) {
@@ -226,7 +226,7 @@ public class DisenchanterBlockEntity extends SmartTileEntity implements IHaveGog
                                 inserted -= getPlayerExperience(player);
                                 player.giveExperiencePoints(-player.totalExperience);
                             }
-                            ModAdvancements.SPIRIT_TAKING.getTrigger().trigger((ServerPlayer) player);
+                            CeiAdvancements.SPIRIT_TAKING.getTrigger().trigger((ServerPlayer) player);
                         } else if (sum.get() > 0) {
                             if (getPlayerExperience(player) >= sum.get()) {
                                 player.giveExperiencePoints(-sum.get());
@@ -235,7 +235,7 @@ public class DisenchanterBlockEntity extends SmartTileEntity implements IHaveGog
                                 inserted -= getPlayerExperience(player);
                                 player.giveExperiencePoints(-player.totalExperience);
                             }
-                            ModAdvancements.SPIRIT_TAKING.getTrigger().trigger((ServerPlayer) player);
+                            CeiAdvancements.SPIRIT_TAKING.getTrigger().trigger((ServerPlayer) player);
                         } else {
                             break;
                         }
@@ -249,7 +249,7 @@ public class DisenchanterBlockEntity extends SmartTileEntity implements IHaveGog
             internalTank.allowInsertion();
             for (var orb : experienceOrbs) {
                 var amount = orb.value;
-                var fluidStack = new FluidStack(ModFluids.EXPERIENCE.get().getSource(), amount);
+                var fluidStack = new FluidStack(CeiFluids.EXPERIENCE.get().getSource(), amount);
                 var inserted = internalTank.getPrimaryHandler().fill(fluidStack, IFluidHandler.FluidAction.EXECUTE);
                 if (inserted == amount) {
                     orb.remove(Entity.RemovalReason.DISCARDED);
@@ -308,13 +308,13 @@ public class DisenchanterBlockEntity extends SmartTileEntity implements IHaveGog
         stackPair = Disenchanting.disenchant(type,heldItem.stack,level);
 
         // Advancement
-        award(ModAdvancements.EXPERIMENTAL.asCreateAdvancement());
-        award(ModAdvancements.GONE_WITH_THE_FOIL.asCreateAdvancement());
+        award(CeiAdvancements.EXPERIMENTAL.asCreateAdvancement());
+        award(CeiAdvancements.GONE_WITH_THE_FOIL.asCreateAdvancement());
         var advancementBehaviour = getBehaviour(AdvancementBehaviour.TYPE);
         var playerId = ((AdvancementBehaviourAccessor) advancementBehaviour).getPlayerId();
         if(playerId!=null){
             var player = level.getPlayerByUUID(playerId);
-            ModTriggers.DISENCHANTED.trigger(player,fluidFromItem.getAmount());
+            CeiTriggers.DISENCHANTED.trigger(player,fluidFromItem.getAmount());
         }
 
         // Process finished

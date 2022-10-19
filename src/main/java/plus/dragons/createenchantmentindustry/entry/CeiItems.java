@@ -12,7 +12,7 @@ import plus.dragons.createenchantmentindustry.content.contraptions.enchantments.
 import plus.dragons.createenchantmentindustry.api.event.FillCreateItemGroupEvent;
 import plus.dragons.createenchantmentindustry.content.contraptions.enchantments.HyperExpBottleItem;
 
-public class ModItems {
+public class CeiItems {
 
     private static final CreateRegistrate REGISTRATE = EnchantmentIndustry.registrate()
             .creativeModeTab(() -> Create.BASE_CREATIVE_TAB).startSection(AllSections.KINETICS);
@@ -28,10 +28,10 @@ public class ModItems {
 
     public static void fillCreateItemGroup(FillCreateItemGroupEvent event) {
         if (event.getItemGroup() == Create.BASE_CREATIVE_TAB) {
-            event.addInsertion(AllBlocks.ITEM_DRAIN.get(), ModBlocks.DISENCHANTER.asStack());
-            event.addInsertion(AllBlocks.SPOUT.get(), ModBlocks.COPIER.asStack());
+            event.addInsertion(AllBlocks.ITEM_DRAIN.get(), CeiBlocks.DISENCHANTER.asStack());
+            event.addInsertion(AllBlocks.SPOUT.get(), CeiBlocks.COPIER.asStack());
             event.addInsertion(AllBlocks.BLAZE_BURNER.get(), ENCHANTING_GUIDE.asStack());
-            event.addInsertion(AllFluids.CHOCOLATE.get().getBucket(), ModFluids.INK.get().getBucket().getDefaultInstance());
+            event.addInsertion(AllFluids.CHOCOLATE.get().getBucket(), CeiFluids.INK.get().getBucket().getDefaultInstance());
             event.addInsertion(AllFluids.CHOCOLATE.get().getBucket(), HYPER_EXP_BOTTLE.asStack());
         }
     }

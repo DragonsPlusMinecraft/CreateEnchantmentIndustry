@@ -12,14 +12,14 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.fluids.FluidStack;
-import plus.dragons.createenchantmentindustry.entry.ModBlockPartials;
+import plus.dragons.createenchantmentindustry.entry.CeiBlockPartials;
 
 public class CopierRenderer extends SmartTileEntityRenderer<CopierBlockEntity> {
     public CopierRenderer(BlockEntityRendererProvider.Context context) {
         super(context);
     }
     
-    private static final PartialModel[] TUBE = { ModBlockPartials.COPIER_TOP, ModBlockPartials.COPIER_MIDDLE};
+    private static final PartialModel[] TUBE = { CeiBlockPartials.COPIER_TOP, CeiBlockPartials.COPIER_MIDDLE};
     
     @Override
     protected void renderSafe(CopierBlockEntity be, float partialTicks, PoseStack ms, MultiBufferSource buffer, int light, int overlay) {
@@ -71,7 +71,7 @@ public class CopierRenderer extends SmartTileEntityRenderer<CopierBlockEntity> {
         
         BlockState blockState = be.getBlockState();
         CachedBufferer
-            .partial(ModBlockPartials.COPIER_BOTTOM, blockState)
+            .partial(CeiBlockPartials.COPIER_BOTTOM, blockState)
             .translate(0, squeeze / 2f, 0)
             .light(light)
             .renderInto(ms, buffer.getBuffer(RenderType.solid()));

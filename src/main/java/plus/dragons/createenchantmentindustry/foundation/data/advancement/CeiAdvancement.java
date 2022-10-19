@@ -22,7 +22,7 @@ import java.util.Map;
 import java.util.StringJoiner;
 import java.util.function.Consumer;
 
-public class ModAdvancement {
+public class CeiAdvancement {
     protected final ResourceLocation id;
     protected final Advancement.Builder builder;
     @Nullable
@@ -32,17 +32,17 @@ public class ModAdvancement {
     protected final String title;
     protected final String description;
     @Nullable
-    protected final ModAdvancement parent;
+    protected final CeiAdvancement parent;
     @Nullable
     protected final CreateAdvancement createAdvancement;
     protected Advancement advancement;
     
-    protected ModAdvancement(String id, Advancement.Builder builder, @Nullable ModAdvancement parent, boolean builtin, String title, String description) {
+    protected CeiAdvancement(String id, Advancement.Builder builder, @Nullable CeiAdvancement parent, boolean builtin, String title, String description) {
         this.id = EnchantmentIndustry.genRL(id);
         this.builder = builder;
         this.parent = parent;
         if(builtin) {
-            this.builtinTrigger = ModTriggers.addSimple("builtin/" + id);
+            this.builtinTrigger = CeiTriggers.addSimple("builtin/" + id);
             this.builder.addCriterion("builtin", builtinTrigger.instance());
         } else this.builtinTrigger = null;
         this.createAdvancement = CreateAdvancementConstructor.createInstance(id, $ -> $);
@@ -116,7 +116,7 @@ public class ModAdvancement {
         private final String id;
         private final Advancement.Builder builder = Advancement.Builder.advancement();
         @Nullable
-        private ModAdvancement parent;
+        private CeiAdvancement parent;
         private boolean builtin = true;
         private String title = "Untitled";
         private String description = "No Description";
@@ -185,7 +185,7 @@ public class ModAdvancement {
             return this;
         }
         
-        protected Builder parent(ModAdvancement advancement) {
+        protected Builder parent(CeiAdvancement advancement) {
             this.parent = advancement;
             return this;
         }
@@ -195,9 +195,9 @@ public class ModAdvancement {
             return this;
         }
     
-        protected ModAdvancement build() {
+        protected CeiAdvancement build() {
             if (hide) description += "\u00A77\n(Hidden Advancement)";
-            ModAdvancement advancement = new ModAdvancement(id, builder, parent, builtin, title, description);
+            CeiAdvancement advancement = new CeiAdvancement(id, builder, parent, builtin, title, description);
             builder.display(
                 icon,
                 Components.translatable(advancement.titleKey),
@@ -208,7 +208,7 @@ public class ModAdvancement {
                 announce,
                 hide
             );
-            ModAdvancements.ENTRIES.add(advancement);
+            CeiAdvancements.ENTRIES.add(advancement);
             return advancement;
         }
         

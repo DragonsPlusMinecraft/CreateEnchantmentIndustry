@@ -24,7 +24,7 @@ import plus.dragons.createenchantmentindustry.content.contraptions.enchantments.
 import java.util.Optional;
 import java.util.function.Supplier;
 
-public enum ModRecipeTypes implements IRecipeTypeInfo {
+public enum CeiRecipeTypes implements IRecipeTypeInfo {
     DISENCHANTING(DisenchantRecipe::new);
 
     private final ResourceLocation id;
@@ -33,15 +33,15 @@ public enum ModRecipeTypes implements IRecipeTypeInfo {
     private final RegistryObject<RecipeType<?>> typeObject;
     private final Supplier<RecipeType<?>> type;
 
-    ModRecipeTypes(Supplier<RecipeSerializer<?>> serializerSupplier) {
+    CeiRecipeTypes(Supplier<RecipeSerializer<?>> serializerSupplier) {
         String name = Lang.asId(name());
         id = Create.asResource(name);
-        serializerObject = ModRecipeTypes.Registers.SERIALIZER_REGISTER.register(name, serializerSupplier);
-        typeObject = ModRecipeTypes.Registers.TYPE_REGISTER.register(name, () -> simpleType(id));
+        serializerObject = CeiRecipeTypes.Registers.SERIALIZER_REGISTER.register(name, serializerSupplier);
+        typeObject = CeiRecipeTypes.Registers.TYPE_REGISTER.register(name, () -> simpleType(id));
         type = typeObject;
     }
 
-    ModRecipeTypes(ProcessingRecipeBuilder.ProcessingRecipeFactory<?> processingFactory) {
+    CeiRecipeTypes(ProcessingRecipeBuilder.ProcessingRecipeFactory<?> processingFactory) {
         this(() -> new ProcessingRecipeSerializer<>(processingFactory));
     }
 
@@ -57,8 +57,8 @@ public enum ModRecipeTypes implements IRecipeTypeInfo {
 
     public static void register(IEventBus modEventBus) {
         ShapedRecipe.setCraftingSize(9, 9);
-        ModRecipeTypes.Registers.SERIALIZER_REGISTER.register(modEventBus);
-        ModRecipeTypes.Registers.TYPE_REGISTER.register(modEventBus);
+        CeiRecipeTypes.Registers.SERIALIZER_REGISTER.register(modEventBus);
+        CeiRecipeTypes.Registers.TYPE_REGISTER.register(modEventBus);
     }
 
     public <C extends Container, T extends Recipe<C>> Optional<T> find(C inv, Level world) {

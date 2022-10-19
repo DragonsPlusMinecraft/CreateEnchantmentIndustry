@@ -19,7 +19,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import plus.dragons.createenchantmentindustry.entry.ModFluids;
+import plus.dragons.createenchantmentindustry.entry.CeiFluids;
 
 @Mixin(FluidTankBlock.class)
 public abstract class FluidTankBlockMixin extends Block implements ITE<BasinTileEntity>, IWrenchable {
@@ -39,7 +39,7 @@ public abstract class FluidTankBlockMixin extends Block implements ITE<BasinTile
         var fluid = controllerBE.getFluid(0);
         var backup = fluid.copy();
         var maxSize = controllerBE.getTotalTankSize();
-        if (fluid.getFluid().isSame(ModFluids.EXPERIENCE.get().getSource())) {
+        if (fluid.getFluid().isSame(CeiFluids.EXPERIENCE.get().getSource())) {
             level.removeBlockEntity(pos);
             ConnectivityHandler.splitMulti(tankBE);
             if (maxSize == 1){

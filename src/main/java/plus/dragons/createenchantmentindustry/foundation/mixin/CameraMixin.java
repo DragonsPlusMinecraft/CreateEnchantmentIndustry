@@ -11,7 +11,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import plus.dragons.createenchantmentindustry.content.contraptions.fluids.InkRenderingCamera;
-import plus.dragons.createenchantmentindustry.entry.ModTags;
+import plus.dragons.createenchantmentindustry.entry.CeiTags;
 
 @Mixin(Camera.class)
 @Implements(@Interface(iface = InkRenderingCamera.class, prefix = "enchantmentIndustry$"))
@@ -27,7 +27,7 @@ public class CameraMixin {
     @Inject(method = "getFluidInCamera", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/BlockGetter;getFluidState(Lnet/minecraft/core/BlockPos;)Lnet/minecraft/world/level/material/FluidState;", ordinal = 0), cancellable = true)
     private void updateInk(CallbackInfoReturnable<FogType> cir) {
         FluidState fluidstate = this.level.getFluidState(this.blockPosition);
-        if (fluidstate.is(ModTags.ModFluidTags.INK.tag())  && this.position.y < (double)((float)this.blockPosition.getY() + fluidstate.getHeight(this.level, this.blockPosition))) {
+        if (fluidstate.is(CeiTags.ModFluidTags.INK.tag())  && this.position.y < (double)((float)this.blockPosition.getY() + fluidstate.getHeight(this.level, this.blockPosition))) {
             enchantmentIndustry$inInk = true;
             cir.setReturnValue(FogType.POWDER_SNOW);
         } else enchantmentIndustry$inInk = false;

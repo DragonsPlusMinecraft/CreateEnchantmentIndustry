@@ -11,15 +11,15 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import plus.dragons.createenchantmentindustry.foundation.data.advancement.ModdedCreateAdvancement;
-import plus.dragons.createenchantmentindustry.foundation.data.advancement.ModAdvancement;
+import plus.dragons.createenchantmentindustry.foundation.data.advancement.CeiAdvancement;
 
 @Mixin(value = CreateAdvancement.class, remap = false)
 @Implements(@Interface(iface = ModdedCreateAdvancement.class, prefix = "enchantmentIndustry$", remap = Interface.Remap.NONE))
 public class CreateAdvancementMixin {
     
-    @Nullable private ModAdvancement enchantmentIndustry$advancement = null;
+    @Nullable private CeiAdvancement enchantmentIndustry$advancement = null;
     
-    public void enchantmentIndustry$fromModAdvancement(ModAdvancement advancement) {
+    public void enchantmentIndustry$fromModAdvancement(CeiAdvancement advancement) {
         this.enchantmentIndustry$advancement = advancement;
     }
     

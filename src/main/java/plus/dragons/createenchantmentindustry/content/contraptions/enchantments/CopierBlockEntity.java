@@ -33,11 +33,11 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import plus.dragons.createenchantmentindustry.foundation.config.ModConfigs;
-import plus.dragons.createenchantmentindustry.foundation.data.advancement.ModAdvancements;
-import plus.dragons.createenchantmentindustry.foundation.data.advancement.ModTriggers;
+import plus.dragons.createenchantmentindustry.foundation.config.CeiConfigs;
+import plus.dragons.createenchantmentindustry.foundation.data.advancement.CeiAdvancements;
+import plus.dragons.createenchantmentindustry.foundation.data.advancement.CeiTriggers;
 import plus.dragons.createenchantmentindustry.foundation.mixin.AdvancementBehaviourAccessor;
-import plus.dragons.createenchantmentindustry.foundation.utility.ModLang;
+import plus.dragons.createenchantmentindustry.foundation.utility.CeiLang;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -64,13 +64,13 @@ public class CopierBlockEntity extends SmartTileEntity implements IHaveGoggleInf
 
     @Override
     public void addBehaviours(List<TileEntityBehaviour> behaviours) {
-        behaviours.add(tank = SmartFluidTankBehaviour.single(this, ModConfigs.SERVER.copierTankCapacity.get()));
+        behaviours.add(tank = SmartFluidTankBehaviour.single(this, CeiConfigs.SERVER.copierTankCapacity.get()));
         behaviours.add(beltProcessing = new BeltProcessingBehaviour(this).whenItemEnters(this::onItemReceived)
                 .whileItemHeld(this::whenItemHeld));
         registerAwardables(behaviours,
-                ModAdvancements.COPIABLE_MASTERPIECE.asCreateAdvancement(),
-                ModAdvancements.COPIABLE_MYSTERY.asCreateAdvancement(),
-                ModAdvancements.RELIC_RESTORATION.asCreateAdvancement());
+                CeiAdvancements.COPIABLE_MASTERPIECE.asCreateAdvancement(),
+                CeiAdvancements.COPIABLE_MYSTERY.asCreateAdvancement(),
+                CeiAdvancements.RELIC_RESTORATION.asCreateAdvancement());
     }
 
     public void tick() {
@@ -139,16 +139,16 @@ public class CopierBlockEntity extends SmartTileEntity implements IHaveGoggleInf
         var item = copyTarget.copy();
         if(!level.isClientSide()){
             if(item.is(Items.WRITTEN_BOOK)){
-                award(ModAdvancements.COPIABLE_MASTERPIECE.asCreateAdvancement());
+                award(CeiAdvancements.COPIABLE_MASTERPIECE.asCreateAdvancement());
                 if(item.getOrCreateTag().getInt("generation")==3)
-                    award(ModAdvancements.RELIC_RESTORATION.asCreateAdvancement());
+                    award(CeiAdvancements.RELIC_RESTORATION.asCreateAdvancement());
             }
-            else award(ModAdvancements.COPIABLE_MYSTERY.asCreateAdvancement());
+            else award(CeiAdvancements.COPIABLE_MYSTERY.asCreateAdvancement());
             var advancementBehaviour = getBehaviour(AdvancementBehaviour.TYPE);
             var playerId = ((AdvancementBehaviourAccessor) advancementBehaviour).getPlayerId();
             if(playerId!=null){
                 var player = level.getPlayerByUUID(playerId);
-                ModTriggers.BOOK_PRINTED.trigger(player,1);
+                CeiTriggers.BOOK_PRINTED.trigger(player,1);
             }
         }
 
@@ -216,42 +216,42 @@ public class CopierBlockEntity extends SmartTileEntity implements IHaveGoggleInf
 
     @Override
     public boolean addToGoggleTooltip(List<Component> tooltip, boolean isPlayerSneaking) {
-        ModLang.translate("gui.goggles.copier_machine").forGoggles(tooltip);
+        CeiLang.translate("gui.goggles.copier_machine").forGoggles(tooltip);
         if (copyTarget == null) {
-            ModLang.translate("gui.goggles.copier_no_target")
+            CeiLang.translate("gui.goggles.copier_no_target")
                     .style(ChatFormatting.GRAY)
                     .forGoggles(tooltip, 1);
         } else {
             if (copyTarget.is(Items.WRITTEN_BOOK)) {
                 var page = WrittenBookItem.getPageCount(copyTarget);
-                var b = ModLang.builder()
-                        .add(ModLang.itemName(copyTarget)
+                var b = CeiLang.builder()
+                        .add(CeiLang.itemName(copyTarget)
                                 .style(ChatFormatting.BLUE))
                         .text(ChatFormatting.GRAY, " / ")
-                        .add(ModLang.number(page)
+                        .add(CeiLang.number(page)
                                 .text(" ")
-                                .add(page == 1 ? ModLang.translate("generic.unit.page") : ModLang.translate("generic.unit.pages"))
+                                .add(page == 1 ? CeiLang.translate("generic.unit.page") : CeiLang.translate("generic.unit.pages"))
                                 .style(ChatFormatting.DARK_GRAY));
                 b.forGoggles(tooltip, 1);
-                if (CopyingBook.isTooExpensive(copyTarget, ModConfigs.SERVER.copierTankCapacity.get()))
-                    tooltip.add(new TextComponent("     ").append(ModLang.translate(
+                if (CopyingBook.isTooExpensive(copyTarget, CeiConfigs.SERVER.copierTankCapacity.get()))
+                    tooltip.add(new TextComponent("     ").append(CeiLang.translate(
                         "gui.goggles.too_expensive").component()
                     ).withStyle(ChatFormatting.RED));
                 else
-                    tooltip.add(new TextComponent("     ").append(ModLang.translate(
+                    tooltip.add(new TextComponent("     ").append(CeiLang.translate(
                         "gui.goggles.ink_consumption",
                         CopyingBook.getExperienceFromItem(copyTarget)).component()
                     ).withStyle(ChatFormatting.DARK_GRAY));
             } else if (copyTarget.is(Items.ENCHANTED_BOOK)) {
-                var b = ModLang.itemName(copyTarget).style(ChatFormatting.LIGHT_PURPLE);
+                var b = CeiLang.itemName(copyTarget).style(ChatFormatting.LIGHT_PURPLE);
                 b.forGoggles(tooltip, 1);
-                boolean tooExpensive = CopyingBook.isTooExpensive(copyTarget, ModConfigs.SERVER.copierTankCapacity.get());
+                boolean tooExpensive = CopyingBook.isTooExpensive(copyTarget, CeiConfigs.SERVER.copierTankCapacity.get());
                 if (tooExpensive)
-                    tooltip.add(new TextComponent("     ").append(ModLang.translate(
+                    tooltip.add(new TextComponent("     ").append(CeiLang.translate(
                         "gui.goggles.too_expensive").component()
                     ).withStyle(ChatFormatting.RED));
                 else
-                    tooltip.add(new TextComponent("     ").append(ModLang.translate(
+                    tooltip.add(new TextComponent("     ").append(CeiLang.translate(
                         "gui.goggles.xp_consumption",
                         CopyingBook.getExperienceFromItem(copyTarget)).component()
                     ).withStyle(ChatFormatting.GREEN));

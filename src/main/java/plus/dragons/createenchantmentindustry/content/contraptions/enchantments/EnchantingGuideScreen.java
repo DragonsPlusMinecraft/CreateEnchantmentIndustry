@@ -10,14 +10,14 @@ import com.simibubi.create.foundation.utility.Components;
 import net.minecraft.client.renderer.Rect2i;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
-import plus.dragons.createenchantmentindustry.entry.ModPackets;
+import plus.dragons.createenchantmentindustry.entry.CeiPackets;
 import plus.dragons.createenchantmentindustry.foundation.gui.ComponentLabel;
 
 import java.util.Collections;
 import java.util.List;
 
 import static com.simibubi.create.foundation.gui.AllGuiTextures.PLAYER_INVENTORY;
-import static plus.dragons.createenchantmentindustry.foundation.gui.ModGuiTextures.ENCHANTING_GUIDE;
+import static plus.dragons.createenchantmentindustry.foundation.gui.CeiGuiTextures.ENCHANTING_GUIDE;
 
 public class EnchantingGuideScreen extends AbstractSimiContainerScreen<EnchantingGuideMenu> {
     private static final int ENCHANTING_GUIDE_WIDTH = 178;
@@ -84,7 +84,7 @@ public class EnchantingGuideScreen extends AbstractSimiContainerScreen<Enchantin
     @Override
     public void removed() {
         super.removed();
-        ModPackets.channel.sendToServer(new EnchantingGuideEditPacket(index, menu.getSlot(36).getItem()));
+        CeiPackets.channel.sendToServer(new EnchantingGuideEditPacket(index, menu.getSlot(36).getItem()));
     }
     
     @Override

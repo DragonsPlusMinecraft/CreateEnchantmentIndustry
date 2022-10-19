@@ -15,7 +15,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import plus.dragons.createenchantmentindustry.entry.ModFluids;
+import plus.dragons.createenchantmentindustry.entry.CeiFluids;
 
 @Mixin(ItemDrainBlock.class)
 public abstract class ItemDrainBlockMixin extends Block implements ITE<ItemDrainTileEntity>, IWrenchable {
@@ -30,7 +30,7 @@ public abstract class ItemDrainBlockMixin extends Block implements ITE<ItemDrain
             return;
         withTileEntityDo(level, pos, te -> {
             var fluidStack = ((ItemDrainTileEntityAccessor) te).getInternalTank().getPrimaryHandler().getFluid();
-            if(fluidStack.getFluid().isSame(ModFluids.EXPERIENCE.get().getSource())){
+            if(fluidStack.getFluid().isSame(CeiFluids.EXPERIENCE.get().getSource())){
                 ExperienceOrb.award(serverLevel, VecHelper.getCenterOf(pos), fluidStack.getAmount());
             }
         });

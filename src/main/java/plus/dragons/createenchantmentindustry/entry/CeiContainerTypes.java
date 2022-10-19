@@ -10,7 +10,7 @@ import plus.dragons.createenchantmentindustry.EnchantmentIndustry;
 import plus.dragons.createenchantmentindustry.content.contraptions.enchantments.EnchantingGuideMenu;
 import plus.dragons.createenchantmentindustry.content.contraptions.enchantments.EnchantingGuideScreen;
 
-public class ModContainerTypes {
+public class CeiContainerTypes {
 
     public static final MenuEntry<EnchantingGuideMenu> ENCHANTING_GUIDE_FOR_BLAZE =
             register("enchanting_guide_for_blaze", EnchantingGuideMenu::new, () -> EnchantingGuideScreen::new);

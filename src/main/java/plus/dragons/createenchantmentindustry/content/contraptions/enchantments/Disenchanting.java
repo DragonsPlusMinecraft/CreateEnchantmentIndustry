@@ -10,8 +10,8 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.items.wrapper.RecipeWrapper;
-import plus.dragons.createenchantmentindustry.entry.ModFluids;
-import plus.dragons.createenchantmentindustry.entry.ModRecipeTypes;
+import plus.dragons.createenchantmentindustry.entry.CeiFluids;
+import plus.dragons.createenchantmentindustry.entry.CeiRecipeTypes;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -34,7 +34,7 @@ public class Disenchanting {
         if(isBuiltIn(itemStack)) return Type.BUILTIN;
         if(!EnchantmentHelper.getEnchantments(itemStack).keySet().stream().filter(enchantment->!enchantment.isCurse()).collect(Collectors.toList()).isEmpty()) return Type.DISENCHANT;
         wrapper.setItem(0, itemStack);
-        if(ModRecipeTypes.DISENCHANTING.find(wrapper, level).isPresent()) return Type.RECIPE;
+        if(CeiRecipeTypes.DISENCHANTING.find(wrapper, level).isPresent()) return Type.RECIPE;
         return Type.NONE;
     }
 
@@ -42,13 +42,13 @@ public class Disenchanting {
     // stack always has count of 1.
     public static Pair<FluidStack, ItemStack> disenchant(Type type, ItemStack stack, Level level) {
         if(type==Type.DISENCHANT) {
-            FluidStack resultingFluid = new FluidStack(ModFluids.EXPERIENCE.get().getSource(), getExperienceFromItem(stack));
+            FluidStack resultingFluid = new FluidStack(CeiFluids.EXPERIENCE.get().getSource(), getExperienceFromItem(stack));
             ItemStack resultingItem = disenchantItem(stack);
             return Pair.of(resultingFluid, resultingItem);
         }
         else if(type==Type.RECIPE) {
             wrapper.setItem(0, stack);
-            var r = (DisenchantRecipe) ModRecipeTypes.DISENCHANTING.find(wrapper, level).get();
+            var r = (DisenchantRecipe) CeiRecipeTypes.DISENCHANTING.find(wrapper, level).get();
             var i = r.getResultItem().copy();
             var f = r.getResultingFluid().copy();
             return Pair.of(f,i);
@@ -84,11 +84,11 @@ public class Disenchanting {
         if(itemStack.is(AllItems.EXP_NUGGET.get())){
             var tank = be.getInternalTank();
             tank.allowInsertion();
-            var fluidStack = new FluidStack(ModFluids.EXPERIENCE.get().getSource(), itemStack.getCount() * 3);
+            var fluidStack = new FluidStack(CeiFluids.EXPERIENCE.get().getSource(), itemStack.getCount() * 3);
             int inserted = tank.getPrimaryHandler().fill(fluidStack, IFluidHandler.FluidAction.SIMULATE) / 3;
             ItemStack ret = itemStack.copy();
             if(!simulated){
-                fluidStack = new FluidStack(ModFluids.EXPERIENCE.get().getSource(), inserted * 3);
+                fluidStack = new FluidStack(CeiFluids.EXPERIENCE.get().getSource(), inserted * 3);
                 tank.getPrimaryHandler().fill(fluidStack, IFluidHandler.FluidAction.EXECUTE);
             }
             ret.shrink(inserted);

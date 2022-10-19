@@ -22,9 +22,9 @@ import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import plus.dragons.createenchantmentindustry.entry.ModBlocks;
-import plus.dragons.createenchantmentindustry.entry.ModFluids;
-import plus.dragons.createenchantmentindustry.entry.ModItems;
+import plus.dragons.createenchantmentindustry.entry.CeiBlocks;
+import plus.dragons.createenchantmentindustry.entry.CeiFluids;
+import plus.dragons.createenchantmentindustry.entry.CeiItems;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.io.IOException;
@@ -37,11 +37,11 @@ import java.util.function.Consumer;
 
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
-public class ModAdvancements implements DataProvider {
+public class CeiAdvancements implements DataProvider {
     private static final Logger LOGGER = LogManager.getLogger();
     private static final Gson GSON = (new GsonBuilder()).setPrettyPrinting().create();
-    public static final List<ModAdvancement> ENTRIES = new ArrayList<>();
-    public static final ModAdvancement
+    public static final List<CeiAdvancement> ENTRIES = new ArrayList<>();
+    public static final CeiAdvancement
     START = null,
     // Root
     EXPERIENCED_ENGINEER = builder("experienced_engineer")
@@ -55,8 +55,8 @@ public class ModAdvancements implements DataProvider {
     BLACK_AS_INK = builder("black_as_ink")
         .title("Black as Ink!")
         .description("Get a bucket of Ink for your copying business")
-        .icon(ModFluids.INK.get().getBucket())
-        .externalTrigger("have_bucket_of_ink", InventoryChangeTrigger.TriggerInstance.hasItems(ModFluids.INK.get().getBucket()))
+        .icon(CeiFluids.INK.get().getBucket())
+        .externalTrigger("have_bucket_of_ink", InventoryChangeTrigger.TriggerInstance.hasItems(CeiFluids.INK.get().getBucket()))
         .parent(EXPERIENCED_ENGINEER)
         .build(),
     COPIABLE_MASTERPIECE = builder("copiable_masterpiece")
@@ -84,7 +84,7 @@ public class ModAdvancements implements DataProvider {
         .title("Great Publisher")
         .description("Copy 1000 books using Copier")
         .externalTrigger("book_copied", AccumulativeTrigger.TriggerInstance.ofBook(1000))
-        .icon(ModBlocks.COPIER)
+        .icon(CeiBlocks.COPIER)
         .announce(true)
         .frame(FrameType.CHALLENGE)
         .parent(RELIC_RESTORATION)
@@ -99,7 +99,7 @@ public class ModAdvancements implements DataProvider {
     GONE_WITH_THE_FOIL = builder("gone_with_the_foil")
         .title("Gone with the Foil")
         .description("Watch an enchanted item be disenchanted by a Disenchanter")
-        .icon(ModBlocks.DISENCHANTER)
+        .icon(CeiBlocks.DISENCHANTER)
         .parent(EXPERIMENTAL)
         .build(),
     SPIRIT_TAKING = builder("spirit_taking")
@@ -130,7 +130,7 @@ public class ModAdvancements implements DataProvider {
     BLAZES_NEW_JOB = builder("blazes_new_job")
         .title("Blaze's New Job")
         .description("Give your Blaze Burner a Enchanting Guide and turn it into a Blaze Enchanter")
-        .icon(ModItems.ENCHANTING_GUIDE)
+        .icon(CeiItems.ENCHANTING_GUIDE)
         .parent(EXPERIENCED_ENGINEER)
         .build(),
     FIRST_ORDER = builder("first_order")
@@ -157,14 +157,14 @@ public class ModAdvancements implements DataProvider {
     END = null;
 
     //Shortcut for builder constructor
-    public static ModAdvancement.Builder builder(String id) {
-        return new ModAdvancement.Builder(id);
+    public static CeiAdvancement.Builder builder(String id) {
+        return new CeiAdvancement.Builder(id);
     }
 
     //Datagen
     private final DataGenerator generator;
 
-    public ModAdvancements(DataGenerator generator) {
+    public CeiAdvancements(DataGenerator generator) {
         this.generator = generator;
     }
 

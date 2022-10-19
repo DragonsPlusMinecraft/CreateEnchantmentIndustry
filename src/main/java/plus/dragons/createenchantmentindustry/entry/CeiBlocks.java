@@ -14,7 +14,7 @@ import plus.dragons.createenchantmentindustry.content.contraptions.enchantments.
 import plus.dragons.createenchantmentindustry.content.contraptions.enchantments.BlazeEnchanterBlock;
 
 
-public class ModBlocks {
+public class CeiBlocks {
 
     private static final CreateRegistrate REGISTRATE = EnchantmentIndustry.registrate()
             .creativeModeTab(() -> Create.BASE_CREATIVE_TAB).startSection(AllSections.KINETICS);
@@ -23,7 +23,7 @@ public class ModBlocks {
             .block("disenchanter", DisenchanterBlock::new)
             .initialProperties(SharedProperties::copperMetal)
             .addLayer(() -> RenderType::cutoutMipped)
-            .transform(ModTags.pickaxeOnly())
+            .transform(CeiTags.pickaxeOnly())
             .blockstate((ctx, pov) -> pov.simpleBlock(ctx.get(), AssetLookup.standardModel(ctx, pov)))
             .simpleItem()
             .register();
@@ -32,7 +32,7 @@ public class ModBlocks {
             .block("copier", CopierBlock::new)
             .initialProperties(SharedProperties::copperMetal)
             .addLayer(() -> RenderType::cutoutMipped)
-            .transform(ModTags.pickaxeOnly())
+            .transform(CeiTags.pickaxeOnly())
             .blockstate((ctx, pov) -> pov.simpleBlock(ctx.get(), AssetLookup.partialBaseModel(ctx, pov)))
             .item(AssemblyOperatorBlockItem::new)
             .model(AssetLookup::customItemModel)
@@ -43,7 +43,7 @@ public class ModBlocks {
             .block("blaze_enchanter", BlazeEnchanterBlock::new)
             .initialProperties(SharedProperties::softMetal)
             .addLayer(() -> RenderType::cutoutMipped)
-            .transform(ModTags.pickaxeOnly())
+            .transform(CeiTags.pickaxeOnly())
             .blockstate((ctx, pov) -> pov.simpleBlock(ctx.get(), AssetLookup.standardModel(ctx, pov)))
             .register();
     

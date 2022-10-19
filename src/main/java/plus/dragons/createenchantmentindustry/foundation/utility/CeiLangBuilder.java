@@ -6,14 +6,14 @@ import net.minecraft.network.chat.MutableComponent;
 
 import java.util.List;
 
-public class ModLangBuilder extends LangBuilder {
-    public ModLangBuilder(String namespace) {
+public class CeiLangBuilder extends LangBuilder {
+    public CeiLangBuilder(String namespace) {
         super(namespace);
     }
 
     @Override
     public void forGoggles(List<? super MutableComponent> tooltip, int indents) {
-        tooltip.add(ModLang.builder()
+        tooltip.add(CeiLang.builder()
                 .text(Strings.repeat(' ', 4 + indents))
                 .add(this)
                 .component());

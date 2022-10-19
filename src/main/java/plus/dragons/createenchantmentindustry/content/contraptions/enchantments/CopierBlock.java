@@ -27,10 +27,10 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
-import plus.dragons.createenchantmentindustry.entry.ModBlockEntities;
-import plus.dragons.createenchantmentindustry.entry.ModBlocks;
-import plus.dragons.createenchantmentindustry.entry.ModFluids;
-import plus.dragons.createenchantmentindustry.foundation.config.ModConfigs;
+import plus.dragons.createenchantmentindustry.entry.CeiBlockEntities;
+import plus.dragons.createenchantmentindustry.entry.CeiBlocks;
+import plus.dragons.createenchantmentindustry.entry.CeiFluids;
+import plus.dragons.createenchantmentindustry.foundation.config.CeiConfigs;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,7 +55,7 @@ public class CopierBlock extends Block implements IWrenchable, ITE<CopierBlockEn
     @Override
     public List<ItemStack> getDrops(BlockState pState, LootContext.Builder pBuilder) {
         var ret = new ArrayList<ItemStack>();
-        ret.add(ModBlocks.COPIER.asStack());
+        ret.add(CeiBlocks.COPIER.asStack());
         return ret;
     }
 
@@ -88,7 +88,7 @@ public class CopierBlock extends Block implements IWrenchable, ITE<CopierBlockEn
                 } else {
                     player.setItemInHand(hand, be.copyTarget);
                 }
-                be.tooExpensive = CopyingBook.isTooExpensive(heldItem, ModConfigs.SERVER.copierTankCapacity.get());
+                be.tooExpensive = CopyingBook.isTooExpensive(heldItem, CeiConfigs.SERVER.copierTankCapacity.get());
                 be.copyTarget = heldItem;
                 be.processingTicks = -1;
                 be.notifyUpdate();
@@ -107,7 +107,7 @@ public class CopierBlock extends Block implements IWrenchable, ITE<CopierBlockEn
             if (heldItemStack != null)
                 Containers.dropItemStack(worldIn, pos.getX(), pos.getY(), pos.getZ(), heldItemStack);
             var tank = te.tank.getPrimaryHandler();
-            if(tank.getFluid().getFluid().isSame(ModFluids.EXPERIENCE.get().getSource())){
+            if(tank.getFluid().getFluid().isSame(CeiFluids.EXPERIENCE.get().getSource())){
                 var expBall = new ExperienceOrb(worldIn, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, tank.getFluid().getAmount());
                 worldIn.addFreshEntity(expBall);
             }
@@ -137,6 +137,6 @@ public class CopierBlock extends Block implements IWrenchable, ITE<CopierBlockEn
 
     @Override
     public BlockEntityType<? extends CopierBlockEntity> getTileEntityType() {
-        return ModBlockEntities.COPIER.get();
+        return CeiBlockEntities.COPIER.get();
     }
 }

@@ -5,7 +5,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.WrittenBookItem;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraftforge.fluids.FluidStack;
-import plus.dragons.createenchantmentindustry.entry.ModFluids;
+import plus.dragons.createenchantmentindustry.entry.CeiFluids;
 
 
 public class CopyingBook {
@@ -24,8 +24,8 @@ public class CopyingBook {
     }
 
     public static boolean isCorrectInt(ItemStack target, FluidStack fluidStack) {
-        if (target.is(Items.ENCHANTED_BOOK) && fluidStack.getFluid().isSame(ModFluids.EXPERIENCE.get())) return true;
-        else return target.is(Items.WRITTEN_BOOK) && fluidStack.getFluid().isSame(ModFluids.INK.get());
+        if (target.is(Items.ENCHANTED_BOOK) && fluidStack.getFluid().isSame(CeiFluids.EXPERIENCE.get())) return true;
+        else return target.is(Items.WRITTEN_BOOK) && fluidStack.getFluid().isSame(CeiFluids.INK.get());
     }
 
     public static ItemStack print(ItemStack target, int requiredAmount, ItemStack stack, FluidStack availableFluid) {

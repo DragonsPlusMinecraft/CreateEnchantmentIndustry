@@ -21,7 +21,7 @@ import plus.dragons.createenchantmentindustry.EnchantmentIndustry;
 
 import java.util.*;
 
-public interface ModTags<T, P extends RegistrateTagsProvider<T>> {
+public interface CeiTags<T, P extends RegistrateTagsProvider<T>> {
     ITagManager<Block> BLOCK_TAGS = Objects.requireNonNull(ForgeRegistries.BLOCKS.tags());
     ITagManager<Item> ITEM_TAGS = Objects.requireNonNull(ForgeRegistries.ITEMS.tags());
     ITagManager<Fluid> FLUID_TAGS = Objects.requireNonNull(ForgeRegistries.FLUIDS.tags());
@@ -66,17 +66,17 @@ public interface ModTags<T, P extends RegistrateTagsProvider<T>> {
     static void register() {
         CreateRegistrate registrate = EnchantmentIndustry.registrate();
         Arrays.stream(ModBlockTags.values())
-            .filter(ModTags::hasDatagen)
+            .filter(CeiTags::hasDatagen)
             .forEach(tag -> registrate.addDataGenerator(ProviderType.BLOCK_TAGS, tag::datagen));
         Arrays.stream(ModItemTags.values())
-            .filter(ModTags::hasDatagen)
+            .filter(CeiTags::hasDatagen)
             .forEach(tag -> registrate.addDataGenerator(ProviderType.ITEM_TAGS, tag::datagen));
         Arrays.stream(ModFluidTags.values())
-            .filter(ModTags::hasDatagen)
+            .filter(CeiTags::hasDatagen)
             .forEach(tag -> registrate.addDataGenerator(ProviderType.FLUID_TAGS, tag::datagen));
     }
     
-    enum ModBlockTags implements ModTags<Block, RegistrateTagsProvider<Block>> {
+    enum ModBlockTags implements CeiTags<Block, RegistrateTagsProvider<Block>> {
         ;
         
         final TagKey<Block> tag;
@@ -102,7 +102,7 @@ public interface ModTags<T, P extends RegistrateTagsProvider<T>> {
         }
     }
     
-    enum ModItemTags implements ModTags<Item, RegistrateItemTagsProvider> {
+    enum ModItemTags implements CeiTags<Item, RegistrateItemTagsProvider> {
         INK_INGREDIENT(true) {
             @Override
             public void datagen(RegistrateItemTagsProvider pov) {
@@ -139,7 +139,7 @@ public interface ModTags<T, P extends RegistrateTagsProvider<T>> {
         }
     }
     
-    enum ModFluidTags implements ModTags<Fluid, RegistrateTagsProvider<Fluid>> {
+    enum ModFluidTags implements CeiTags<Fluid, RegistrateTagsProvider<Fluid>> {
         //No experience fluid tag here as different ratios is not acceptable
         INK(FORGE, false);
         

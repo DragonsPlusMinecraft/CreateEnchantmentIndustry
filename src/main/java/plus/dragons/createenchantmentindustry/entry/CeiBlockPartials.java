@@ -3,7 +3,7 @@ package plus.dragons.createenchantmentindustry.entry;
 import com.jozufozu.flywheel.core.PartialModel;
 import plus.dragons.createenchantmentindustry.EnchantmentIndustry;
 
-public class ModBlockPartials {
+public class CeiBlockPartials {
     
     public static final PartialModel
         COPIER_TOP = block("copier/top"),

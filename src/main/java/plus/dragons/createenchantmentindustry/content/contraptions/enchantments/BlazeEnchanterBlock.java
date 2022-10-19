@@ -33,9 +33,9 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
-import plus.dragons.createenchantmentindustry.entry.ModBlockEntities;
-import plus.dragons.createenchantmentindustry.entry.ModFluids;
-import plus.dragons.createenchantmentindustry.entry.ModItems;
+import plus.dragons.createenchantmentindustry.entry.CeiBlockEntities;
+import plus.dragons.createenchantmentindustry.entry.CeiFluids;
+import plus.dragons.createenchantmentindustry.entry.CeiItems;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,7 +56,7 @@ public class BlazeEnchanterBlock extends HorizontalDirectionalBlock implements I
 
     @Override
     public BlockEntityType<? extends BlazeEnchanterBlockEntity> getTileEntityType() {
-        return ModBlockEntities.BLAZE_ENCHANTING_ALTER.get();
+        return CeiBlockEntities.BLAZE_ENCHANTING_ALTER.get();
     }
     
     @Override
@@ -80,7 +80,7 @@ public class BlazeEnchanterBlock extends HorizontalDirectionalBlock implements I
                 Containers.dropItemStack(worldIn, pos.getX(), pos.getY(), pos.getZ(), heldItemStack);
             Containers.dropItemStack(worldIn, pos.getX(), pos.getY(), pos.getZ(), te.targetItem);
             var tank = te.internalTank.getPrimaryHandler();
-            if(tank.getFluid().getFluid().isSame(ModFluids.EXPERIENCE.get().getSource())){
+            if(tank.getFluid().getFluid().isSame(CeiFluids.EXPERIENCE.get().getSource())){
                 var expBall = new ExperienceOrb(worldIn, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, tank.getFluid().getAmount());
                 worldIn.addFreshEntity(expBall);
             }
@@ -93,7 +93,7 @@ public class BlazeEnchanterBlock extends HorizontalDirectionalBlock implements I
         ItemStack heldItem = player.getItemInHand(handIn);
         if (!heldItem.isEmpty()){
             return onTileEntityUse(worldIn, pos, te -> {
-                if(heldItem.is(ModItems.ENCHANTING_GUIDE.get()) && EnchantingGuideItem.getEnchantment(heldItem) != null){
+                if(heldItem.is(CeiItems.ENCHANTING_GUIDE.get()) && EnchantingGuideItem.getEnchantment(heldItem) != null){
                     if (!worldIn.isClientSide) {
                         var target = te.targetItem.copy();
                         te.targetItem = heldItem;

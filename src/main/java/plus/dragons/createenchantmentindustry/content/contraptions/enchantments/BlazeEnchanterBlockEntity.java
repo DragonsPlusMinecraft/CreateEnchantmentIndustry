@@ -38,10 +38,10 @@ import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.items.ItemHandlerHelper;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import plus.dragons.createenchantmentindustry.entry.ModFluids;
-import plus.dragons.createenchantmentindustry.foundation.config.ModConfigs;
-import plus.dragons.createenchantmentindustry.foundation.data.advancement.ModAdvancements;
-import plus.dragons.createenchantmentindustry.foundation.utility.ModLang;
+import plus.dragons.createenchantmentindustry.entry.CeiFluids;
+import plus.dragons.createenchantmentindustry.foundation.config.CeiConfigs;
+import plus.dragons.createenchantmentindustry.foundation.data.advancement.CeiAdvancements;
+import plus.dragons.createenchantmentindustry.foundation.utility.CeiLang;
 
 import java.util.IdentityHashMap;
 import java.util.List;
@@ -87,19 +87,19 @@ public class BlazeEnchanterBlockEntity extends SmartTileEntity implements IHaveG
         behaviours.add(new DirectBeltInputBehaviour(this).allowingBeltFunnels()
                 .setInsertionHandler(this::tryInsertingFromSide));
         behaviours.add(internalTank = SmartFluidTankBehaviour
-            .single(this, ModConfigs.SERVER.blazeEnchanterTankCapacity.get())
+            .single(this, CeiConfigs.SERVER.blazeEnchanterTankCapacity.get())
             .whenFluidUpdates(() -> {
                 var fluid = internalTank.getPrimaryHandler().getFluid().getFluid();
-                if(ModFluids.EXPERIENCE.is(fluid))
+                if(CeiFluids.EXPERIENCE.is(fluid))
                     updateHeatLevel(BlazeEnchanterBlock.HeatLevel.KINDLED);
-                else if(ModFluids.HYPER_EXPERIENCE.is(fluid))
+                else if(CeiFluids.HYPER_EXPERIENCE.is(fluid))
                     updateHeatLevel(BlazeEnchanterBlock.HeatLevel.SEETHING);
                 else
                     updateHeatLevel(BlazeEnchanterBlock.HeatLevel.SMOULDERING);
             }));
         registerAwardables(behaviours,
-                ModAdvancements.FIRST_ORDER.asCreateAdvancement(),
-                ModAdvancements.ADDITIONAL_ORDER.asCreateAdvancement());
+                CeiAdvancements.FIRST_ORDER.asCreateAdvancement(),
+                CeiAdvancements.ADDITIONAL_ORDER.asCreateAdvancement());
     }
 
     @Override
@@ -346,14 +346,14 @@ public class BlazeEnchanterBlockEntity extends SmartTileEntity implements IHaveG
             return false;
         
         FluidStack exp = new FluidStack(hyper
-            ? ModFluids.HYPER_EXPERIENCE.get().getSource()
-            : ModFluids.EXPERIENCE.get().getSource(),
+            ? CeiFluids.HYPER_EXPERIENCE.get().getSource()
+            : CeiFluids.EXPERIENCE.get().getSource(),
             Enchanting.getExperienceConsumption(entry.getFirst(), entry.getSecond())
         );
         
         if (processingTicks > 5) {
             var tankFluid = internalTank.getPrimaryHandler().getFluid().getFluid();
-            if ((!ModFluids.EXPERIENCE.is(tankFluid) && !ModFluids.HYPER_EXPERIENCE.is(tankFluid) ||
+            if ((!CeiFluids.EXPERIENCE.is(tankFluid) && !CeiFluids.HYPER_EXPERIENCE.is(tankFluid) ||
                 internalTank.getPrimaryHandler().getFluidAmount() < exp.getAmount())) {
                 processingTicks = ENCHANTING_TIME;
             }
@@ -362,11 +362,11 @@ public class BlazeEnchanterBlockEntity extends SmartTileEntity implements IHaveG
 
         // Advancement
         if (EnchantmentHelper.getEnchantments(heldItem.stack).isEmpty())
-            award(ModAdvancements.FIRST_ORDER.asCreateAdvancement());
+            award(CeiAdvancements.FIRST_ORDER.asCreateAdvancement());
         else
-            award(ModAdvancements.ADDITIONAL_ORDER.asCreateAdvancement());
+            award(CeiAdvancements.ADDITIONAL_ORDER.asCreateAdvancement());
         if (hyper)
-            award(ModAdvancements.HYPOTHETICAL_EXTENSION.asCreateAdvancement());
+            award(CeiAdvancements.HYPOTHETICAL_EXTENSION.asCreateAdvancement());
 
         // Process finished
         Enchanting.enchantItem(heldItem.stack, entry);
@@ -429,7 +429,7 @@ public class BlazeEnchanterBlockEntity extends SmartTileEntity implements IHaveG
     }
 
     public boolean hyper() {
-        return ModFluids.HYPER_EXPERIENCE.is(internalTank.getPrimaryHandler().getFluid().getFluid());
+        return CeiFluids.HYPER_EXPERIENCE.is(internalTank.getPrimaryHandler().getFluid().getFluid());
     }
 
     @Override
@@ -477,7 +477,7 @@ public class BlazeEnchanterBlockEntity extends SmartTileEntity implements IHaveG
 
     @Override
     public boolean addToGoggleTooltip(List<Component> tooltip, boolean isPlayerSneaking) {
-        ModLang.translate("gui.goggles.blaze_enchanter").forGoggles(tooltip);
+        CeiLang.translate("gui.goggles.blaze_enchanter").forGoggles(tooltip);
         if (targetItem != null) {
             EnchantmentEntry entry = Enchanting.getTargetEnchantment(targetItem, hyper());
             if (entry != null) {
@@ -485,17 +485,17 @@ public class BlazeEnchanterBlockEntity extends SmartTileEntity implements IHaveG
                     .append(entry.getFirst().getFullname(entry.getSecond())));
                 if (!entry.valid())
                     tooltip.add(new TextComponent("     ")
-                        .append(ModLang.translate("gui.goggles.invalid_target").component())
+                        .append(CeiLang.translate("gui.goggles.invalid_target").component())
                         .withStyle(ChatFormatting.RED));
                 else {
                     int consumption = Enchanting.getExperienceConsumption(entry.getFirst(), entry.getSecond());
-                    if (consumption > ModConfigs.SERVER.blazeEnchanterTankCapacity.get())
-                        tooltip.add(new TextComponent("     ").append(ModLang.translate("gui.goggles.too_expensive")
+                    if (consumption > CeiConfigs.SERVER.blazeEnchanterTankCapacity.get())
+                        tooltip.add(new TextComponent("     ").append(CeiLang.translate("gui.goggles.too_expensive")
                             .component())
                             .withStyle(ChatFormatting.RED));
                     else
                         tooltip.add(new TextComponent("     ")
-                            .append(ModLang.translate("gui.goggles.xp_consumption", consumption).component())
+                            .append(CeiLang.translate("gui.goggles.xp_consumption", consumption).component())
                             .withStyle(ChatFormatting.GREEN));
                 }
             }

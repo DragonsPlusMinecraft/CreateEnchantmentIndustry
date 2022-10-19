@@ -9,10 +9,10 @@ import net.minecraftforge.fluids.FluidStack;
 import plus.dragons.createenchantmentindustry.EnchantmentIndustry;
 
 
-public class ModLang {
+public class CeiLang {
 
     public static LangBuilder builder() {
-        return new ModLangBuilder(EnchantmentIndustry.ID);
+        return new CeiLangBuilder(EnchantmentIndustry.ID);
     }
 
 

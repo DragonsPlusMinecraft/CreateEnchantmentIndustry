@@ -15,7 +15,7 @@ import net.minecraft.world.entity.MobCategory;
 import plus.dragons.createenchantmentindustry.EnchantmentIndustry;
 import plus.dragons.createenchantmentindustry.content.contraptions.enchantments.HyperExpBottle;
 
-public class ModEntityTypes {
+public class CeiEntityTypes {
 
     public static final EntityEntry<HyperExpBottle> HYPER_EXP_BOTTLE = register("hyper_experience_bottle", HyperExpBottle::new, () -> ThrownItemRenderer<HyperExpBottle>::new,
             MobCategory.MISC, 4, 10, true, false, HyperExpBottle::build).register();

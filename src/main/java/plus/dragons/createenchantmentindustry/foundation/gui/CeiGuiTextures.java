@@ -11,14 +11,14 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import plus.dragons.createenchantmentindustry.EnchantmentIndustry;
 
-public enum ModGuiTextures implements ScreenElement {
+public enum CeiGuiTextures implements ScreenElement {
     ENCHANTING_GUIDE("enchanting_guide", 185, 48);
     
     public final ResourceLocation location;
     public final int width, height;
     public final int startX, startY;
     
-    ModGuiTextures(String namespace, String location, int startX, int startY, int width, int height) {
+    CeiGuiTextures(String namespace, String location, int startX, int startY, int width, int height) {
         this.location = new ResourceLocation(namespace, "textures/gui/" + location + ".png");
         this.width = width;
         this.height = height;
@@ -26,11 +26,11 @@ public enum ModGuiTextures implements ScreenElement {
         this.startY = startY;
     }
     
-    ModGuiTextures(String location, int startX, int startY, int width, int height) {
+    CeiGuiTextures(String location, int startX, int startY, int width, int height) {
         this(EnchantmentIndustry.ID, location, startX, startY, width, height);
     }
     
-    ModGuiTextures(String location, int width, int height) {
+    CeiGuiTextures(String location, int width, int height) {
         this(location, 0, 0, width, height);
     }
     

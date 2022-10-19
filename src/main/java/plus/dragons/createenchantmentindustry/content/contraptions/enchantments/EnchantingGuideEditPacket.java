@@ -6,7 +6,7 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.network.NetworkEvent;
-import plus.dragons.createenchantmentindustry.entry.ModItems;
+import plus.dragons.createenchantmentindustry.entry.CeiItems;
 
 import java.util.function.Supplier;
 
@@ -39,7 +39,7 @@ public class EnchantingGuideEditPacket extends SimplePacketBase {
                     ServerPlayer sender = context.get()
                             .getSender();
                     ItemStack mainHandItem = sender.getMainHandItem();
-                    if (!ModItems.ENCHANTING_GUIDE.isIn(mainHandItem))
+                    if (!CeiItems.ENCHANTING_GUIDE.isIn(mainHandItem))
                         return;
 
                     CompoundTag tag = mainHandItem.getOrCreateTag();

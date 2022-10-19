@@ -17,9 +17,9 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import plus.dragons.createenchantmentindustry.content.contraptions.fluids.OpenEndedPipeEffects;
 import plus.dragons.createenchantmentindustry.entry.*;
-import plus.dragons.createenchantmentindustry.foundation.config.ModConfigs;
-import plus.dragons.createenchantmentindustry.foundation.data.advancement.ModAdvancements;
-import plus.dragons.createenchantmentindustry.foundation.data.advancement.ModTriggers;
+import plus.dragons.createenchantmentindustry.foundation.config.CeiConfigs;
+import plus.dragons.createenchantmentindustry.foundation.data.advancement.CeiAdvancements;
+import plus.dragons.createenchantmentindustry.foundation.data.advancement.CeiTriggers;
 import plus.dragons.createenchantmentindustry.foundation.data.lang.LangMerger;
 
 @Mod(EnchantmentIndustry.ID)
@@ -32,9 +32,9 @@ public class EnchantmentIndustry {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
         IEventBus forgeEventBus = MinecraftForge.EVENT_BUS;
     
-        ModConfigs.register(ModLoadingContext.get());
+        CeiConfigs.register(ModLoadingContext.get());
         initAllEntries();
-        ModRecipeTypes.register(modEventBus);
+        CeiRecipeTypes.register(modEventBus);
 
         addForgeEventListeners(forgeEventBus);
         modEventBus.addListener(EnchantmentIndustry::init);
@@ -43,26 +43,26 @@ public class EnchantmentIndustry {
     }
 
     private void initAllEntries() {
-        ModItems.register();
-        ModBlocks.register();
-        ModBlockEntities.register();
-        ModEntityTypes.register();
-        ModFluids.register();
-        ModContainerTypes.register();
-        ModTags.register();
+        CeiItems.register();
+        CeiBlocks.register();
+        CeiBlockEntities.register();
+        CeiEntityTypes.register();
+        CeiFluids.register();
+        CeiContainerTypes.register();
+        CeiTags.register();
 
     }
     
     private void addForgeEventListeners(IEventBus forgeEventBus) {
-        forgeEventBus.addListener(ModItems::fillCreateItemGroup);
-        forgeEventBus.addListener(ModFluids::handleInkEffect);
+        forgeEventBus.addListener(CeiItems::fillCreateItemGroup);
+        forgeEventBus.addListener(CeiFluids::handleInkEffect);
     }
 
     public static void init(final FMLCommonSetupEvent event) {
         event.enqueueWork(() -> {
-            ModPackets.registerPackets();
-            ModAdvancements.register();
-            ModTriggers.register();
+            CeiPackets.registerPackets();
+            CeiAdvancements.register();
+            CeiTriggers.register();
             OpenEndedPipeEffects.register();
         });
     }
@@ -70,7 +70,7 @@ public class EnchantmentIndustry {
     public static void datagen(final GatherDataEvent event) {
         DataGenerator datagen = event.getGenerator();
         datagen.addProvider(new LangMerger(datagen));
-        datagen.addProvider(new ModAdvancements(datagen));
+        datagen.addProvider(new CeiAdvancements(datagen));
     }
 
     public static ResourceLocation genRL(String name) {

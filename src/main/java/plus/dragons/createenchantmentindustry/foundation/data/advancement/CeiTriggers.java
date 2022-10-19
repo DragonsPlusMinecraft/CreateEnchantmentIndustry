@@ -9,7 +9,7 @@ import plus.dragons.createenchantmentindustry.EnchantmentIndustry;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ModTriggers {
+public class CeiTriggers {
     private static final Logger LOGGER = LogUtils.getLogger();
     private static final List<CriterionTrigger<?>> TRIGGERS = new ArrayList<>();
     public static final AccumulativeTrigger BOOK_PRINTED = add(new AccumulativeTrigger(EnchantmentIndustry.genRL("book_printed")));

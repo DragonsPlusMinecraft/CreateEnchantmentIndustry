@@ -5,7 +5,7 @@ import com.google.gson.JsonElement;
 import com.simibubi.create.foundation.utility.FilesHelper;
 import com.simibubi.create.foundation.utility.Lang;
 import plus.dragons.createenchantmentindustry.EnchantmentIndustry;
-import plus.dragons.createenchantmentindustry.foundation.data.advancement.ModAdvancements;
+import plus.dragons.createenchantmentindustry.foundation.data.advancement.CeiAdvancements;
 
 /*
 MIT License
@@ -32,7 +32,7 @@ SOFTWARE.
 */
 
 public enum LangPartials {
-	ADVANCEMENTS("Advancements", ModAdvancements::provideLangEntries),
+	ADVANCEMENTS("Advancements", CeiAdvancements::provideLangEntries),
 	INTERFACE("UI & Messages"),
 	TOOLTIPS("Item Descriptions"),
 	PONDER("Ponder Content");
