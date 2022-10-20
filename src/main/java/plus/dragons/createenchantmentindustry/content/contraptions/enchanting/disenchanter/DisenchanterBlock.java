@@ -53,31 +53,24 @@ public class DisenchanterBlock extends Block implements IWrenchable, ITE<Disench
     @Override
     public InteractionResult use(BlockState state, Level worldIn, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hit) {
         ItemStack heldItem = player.getItemInHand(handIn);
-        var type = Disenchanting.test(heldItem, worldIn);
-        if (type == Disenchanting.Type.NONE || heldItem.isEmpty())
+        if (heldItem.isEmpty())
             return InteractionResult.PASS;
-        else if (type == Disenchanting.Type.BUILTIN) {
-            if (!worldIn.isClientSide) {
-                if (worldIn.getBlockEntity(pos) instanceof DisenchanterBlockEntity disenchanterBlockEntity) {
-                    var result = Disenchanting.handleBuiltIn(disenchanterBlockEntity, heldItem, false);
-                    player.setItemInHand(handIn, result);
-                }
+        return onTileEntityUse(worldIn, pos, te -> {
+            ItemStack disenchanted = Disenchanting.disenchantAndInsert(te, heldItem, false);
+            if (!ItemStack.isSameItemSameTags(disenchanted, heldItem)) {
+                player.setItemInHand(handIn, disenchanted);
+                return InteractionResult.sidedSuccess(worldIn.isClientSide);
             }
-            return InteractionResult.SUCCESS;
-        } else {
-            return onTileEntityUse(worldIn, pos, te -> {
-                ItemStack heldItemStack = te.getHeldItemStack();
-                if (heldItemStack.isEmpty()) {
-                    if (!worldIn.isClientSide) {
-                        te.heldItem = new TransportedItemStack(heldItem);
-                        player.setItemInHand(handIn, ItemStack.EMPTY);
-                        te.notifyUpdate();
-                    }
-                    return InteractionResult.SUCCESS;
+            if (te.getHeldItemStack().isEmpty()) {
+                if (!worldIn.isClientSide) {
+                    te.heldItem = new TransportedItemStack(heldItem);
+                    player.setItemInHand(handIn, ItemStack.EMPTY);
+                    te.notifyUpdate();
                 }
-                return InteractionResult.FAIL;
-            });
-        }
+                return InteractionResult.sidedSuccess(worldIn.isClientSide);
+            }
+            return InteractionResult.FAIL;
+        });
     }
 
     @Override

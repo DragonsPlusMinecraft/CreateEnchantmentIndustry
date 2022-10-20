@@ -5,6 +5,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemHandlerHelper;
+import org.jetbrains.annotations.NotNull;
 
 public class DisenchanterItemHandler implements IItemHandler {
     private DisenchanterBlockEntity be;
@@ -21,23 +22,24 @@ public class DisenchanterItemHandler implements IItemHandler {
     }
 
     @Override
+    @NotNull
     public ItemStack getStackInSlot(int slot) {
         return be.getHeldItemStack();
     }
 
     @Override
+    @NotNull
     public ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {
-        if (!be.getHeldItemStack()
-                .isEmpty())
+        if (!be.getHeldItemStack().isEmpty())
             return stack;
 
-        // Build-in handling logic
-        if (Disenchanting.isBuiltIn(stack)) {
-            return Disenchanting.handleBuiltIn(be, stack, simulate);
+        ItemStack disenchanted = Disenchanting.disenchantAndInsert(be, stack, simulate);
+        if (!ItemStack.isSameItemSameTags(stack, disenchanted)) {
+            return disenchanted;
         }
 
         ItemStack returned = ItemStack.EMPTY;
-        if (stack.getCount() > 1 && Disenchanting.test(stack, be.getLevel()) != Disenchanting.Type.NONE) {
+        if (stack.getCount() > 1 && Disenchanting.disenchantResult(stack, be.getLevel()) != null) {
             returned = ItemHandlerHelper.copyStackWithSize(stack, stack.getCount() - 1);
             stack = ItemHandlerHelper.copyStackWithSize(stack, 1);
         }
@@ -53,6 +55,7 @@ public class DisenchanterItemHandler implements IItemHandler {
     }
 
     @Override
+    @NotNull
     public ItemStack extractItem(int slot, int amount, boolean simulate) {
         TransportedItemStack held = be.heldItem;
         if (held == null)
