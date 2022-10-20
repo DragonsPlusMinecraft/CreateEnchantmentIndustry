@@ -7,8 +7,8 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.MenuAccess;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import plus.dragons.createenchantmentindustry.EnchantmentIndustry;
-import plus.dragons.createenchantmentindustry.content.contraptions.enchantments.EnchantingGuideMenu;
-import plus.dragons.createenchantmentindustry.content.contraptions.enchantments.EnchantingGuideScreen;
+import plus.dragons.createenchantmentindustry.content.contraptions.enchanting.enchanter.EnchantingGuideMenu;
+import plus.dragons.createenchantmentindustry.content.contraptions.enchanting.enchanter.EnchantingGuideScreen;
 
 public class CeiContainerTypes {
 

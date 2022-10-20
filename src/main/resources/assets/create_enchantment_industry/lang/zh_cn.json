@@ -14,6 +14,7 @@
 	"fluid.create_enchantment_industry.hyper_experience": "液态超经验",
 
 	"item.create_enchantment_industry.enchanting_guide": "附魔指南",
+	"item.create_enchantment_industry.experience_rotor": "经验转子",
 	"item.create_enchantment_industry.hyper_experience_bottle": "超越附魔之瓶",
 	"item.create_enchantment_industry.ink_bucket": "墨水桶",
 
@@ -69,10 +70,12 @@
 
 	"_": "->------------------------]  Item Descriptions  [------------------------<-",
 
-	"create_enchantment_industry.enchanting_guide.tooltip": "ENCHANTING GUIDE TOOLTIPS",
+	"item.create_enchantment_industry.enchanting_guide.tooltip": "ENCHANTING GUIDE TOOLTIPS",
+	"item.create_enchantment_industry.enchanting_guide.tooltip.current_enchantment": "当前附魔：",
+	"item.create_enchantment_industry.enchanting_guide.tooltip.not_configured": "未设定",
 
-	"create_enchantment_industry.tooltip.guide_header": "当前附魔：",
-	"create_enchantment_industry.tooltip.guide_not_configured": "未设定",
+	"item.create_enchantment_industry.experience_rotor.tooltip": "EXPERIENCE ROTOR",
+	"item.create_enchantment_industry.experience_rotor.tooltip.summary": "在_搅拌配方_中用于转换_经验流体_",
 
 
 	"_": "->------------------------]  Ponder Content  [------------------------<-",

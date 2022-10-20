@@ -1,5 +1,6 @@
 package plus.dragons.createenchantmentindustry.foundation.utility;
 
+import com.simibubi.create.foundation.utility.Components;
 import com.simibubi.create.foundation.utility.LangBuilder;
 import com.simibubi.create.foundation.utility.LangNumberFormat;
 import net.minecraft.world.item.Item;
@@ -32,7 +33,7 @@ public class CeiLang {
     }
     
     public static LangBuilder tooltip(Item item, String suffix, Object... args) {
-        return builder().translate(item.getDescriptionId() + ".tooltip." + suffix, args);
+        return builder().add(Components.translatable(item.getDescriptionId() + ".tooltip." + suffix, args));
     }
 
     public static LangBuilder number(double d) {

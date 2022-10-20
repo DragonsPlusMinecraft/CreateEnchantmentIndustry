@@ -63,10 +63,10 @@
 
 	"_": "->------------------------]  Item Descriptions  [------------------------<-",
 
-	"create_enchantment_industry.enchanting_guide.tooltip": "마법 유도서",
+	"item.create_enchantment_industry.enchanting_guide.tooltip": "마법 유도서",
 
-	"create_enchantment_industry.tooltip.guide_header": "현재 마법:",
-	"create_enchantment_industry.tooltip.guide_not_configured": "설정되지 않음",
+	"item.create_enchantment_industry.enchanting_guide.tooltip.current_enchantment": "현재 마법:",
+	"item.create_enchantment_industry.enchanting_guide.tooltip.not_configured": "설정되지 않음",
 
 
 	"_": "->------------------------]  Ponder Content  [------------------------<-",
