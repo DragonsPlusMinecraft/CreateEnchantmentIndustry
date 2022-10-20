@@ -14,8 +14,8 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.PlayerXpEvent;
 import net.minecraftforge.fluids.FluidStack;
-import plus.dragons.createenchantmentindustry.entry.ModFluids;
-import plus.dragons.createenchantmentindustry.foundation.data.advancement.ModAdvancements;
+import plus.dragons.createenchantmentindustry.entry.CeiFluids;
+import plus.dragons.createenchantmentindustry.foundation.data.advancement.CeiAdvancements;
 
 import java.util.List;
 import java.util.Map;
@@ -32,7 +32,7 @@ public class OpenEndedPipeEffects {
 
         @Override
         public boolean canApplyEffects(OpenEndedPipe pipe, FluidStack fluid) {
-            return fluid.getFluid().isSame(ModFluids.EXPERIENCE.get());
+            return fluid.getFluid().isSame(CeiFluids.EXPERIENCE.get());
         }
 
         @Override
@@ -52,9 +52,9 @@ public class OpenEndedPipeEffects {
                 var amount = fluid.getAmount() / players.size();
                 var left = fluid.getAmount() % players.size();
                 players.forEach(player -> {
-                    ModAdvancements.A_SHOWER_EXPERIENCE.getTrigger().trigger((ServerPlayer) player);
+                    CeiAdvancements.A_SHOWER_EXPERIENCE.getTrigger().trigger((ServerPlayer) player);
                     player.giveExperiencePoints(amount);
-                    var expBall = new ExperienceOrb(player.level,player.getX(),player.getY(),player.getZ(),amount);
+                    var expBall = new ExperienceOrb(player.level, player.getX(), player.getY(), player.getZ(), amount);
                     if (MinecraftForge.EVENT_BUS.post(new PlayerXpEvent.PickupXp(player, expBall))) return;
                     int i = repairPlayerItems(player, expBall.value);
                     if (i > 0) {
@@ -64,7 +64,7 @@ public class OpenEndedPipeEffects {
                 });
                 if (left != 0) {
                     var lucky = players.get(RNG.nextInt(players.size()));
-                    var expBall = new ExperienceOrb(lucky.level,lucky.getX(),lucky.getY(),lucky.getZ(),left);
+                    var expBall = new ExperienceOrb(lucky.level, lucky.getX(), lucky.getY(), lucky.getZ(), left);
                     if (MinecraftForge.EVENT_BUS.post(new PlayerXpEvent.PickupXp(lucky, expBall))) return;
                     int i = repairPlayerItems(lucky, expBall.value);
                     if (i > 0) {

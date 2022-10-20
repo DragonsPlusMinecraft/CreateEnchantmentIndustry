@@ -6,7 +6,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Accessor;
 
 @Mixin(ItemDrainTileEntity.class)
-public interface  ItemDrainTileEntityAccessor {
+public interface ItemDrainTileEntityAccessor {
 
     @Accessor(remap = false)
     SmartFluidTankBehaviour getInternalTank();

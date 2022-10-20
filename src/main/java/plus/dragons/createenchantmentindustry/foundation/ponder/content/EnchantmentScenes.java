@@ -13,7 +13,6 @@ import com.simibubi.create.foundation.ponder.element.BeltItemElement;
 import com.simibubi.create.foundation.ponder.element.EntityElement;
 import com.simibubi.create.foundation.ponder.element.InputWindowElement;
 import com.simibubi.create.foundation.ponder.instruction.EmitParticlesInstruction;
-import com.simibubi.create.foundation.utility.NBTHelper;
 import com.simibubi.create.foundation.utility.Pointing;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -36,21 +35,19 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
-import plus.dragons.createenchantmentindustry.content.contraptions.enchantments.CopierBlockEntity;
-import plus.dragons.createenchantmentindustry.content.contraptions.enchantments.BlazeEnchanterBlockEntity;
-import plus.dragons.createenchantmentindustry.entry.ModBlocks;
-import plus.dragons.createenchantmentindustry.entry.ModFluids;
-import plus.dragons.createenchantmentindustry.entry.ModItems;
-
+import plus.dragons.createenchantmentindustry.content.contraptions.enchanting.BlazeEnchanterBlockEntity;
+import plus.dragons.createenchantmentindustry.content.contraptions.enchanting.CopierBlockEntity;
+import plus.dragons.createenchantmentindustry.entry.CeiBlocks;
+import plus.dragons.createenchantmentindustry.entry.CeiFluids;
+import plus.dragons.createenchantmentindustry.entry.CeiItems;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 import java.util.stream.Stream;
 
 public class EnchantmentScenes {
-    public static void disenchant(SceneBuilder scene, SceneBuildingUtil util){
-        scene.title("disenchant", ""); // We do not use PonderLocalization. For title only
+    public static void disenchant(SceneBuilder scene, SceneBuildingUtil util) {
+        scene.title("disenchant", "Disenchanting"); // We do not use PonderLocalization. For title only
         scene.configureBasePlate(0, 0, 7);
         scene.scaleSceneView(.68f);
         scene.world.setKineticSpeed(util.select.everywhere(), 32f);
@@ -59,17 +56,17 @@ public class EnchantmentScenes {
         scene.world.showSection(util.select.fromTo(0, 1, 0, 6, 4, 6), Direction.DOWN);
 
         scene.overlay.showText(100)
-                .text("") // We do not use PonderLocalization. For registerText only
+                .text("All received items will have their enchantments removed and the removed enchantments will be converted to liquid experience for storage.") // We do not use PonderLocalization. For registerText only
                 .attachKeyFrame()
                 .placeNearTarget()
                 .pointAt(util.vector.topOf(1, 1, 1));
 
         // Must propagatePipeChange first or it won't work correctly
-         scene.world.propagatePipeChange(util.grid.at(2,1, 5));
+        scene.world.propagatePipeChange(util.grid.at(2, 1, 5));
 
         BlockPos beltStart = util.grid.at(6, 1, 1);
-        List<ItemStack> items = Stream.of(Items.NETHERITE_SWORD,Items.IRON_PICKAXE, Items.DIAMOND_CHESTPLATE, Items.ENCHANTED_BOOK, Items.LEATHER_HELMET, Items.GOLDEN_BOOTS, Items.WOODEN_AXE).map(Item::getDefaultInstance).toList();
-        for(var item:items){
+        List<ItemStack> items = Stream.of(Items.NETHERITE_SWORD, Items.IRON_PICKAXE, Items.DIAMOND_CHESTPLATE, Items.ENCHANTED_BOOK, Items.LEATHER_HELMET, Items.GOLDEN_BOOTS, Items.WOODEN_AXE).map(Item::getDefaultInstance).toList();
+        for (var item : items) {
             enchantRandomly(item);
             ElementLink<EntityElement> itemEntity = scene.world.createItemEntity(util.vector.centerOf(6, 4, 1), util.vector.of(0, 0, 0), item);
             scene.idle(13);
@@ -81,7 +78,7 @@ public class EnchantmentScenes {
         scene.idle(80);
 
         scene.overlay.showText(100)
-                .text("") // We do not use PonderLocalization. For registerText only
+                .text("Players standing on the disenchanter will be quickly washed away their experience level, and the washed away experience value will be converted into liquid experience for storage") // We do not use PonderLocalization. For registerText only
                 .attachKeyFrame()
                 .placeNearTarget()
                 .pointAt(util.vector.topOf(1, 1, 1));
@@ -89,77 +86,77 @@ public class EnchantmentScenes {
         scene.idle(120);
     }
 
-    public static void transformBlazeBurner(SceneBuilder scene, SceneBuildingUtil util){
-        scene.title("transform", ""); // We do not use PonderLocalization. For title only
+    public static void transformBlazeBurner(SceneBuilder scene, SceneBuildingUtil util) {
+        scene.title("transform", "Using Enchanting Guide"); // We do not use PonderLocalization. For title only
         scene.configureBasePlate(0, 0, 3);
         scene.showBasePlate();
         scene.idle(5);
         scene.world.showSection(util.select.fromTo(0, 1, 0, 2, 1, 2), Direction.DOWN);
 
         scene.overlay.showText(40)
-                .text("") // We do not use PonderLocalization. For registerText only
+                .text("Right-click the Blaze Burner with a configured Enchanting Guide in hand when sneaking") // We do not use PonderLocalization. For registerText only
                 .attachKeyFrame()
                 .placeNearTarget()
                 .pointAt(util.vector.topOf(1, 1, 1));
         scene.idle(40);
-        scene.world.setBlock(util.grid.at(1,1,1), ModBlocks.BLAZE_ENCHANTER.getDefaultState(),false);
-        scene.world.modifyTileEntity(util.grid.at(1,1,1), BlazeEnchanterBlockEntity.class, be-> be.setTargetItem(enchantingGuide(Enchantments.MENDING,1)));
+        scene.world.setBlock(util.grid.at(1, 1, 1), CeiBlocks.BLAZE_ENCHANTER.getDefaultState(), false);
+        scene.world.modifyTileEntity(util.grid.at(1, 1, 1), BlazeEnchanterBlockEntity.class, be -> be.setTargetItem(enchantingGuide(Enchantments.MENDING, 1)));
         scene.overlay.showControls(new InputWindowElement(util.vector.centerOf(1, 1, 1), Pointing.DOWN).whileSneaking().rightClick()
-                .withItem(ModItems.ENCHANTING_GUIDE.asStack()), 40);
+                .withItem(CeiItems.ENCHANTING_GUIDE.asStack()), 40);
         scene.idle(50);
         scene.overlay.showText(40)
-                .text("") // We do not use PonderLocalization. For registerText only
+                .text("To retrieve the enchanting guide, right-click the Blaze Enchanter with your empty hand") // We do not use PonderLocalization. For registerText only
                 .attachKeyFrame()
                 .placeNearTarget()
                 .pointAt(util.vector.topOf(1, 1, 1));
         scene.idle(40);
-        scene.world.setBlock(util.grid.at(1,1,1), AllBlocks.BLAZE_BURNER.getDefaultState().setValue(BlazeBurnerBlock.HEAT_LEVEL, BlazeBurnerBlock.HeatLevel.SMOULDERING),false);
+        scene.world.setBlock(util.grid.at(1, 1, 1), AllBlocks.BLAZE_BURNER.getDefaultState().setValue(BlazeBurnerBlock.HEAT_LEVEL, BlazeBurnerBlock.HeatLevel.SMOULDERING), false);
         scene.overlay.showControls(new InputWindowElement(util.vector.centerOf(1, 1, 1), Pointing.DOWN).rightClick(), 40);
         scene.idle(40);
     }
 
-    public static void enchant(SceneBuilder scene, SceneBuildingUtil util){
-        scene.title("enchant", ""); // We do not use PonderLocalization. For title only
+    public static void enchant(SceneBuilder scene, SceneBuildingUtil util) {
+        scene.title("enchant", "Enchanting"); // We do not use PonderLocalization. For title only
         scene.configureBasePlate(0, 0, 8);
         scene.scaleSceneView(.60f);
         scene.world.setKineticSpeed(util.select.everywhere(), 0);
         scene.showBasePlate();
         scene.idle(5);
         scene.world.setKineticSpeed(util.select.everywhere(), 80F);
-        scene.world.setKineticSpeed(util.select.fromTo(0,2,7,5,2,7), -80F);
-        scene.world.setKineticSpeed(util.select.fromTo(7,2,2,7,2,7), -80F);
-        scene.world.modifyTileEntity(util.grid.at(1,2,0), BlazeEnchanterBlockEntity.class, be-> {
-            be.setTargetItem(enchantingGuide(Enchantments.MENDING,1));
-            be.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY).ifPresent(tank->
-                    tank.fill(new FluidStack(ModFluids.EXPERIENCE.get().getSource(), 1000), IFluidHandler.FluidAction.EXECUTE));
+        scene.world.setKineticSpeed(util.select.fromTo(0, 2, 7, 5, 2, 7), -80F);
+        scene.world.setKineticSpeed(util.select.fromTo(7, 2, 2, 7, 2, 7), -80F);
+        scene.world.modifyTileEntity(util.grid.at(1, 2, 0), BlazeEnchanterBlockEntity.class, be -> {
+            be.setTargetItem(enchantingGuide(Enchantments.MENDING, 1));
+            be.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY).ifPresent(tank ->
+                    tank.fill(new FluidStack(CeiFluids.EXPERIENCE.get().getSource(), 1000), IFluidHandler.FluidAction.EXECUTE));
         });
-        scene.world.modifyTileEntity(util.grid.at(0,2,6), BlazeEnchanterBlockEntity.class, be-> {
-            be.setTargetItem(enchantingGuide(Enchantments.UNBREAKING,3));
-            be.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY).ifPresent(tank->
-                    tank.fill(new FluidStack(ModFluids.EXPERIENCE.get().getSource(), 1000), IFluidHandler.FluidAction.EXECUTE));
+        scene.world.modifyTileEntity(util.grid.at(0, 2, 6), BlazeEnchanterBlockEntity.class, be -> {
+            be.setTargetItem(enchantingGuide(Enchantments.UNBREAKING, 3));
+            be.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY).ifPresent(tank ->
+                    tank.fill(new FluidStack(CeiFluids.EXPERIENCE.get().getSource(), 1000), IFluidHandler.FluidAction.EXECUTE));
         });
-        scene.world.modifyTileEntity(util.grid.at(6,2,7), BlazeEnchanterBlockEntity.class, be-> {
-            be.setTargetItem(enchantingGuide(Enchantments.THORNS,1));
-            be.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY).ifPresent(tank->
-                    tank.fill(new FluidStack(ModFluids.EXPERIENCE.get().getSource(), 1000), IFluidHandler.FluidAction.EXECUTE));
+        scene.world.modifyTileEntity(util.grid.at(6, 2, 7), BlazeEnchanterBlockEntity.class, be -> {
+            be.setTargetItem(enchantingGuide(Enchantments.THORNS, 1));
+            be.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY).ifPresent(tank ->
+                    tank.fill(new FluidStack(CeiFluids.EXPERIENCE.get().getSource(), 1000), IFluidHandler.FluidAction.EXECUTE));
         });
-        scene.world.modifyTileEntity(util.grid.at(7,2,1), BlazeEnchanterBlockEntity.class, be-> {
-            be.setTargetItem(enchantingGuide(Enchantments.ALL_DAMAGE_PROTECTION,3));
-            be.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY).ifPresent(tank->
-                    tank.fill(new FluidStack(ModFluids.EXPERIENCE.get().getSource(), 1000), IFluidHandler.FluidAction.EXECUTE));
+        scene.world.modifyTileEntity(util.grid.at(7, 2, 1), BlazeEnchanterBlockEntity.class, be -> {
+            be.setTargetItem(enchantingGuide(Enchantments.ALL_DAMAGE_PROTECTION, 3));
+            be.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY).ifPresent(tank ->
+                    tank.fill(new FluidStack(CeiFluids.EXPERIENCE.get().getSource(), 1000), IFluidHandler.FluidAction.EXECUTE));
         });
-        scene.world.modifyTileEntity(util.grid.at(3,1,3), CreativeFluidTankTileEntity.class, be -> ((CreativeFluidTankTileEntity.CreativeSmartFluidTank) be.getTankInventory())
-                .setContainedFluid(new FluidStack(ModFluids.EXPERIENCE.get().getSource(), 1000)));
+        scene.world.modifyTileEntity(util.grid.at(3, 1, 3), CreativeFluidTankTileEntity.class, be -> ((CreativeFluidTankTileEntity.CreativeSmartFluidTank) be.getTankInventory())
+                .setContainedFluid(new FluidStack(CeiFluids.EXPERIENCE.get().getSource(), 1000)));
         // Must propagatePipeChange first or it won't work correctly
-        scene.world.propagatePipeChange(util.grid.at(2,1, 2));
-        scene.world.propagatePipeChange(util.grid.at(5,1, 2));
-        scene.world.propagatePipeChange(util.grid.at(5,1, 5));
-        scene.world.propagatePipeChange(util.grid.at(5,1, 2));
+        scene.world.propagatePipeChange(util.grid.at(2, 1, 2));
+        scene.world.propagatePipeChange(util.grid.at(5, 1, 2));
+        scene.world.propagatePipeChange(util.grid.at(5, 1, 5));
+        scene.world.propagatePipeChange(util.grid.at(5, 1, 2));
         scene.world.showSection(util.select.fromTo(0, 1, 0, 7, 4, 7), Direction.DOWN);
 
         scene.idle(5);
-        List<ItemStack> items = Stream.of(Items.NETHERITE_CHESTPLATE,Items.DIAMOND_CHESTPLATE, Items.IRON_CHESTPLATE, Items.CHAINMAIL_CHESTPLATE, Items.GOLDEN_CHESTPLATE, Items.LEATHER_CHESTPLATE).map(Item::getDefaultInstance).toList();
-        for(var item:items){
+        List<ItemStack> items = Stream.of(Items.NETHERITE_CHESTPLATE, Items.DIAMOND_CHESTPLATE, Items.IRON_CHESTPLATE, Items.CHAINMAIL_CHESTPLATE, Items.GOLDEN_CHESTPLATE, Items.LEATHER_CHESTPLATE).map(Item::getDefaultInstance).toList();
+        for (var item : items) {
             BlockPos beltStart = util.grid.at(7, 2, 0);
             ElementLink<EntityElement> itemEntity = scene.world.createItemEntity(util.vector.centerOf(7, 5, 0), util.vector.of(0, 0, 0), item);
             scene.idle(13);
@@ -171,22 +168,22 @@ public class EnchantmentScenes {
         scene.idle(400);
     }
 
-    public static void hyperEnchant(SceneBuilder scene, SceneBuildingUtil util){
-        scene.title("hyper_enchant", ""); // We do not use PonderLocalization. For title only
+    public static void hyperEnchant(SceneBuilder scene, SceneBuildingUtil util) {
+        scene.title("hyper_enchant", "Hyper-enchanting"); // We do not use PonderLocalization. For title only
         scene.configureBasePlate(0, 0, 5);
         scene.scaleSceneView(.68f);
         scene.showBasePlate();
         scene.idle(5);
-        scene.world.modifyTileEntity(util.grid.at(3,1,1), CreativeFluidTankTileEntity.class, be -> ((CreativeFluidTankTileEntity.CreativeSmartFluidTank) be.getTankInventory())
-                .setContainedFluid(new FluidStack(ModFluids.EXPERIENCE.get().getSource(), 1000)));
-        scene.world.modifyTileEntity(util.grid.at(3,1,3), CreativeFluidTankTileEntity.class, be -> ((CreativeFluidTankTileEntity.CreativeSmartFluidTank) be.getTankInventory())
-                .setContainedFluid(new FluidStack(ModFluids.HYPER_EXPERIENCE.get().getSource(), 1000)));
-        scene.world.propagatePipeChange(util.grid.at(2,1, 1));
-        scene.world.propagatePipeChange(util.grid.at(2,1, 3));
+        scene.world.modifyTileEntity(util.grid.at(3, 1, 1), CreativeFluidTankTileEntity.class, be -> ((CreativeFluidTankTileEntity.CreativeSmartFluidTank) be.getTankInventory())
+                .setContainedFluid(new FluidStack(CeiFluids.EXPERIENCE.get().getSource(), 1000)));
+        scene.world.modifyTileEntity(util.grid.at(3, 1, 3), CreativeFluidTankTileEntity.class, be -> ((CreativeFluidTankTileEntity.CreativeSmartFluidTank) be.getTankInventory())
+                .setContainedFluid(new FluidStack(CeiFluids.HYPER_EXPERIENCE.get().getSource(), 1000)));
+        scene.world.propagatePipeChange(util.grid.at(2, 1, 1));
+        scene.world.propagatePipeChange(util.grid.at(2, 1, 3));
         scene.world.showSection(util.select.fromTo(0, 1, 0, 4, 3, 4), Direction.DOWN);
 
         scene.overlay.showText(60)
-                .text("") // We do not use PonderLocalization. For registerText only
+                .text("This is liquid hyper experience") // We do not use PonderLocalization. For registerText only
                 .attachKeyFrame()
                 .placeNearTarget()
                 .pointAt(util.vector.topOf(3, 3, 3));
@@ -197,25 +194,25 @@ public class EnchantmentScenes {
         scene.idle(40);
 
         scene.overlay.showText(80)
-                .text("") // We do not use PonderLocalization. For registerText only
+                .text("Hyper experience can make the Blaze Enchanter into seething state, and the level of the enchantment produced in this state will be one level higher than the set enchantment") // We do not use PonderLocalization. For registerText only
                 .attachKeyFrame()
                 .placeNearTarget()
                 .pointAt(util.vector.topOf(1, 2, 3));
         scene.idle(90);
     }
 
-    public static void handleExperienceNugget(SceneBuilder scene, SceneBuildingUtil util){
-        scene.title("absorb_experience_nugget", ""); // We do not use PonderLocalization. For title only
+    public static void handleExperienceNugget(SceneBuilder scene, SceneBuildingUtil util) {
+        scene.title("absorb_experience_nugget", "Converting Experience Nugget to Liquid"); // We do not use PonderLocalization. For title only
         scene.configureBasePlate(0, 0, 5);
         scene.scaleSceneView(.68f);
         scene.world.setKineticSpeed(util.select.everywhere(), 32f);
-        scene.world.setKineticSpeed(util.select.fromTo(0,1,2,2,1,4), -32f);
+        scene.world.setKineticSpeed(util.select.fromTo(0, 1, 2, 2, 1, 4), -32f);
         scene.showBasePlate();
         scene.idle(5);
         scene.world.showSection(util.select.fromTo(0, 1, 0, 4, 1, 4), Direction.DOWN);
 
-        var poses = Lists.newArrayList(util.grid.at(2,1, 0),util.grid.at(0,1, 2),util.grid.at(2,1, 4),util.grid.at(4,1, 2));
-        for(var pos: poses){
+        var poses = Lists.newArrayList(util.grid.at(2, 1, 0), util.grid.at(0, 1, 2), util.grid.at(2, 1, 4), util.grid.at(4, 1, 2));
+        for (var pos : poses) {
             var item = AllItems.EXP_NUGGET.asStack(64);
             ElementLink<EntityElement> itemEntity = scene.world.createItemEntity(Vec3.atCenterOf(pos.above(3)), util.vector.of(0, 0, 0), item);
             scene.idle(13);
@@ -225,15 +222,15 @@ public class EnchantmentScenes {
         }
 
         scene.overlay.showText(60)
-                .text("") // We do not use PonderLocalization. For registerText only
+                .text("Experience nugget can be absorbed by disenchanter.") // We do not use PonderLocalization. For registerText only
                 .placeNearTarget()
                 .pointAt(util.vector.topOf(2, 1, 2));
 
         scene.idle(60);
     }
 
-    public static void dropExperienceNugget(SceneBuilder scene, SceneBuildingUtil util){
-        scene.title("drop_experience_nugget", ""); // We do not use PonderLocalization. For title only
+    public static void dropExperienceNugget(SceneBuilder scene, SceneBuildingUtil util) {
+        scene.title("drop_experience_nugget", "Maybe A Exp-farm?"); // We do not use PonderLocalization. For title only
         scene.configureBasePlate(0, 0, 3);
         scene.showBasePlate();
         scene.idle(5);
@@ -278,7 +275,7 @@ public class EnchantmentScenes {
         scene.world.moveDeployer(deployerPos, -1, 25);
 
         scene.overlay.showText(60)
-                .text("") // We do not use PonderLocalization. For registerText only
+                .text("When mob is killed by deployer, experience nuggets are dropped.") // We do not use PonderLocalization. For registerText only
                 .placeNearTarget()
                 .pointAt(util.vector.topOf(2, 1, 2));
 
@@ -298,8 +295,8 @@ public class EnchantmentScenes {
         scene.idle(40);
     }
 
-    public static void handleExperienceBottle(SceneBuilder scene, SceneBuildingUtil util){
-        scene.title("experience_bottle", ""); // We do not use PonderLocalization. For title only
+    public static void handleExperienceBottle(SceneBuilder scene, SceneBuildingUtil util) {
+        scene.title("experience_bottle", "Dealing with Bottle o' Enchanting"); // We do not use PonderLocalization. For title only
         scene.configureBasePlate(0, 0, 6);
         scene.scaleSceneView(.68f);
         scene.world.setKineticSpeed(util.select.everywhere(), 16f);
@@ -308,8 +305,8 @@ public class EnchantmentScenes {
         scene.world.showSection(util.select.fromTo(0, 1, 0, 5, 4, 5), Direction.DOWN);
 
         // Must propagatePipeChange first or it won't work correctly
-         scene.world.propagatePipeChange(util.grid.at(3,1, 1));
-         scene.world.propagatePipeChange(util.grid.at(2,3, 3));
+        scene.world.propagatePipeChange(util.grid.at(3, 1, 1));
+        scene.world.propagatePipeChange(util.grid.at(2, 3, 3));
 
         var item = Items.EXPERIENCE_BOTTLE.getDefaultInstance();
         item.setCount(64);
@@ -322,7 +319,7 @@ public class EnchantmentScenes {
         scene.idle(10);
 
         scene.overlay.showText(80)
-                .text("") // We do not use PonderLocalization. For registerText only
+                .text("Bottle o' Enchanting can be emptied at Item Drain.") // We do not use PonderLocalization. For registerText only
                 .attachKeyFrame()
                 .placeNearTarget()
                 .pointAt(util.vector.topOf(2, 1, 0));
@@ -330,7 +327,7 @@ public class EnchantmentScenes {
         scene.idle(80);
 
         scene.overlay.showText(80)
-                .text("") // We do not use PonderLocalization. For registerText only
+                .text("Bottle o' Enchanting also can be manufactured by Spout as well.") // We do not use PonderLocalization. For registerText only
                 .attachKeyFrame()
                 .placeNearTarget()
                 .pointAt(util.vector.topOf(0, 3, 3));
@@ -353,8 +350,8 @@ public class EnchantmentScenes {
         scene.idle(70);
     }
 
-    public static void copy(SceneBuilder scene, SceneBuildingUtil util){
-        scene.title("copy", ""); // We do not use PonderLocalization. For title only
+    public static void copy(SceneBuilder scene, SceneBuildingUtil util) {
+        scene.title("copy", "Using Copier"); // We do not use PonderLocalization. For title only
         scene.configureBasePlate(0, 0, 7);
         scene.scaleSceneView(.68f);
         scene.world.setKineticSpeed(util.select.everywhere(), 32f);
@@ -364,11 +361,11 @@ public class EnchantmentScenes {
 
         scene.overlay.showControls(new InputWindowElement(util.vector.centerOf(2, 3, 2), Pointing.DOWN).rightClick()
                 .withItem(Items.ENCHANTED_BOOK.getDefaultInstance()), 40);
-        scene.world.modifyTileEntity(util.grid.at(2,1,5), CreativeFluidTankTileEntity.class, be -> ((CreativeFluidTankTileEntity.CreativeSmartFluidTank) be.getTankInventory())
-                .setContainedFluid(new FluidStack(ModFluids.EXPERIENCE.get().getSource(), 1000)));
-        scene.world.modifyTileEntity(util.grid.at(2,3,2), CopierBlockEntity.class, be ->
-                be.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY).ifPresent(tank->
-                        tank.fill(new FluidStack(ModFluids.EXPERIENCE.get().getSource(),3000), IFluidHandler.FluidAction.EXECUTE)));
+        scene.world.modifyTileEntity(util.grid.at(2, 1, 5), CreativeFluidTankTileEntity.class, be -> ((CreativeFluidTankTileEntity.CreativeSmartFluidTank) be.getTankInventory())
+                .setContainedFluid(new FluidStack(CeiFluids.EXPERIENCE.get().getSource(), 1000)));
+        scene.world.modifyTileEntity(util.grid.at(2, 3, 2), CopierBlockEntity.class, be ->
+                be.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY).ifPresent(tank ->
+                        tank.fill(new FluidStack(CeiFluids.EXPERIENCE.get().getSource(), 3000), IFluidHandler.FluidAction.EXECUTE)));
         scene.idle(40);
 
         var item = Items.BOOK.getDefaultInstance();
@@ -387,12 +384,12 @@ public class EnchantmentScenes {
 
         scene.overlay.showControls(new InputWindowElement(util.vector.centerOf(2, 3, 2), Pointing.DOWN).rightClick()
                 .withItem(Items.WRITTEN_BOOK.getDefaultInstance()), 40);
-        scene.world.modifyTileEntity(util.grid.at(2,1,5), CreativeFluidTankTileEntity.class, be -> ((CreativeFluidTankTileEntity.CreativeSmartFluidTank) be.getTankInventory())
-                .setContainedFluid(new FluidStack(ModFluids.INK.get().getSource(), 1000)));
-        scene.world.modifyTileEntity(util.grid.at(2,3,2), CopierBlockEntity.class, be ->
-                be.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY).ifPresent(tank->{
+        scene.world.modifyTileEntity(util.grid.at(2, 1, 5), CreativeFluidTankTileEntity.class, be -> ((CreativeFluidTankTileEntity.CreativeSmartFluidTank) be.getTankInventory())
+                .setContainedFluid(new FluidStack(CeiFluids.INK.get().getSource(), 1000)));
+        scene.world.modifyTileEntity(util.grid.at(2, 3, 2), CopierBlockEntity.class, be ->
+                be.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY).ifPresent(tank -> {
                     tank.drain(3000, IFluidHandler.FluidAction.EXECUTE);
-                    tank.fill(new FluidStack(ModFluids.INK.get().getSource(),3000), IFluidHandler.FluidAction.EXECUTE);
+                    tank.fill(new FluidStack(CeiFluids.INK.get().getSource(), 3000), IFluidHandler.FluidAction.EXECUTE);
                 }));
         scene.idle(40);
 
@@ -409,8 +406,8 @@ public class EnchantmentScenes {
         scene.world.createItemOnBelt(copierPos.below(2), Direction.UP, Items.WRITTEN_BOOK.getDefaultInstance());
     }
 
-    public static void leak(SceneBuilder scene, SceneBuildingUtil util){
-        scene.title("leak", ""); // We do not use PonderLocalization. For title only
+    public static void leak(SceneBuilder scene, SceneBuildingUtil util) {
+        scene.title("leak", "Oh no! It's leaking!"); // We do not use PonderLocalization. For title only
         scene.configureBasePlate(0, 0, 5);
         scene.scaleSceneView(.5f);
         scene.world.setKineticSpeed(util.select.everywhere(), 0f);
@@ -419,10 +416,10 @@ public class EnchantmentScenes {
 
         scene.world.showSection(util.select.fromTo(3, 1, 3, 4, 4, 4), Direction.DOWN);
         scene.idle(5);
-        scene.world.modifyTileEntity(util.grid.at(3,1,3), FluidTankTileEntity.class, be -> ((FluidTank) be.getTankInventory())
-                .setFluid(new FluidStack(ModFluids.EXPERIENCE.get().getSource(), 48000)));
+        scene.world.modifyTileEntity(util.grid.at(3, 1, 3), FluidTankTileEntity.class, be -> ((FluidTank) be.getTankInventory())
+                .setFluid(new FluidStack(CeiFluids.EXPERIENCE.get().getSource(), 48000)));
         scene.overlay.showText(40)
-                .text("") // We do not use PonderLocalization. For registerText only
+                .text("I have a tank full of experience") // We do not use PonderLocalization. For registerText only
                 .placeNearTarget()
                 .pointAt(util.vector.topOf(2, 4, 2));
         scene.idle(50);
@@ -432,25 +429,25 @@ public class EnchantmentScenes {
 
         scene.idle(5);
         scene.overlay.showText(40)
-                .text("") // We do not use PonderLocalization. For registerText only
+                .text("I have an open-ended pipe") // We do not use PonderLocalization. For registerText only
                 .placeNearTarget()
                 .pointAt(util.vector.topOf(3, 4, 0));
         scene.idle(50);
 
         scene.world.setKineticSpeed(util.select.everywhere(), 128f);
         // Must propagatePipeChange first or it won't work correctly
-        scene.world.propagatePipeChange(util.grid.at(0,1, 3));
-        scene.world.propagatePipeChange(util.grid.at(3,1, 0));
-        scene.world.propagatePipeChange(util.grid.at(3,4, 0));
+        scene.world.propagatePipeChange(util.grid.at(0, 1, 3));
+        scene.world.propagatePipeChange(util.grid.at(3, 1, 0));
+        scene.world.propagatePipeChange(util.grid.at(3, 4, 0));
         scene.idle(80);
         scene.overlay.showText(40)
-                .text("") // We do not use PonderLocalization. For registerText only
+                .text("Ugh!") // We do not use PonderLocalization. For registerText only
                 .colored(PonderPalette.RED)
                 .placeNearTarget()
                 .pointAt(util.vector.topOf(3, 4, 0));
         scene.idle(50);
         scene.overlay.showText(40)
-                .text("") // We do not use PonderLocalization. For registerText only
+                .text("Don't worry, the leaked liquid experience will turn into experience orbs. Players can also stand at the opening of the pipe to absorb experience.") // We do not use PonderLocalization. For registerText only
                 .colored(PonderPalette.GREEN)
                 .attachKeyFrame()
                 .placeNearTarget()
@@ -459,25 +456,24 @@ public class EnchantmentScenes {
 
     }
 
-    private static void enchantItem(ItemStack itemStack, Enchantment enchantment, int level){
+    private static void enchantItem(ItemStack itemStack, Enchantment enchantment, int level) {
         var m = EnchantmentHelper.getEnchantments(itemStack);
-        m.put(enchantment,level);
-        EnchantmentHelper.setEnchantments(m,itemStack);
+        m.put(enchantment, level);
+        EnchantmentHelper.setEnchantments(m, itemStack);
     }
 
-    private static void enchantRandomly(ItemStack itemStack){
-        if(itemStack.is(Items.ENCHANTED_BOOK)){
-            enchantItem(itemStack, Enchantments.MENDING,1);
-        }
-        else EnchantmentHelper.enchantItem(RandomSource.create(),itemStack,30,true);
+    private static void enchantRandomly(ItemStack itemStack) {
+        if (itemStack.is(Items.ENCHANTED_BOOK)) {
+            enchantItem(itemStack, Enchantments.MENDING, 1);
+        } else EnchantmentHelper.enchantItem(RandomSource.create(), itemStack, 30, true);
     }
 
-    private static ItemStack enchantingGuide(Enchantment enchantment, int level){
-        var ret = ModItems.ENCHANTING_GUIDE.asStack();
-        ret.getOrCreateTag().putInt("index",0);
-        var book =  Items.ENCHANTED_BOOK.getDefaultInstance();
-        EnchantmentHelper.setEnchantments(Map.of(enchantment,level),book);
-        ret.getOrCreateTag().put("target",book.serializeNBT());
+    private static ItemStack enchantingGuide(Enchantment enchantment, int level) {
+        var ret = CeiItems.ENCHANTING_GUIDE.asStack();
+        ret.getOrCreateTag().putInt("index", 0);
+        var book = Items.ENCHANTED_BOOK.getDefaultInstance();
+        EnchantmentHelper.setEnchantments(Map.of(enchantment, level), book);
+        ret.getOrCreateTag().put("target", book.serializeNBT());
         return ret;
     }
 }

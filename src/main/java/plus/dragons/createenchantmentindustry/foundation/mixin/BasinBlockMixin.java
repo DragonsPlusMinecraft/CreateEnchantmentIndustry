@@ -15,7 +15,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import plus.dragons.createenchantmentindustry.entry.ModFluids;
+import plus.dragons.createenchantmentindustry.entry.CeiFluids;
 
 @Mixin(value = BasinBlock.class)
 public abstract class BasinBlockMixin extends Block implements ITE<BasinTileEntity>, IWrenchable {
@@ -26,13 +26,13 @@ public abstract class BasinBlockMixin extends Block implements ITE<BasinTileEnti
     // Support Experience Drop with Block Break
     @Inject(method = "onRemove", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/Level;removeBlockEntity(Lnet/minecraft/core/BlockPos;)V"))
     private void injected(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving, CallbackInfo ci) {
-        if(!(level instanceof ServerLevel serverLevel))
+        if (!(level instanceof ServerLevel serverLevel))
             return;
         withTileEntityDo(level, pos, te -> {
             var tanks = te.getTanks();
             for (var tank : tanks) {
                 var fluidStack = tank.getPrimaryHandler().getFluid();
-                if(fluidStack.getFluid().isSame(ModFluids.EXPERIENCE.get().getSource())) {
+                if (fluidStack.getFluid().isSame(CeiFluids.EXPERIENCE.get().getSource())) {
                     ExperienceOrb.award(serverLevel, VecHelper.getCenterOf(pos), fluidStack.getAmount());
                 }
             }

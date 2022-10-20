@@ -1,4 +1,4 @@
-// 1.19.2	2022-10-17T11:15:40.8017271	Registrate Provider for create_enchantment_industry [Recipes, Advancements, Loot tables, Tags (blocks), Tags (items), Tags (fluids), Tags (entity_types), Blockstates, Item models, Lang (en_us/en_ud)]
+// 1.19.2	2022-10-20T23:03:19.1265534	Registrate Provider for create_enchantment_industry [Recipes, Advancements, Loot tables, Tags (blocks), Tags (items), Tags (fluids), Tags (entity_types), Blockstates, Item models, Lang (en_us/en_ud)]
 88f73ef97f52294b19161e10aad77704336e0544 assets/create_enchantment_industry/blockstates/blaze_enchanter.json
 a60b899a45f64f11dc2429795aa82fb09f9ba5c1 assets/create_enchantment_industry/blockstates/copier.json
 b906ace9e6b212e429e06eabb32921f76c818927 assets/create_enchantment_industry/blockstates/disenchanter.json

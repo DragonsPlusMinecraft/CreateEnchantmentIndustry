@@ -19,7 +19,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import plus.dragons.createenchantmentindustry.entry.ModFluids;
+import plus.dragons.createenchantmentindustry.entry.CeiFluids;
 
 @Mixin(FluidTankBlock.class)
 public abstract class FluidTankBlockMixin extends Block implements ITE<BasinTileEntity>, IWrenchable {
@@ -30,7 +30,7 @@ public abstract class FluidTankBlockMixin extends Block implements ITE<BasinTile
     // Support Experience Drop with Block Break
     @Inject(method = "onRemove", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/Level;removeBlockEntity(Lnet/minecraft/core/BlockPos;)V"), cancellable = true)
     private void injected(BlockState state, Level level, BlockPos pos, BlockState newState, boolean var4, CallbackInfo ci) {
-        if(!(level instanceof ServerLevel serverLevel))
+        if (!(level instanceof ServerLevel serverLevel))
             return;
         BlockEntity be = level.getBlockEntity(pos);
         if (!(be instanceof FluidTankTileEntity tankBE) || be instanceof CreativeFluidTankTileEntity)
@@ -39,15 +39,15 @@ public abstract class FluidTankBlockMixin extends Block implements ITE<BasinTile
         var fluid = controllerBE.getFluid(0);
         var backup = fluid.copy();
         var maxSize = controllerBE.getTotalTankSize();
-        if (fluid.getFluid().isSame(ModFluids.EXPERIENCE.get().getSource())) {
+        if (fluid.getFluid().isSame(CeiFluids.EXPERIENCE.get().getSource())) {
             level.removeBlockEntity(pos);
             ConnectivityHandler.splitMulti(tankBE);
-            if (maxSize == 1){
+            if (maxSize == 1) {
                 ExperienceOrb.award(serverLevel, VecHelper.getCenterOf(pos), backup.getAmount());
             } else {
                 var total = maxSize * (FluidTankTileEntity.getCapacityMultiplier() - 1);
                 var leftover = backup.getAmount() - total;
-                if(leftover > 0){
+                if (leftover > 0) {
                     ExperienceOrb.award(serverLevel, VecHelper.getCenterOf(pos), leftover);
                 }
             }

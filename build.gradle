@@ -116,6 +116,7 @@ minecraft {
     }
 }
 
+jarJar.enable()
 
 repositories {
     // Put repositories for dependencies here
@@ -124,7 +125,8 @@ repositories {
     // If you have mod jar dependencies in ./libs, you can declare them as a repository like so:
     // flatDir {
     //     dir 'libs'
-    // }
+    // loca
+    mavenLocal()
     maven {
         name = 'tterrag maven'
         url = 'https://maven.tterrag.com/'
@@ -143,6 +145,10 @@ repositories {
         //location of the maven for curios api
         url = "https://maven.theillusivec4.top/"
     }
+    maven {
+        // Location of dragons.plus
+        url "https://maven.dragons.plus/Releases"
+    }
 }
 
 dependencies {
@@ -150,6 +156,10 @@ dependencies {
     // that the dep is a ForgeGradle 'patcher' dependency, and its patches will be applied.
     // The userdev artifact is a special name and will get all sorts of transformations applied to it.
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
+
+    jarJar(group: 'plus.dragons.createdragonlib', name: "create_dragon_lib-${minecraft_version}", version: '[1.0.0,1.1.0)') {
+        jarJar.pin(it, project.create_dragon_lib_version)
+    }
 
     // Real mod deobf dependency examples - these get remapped to your current mappings
     // compileOnly fg.deobf("mezz.jei:jei-${mc_version}:${jei_version}:api") // Adds JEI API as a compile dependency
@@ -161,6 +171,8 @@ dependencies {
     implementation fg.deobf("com.simibubi.create:create-${create_minecraft_version}:${create_version}-${create_version_build}:slim") { transitive = false }
     implementation fg.deobf("com.jozufozu.flywheel:flywheel-forge-${flywheel_minecraft_version}:${flywheel_version}")
     implementation fg.deobf("com.tterrag.registrate:Registrate:${registrate_version}")
+
+    implementation fg.deobf("plus.dragons.createdragonlib:create_dragon_lib-${minecraft_version}:${create_dragon_lib_version}")
 
     compileOnly fg.deobf("mezz.jei:jei-${jei_minecraft_version}-common-api:${jei_version}")
     compileOnly fg.deobf("mezz.jei:jei-${jei_minecraft_version}-forge-api:${jei_version}")

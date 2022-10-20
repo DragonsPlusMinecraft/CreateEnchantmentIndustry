@@ -1,12 +1,12 @@
 package plus.dragons.createenchantmentindustry;
 
+import com.simibubi.create.foundation.advancement.AllAdvancements;
 import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.tterrag.registrate.util.nullness.NonNullSupplier;
-import net.minecraft.data.DataGenerator;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.data.event.GatherDataEvent;
+import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.common.Mod;
@@ -14,11 +14,12 @@ import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import plus.dragons.createdragonlib.lang.AutoLang;
 import plus.dragons.createenchantmentindustry.content.contraptions.fluids.OpenEndedPipeEffects;
 import plus.dragons.createenchantmentindustry.entry.*;
-import plus.dragons.createenchantmentindustry.foundation.data.advancement.ModAdvancements;
-import plus.dragons.createenchantmentindustry.foundation.data.advancement.ModTriggers;
-import plus.dragons.createenchantmentindustry.foundation.data.lang.LangMerger;
+import plus.dragons.createenchantmentindustry.foundation.data.advancement.CeiAdvancements;
+import plus.dragons.createenchantmentindustry.foundation.data.advancement.CeiTriggers;
+import plus.dragons.createenchantmentindustry.foundation.ponder.content.CeiPonderIndex;
 
 @Mod(EnchantmentIndustry.MOD_ID)
 public class EnchantmentIndustry {
@@ -31,43 +32,49 @@ public class EnchantmentIndustry {
         IEventBus forgeEventBus = MinecraftForge.EVENT_BUS;
 
         initAllEntries();
-        ModRecipeTypes.register(modEventBus);
+        CeiRecipeTypes.register(modEventBus);
 
         addForgeEventListeners(forgeEventBus);
         modEventBus.addListener(EnchantmentIndustry::init);
-        modEventBus.addListener(EnchantmentIndustry::datagen);
         DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> EnchantmentIndustryClient.onClient(modEventBus, forgeEventBus));
+
+        var autoLang = AutoLang.create("Create Enchantment Industry", MOD_ID)
+                .enableForAdvancement(CeiAdvancements::register)
+                .enableForPonders(() -> {
+                    CeiPonderIndex.register();
+                    CeiPonderIndex.registerTags();
+                })
+                .mergeCreateStyleTooltipLang()
+                .mergeCreateStyleInterfaceLang();
+
+        //modEventBus.addListener(EventPriority.LOWEST,autoLang::registerDatagen);
+        modEventBus.addListener(EventPriority.LOWEST, CeiAdvancements::registerDataGen);
     }
 
     private void initAllEntries() {
-        ModItems.register();
-        ModBlocks.register();
-        ModBlockEntities.register();
-        ModEntityTypes.register();
-        ModFluids.register();
-        ModContainerTypes.register();
-        ModTags.register();
-
+        CeiItems.register();
+        CeiBlocks.register();
+        CeiBlockEntities.register();
+        CeiEntityTypes.register();
+        CeiFluids.register();
+        CeiContainerTypes.register();
+        CeiTags.register();
+        CeiTriggers.register();
     }
-    
+
     private void addForgeEventListeners(IEventBus forgeEventBus) {
-        forgeEventBus.addListener(ModItems::fillCreateItemGroup);
-        forgeEventBus.addListener(ModFluids::handleInkEffect);
+        forgeEventBus.addListener(CeiItems::fillCreateItemGroup);
+        forgeEventBus.addListener(CeiFluids::handleInkEffect);
+        forgeEventBus.addListener(CeiFluids::handleInkLavaReaction);
     }
 
     public static void init(final FMLCommonSetupEvent event) {
         event.enqueueWork(() -> {
-            ModPackets.registerPackets();
-            ModAdvancements.register();
-            ModTriggers.register();
+            CeiPackets.registerPackets();
+            CeiAdvancements.register();
             OpenEndedPipeEffects.register();
+            AllAdvancements.register();
         });
-    }
-    
-    public static void datagen(final GatherDataEvent event) {
-        DataGenerator datagen = event.getGenerator();
-        datagen.addProvider(true,new LangMerger(datagen));
-        datagen.addProvider(true,new ModAdvancements(datagen));
     }
 
     public static ResourceLocation genRL(String name) {
