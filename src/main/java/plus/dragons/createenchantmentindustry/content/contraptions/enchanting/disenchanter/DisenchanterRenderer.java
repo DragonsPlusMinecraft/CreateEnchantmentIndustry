@@ -134,10 +134,9 @@ public class DisenchanterRenderer extends SmartTileEntityRenderer<DisenchanterBl
         Direction insertedFrom = transported.insertedFrom;
         boolean horizontal = insertedFrom.getAxis().isHorizontal();
 
-        var type = Disenchanting.test(transported.stack, be.getLevel());
-        if(type == Disenchanting.Type.NONE) return;
-
-        FluidStack resultFluidStack = Disenchanting.disenchant(type,transported.stack, be.getLevel()).getFirst();
+        var result = Disenchanting.disenchantResult(transported.stack, be.getLevel());
+        if (result == null) return;
+        FluidStack xp = result.getFirst();
         
         int processingTicks = be.processingTicks;
         float processingProgress = processingTicks == 0 ? 0
@@ -154,7 +153,7 @@ public class DisenchanterRenderer extends SmartTileEntityRenderer<DisenchanterBl
             itemPosition.add(0, 0.005, 0);
         }
         AABB bb = new AABB(itemPosition.add(0, 13 / 16d, 0), itemPosition.add(0, 1 / 4d, 0)).inflate(radius / 32f);
-        FluidRenderer.renderFluidBox(resultFluidStack,
+        FluidRenderer.renderFluidBox(xp,
             (float) bb.minX, (float) bb.minY, (float) bb.minZ,
             (float) bb.maxX, (float) bb.maxY, (float) bb.maxZ,
             buffer, ps, light, true

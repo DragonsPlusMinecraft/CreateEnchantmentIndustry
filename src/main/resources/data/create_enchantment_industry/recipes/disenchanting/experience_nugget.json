@@ -2,16 +2,13 @@
   "type": "create_enchantment_industry:disenchanting",
   "ingredients": [
     {
-      "item": "minecraft:enchanted_golden_apple"
+      "item": "create:experience_nugget"
     }
   ],
   "results": [
     {
-      "item": "minecraft:golden_apple"
-    },
-    {
       "fluid": "create_enchantment_industry:experience",
-      "amount": 100
+      "amount": 3
     }
   ]
 }

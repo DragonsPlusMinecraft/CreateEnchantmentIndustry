@@ -191,7 +191,7 @@ public class DisenchanterBlockEntity extends SmartTileEntity implements IHaveGog
         }
 
         if (heldItem.prevBeltPosition < .5f && heldItem.beltPosition >= .5f) {
-            if (Disenchanting.test(heldItem.stack,level) == Disenchanting.Type.NONE)
+            if (Disenchanting.disenchantResult(heldItem.stack, level) == null)
                 return;
             heldItem.beltPosition = .5f;
             if (onClient)
@@ -279,25 +279,16 @@ public class DisenchanterBlockEntity extends SmartTileEntity implements IHaveGog
             return true;
         if (processingTicks < 5)
             return true;
-        var type = Disenchanting.test(heldItem.stack,level);
-        if (type == Disenchanting.Type.NONE)
+
+        Pair<FluidStack, ItemStack> result = Disenchanting.disenchantResult(heldItem.stack, level);
+        if (result == null)
             return false;
-
-        Pair<FluidStack, ItemStack> stackPair;
-
-        try{
-            stackPair = Disenchanting.disenchant(type,heldItem.stack,level);
-        } catch (IllegalArgumentException e){
-            e.printStackTrace();
-            return false;
-        }
-
-        FluidStack fluidFromItem = stackPair.getFirst();
+        FluidStack xp = result.getFirst();
 
         if (processingTicks > 5) {
             internalTank.allowInsertion();
             if (internalTank.getPrimaryHandler()
-                    .fill(fluidFromItem, IFluidHandler.FluidAction.SIMULATE) != fluidFromItem.getAmount()) {
+                    .fill(xp, IFluidHandler.FluidAction.SIMULATE) != xp.getAmount()) {
                 internalTank.forbidInsertion();
                 processingTicks = DISENCHANTER_TIME;
                 return true;
@@ -306,23 +297,20 @@ public class DisenchanterBlockEntity extends SmartTileEntity implements IHaveGog
             return true;
         }
 
-        stackPair = Disenchanting.disenchant(type,heldItem.stack,level);
-
         // Advancement
         award(CeiAdvancements.EXPERIMENTAL.asCreateAdvancement());
         award(CeiAdvancements.GONE_WITH_THE_FOIL.asCreateAdvancement());
         var advancementBehaviour = getBehaviour(AdvancementBehaviour.TYPE);
         var playerId = ((AdvancementBehaviourAccessor) advancementBehaviour).getPlayerId();
-        if(playerId!=null){
+        if (playerId != null) {
             var player = level.getPlayerByUUID(playerId);
-            CeiTriggers.DISENCHANTED.trigger(player,fluidFromItem.getAmount());
+            CeiTriggers.DISENCHANTED.trigger(player, xp.getAmount());
         }
 
         // Process finished
-        heldItem.stack = stackPair.getSecond();
+        heldItem.stack = result.getSecond();
         internalTank.allowInsertion();
-        internalTank.getPrimaryHandler()
-                .fill(fluidFromItem, IFluidHandler.FluidAction.EXECUTE);
+        internalTank.getPrimaryHandler().fill(xp, IFluidHandler.FluidAction.EXECUTE);
         internalTank.forbidInsertion();
         level.levelEvent(1042, worldPosition, 0);
         notifyUpdate();
@@ -344,11 +332,12 @@ public class DisenchanterBlockEntity extends SmartTileEntity implements IHaveGog
         if (!getHeldItemStack().isEmpty())
             return inserted;
 
-        if(Disenchanting.isBuiltIn(transportedStack.stack)){
-            return Disenchanting.handleBuiltIn(this,transportedStack.stack,simulate);
+        ItemStack disenchanted = Disenchanting.disenchantAndInsert(this, transportedStack.stack, simulate);
+        if (!ItemStack.isSameItemSameTags(transportedStack.stack, disenchanted)) {
+            return disenchanted;
         }
 
-        if (inserted.getCount() > 1 && Disenchanting.test(inserted,level) != Disenchanting.Type.NONE) {
+        if (inserted.getCount() > 1 && Disenchanting.disenchantResult(inserted, level) != null) {
             returned = ItemHandlerHelper.copyStackWithSize(inserted, inserted.getCount() - 1);
             inserted = ItemHandlerHelper.copyStackWithSize(inserted, 1);
         }
