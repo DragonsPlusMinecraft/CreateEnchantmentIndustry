@@ -1,26 +1,26 @@
 {
-  "parent": "create_enchantment_industry:blazes_new_job",
+  "parent": "create_enchantment_industry:additional_order",
   "criteria": {
     "builtin": {
       "conditions": {},
-      "trigger": "create_enchantment_industry:builtin/first_order"
+      "trigger": "create_enchantment_industry:builtin/hypothetical_extension"
     }
   },
   "display": {
     "announce_to_chat": false,
     "description": {
       "color": "#DBA213",
-      "translate": "advancement.create_enchantment_industry.first_order.desc"
+      "translate": "advancement.create_enchantment_industry.hypothetical_extension.desc"
     },
     "frame": "task",
     "hidden": false,
     "icon": {
-      "item": "minecraft:golden_helmet",
+      "item": "minecraft:diamond_helmet",
       "nbt": "{Damage:0}"
     },
     "show_toast": true,
     "title": {
-      "translate": "advancement.create_enchantment_industry.first_order"
+      "translate": "advancement.create_enchantment_industry.hypothetical_extension"
     }
   },
   "requirements": [

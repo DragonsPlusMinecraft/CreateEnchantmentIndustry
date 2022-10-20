@@ -124,17 +124,23 @@ public class CeiAdvancements {
             FIRST_ORDER = FACTORY.builder("first_order")
                     .title("First Order")
                     .description("Add a new enchantment to an unenchanted item using Blaze Enchanter")
-                    .icon(Items.NETHERITE_SWORD)
+                    .icon(Items.GOLDEN_HELMET)
                     .parent(BLAZES_NEW_JOB)
                     .build(),
             ADDITIONAL_ORDER = FACTORY.builder("additional_order")
                     .title("Additional Order")
                     .description("Add a new enchantment to an enchanted item using Blaze Enchanter")
                     .icon(Util.make(
-                            new ItemStack(Items.NETHERITE_SWORD),
-                            stack -> EnchantmentHelper.setEnchantments(Map.of(Enchantments.SMITE, 5), stack)
+                            new ItemStack(Items.GOLDEN_HELMET),
+                            stack -> EnchantmentHelper.setEnchantments(Map.of(Enchantments.ALL_DAMAGE_PROTECTION, 5), stack)
                     ))
                     .parent(FIRST_ORDER)
+                    .build(),
+            HYPOTHETICAL_EXTENSION = FACTORY.builder("hypothetical_extension")
+                    .title("Hypothetical Extension")
+                    .description("Add a new enchantment to an item using Blaze Enchanter's hyper-enchanting")
+                    .icon(Items.DIAMOND_HELMET)
+                    .parent(ADDITIONAL_ORDER)
                     .build(),
             END = null;
 

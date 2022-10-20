@@ -62,6 +62,8 @@
 	"advancement.create_enchantment_industry.first_order.desc": "Add a new enchantment to an unenchanted item using Blaze Enchanter",
 	"advancement.create_enchantment_industry.additional_order": "Additional Order",
 	"advancement.create_enchantment_industry.additional_order.desc": "Add a new enchantment to an enchanted item using Blaze Enchanter",
+	"advancement.create_enchantment_industry.hypothetical_extension": "Hypothetical Extension",
+	"advancement.create_enchantment_industry.hypothetical_extension.desc": "Add a new enchantment to an item using Blaze Enchanter's hyper-enchanting",
 
 
 	"_": "->------------------------]  Ponder Content  [------------------------<-",

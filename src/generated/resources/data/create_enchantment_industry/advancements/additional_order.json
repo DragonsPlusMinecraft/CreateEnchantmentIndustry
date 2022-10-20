@@ -15,8 +15,8 @@
     "frame": "task",
     "hidden": false,
     "icon": {
-      "item": "minecraft:netherite_sword",
-      "nbt": "{Damage:0,Enchantments:[{id:\"minecraft:smite\",lvl:5s}]}"
+      "item": "minecraft:golden_helmet",
+      "nbt": "{Damage:0,Enchantments:[{id:\"minecraft:protection\",lvl:5s}]}"
     },
     "show_toast": true,
     "title": {

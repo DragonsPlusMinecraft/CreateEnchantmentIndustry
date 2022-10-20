@@ -338,7 +338,8 @@ public class BlazeEnchanterBlockEntity extends SmartTileEntity implements IHaveG
         if (!Enchanting.valid(heldItem.stack, targetItem, hyper()))
             return false;
 
-        Pair<FluidStack, ItemStack> enchantItem = Enchanting.enchant(heldItem.stack, targetItem, true, hyper());
+        boolean hyper = hyper();
+        Pair<FluidStack, ItemStack> enchantItem = Enchanting.enchant(heldItem.stack, targetItem, true, hyper);
         FluidStack fluidFromItem = enchantItem.getFirst();
 
         if (processingTicks > 5) {
@@ -355,7 +356,8 @@ public class BlazeEnchanterBlockEntity extends SmartTileEntity implements IHaveG
             award(CeiAdvancements.FIRST_ORDER.asCreateAdvancement());
         else
             award(CeiAdvancements.ADDITIONAL_ORDER.asCreateAdvancement());
-
+        if (hyper)
+            award(CeiAdvancements.HYPOTHETICAL_EXTENSION.asCreateAdvancement());
         // Process finished
         enchantItem = Enchanting.enchant(heldItem.stack, targetItem, true, hyper());
         heldItem.stack = enchantItem.getSecond();
