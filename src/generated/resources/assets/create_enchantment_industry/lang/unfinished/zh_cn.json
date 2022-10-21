@@ -1,0 +1,116 @@
+{
+	"_": "Missing Localizations: 0",
+
+	"_": "->------------------------]  Game Elements  [------------------------<-",
+
+	"block.create_enchantment_industry.blaze_enchanter": "烈焰人附魔室",
+	"block.create_enchantment_industry.copier": "复印机",
+	"block.create_enchantment_industry.disenchanter": "祛魔池",
+	"block.create_enchantment_industry.ink": "墨水",
+
+	"entity.create_enchantment_industry.hyper_experience_bottle": "超越附魔之瓶",
+
+	"fluid.create_enchantment_industry.experience": "液态经验",
+	"fluid.create_enchantment_industry.hyper_experience": "液态超经验",
+	"fluid.create_enchantment_industry.ink": "墨水",
+
+	"item.create_enchantment_industry.enchanting_guide": "附魔指南",
+	"item.create_enchantment_industry.hyper_experience_bottle": "超越附魔之瓶",
+	"item.create_enchantment_industry.ink_bucket": "墨水桶",
+
+
+	"_": "->------------------------]  Advancements  [------------------------<-",
+
+	"advancement.create_enchantment_industry.experienced_engineer": "“经验丰富”的工程师",
+	"advancement.create_enchantment_industry.experienced_engineer.desc": "通过粉碎矿物或机械手击杀生物获取一些经验颗粒",
+	"advancement.create_enchantment_industry.black_as_ink": "漆黑如墨！",
+	"advancement.create_enchantment_industry.black_as_ink.desc": "获取一桶墨水来开启你的复印大业",
+	"advancement.create_enchantment_industry.copiable_masterpiece": "誊写杰作",
+	"advancement.create_enchantment_industry.copiable_masterpiece.desc": "用复印机复制一本成书",
+	"advancement.create_enchantment_industry.copiable_mystery": "复刻奥秘",
+	"advancement.create_enchantment_industry.copiable_mystery.desc": "用复印机复制一本附魔书",
+	"advancement.create_enchantment_industry.relic_restoration": "文物修复",
+	"advancement.create_enchantment_industry.relic_restoration.desc": "复印一本破烂不堪的成书",
+	"advancement.create_enchantment_industry.great_publisher": "大出版商",
+	"advancement.create_enchantment_industry.great_publisher.desc": "复印 1000 本书",
+	"advancement.create_enchantment_industry.experimental": "实践经验",
+	"advancement.create_enchantment_industry.experimental.desc": "获取一些液态经验来完成你的附魔实验",
+	"advancement.create_enchantment_industry.gone_with_the_foil": "洗尽铅华",
+	"advancement.create_enchantment_industry.gone_with_the_foil.desc": "观看祛魔池的祛魔过程",
+	"advancement.create_enchantment_industry.spirit_taking": "摄人魂魄",
+	"advancement.create_enchantment_industry.spirit_taking.desc": "让祛魔池吸取你的经验值",
+	"advancement.create_enchantment_industry.a_shower_experience": "沐浴“经验”",
+	"advancement.create_enchantment_industry.a_shower_experience.desc": "破坏流体管道，然后享受你的经验浴",
+	"advancement.create_enchantment_industry.experienced_recycler": "“经验丰富”的回收工",
+	"advancement.create_enchantment_industry.experienced_recycler.desc": "使用祛魔池回收 1,000,000 mB 液态经验",
+	"advancement.create_enchantment_industry.blazes_new_job": "烈焰人的新工作",
+	"advancement.create_enchantment_industry.blazes_new_job.desc": "给烈焰人燃烧室一本附魔指南，将其转化为烈焰人附魔室",
+	"advancement.create_enchantment_industry.first_order": "首批订单",
+	"advancement.create_enchantment_industry.first_order.desc": "使用烈焰人燃烧室为未附魔物品附魔",
+	"advancement.create_enchantment_industry.additional_order": "追加订单",
+	"advancement.create_enchantment_industry.additional_order.desc": "使用烈焰人燃烧室为已附魔物品附魔",
+	"advancement.create_enchantment_industry.hypothetical_extension": "假想延拓",
+	"advancement.create_enchantment_industry.hypothetical_extension.desc": "使用烈焰人燃烧室为物品完成超越附魔",
+
+
+	"_": "->------------------------]  Ponder Content  [------------------------<-",
+
+	"create_enchantment_industry.ponder.tag.experience": "经验值相关",
+	"create_enchantment_industry.ponder.tag.experience.description": "与经验值相关的物品与组件",
+
+	"create_enchantment_industry.ponder.absorb_experience_nugget.header": "融化经验颗粒",
+	"create_enchantment_industry.ponder.absorb_experience_nugget.text_1": "经验颗粒可被祛魔池吸收。",
+
+	"create_enchantment_industry.ponder.copy.header": "复印机使用",
+
+	"create_enchantment_industry.ponder.disenchant.header": "祛魔池使用",
+	"create_enchantment_industry.ponder.disenchant.text_1": "所有接收的物品都将被祛除附魔，被去除的附魔将被折算成液态经验存储。",
+	"create_enchantment_industry.ponder.disenchant.text_2": "站在祛魔池上方的玩家将被快速洗去经验等级，所洗去的经验值将被转换为液态经验存储",
+
+	"create_enchantment_industry.ponder.drop_experience_nugget.header": "...经验农场？",
+	"create_enchantment_industry.ponder.drop_experience_nugget.text_1": "机械手杀死生物时将掉落经验颗粒。",
+
+	"create_enchantment_industry.ponder.enchant.header": "烈焰人附魔室使用",
+
+	"create_enchantment_industry.ponder.experience_bottle.header": "处理附魔之瓶",
+	"create_enchantment_industry.ponder.experience_bottle.text_1": "附魔之瓶能在分液池处被排空。",
+	"create_enchantment_industry.ponder.experience_bottle.text_2": "附魔之瓶也能通过注液器制造。",
+
+	"create_enchantment_industry.ponder.hyper_enchant.header": "超越附魔",
+	"create_enchantment_industry.ponder.hyper_enchant.text_1": "这是一罐液态超经验",
+	"create_enchantment_industry.ponder.hyper_enchant.text_2": "超经验可以让烈焰人附魔室进入超级燃烧状态，此状态下产出的附魔的等级将比设定附魔高出一个等级",
+
+	"create_enchantment_industry.ponder.leak.header": "噢不！漏出来了！",
+	"create_enchantment_industry.ponder.leak.text_1": "I have a tank full of experience",
+	"create_enchantment_industry.ponder.leak.text_2": "I have an open-ended pipe",
+	"create_enchantment_industry.ponder.leak.text_3": "Ugh!",
+	"create_enchantment_industry.ponder.leak.text_4": "不用担心，泄露的液态经验会变为经验球。玩家也可以站在管道开口处吸收经验。",
+
+	"create_enchantment_industry.ponder.transform.header": "使用附魔指南",
+	"create_enchantment_industry.ponder.transform.text_1": "手持配置好的附魔指南潜行右键烈焰人燃烧室",
+	"create_enchantment_industry.ponder.transform.text_2": "如需取回附魔指南，请空手右键烈焰人附魔室",
+
+
+	"_": "->------------------------]  Item Descriptions  [------------------------<-",
+
+	"create_enchantment_industry.tooltip.guide_header": "当前附魔：",
+	"create_enchantment_industry.tooltip.guide_not_configured": "未设定",
+
+
+	"_": "->------------------------]  UI & Messages  [------------------------<-",
+
+	"create_enchantment_industry.gui.enchanting_guide.no_enchantment": "无可用附魔",
+	"create_enchantment_industry.gui.goggles.copier_machine": "复印物品：",
+	"create_enchantment_industry.gui.goggles.copier_no_target": "无",
+	"create_enchantment_industry.gui.goggles.blaze_enchanter": "当前附魔：",
+	"create_enchantment_industry.gui.goggles.invalid_target": "无效目标",
+	"create_enchantment_industry.gui.goggles.xp_consumption": "消耗经验：%s mB",
+	"create_enchantment_industry.gui.goggles.ink_consumption": "消耗墨水：%s mB",
+	"create_enchantment_industry.gui.goggles.too_expensive": "过于昂贵！",
+
+	"create_enchantment_industry.generic.unit.page": "页",
+	"create_enchantment_industry.generic.unit.pages": "页",
+
+	"_": "Thank you for translating Create Enchantment Industry!"
+
+}
