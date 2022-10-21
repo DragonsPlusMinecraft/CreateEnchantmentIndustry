@@ -29,7 +29,7 @@ public enum CeiPackets {
     public static final String NETWORK_VERSION_STR = String.valueOf(NETWORK_VERSION);
     public static SimpleChannel channel;
 
-    private CeiPackets.LoadedPacket<?> packet;
+    private final CeiPackets.LoadedPacket<?> packet;
 
     <T extends SimplePacketBase> CeiPackets(Class<T> type, Function<FriendlyByteBuf, T> factory,
                                             NetworkDirection direction) {

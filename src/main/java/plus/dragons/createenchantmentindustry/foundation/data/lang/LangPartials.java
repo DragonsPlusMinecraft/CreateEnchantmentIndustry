@@ -37,8 +37,8 @@ public enum LangPartials {
 	TOOLTIPS("Item Descriptions"),
 	PONDER("Ponder Content");
 
-	private String display;
-	private Supplier<JsonElement> provider;
+	private final String display;
+	private final Supplier<JsonElement> provider;
 
 	LangPartials(String display) {
 		this.display = display;

@@ -47,7 +47,7 @@ public enum CeiRecipeTypes implements IRecipeTypeInfo {
 
     public static <T extends Recipe<?>> RecipeType<T> simpleType(ResourceLocation id) {
         String stringId = id.toString();
-        return new RecipeType<T>() {
+        return new RecipeType<>() {
             @Override
             public String toString() {
                 return stringId;

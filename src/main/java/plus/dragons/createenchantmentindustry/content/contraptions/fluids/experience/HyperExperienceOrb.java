@@ -1,6 +1,5 @@
 package plus.dragons.createenchantmentindustry.content.contraptions.fluids.experience;
 
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;

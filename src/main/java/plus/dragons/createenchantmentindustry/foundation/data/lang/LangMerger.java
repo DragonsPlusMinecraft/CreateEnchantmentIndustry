@@ -261,7 +261,7 @@ public class LangMerger implements DataProvider {
 		StringBuilder builder = new StringBuilder();
 		builder.append("{\n");
 		if (missingKeys != -1)
-			builder.append("\t\"_\": \"Missing Localizations: " + missingKeys + "\",\n");
+			builder.append("\t\"_\": \"Missing Localizations: ").append(missingKeys).append("\",\n");
 		data.forEach(builder::append);
 		builder.append("\t\"_\": \"Thank you for translating Create: Enchantment Industry!\"\n\n");
 		builder.append("}");
