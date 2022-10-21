@@ -8,9 +8,9 @@ import com.simibubi.create.foundation.data.SharedProperties;
 import com.tterrag.registrate.util.entry.BlockEntry;
 import net.minecraft.client.renderer.RenderType;
 import plus.dragons.createenchantmentindustry.EnchantmentIndustry;
-import plus.dragons.createenchantmentindustry.content.contraptions.enchanting.enchanter.BlazeEnchanterBlock;
 import plus.dragons.createenchantmentindustry.content.contraptions.enchanting.copier.CopierBlock;
 import plus.dragons.createenchantmentindustry.content.contraptions.enchanting.disenchanter.DisenchanterBlock;
+import plus.dragons.createenchantmentindustry.content.contraptions.enchanting.enchanter.BlazeEnchanterBlock;
 
 
 public class CeiBlocks {

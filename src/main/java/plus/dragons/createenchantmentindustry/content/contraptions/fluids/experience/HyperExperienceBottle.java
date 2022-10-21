@@ -13,16 +13,16 @@ import net.minecraft.world.phys.HitResult;
 import plus.dragons.createenchantmentindustry.entry.CeiEntityTypes;
 import plus.dragons.createenchantmentindustry.entry.CeiItems;
 
-public class HyperExpBottle extends ThrowableItemProjectile {
-    public HyperExpBottle(EntityType<? extends HyperExpBottle> pEntityType, Level pLevel) {
+public class HyperExperienceBottle extends ThrowableItemProjectile {
+    public HyperExperienceBottle(EntityType<? extends HyperExperienceBottle> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
     }
 
-    public HyperExpBottle(double pX, double pY, double pZ, Level pLevel) {
+    public HyperExperienceBottle(double pX, double pY, double pZ, Level pLevel) {
         super(CeiEntityTypes.HYPER_EXP_BOTTLE.get(), pX, pY, pZ, pLevel);
     }
 
-    public HyperExpBottle(LivingEntity pShooter, Level pLevel) {
+    public HyperExperienceBottle(LivingEntity pShooter, Level pLevel) {
         super(CeiEntityTypes.HYPER_EXP_BOTTLE.get(), pShooter, pLevel);
     }
 
@@ -34,7 +34,7 @@ public class HyperExpBottle extends ThrowableItemProjectile {
 
     @SuppressWarnings("unchecked")
     public static EntityType.Builder<?> build(EntityType.Builder<?> builder) {
-        EntityType.Builder<HyperExpBottle> entityBuilder = (EntityType.Builder<HyperExpBottle>) builder;
+        EntityType.Builder<HyperExperienceBottle> entityBuilder = (EntityType.Builder<HyperExperienceBottle>) builder;
         return entityBuilder.sized(.25f, .25f);
     }
 

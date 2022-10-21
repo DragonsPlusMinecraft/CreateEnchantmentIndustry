@@ -9,21 +9,19 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.PlayerXpEvent;
 import net.minecraftforge.fluids.FluidStack;
+import org.jetbrains.annotations.Nullable;
 import plus.dragons.createenchantmentindustry.entry.CeiFluids;
 import plus.dragons.createenchantmentindustry.foundation.data.advancement.CeiAdvancements;
 
-import java.util.List;
 import java.util.Map;
-import java.util.Random;
 
 public class ExperienceEffectHandler implements OpenEndedPipe.IEffectHandler {
-
-    public static Random RNG = new Random();
 
     @Override
     public boolean canApplyEffects(OpenEndedPipe pipe, FluidStack fluid) {
@@ -32,57 +30,61 @@ public class ExperienceEffectHandler implements OpenEndedPipe.IEffectHandler {
 
     @Override
     public void applyEffects(OpenEndedPipe pipe, FluidStack fluid) {
-        List<Player> players = pipe.getWorld()
-                .getEntitiesOfClass(Player.class, pipe.getAOE(), LivingEntity::isAlive);
+        var players = pipe.getWorld().getEntitiesOfClass(Player.class, pipe.getAOE(), LivingEntity::isAlive);
+        var level = pipe.getWorld();
+        var pos = pipe.getOutputPos();
+        var pipePos = pipe.getPos();
+        var speed = new Vec3(pos.getX() - pipePos.getX(), pos.getY() - pipePos.getY(), pos.getZ() - pipePos.getZ()).scale(0.2);
+        var xpPos = new AABB(pos).getCenter();
         if (players.isEmpty()) {
-            var level = pipe.getWorld();
-            var pos = pipe.getOutputPos();
-            var pipePos = pipe.getPos();
-            var speed = new Vec3(pos.getX() - pipePos.getX(), pos.getY() - pipePos.getY(), pos.getZ() - pipePos.getZ()).scale(0.2);
-            var endPos = new AABB(pos).getCenter();
-            var expBall = new ExperienceOrb(level, endPos.x, endPos.y, endPos.z, fluid.getAmount());
-            expBall.setDeltaMovement(speed);
-            level.addFreshEntity(expBall);
+            awardExperienceOrDrop(null, level, xpPos, speed, fluid.getAmount());
         } else {
             var amount = fluid.getAmount() / players.size();
             var left = fluid.getAmount() % players.size();
             players.forEach(player -> {
                 CeiAdvancements.A_SHOWER_EXPERIENCE.getTrigger().trigger((ServerPlayer) player);
                 player.giveExperiencePoints(amount);
-                var expBall = new ExperienceOrb(player.level, player.getX(), player.getY(), player.getZ(), amount);
-                if (MinecraftForge.EVENT_BUS.post(new PlayerXpEvent.PickupXp(player, expBall))) return;
-                int i = repairPlayerItems(player, expBall.value);
-                if (i > 0) {
-                    player.giveExperiencePoints(i);
-                }
-
+                awardExperienceOrDrop(player, level, xpPos, speed, amount);
             });
             if (left != 0) {
-                var lucky = players.get(RNG.nextInt(players.size()));
-                var expBall = new ExperienceOrb(lucky.level, lucky.getX(), lucky.getY(), lucky.getZ(), left);
-                if (MinecraftForge.EVENT_BUS.post(new PlayerXpEvent.PickupXp(lucky, expBall))) return;
-                int i = repairPlayerItems(lucky, expBall.value);
-                if (i > 0) {
-                    lucky.giveExperiencePoints(i);
+                var lucky = players.get(level.random.nextInt(players.size()));
+                awardExperienceOrDrop(lucky, level, xpPos, speed, left);
+            }
+        }
+    }
+
+    private void awardExperienceOrDrop(@Nullable Player player, Level level, Vec3 pos, Vec3 speed, int amount) {
+        while(amount > 0) {
+            int i = ExperienceOrb.getExperienceValue(amount);
+            amount -= i;
+            var expBall = new ExperienceOrb(level, pos.x, pos.y, pos.z, i);
+            if (player == null || MinecraftForge.EVENT_BUS.post(new PlayerXpEvent.PickupXp(player, expBall))) {
+                expBall.setDeltaMovement(speed);
+                level.addFreshEntity(expBall);
+            } else {
+                int left = repairPlayerItems(player, expBall.value);
+                if (left > 0) {
+                    player.giveExperiencePoints(left);
                 }
             }
         }
     }
 
-    private static int repairPlayerItems(Player pPlayer, int pRepairAmount) {
-        Map.Entry<EquipmentSlot, ItemStack> entry = EnchantmentHelper.getRandomItemWith(Enchantments.MENDING, pPlayer, ItemStack::isDamaged);
+    private int repairPlayerItems(Player player, int amount) {
+        Map.Entry<EquipmentSlot, ItemStack> entry = EnchantmentHelper.getRandomItemWith(Enchantments.MENDING, player, ItemStack::isDamaged);
         if (entry != null) {
             ItemStack itemstack = entry.getValue();
-            int i = Math.min((int) (pRepairAmount * itemstack.getXpRepairRatio()), itemstack.getDamageValue());
+            int i = Math.min((int) (amount * itemstack.getXpRepairRatio()), itemstack.getDamageValue());
             itemstack.setDamageValue(itemstack.getDamageValue() - i);
-            int j = pRepairAmount - durabilityToXp(i);
-            return j > 0 ? repairPlayerItems(pPlayer, j) : 0;
+            int j = amount - durabilityToXp(i);
+            return j > 0 ? repairPlayerItems(player, j) : 0;
         } else {
-            return pRepairAmount;
+            return amount;
         }
     }
 
-    private static int durabilityToXp(int pDurability) {
-        return pDurability / 2;
+    private int durabilityToXp(int durability) {
+        return durability / 2;
     }
+
 }

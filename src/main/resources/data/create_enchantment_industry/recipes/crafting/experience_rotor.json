@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " Z ",
+    "ZEZ",
+    " Z "
+  ],
+  "key": {
+    "Z": {
+      "tag": "forge:ingots/zinc"
+    },
+    "E": {
+      "item": "create:experience_nugget"
+    }
+  },
+  "result": {
+    "item": "create_enchantment_industry:experience_rotor"
+  }
+}

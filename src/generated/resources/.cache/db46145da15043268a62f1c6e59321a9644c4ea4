@@ -1,14 +1,15 @@
-// 1.19.2	2022-10-20T23:03:19.1265534	Registrate Provider for create_enchantment_industry [Recipes, Advancements, Loot tables, Tags (blocks), Tags (items), Tags (fluids), Tags (entity_types), Blockstates, Item models, Lang (en_us/en_ud)]
+// 1.19.2	2022-10-21T12:40:44.7543297	Registrate Provider for create_enchantment_industry [Recipes, Advancements, Loot tables, Tags (blocks), Tags (items), Tags (fluids), Tags (entity_types), Blockstates, Item models, Lang (en_us/en_ud)]
 88f73ef97f52294b19161e10aad77704336e0544 assets/create_enchantment_industry/blockstates/blaze_enchanter.json
 a60b899a45f64f11dc2429795aa82fb09f9ba5c1 assets/create_enchantment_industry/blockstates/copier.json
 b906ace9e6b212e429e06eabb32921f76c818927 assets/create_enchantment_industry/blockstates/disenchanter.json
 4694ec9b6941ce15ec9cc99b0800fe2dfe4e7bcd assets/create_enchantment_industry/blockstates/ink.json
-04c9841dffd76cc8f839939b2a195542f1615dac assets/create_enchantment_industry/lang/en_ud.json
-b2cc232be1ec2ae5f7351e36c441d1777c26dc0e assets/create_enchantment_industry/lang/en_us.json
+ceb843be7627cb18768ce09b053dc577f2f48085 assets/create_enchantment_industry/lang/en_ud.json
+b458a301493f818c98f6099ef2feab9de04a9021 assets/create_enchantment_industry/lang/en_us.json
 4053a644101e03d49d56707d504b728fd1617353 assets/create_enchantment_industry/models/block/ink.json
 58115967a6eac2ee3b85bcacb1098657af4ba21a assets/create_enchantment_industry/models/item/copier.json
 e744a7aedaa0c74746aedd1405b15f4a12d7628c assets/create_enchantment_industry/models/item/disenchanter.json
 de16d83e19bb086c0e7699fe1fcf888a5e10cb10 assets/create_enchantment_industry/models/item/enchanting_guide.json
+abc3a8e4de7afdffb40b69c98af68435daf78825 assets/create_enchantment_industry/models/item/experience_rotor.json
 0170d8b146d25e6adac4fa1e5776b2ea2fdbab6c assets/create_enchantment_industry/models/item/hyper_experience_bottle.json
 19ee8c7a9cf1e86c33a5f652908a24a13c7002a2 assets/create_enchantment_industry/models/item/ink_bucket.json
 2ff26d9fa71b48421a303350432127a111650d52 data/create/tags/items/upright_on_belt.json

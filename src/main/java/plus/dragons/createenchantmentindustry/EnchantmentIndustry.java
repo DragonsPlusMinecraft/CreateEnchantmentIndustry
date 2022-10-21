@@ -15,7 +15,7 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import plus.dragons.createdragonlib.lang.AutoLang;
-import plus.dragons.createenchantmentindustry.content.contraptions.fluids.experience.A;
+import plus.dragons.createenchantmentindustry.content.contraptions.fluids.OpenEndedPipeEffects;
 import plus.dragons.createenchantmentindustry.entry.*;
 import plus.dragons.createenchantmentindustry.foundation.config.ModConfigs;
 import plus.dragons.createenchantmentindustry.foundation.data.advancement.CeiAdvancements;
@@ -49,7 +49,7 @@ public class EnchantmentIndustry {
                 .mergeCreateStyleTooltipLang()
                 .mergeCreateStyleInterfaceLang();
 
-        modEventBus.addListener(EventPriority.LOWEST,autoLang::registerDatagen);
+        modEventBus.addListener(EventPriority.LOWEST, autoLang::registerDatagen);
         modEventBus.addListener(EventPriority.LOWEST, CeiAdvancements::registerDataGen);
     }
 
@@ -74,7 +74,7 @@ public class EnchantmentIndustry {
         event.enqueueWork(() -> {
             CeiPackets.registerPackets();
             CeiAdvancements.register();
-            A.register();
+            OpenEndedPipeEffects.register();
         });
     }
 

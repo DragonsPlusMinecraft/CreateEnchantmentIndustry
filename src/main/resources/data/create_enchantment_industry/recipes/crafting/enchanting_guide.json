@@ -1,16 +1,13 @@
 {
-  "type": "minecraft:crafting_shaped",
-  "pattern": [
-    "ABA"
-  ],
-  "key": {
-    "A": {
-      "item": "create:sturdy_sheet"
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "tag": "forge:plates/obsidian"
     },
-    "B": {
+    {
       "item": "minecraft:book"
     }
-  },
+  ],
   "result": {
     "item": "create_enchantment_industry:enchanting_guide"
   }

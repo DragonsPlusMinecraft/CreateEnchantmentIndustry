@@ -5,18 +5,15 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
-import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.enchantment.EnchantmentHelper;
-import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 
-import java.util.Map;
 
-public class HyperExpBottleItem extends Item {
-    public HyperExpBottleItem(Properties pProperties) {
+
+public class HyperExperienceBottleItem extends Item {
+    public HyperExperienceBottleItem(Properties pProperties) {
         super(pProperties);
     }
 
@@ -28,7 +25,7 @@ public class HyperExpBottleItem extends Item {
         ItemStack itemstack = pPlayer.getItemInHand(pHand);
         pLevel.playSound(null, pPlayer.getX(), pPlayer.getY(), pPlayer.getZ(), SoundEvents.EXPERIENCE_BOTTLE_THROW, SoundSource.NEUTRAL, 0.5F, 0.4F / (pLevel.getRandom().nextFloat() * 0.4F + 0.8F));
         if (!pLevel.isClientSide) {
-            HyperExpBottle bottle = new HyperExpBottle(pPlayer, pLevel);
+            HyperExperienceBottle bottle = new HyperExperienceBottle(pPlayer, pLevel);
             bottle.setItem(itemstack);
             bottle.shootFromRotation(pPlayer, pPlayer.getXRot(), pPlayer.getYRot(), -20.0F, 0.7F, 1.0F);
             pLevel.addFreshEntity(bottle);

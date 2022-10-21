@@ -1,5 +1,5 @@
 {
-	"_": "Missing Localizations: 5",
+	"_": "Missing Localizations: 1",
 
 	"_": "->------------------------]  Game Elements  [------------------------<-",
 
@@ -15,6 +15,7 @@
 	"fluid.create_enchantment_industry.ink": "잉크",
 
 	"item.create_enchantment_industry.enchanting_guide": "마법 유도서",
+	"item.create_enchantment_industry.experience_rotor": "UNLOCALIZED: Experience Rotor",
 	"item.create_enchantment_industry.hyper_experience_bottle": "고농축 경험치 병",
 	"item.create_enchantment_industry.ink_bucket": "잉크 양동이",
 
