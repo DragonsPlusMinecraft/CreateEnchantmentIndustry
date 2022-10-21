@@ -1,4 +1,4 @@
-package plus.dragons.createenchantmentindustry.content.contraptions.enchanting;
+package plus.dragons.createenchantmentindustry.content.contraptions.enchanting.enchanter;
 
 import com.google.common.collect.ImmutableList;
 import com.simibubi.create.foundation.gui.container.GhostItemContainer;

@@ -1,4 +1,4 @@
-package plus.dragons.createenchantmentindustry.content.contraptions.enchanting;
+package plus.dragons.createenchantmentindustry.content.contraptions.enchanting.enchanter;
 
 import com.jozufozu.flywheel.core.PartialModel;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -29,9 +29,9 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.client.ForgeHooksClient;
 import plus.dragons.createenchantmentindustry.EnchantmentIndustry;
-import plus.dragons.createenchantmentindustry.content.contraptions.enchanting.BlazeEnchanterBlock.HeatLevel;
+import plus.dragons.createenchantmentindustry.content.contraptions.enchanting.enchanter.BlazeEnchanterBlock.HeatLevel;
 
-import static plus.dragons.createenchantmentindustry.content.contraptions.enchanting.BlazeEnchanterBlockEntity.ENCHANTING_TIME;
+import static plus.dragons.createenchantmentindustry.content.contraptions.enchanting.enchanter.BlazeEnchanterBlockEntity.ENCHANTING_TIME;
 
 public class BlazeEnchanterRenderer extends SmartTileEntityRenderer<BlazeEnchanterBlockEntity> {
     public static final Material BOOK_MATERIAL = ForgeHooksClient.getBlockMaterial(EnchantmentIndustry.genRL("block/blaze_enchanter_book"));

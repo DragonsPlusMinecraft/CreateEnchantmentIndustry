@@ -1,4 +1,4 @@
-package plus.dragons.createenchantmentindustry.content.contraptions.enchanting;
+package plus.dragons.createenchantmentindustry.content.contraptions.enchanting.copier;
 
 import com.simibubi.create.content.contraptions.goggles.IHaveGoggleInformation;
 import com.simibubi.create.content.contraptions.relays.belt.transport.TransportedItemStack;

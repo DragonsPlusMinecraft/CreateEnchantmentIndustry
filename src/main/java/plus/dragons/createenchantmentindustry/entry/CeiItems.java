@@ -9,8 +9,8 @@ import com.tterrag.registrate.util.entry.ItemEntry;
 import net.minecraft.world.item.Rarity;
 import plus.dragons.createdragonlib.api.event.FillCreateItemGroupEvent;
 import plus.dragons.createenchantmentindustry.EnchantmentIndustry;
-import plus.dragons.createenchantmentindustry.content.contraptions.enchanting.EnchantingGuideItem;
-import plus.dragons.createenchantmentindustry.content.contraptions.enchanting.HyperExpBottleItem;
+import plus.dragons.createenchantmentindustry.content.contraptions.enchanting.enchanter.EnchantingGuideItem;
+import plus.dragons.createenchantmentindustry.content.contraptions.fluids.experience.HyperExpBottleItem;
 
 public class CeiItems {
 

@@ -2,7 +2,12 @@ package plus.dragons.createenchantmentindustry.entry;
 
 import com.tterrag.registrate.util.entry.BlockEntityEntry;
 import plus.dragons.createenchantmentindustry.EnchantmentIndustry;
-import plus.dragons.createenchantmentindustry.content.contraptions.enchanting.*;
+import plus.dragons.createenchantmentindustry.content.contraptions.enchanting.copier.CopierBlockEntity;
+import plus.dragons.createenchantmentindustry.content.contraptions.enchanting.copier.CopierRenderer;
+import plus.dragons.createenchantmentindustry.content.contraptions.enchanting.disenchanter.DisenchanterBlockEntity;
+import plus.dragons.createenchantmentindustry.content.contraptions.enchanting.disenchanter.DisenchanterRenderer;
+import plus.dragons.createenchantmentindustry.content.contraptions.enchanting.enchanter.BlazeEnchanterBlockEntity;
+import plus.dragons.createenchantmentindustry.content.contraptions.enchanting.enchanter.BlazeEnchanterRenderer;
 
 public class CeiBlockEntities {
 

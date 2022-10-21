@@ -1,4 +1,4 @@
-package plus.dragons.createenchantmentindustry.content.contraptions.enchanting;
+package plus.dragons.createenchantmentindustry.content.contraptions.enchanting.copier;
 
 import com.jozufozu.flywheel.core.PartialModel;
 import com.mojang.blaze3d.vertex.PoseStack;

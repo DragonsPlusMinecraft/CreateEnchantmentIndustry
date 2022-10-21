@@ -1,10 +1,11 @@
-package plus.dragons.createenchantmentindustry.content.contraptions.enchanting;
+package plus.dragons.createenchantmentindustry.content.contraptions.enchanting.copier;
 
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.WrittenBookItem;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraftforge.fluids.FluidStack;
+import plus.dragons.createenchantmentindustry.content.contraptions.enchanting.enchanter.Enchanting;
 import plus.dragons.createenchantmentindustry.entry.CeiFluids;
 
 

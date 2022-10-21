@@ -10,7 +10,7 @@ import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import plus.dragons.createenchantmentindustry.content.contraptions.fluids.InkRenderingCamera;
+import plus.dragons.createenchantmentindustry.content.contraptions.fluids.ink.InkRenderingCamera;
 import plus.dragons.createenchantmentindustry.entry.CeiTags;
 
 @Mixin(Camera.class)

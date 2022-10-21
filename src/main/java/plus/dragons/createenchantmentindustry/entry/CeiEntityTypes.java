@@ -5,7 +5,7 @@ import net.minecraft.client.renderer.entity.ThrownItemRenderer;
 import net.minecraft.world.entity.MobCategory;
 import plus.dragons.createdragonlib.entry.RegistrateHelper;
 import plus.dragons.createenchantmentindustry.EnchantmentIndustry;
-import plus.dragons.createenchantmentindustry.content.contraptions.enchanting.HyperExpBottle;
+import plus.dragons.createenchantmentindustry.content.contraptions.fluids.experience.HyperExpBottle;
 
 public class CeiEntityTypes {
 

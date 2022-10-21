@@ -1,4 +1,4 @@
-package plus.dragons.createenchantmentindustry.content.contraptions.enchanting;
+package plus.dragons.createenchantmentindustry.content.contraptions.enchanting.disenchanter;
 
 import com.simibubi.create.AllShapes;
 import com.simibubi.create.content.contraptions.relays.belt.transport.TransportedItemStack;

@@ -1,4 +1,4 @@
-package plus.dragons.createenchantmentindustry.content.contraptions.enchanting;
+package plus.dragons.createenchantmentindustry.content.contraptions.enchanting.enchanter;
 
 import com.simibubi.create.foundation.utility.Pair;
 import net.minecraft.core.Registry;

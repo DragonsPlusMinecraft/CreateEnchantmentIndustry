@@ -1,4 +1,4 @@
-package plus.dragons.createenchantmentindustry.content.contraptions.enchanting;
+package plus.dragons.createenchantmentindustry.content.contraptions.enchanting.disenchanter;
 
 import com.simibubi.create.AllItems;
 import com.simibubi.create.foundation.utility.Pair;
