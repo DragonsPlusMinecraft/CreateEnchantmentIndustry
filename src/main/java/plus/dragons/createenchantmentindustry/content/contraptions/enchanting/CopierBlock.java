@@ -30,6 +30,7 @@ import org.jetbrains.annotations.Nullable;
 import plus.dragons.createenchantmentindustry.entry.CeiBlockEntities;
 import plus.dragons.createenchantmentindustry.entry.CeiBlocks;
 import plus.dragons.createenchantmentindustry.entry.CeiFluids;
+import plus.dragons.createenchantmentindustry.foundation.config.ModConfigs;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -80,14 +81,14 @@ public class CopierBlock extends Block implements IWrenchable, ITE<CopierBlockEn
                     return InteractionResult.SUCCESS;
                 } else return InteractionResult.PASS;
             });
-        } else if ((heldItem.is(Items.ENCHANTED_BOOK) || heldItem.is(Items.WRITTEN_BOOK)) && heldItem.getCount() == 1) {
+        } else if ((heldItem.is(Items.ENCHANTED_BOOK) || heldItem.is(Items.WRITTEN_BOOK)) && heldItem.getCount()==1) {
             return onTileEntityUse(world, pos, be -> {
                 if (be.copyTarget == null) {
                     if (!player.getAbilities().instabuild) player.setItemInHand(hand, ItemStack.EMPTY);
                 } else {
                     player.setItemInHand(hand, be.copyTarget);
                 }
-                be.tooExpensive = CopyingBook.isTooExpensive(heldItem, CopierBlockEntity.TANK_CAPACITY);
+                be.tooExpensive = CopyingBook.isTooExpensive(heldItem, ModConfigs.SERVER.copierTankCapacity.get());
                 be.copyTarget = heldItem;
                 be.processingTicks = -1;
                 be.notifyUpdate();

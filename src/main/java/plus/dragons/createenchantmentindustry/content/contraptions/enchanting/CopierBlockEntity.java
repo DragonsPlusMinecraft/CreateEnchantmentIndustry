@@ -8,7 +8,6 @@ import com.simibubi.create.foundation.tileEntity.TileEntityBehaviour;
 import com.simibubi.create.foundation.tileEntity.behaviour.belt.BeltProcessingBehaviour;
 import com.simibubi.create.foundation.tileEntity.behaviour.belt.TransportedItemStackHandlerBehaviour;
 import com.simibubi.create.foundation.tileEntity.behaviour.fluid.SmartFluidTankBehaviour;
-import com.simibubi.create.foundation.utility.Components;
 import com.simibubi.create.foundation.utility.VecHelper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
@@ -36,6 +35,7 @@ import org.jetbrains.annotations.Nullable;
 import plus.dragons.createdragonlib.mixin.AdvancementBehaviourAccessor;
 import plus.dragons.createdragonlib.utility.ModLang;
 import plus.dragons.createenchantmentindustry.EnchantmentIndustry;
+import plus.dragons.createenchantmentindustry.foundation.config.ModConfigs;
 import plus.dragons.createenchantmentindustry.foundation.data.advancement.CeiAdvancements;
 import plus.dragons.createenchantmentindustry.foundation.data.advancement.CeiTriggers;
 
@@ -48,7 +48,6 @@ import static com.simibubi.create.foundation.tileEntity.behaviour.belt.BeltProce
 public class CopierBlockEntity extends SmartTileEntity implements IHaveGoggleInformation {
 
     public static final int COPYING_TIME = 100;
-    public static final int TANK_CAPACITY = 3000;
     protected BeltProcessingBehaviour beltProcessing;
     public int processingTicks;
     SmartFluidTankBehaviour tank;
@@ -65,7 +64,7 @@ public class CopierBlockEntity extends SmartTileEntity implements IHaveGoggleInf
 
     @Override
     public void addBehaviours(List<TileEntityBehaviour> behaviours) {
-        behaviours.add(tank = SmartFluidTankBehaviour.single(this, TANK_CAPACITY));
+        behaviours.add(tank = SmartFluidTankBehaviour.single(this, ModConfigs.SERVER.copierTankCapacity.get()));
         behaviours.add(beltProcessing = new BeltProcessingBehaviour(this).whenItemEnters(this::onItemReceived)
                 .whileItemHeld(this::whenItemHeld));
         registerAwardables(behaviours,
@@ -81,9 +80,9 @@ public class CopierBlockEntity extends SmartTileEntity implements IHaveGoggleInf
             processingTicks--;
         }
     }
-
+    
     protected static int ENCHANT_PARTICLE_COUNT = 20;
-
+    
     protected void spawnParticles() {
         if (isVirtual())
             return;
@@ -216,33 +215,50 @@ public class CopierBlockEntity extends SmartTileEntity implements IHaveGoggleInf
 
     @Override
     public boolean addToGoggleTooltip(List<Component> tooltip, boolean isPlayerSneaking) {
-        ModLang.translate(EnchantmentIndustry.MOD_ID, "gui.goggles.copier_machine").forGoggles(tooltip);
+        var modid = EnchantmentIndustry.MOD_ID;
+        ModLang.translate(modid,"gui.goggles.copier_machine").forGoggles(tooltip);
         if (copyTarget == null) {
-            ModLang.translate(EnchantmentIndustry.MOD_ID, "gui.goggles.copier_no_target")
+            ModLang.translate(modid,"gui.goggles.copier_no_target")
                     .style(ChatFormatting.GRAY)
                     .forGoggles(tooltip, 1);
         } else {
             if (copyTarget.is(Items.WRITTEN_BOOK)) {
                 var page = WrittenBookItem.getPageCount(copyTarget);
-                var b = ModLang.builder(EnchantmentIndustry.MOD_ID)
-                        .add(ModLang.itemName(EnchantmentIndustry.MOD_ID, copyTarget)
+                var b = ModLang.builder(modid)
+                        .add(ModLang.itemName(modid,copyTarget)
                                 .style(ChatFormatting.BLUE))
                         .text(ChatFormatting.GRAY, " / ")
-                        .add(ModLang.number(EnchantmentIndustry.MOD_ID, page)
+                        .add(ModLang.number(modid,page)
                                 .text(" ")
-                                .add(page == 1 ? ModLang.translate(EnchantmentIndustry.MOD_ID, "generic.unit.page") : ModLang.translate(EnchantmentIndustry.MOD_ID, "generic.unit.pages"))
+                                .add(page == 1 ? ModLang.translate(modid,"generic.unit.page") : ModLang.translate(modid,"generic.unit.pages"))
                                 .style(ChatFormatting.DARK_GRAY));
-                if (CopyingBook.isTooExpensive(copyTarget, TANK_CAPACITY))
-                    b.text(" ").add(ModLang.translate(EnchantmentIndustry.MOD_ID, "gui.goggles.copier_too_expensive").style(ChatFormatting.RED));
                 b.forGoggles(tooltip, 1);
+                if (CopyingBook.isTooExpensive(copyTarget, ModConfigs.SERVER.copierTankCapacity.get()))
+                    tooltip.add(Component.literal("     ").append(ModLang.translate(modid,
+                        "gui.goggles.too_expensive").component()
+                    ).withStyle(ChatFormatting.RED));
+                else
+                    tooltip.add(Component.literal("     ").append(ModLang.translate(
+                        "gui.goggles.ink_consumption",
+                        String.valueOf(CopyingBook.getExperienceFromItem(copyTarget))).component()
+                    ).withStyle(ChatFormatting.DARK_GRAY));
             } else if (copyTarget.is(Items.ENCHANTED_BOOK)) {
-                var b = ModLang.itemName(EnchantmentIndustry.MOD_ID, copyTarget).style(ChatFormatting.LIGHT_PURPLE);
-                if (CopyingBook.isTooExpensive(copyTarget, TANK_CAPACITY))
-                    b.text(" ").add(ModLang.translate(EnchantmentIndustry.MOD_ID, "gui.goggles.copier_too_expensive").style(ChatFormatting.RED));
+                var b = ModLang.itemName(modid,copyTarget).style(ChatFormatting.LIGHT_PURPLE);
                 b.forGoggles(tooltip, 1);
+                boolean tooExpensive = CopyingBook.isTooExpensive(copyTarget, ModConfigs.SERVER.copierTankCapacity.get());
+                if (tooExpensive)
+                    tooltip.add(Component.literal("     ").append(ModLang.translate(modid,
+                        "gui.goggles.too_expensive").component()
+                    ).withStyle(ChatFormatting.RED));
+                else
+                    tooltip.add(Component.literal("     ").append(ModLang.translate(
+                        "gui.goggles.xp_consumption",
+                            String.valueOf(CopyingBook.getExperienceFromItem(copyTarget))).component()
+                    ).withStyle(ChatFormatting.GREEN));
                 var map = EnchantmentHelper.getEnchantments(copyTarget);
                 for (var e : map.entrySet()) {
-                    tooltip.add(Components.literal("     ").append(e.getKey().getFullname(e.getValue())).withStyle(ChatFormatting.DARK_GRAY));
+                    Component name = e.getKey().getFullname(e.getValue());
+                    tooltip.add(Component.literal("     ").append(name).withStyle(name.getStyle()));
                 }
             }
         }

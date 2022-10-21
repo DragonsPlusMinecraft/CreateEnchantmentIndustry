@@ -10,8 +10,6 @@ import plus.dragons.createenchantmentindustry.entry.CeiFluids;
 
 public class CopyingBook {
     public static int INK_CONSUMPTION_PER_PAGE_COPYING = 5;
-    public static int EXPERIENCE_MULTIPLIER_FOR_COPYING = 10;
-
 
     public static boolean valid(ItemStack tested) {
         return tested.is(Items.BOOK);
@@ -21,7 +19,7 @@ public class CopyingBook {
         if (target.is(Items.WRITTEN_BOOK))
             return WrittenBookItem.getPageCount(target) * INK_CONSUMPTION_PER_PAGE_COPYING;
         else if (target.is(Items.ENCHANTED_BOOK))
-            return getExperienceFromItem(target) * EXPERIENCE_MULTIPLIER_FOR_COPYING;
+            return getExperienceFromItem(target);
         else return -1;
     }
 
@@ -44,13 +42,16 @@ public class CopyingBook {
         if (target.is(Items.WRITTEN_BOOK))
             return WrittenBookItem.getPageCount(target) * INK_CONSUMPTION_PER_PAGE_COPYING > limit;
         else if (target.is(Items.ENCHANTED_BOOK))
-            return getExperienceFromItem(target) * EXPERIENCE_MULTIPLIER_FOR_COPYING > limit;
+            return getExperienceFromItem(target) > limit;
         return false;
     }
 
-    private static int getExperienceFromItem(ItemStack itemStack) {
-        return EnchantmentHelper.getEnchantments(itemStack).entrySet().stream().map(enchantmentEntry -> enchantmentEntry.getKey().getMaxCost(enchantmentEntry.getValue())).reduce(0, Integer::sum);
+    public static int getExperienceFromItem(ItemStack itemStack) {
+        return EnchantmentHelper.getEnchantments(itemStack)
+            .entrySet()
+            .stream()
+            .map(entry -> Enchanting.getExperienceConsumption(entry.getKey(), entry.getValue()))
+            .reduce(0, Integer::sum);
     }
-
 
 }

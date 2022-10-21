@@ -1,14 +1,20 @@
 package plus.dragons.createenchantmentindustry.content.contraptions.enchanting;
 
 import com.simibubi.create.content.contraptions.relays.belt.transport.TransportedItemStack;
+import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemHandlerHelper;
+import org.jetbrains.annotations.NotNull;
 
+import javax.annotation.ParametersAreNonnullByDefault;
+
+@ParametersAreNonnullByDefault
+@MethodsReturnNonnullByDefault
 public class EnchantingItemHandler implements IItemHandler {
-    private BlazeEnchanterBlockEntity be;
-    private Direction side;
+    private final BlazeEnchanterBlockEntity be;
+    private final Direction side;
 
     public EnchantingItemHandler(BlazeEnchanterBlockEntity be, Direction side) {
         this.be = be;
@@ -21,11 +27,13 @@ public class EnchantingItemHandler implements IItemHandler {
     }
 
     @Override
+    @NotNull
     public ItemStack getStackInSlot(int slot) {
         return be.getHeldItemStack();
     }
 
     @Override
+    @NotNull
     public ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {
         if (!be.getHeldItemStack()
                 .isEmpty())
@@ -33,7 +41,7 @@ public class EnchantingItemHandler implements IItemHandler {
 
         ItemStack returned = ItemStack.EMPTY;
 
-        if (stack.getCount() > 1 && Enchanting.valid(stack, be.targetItem, be.hyper())) {
+        if (stack.getCount() > 1 && Enchanting.getValidEnchantment(stack, be.targetItem, be.hyper()) != null) {
             returned = ItemHandlerHelper.copyStackWithSize(stack, stack.getCount() - 1);
             stack = ItemHandlerHelper.copyStackWithSize(stack, 1);
         }
@@ -49,6 +57,7 @@ public class EnchantingItemHandler implements IItemHandler {
     }
 
     @Override
+    @NotNull
     public ItemStack extractItem(int slot, int amount, boolean simulate) {
         TransportedItemStack held = be.heldItem;
         if (held == null)

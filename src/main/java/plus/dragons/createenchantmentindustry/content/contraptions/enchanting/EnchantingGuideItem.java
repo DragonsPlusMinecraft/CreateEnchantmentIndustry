@@ -3,7 +3,6 @@ package plus.dragons.createenchantmentindustry.content.contraptions.enchanting;
 import com.simibubi.create.content.contraptions.processing.burner.BlazeBurnerBlock;
 import com.simibubi.create.content.contraptions.processing.burner.BlazeBurnerTileEntity;
 import com.simibubi.create.foundation.advancement.AdvancementBehaviour;
-import com.simibubi.create.foundation.utility.Pair;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
@@ -19,7 +18,6 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.UseOnContext;
-import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.network.NetworkHooks;
@@ -95,7 +93,7 @@ public class EnchantingGuideItem extends Item implements MenuProvider {
     public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> pTooltipComponents, TooltipFlag pIsAdvanced) {
         super.appendHoverText(pStack, pLevel, pTooltipComponents, pIsAdvanced);
         pTooltipComponents.add(ModLang.translate(EnchantmentIndustry.MOD_ID, "tooltip.guide_header").component());
-        var enchantment = getEnchantment(pStack);
+        EnchantmentEntry enchantment = getEnchantment(pStack);
         if (enchantment == null) {
             pTooltipComponents.add(ModLang.translate(EnchantmentIndustry.MOD_ID, "tooltip.guide_not_configured").component());
         } else
@@ -115,7 +113,7 @@ public class EnchantingGuideItem extends Item implements MenuProvider {
     }
 
     @Nullable
-    public static Pair<Enchantment, Integer> getEnchantment(ItemStack itemStack) {
+    public static EnchantmentEntry getEnchantment(ItemStack itemStack) {
         var tag = itemStack.getTag();
         if (tag == null || !tag.contains("target", Tag.TAG_COMPOUND))
             return null;
@@ -128,6 +126,6 @@ public class EnchantingGuideItem extends Item implements MenuProvider {
             return null;
         var index = tag.getInt("index");
         var result = enchantments.get(index);
-        return Pair.of(result.getKey(), result.getValue());
+        return EnchantmentEntry.of(result.getKey(), result.getValue());
     }
 }

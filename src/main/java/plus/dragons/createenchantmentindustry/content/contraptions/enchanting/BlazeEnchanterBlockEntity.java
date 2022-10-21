@@ -10,6 +10,7 @@ import com.simibubi.create.foundation.tileEntity.behaviour.belt.DirectBeltInputB
 import com.simibubi.create.foundation.tileEntity.behaviour.fluid.SmartFluidTankBehaviour;
 import com.simibubi.create.foundation.utility.*;
 import com.simibubi.create.foundation.utility.animation.LerpedFloat;
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.player.LocalPlayer;
@@ -39,6 +40,7 @@ import org.jetbrains.annotations.Nullable;
 import plus.dragons.createdragonlib.utility.ModLang;
 import plus.dragons.createenchantmentindustry.EnchantmentIndustry;
 import plus.dragons.createenchantmentindustry.entry.CeiFluids;
+import plus.dragons.createenchantmentindustry.foundation.config.ModConfigs;
 import plus.dragons.createenchantmentindustry.foundation.data.advancement.CeiAdvancements;
 
 import java.util.IdentityHashMap;
@@ -74,8 +76,8 @@ public class BlazeEnchanterBlockEntity extends SmartTileEntity implements IHaveG
         headAnimation = LerpedFloat.linear();
         headAngle = LerpedFloat.angular();
         headAngle.startWithValue((AngleHelper
-                .horizontalAngle(state.getOptionalValue(BlazeEnchanterBlock.FACING)
-                        .orElse(Direction.SOUTH)) + 180) % 360
+            .horizontalAngle(state.getOptionalValue(BlazeEnchanterBlock.FACING)
+            .orElse(Direction.SOUTH)) + 180) % 360
         );
         goggles = false;
     }
@@ -84,18 +86,21 @@ public class BlazeEnchanterBlockEntity extends SmartTileEntity implements IHaveG
     public void addBehaviours(List<TileEntityBehaviour> behaviours) {
         behaviours.add(new DirectBeltInputBehaviour(this).allowingBeltFunnels()
                 .setInsertionHandler(this::tryInsertingFromSide));
-        behaviours.add(internalTank = SmartFluidTankBehaviour.single(this, 3000).whenFluidUpdates(() -> {
-            var fluid = internalTank.getPrimaryHandler().getFluid().getFluid();
-            if (CeiFluids.EXPERIENCE.is(fluid))
-                updateHeatLevel(BlazeEnchanterBlock.HeatLevel.KINDLED);
-            else if (CeiFluids.HYPER_EXPERIENCE.is(fluid))
-                updateHeatLevel(BlazeEnchanterBlock.HeatLevel.SEETHING);
-            else
-                updateHeatLevel(BlazeEnchanterBlock.HeatLevel.SMOULDERING);
-        }));
+        behaviours.add(internalTank = SmartFluidTankBehaviour
+            .single(this, ModConfigs.SERVER.blazeEnchanterTankCapacity.get())
+            .whenFluidUpdates(() -> {
+                var fluid = internalTank.getPrimaryHandler().getFluid().getFluid();
+                if(CeiFluids.EXPERIENCE.is(fluid))
+                    updateHeatLevel(BlazeEnchanterBlock.HeatLevel.KINDLED);
+                else if(CeiFluids.HYPER_EXPERIENCE.is(fluid))
+                    updateHeatLevel(BlazeEnchanterBlock.HeatLevel.SEETHING);
+                else
+                    updateHeatLevel(BlazeEnchanterBlock.HeatLevel.SMOULDERING);
+            }));
         registerAwardables(behaviours,
                 CeiAdvancements.FIRST_ORDER.asCreateAdvancement(),
-                CeiAdvancements.ADDITIONAL_ORDER.asCreateAdvancement());
+                CeiAdvancements.ADDITIONAL_ORDER.asCreateAdvancement(),
+                CeiAdvancements.HYPOTHETICAL_EXTENSION.asCreateAdvancement());
     }
 
     @Override
@@ -103,8 +108,8 @@ public class BlazeEnchanterBlockEntity extends SmartTileEntity implements IHaveG
         super.tick();
 
         boolean onClient = level.isClientSide && !isVirtual();
-
-        if (onClient) {
+        
+        if(onClient) {
             bookTick();
             blazeTick();
         }
@@ -218,7 +223,7 @@ public class BlazeEnchanterBlockEntity extends SmartTileEntity implements IHaveG
         }
 
         if (heldItem.prevBeltPosition < .5f && heldItem.beltPosition >= .5f) {
-            if (!Enchanting.valid(heldItem.stack, targetItem, hyper()))
+            if (Enchanting.getValidEnchantment(heldItem.stack, targetItem, hyper()) == null)
                 return;
             heldItem.beltPosition = .5f;
             if (onClient)
@@ -228,10 +233,10 @@ public class BlazeEnchanterBlockEntity extends SmartTileEntity implements IHaveG
         }
 
     }
-
+    
     protected void blazeTick() {
         boolean active = processingTicks > 0;
-
+    
         if (!active) {
             float target = 0;
             LocalPlayer player = Minecraft.getInstance().player;
@@ -254,19 +259,19 @@ public class BlazeEnchanterBlockEntity extends SmartTileEntity implements IHaveG
             headAngle.tickChaser();
         } else {
             headAngle.chase((AngleHelper.horizontalAngle(getBlockState().getOptionalValue(BlazeEnchanterBlock.FACING)
-                    .orElse(Direction.SOUTH)) + 180) % 360, .125f, LerpedFloat.Chaser.EXP);
+                .orElse(Direction.SOUTH)) + 180) % 360, .125f, LerpedFloat.Chaser.EXP);
             headAngle.tickChaser();
         }
         headAnimation.chase(1, .25f, LerpedFloat.Chaser.exp(.25f));
         headAnimation.tickChaser();
-
+        
         spawnBlazeParticles();
     }
-
+    
     protected void bookTick() {
-        if (random.nextInt(40) == 0) {
+        if(random.nextInt(40) == 0) {
             float oFlipT = flipT;
-            while (oFlipT == flipT) {
+            while(oFlipT == flipT) {
                 flipT += (random.nextInt(4) - random.nextInt(4));
             }
         }
@@ -276,7 +281,7 @@ public class BlazeEnchanterBlockEntity extends SmartTileEntity implements IHaveG
         flipA += (flipDiff - flipA) * 0.9F;
         flip += flipA;
     }
-
+    
     protected void spawnBlazeParticles() {
         if (level == null)
             return;
@@ -286,33 +291,33 @@ public class BlazeEnchanterBlockEntity extends SmartTileEntity implements IHaveG
 
         Vec3 c = VecHelper.getCenterOf(worldPosition);
         Vec3 v = c.add(VecHelper.offsetRandomly(Vec3.ZERO, r, .125f)
-                .multiply(1, 0, 1));
-
+            .multiply(1, 0, 1));
+    
         if (r.nextInt(3) == 0)
             level.addParticle(ParticleTypes.LARGE_SMOKE, v.x, v.y, v.z, 0, 0, 0);
         if (r.nextInt(2) != 0)
             return;
-
+    
         boolean empty = level.getBlockState(worldPosition.above())
                 .getCollisionShape(level, worldPosition.above())
                 .isEmpty();
 
         double yMotion = empty ? .0625f : r.nextDouble() * .0125f;
         Vec3 v2 = c.add(VecHelper.offsetRandomly(Vec3.ZERO, r, .5f)
-                        .multiply(1, .25f, 1)
-                        .normalize()
-                        .scale((empty ? .25f : .5) + r.nextDouble() * .125f))
-                .add(0, .5, 0);
-
+                .multiply(1, .25f, 1)
+                .normalize()
+                .scale((empty ? .25f : .5) + r.nextDouble() * .125f))
+            .add(0, .5, 0);
+    
         if (heatLevel.isAtLeast(BlazeEnchanterBlock.HeatLevel.SEETHING)) {
             level.addParticle(ParticleTypes.SOUL_FIRE_FLAME, v2.x, v2.y, v2.z, 0, yMotion, 0);
         } else if (heatLevel.isAtLeast(BlazeEnchanterBlock.HeatLevel.KINDLED)) {
             level.addParticle(ParticleTypes.FLAME, v2.x, v2.y, v2.z, 0, yMotion, 0);
         }
     }
-
+    
     protected static int ENCHANT_PARTICLE_COUNT = 20;
-
+    
     protected void spawnEnchantParticles() {
         if (isVirtual())
             return;
@@ -330,22 +335,27 @@ public class BlazeEnchanterBlockEntity extends SmartTileEntity implements IHaveG
     protected boolean continueProcessing() {
         if (level.isClientSide && !isVirtual()) {
             if (processingTicks > 0 && processingTicks < 200 && level.getGameTime() % 80L == 0L)
-                ((ClientLevel) level).playLocalSound(worldPosition, SoundEvents.BEACON_AMBIENT, SoundSource.BLOCKS, 1.0f, 1.0f, true);
+                ((ClientLevel)level).playLocalSound(worldPosition, SoundEvents.BEACON_AMBIENT, SoundSource.BLOCKS, 1.0f, 1.0f, true);
             return true;
         }
         if (processingTicks < 5)
             return true;
-        if (!Enchanting.valid(heldItem.stack, targetItem, hyper()))
-            return false;
 
         boolean hyper = hyper();
-        Pair<FluidStack, ItemStack> enchantItem = Enchanting.enchant(heldItem.stack, targetItem, true, hyper);
-        FluidStack fluidFromItem = enchantItem.getFirst();
+        Pair<Enchantment, Integer> entry = Enchanting.getValidEnchantment(heldItem.stack, targetItem, hyper);
+        if (entry == null)
+            return false;
 
+        FluidStack exp = new FluidStack(hyper
+            ? CeiFluids.HYPER_EXPERIENCE.get().getSource()
+            : CeiFluids.EXPERIENCE.get().getSource(),
+            Enchanting.getExperienceConsumption(entry.getFirst(), entry.getSecond())
+        );
+        
         if (processingTicks > 5) {
             var tankFluid = internalTank.getPrimaryHandler().getFluid().getFluid();
             if ((!CeiFluids.EXPERIENCE.is(tankFluid) && !CeiFluids.HYPER_EXPERIENCE.is(tankFluid) ||
-                    internalTank.getPrimaryHandler().getFluidAmount() < fluidFromItem.getAmount())) {
+                internalTank.getPrimaryHandler().getFluidAmount() < exp.getAmount())) {
                 processingTicks = ENCHANTING_TIME;
             }
             return true;
@@ -359,9 +369,8 @@ public class BlazeEnchanterBlockEntity extends SmartTileEntity implements IHaveG
         if (hyper)
             award(CeiAdvancements.HYPOTHETICAL_EXTENSION.asCreateAdvancement());
         // Process finished
-        enchantItem = Enchanting.enchant(heldItem.stack, targetItem, true, hyper());
-        heldItem.stack = enchantItem.getSecond();
-        internalTank.getPrimaryHandler().getFluid().shrink(fluidFromItem.getAmount());
+        Enchanting.enchantItem(heldItem.stack, entry);
+        internalTank.getPrimaryHandler().getFluid().shrink(exp.getAmount());
         sendParticles = true;
         notifyUpdate();
         return true;
@@ -382,7 +391,7 @@ public class BlazeEnchanterBlockEntity extends SmartTileEntity implements IHaveG
         if (!getHeldItemStack().isEmpty())
             return inserted;
 
-        if (inserted.getCount() > 1 && Enchanting.valid(targetItem, inserted, hyper())) {
+        if (inserted.getCount() > 1 && Enchanting.getValidEnchantment(heldItem.stack, targetItem, hyper()) != null) {
             returned = ItemHandlerHelper.copyStackWithSize(inserted, inserted.getCount() - 1);
             inserted = ItemHandlerHelper.copyStackWithSize(inserted, 1);
         }
@@ -468,10 +477,29 @@ public class BlazeEnchanterBlockEntity extends SmartTileEntity implements IHaveG
 
     @Override
     public boolean addToGoggleTooltip(List<Component> tooltip, boolean isPlayerSneaking) {
-        ModLang.translate(EnchantmentIndustry.MOD_ID, "gui.goggles.blaze_enchanter").forGoggles(tooltip);
-        Pair<Enchantment, Integer> ei;
-        if (targetItem != null && (ei = EnchantingGuideItem.getEnchantment(targetItem)) != null) {
-            tooltip.add(Components.literal("     ").append(ei.getFirst().getFullname(ei.getSecond() + (hyper() ? 1 : 0))));
+        var modid = EnchantmentIndustry.MOD_ID;
+        ModLang.translate(modid,"gui.goggles.blaze_enchanter").forGoggles(tooltip);
+        if (targetItem != null) {
+            EnchantmentEntry entry = Enchanting.getTargetEnchantment(targetItem, hyper());
+            if (entry != null) {
+                tooltip.add(Component.literal("     ")
+                    .append(entry.getFirst().getFullname(entry.getSecond())));
+                if (!entry.valid())
+                    tooltip.add(Component.literal("     ")
+                        .append(ModLang.translate(modid,"gui.goggles.invalid_target").component())
+                        .withStyle(ChatFormatting.RED));
+                else {
+                    int consumption = Enchanting.getExperienceConsumption(entry.getFirst(), entry.getSecond());
+                    if (consumption > ModConfigs.SERVER.blazeEnchanterTankCapacity.get())
+                        tooltip.add(Component.literal("     ").append(ModLang.translate(modid,"gui.goggles.too_expensive")
+                            .component())
+                            .withStyle(ChatFormatting.RED));
+                    else
+                        tooltip.add(Component.literal("     ")
+                            .append(ModLang.translate(modid,"gui.goggles.xp_consumption", consumption).component())
+                            .withStyle(ChatFormatting.GREEN));
+                }
+            }
         }
         containedFluidTooltip(tooltip, isPlayerSneaking, getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY));
         return true;

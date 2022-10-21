@@ -28,31 +28,19 @@ public interface CeiTags<T, P extends RegistrateTagsProvider<T>> {
     ITagManager<Fluid> FLUID_TAGS = Objects.requireNonNull(ForgeRegistries.FLUIDS.tags());
     String FORGE = "forge";
     String CREATE = "create";
-
+    
     TagKey<T> tag();
-
+    
     boolean hasDatagen();
-
+    
     default void datagen(P pov) {
         //NO-OP
     }
-
+    
     static String toTagName(String enumName) {
         return enumName.replace('$', '/').toLowerCase(Locale.ROOT);
     }
-
-    static <T extends Block, P> NonNullFunction<BlockBuilder<T, P>, BlockBuilder<T, P>> axeOrPickaxe() {
-        return b -> b.tag(net.minecraft.tags.BlockTags.MINEABLE_WITH_AXE).tag(net.minecraft.tags.BlockTags.MINEABLE_WITH_PICKAXE);
-    }
-
-    static <T extends Block, P> NonNullFunction<BlockBuilder<T, P>, BlockBuilder<T, P>> axeOnly() {
-        return b -> b.tag(net.minecraft.tags.BlockTags.MINEABLE_WITH_AXE);
-    }
-
-    static <T extends Block, P> NonNullFunction<BlockBuilder<T, P>, BlockBuilder<T, P>> pickaxeOnly() {
-        return b -> b.tag(net.minecraft.tags.BlockTags.MINEABLE_WITH_PICKAXE);
-    }
-
+    
     static <T extends Block, P> NonNullFunction<BlockBuilder<T, P>, ItemBuilder<BlockItem, BlockBuilder<T, P>>> tagBlockAndItem(String namespace, String... paths) {
         return block -> {
             ItemBuilder<BlockItem, BlockBuilder<T, P>> item = block.item();
@@ -91,12 +79,12 @@ public interface CeiTags<T, P extends RegistrateTagsProvider<T>> {
         BlockTags(boolean datagen) {
             this(EnchantmentIndustry.MOD_ID, datagen);
         }
-
+    
         @Override
         public TagKey<Block> tag() {
             return tag;
         }
-
+    
         @Override
         public boolean hasDatagen() {
             return datagen;
@@ -116,7 +104,7 @@ public interface CeiTags<T, P extends RegistrateTagsProvider<T>> {
                 pov.tag(tag).add(Items.EXPERIENCE_BOTTLE);
             }
         };
-
+        
         final TagKey<Item> tag;
         final boolean datagen;
 
@@ -128,12 +116,12 @@ public interface CeiTags<T, P extends RegistrateTagsProvider<T>> {
         ItemTags(boolean datagen) {
             this(EnchantmentIndustry.MOD_ID, datagen);
         }
-
+    
         @Override
         public TagKey<Item> tag() {
             return tag;
         }
-
+    
         @Override
         public boolean hasDatagen() {
             return datagen;
@@ -143,7 +131,7 @@ public interface CeiTags<T, P extends RegistrateTagsProvider<T>> {
     enum FluidTags implements CeiTags<Fluid, RegistrateTagsProvider<Fluid>> {
         //No experience fluid tag here as different ratios is not acceptable
         INK(FORGE, false);
-
+        
         final TagKey<Fluid> tag;
         final boolean datagen;
 
@@ -155,16 +143,16 @@ public interface CeiTags<T, P extends RegistrateTagsProvider<T>> {
         FluidTags(boolean datagen) {
             this(EnchantmentIndustry.MOD_ID, datagen);
         }
-
+    
         @Override
         public TagKey<Fluid> tag() {
             return tag;
         }
-
+    
         @Override
         public boolean hasDatagen() {
             return datagen;
         }
     }
-
+    
 }

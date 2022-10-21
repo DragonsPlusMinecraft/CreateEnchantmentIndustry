@@ -1,4 +1,5 @@
 {
+	"_": "Missing Localizations: 5",
 
 	"_": "->------------------------]  Game Elements  [------------------------<-",
 
@@ -48,6 +49,52 @@
 	"advancement.create_enchantment_industry.first_order.desc": "블레이즈 마법 부여대로 기존 아이템에 마법을 부여하세요",
 	"advancement.create_enchantment_industry.additional_order": "추가 주문",
 	"advancement.create_enchantment_industry.additional_order.desc": "블레이즈 마법 부여대로 마법 부여된 아이템에 마법을 또 부여하세요",
+	"advancement.create_enchantment_industry.hypothetical_extension": "UNLOCALIZED: Hypothetical Extension",
+	"advancement.create_enchantment_industry.hypothetical_extension.desc": "UNLOCALIZED: Add a new enchantment to an item using Blaze Enchanter's hyper-enchanting",
+
+
+	"_": "->------------------------]  Ponder Content  [------------------------<-",
+
+	"create_enchantment_industry.ponder.tag.experience": "경험치 관련",
+	"create_enchantment_industry.ponder.tag.experience.description": "경험치와 관련된 아이템과 블록들",
+
+	"create_enchantment_industry.ponder.absorb_experience_nugget.header": "경험의 조각을 액화시키기",
+	"create_enchantment_industry.ponder.absorb_experience_nugget.text_1": "마법 해제대는 경험의 조각을 흡수할 수 있습니다.",
+
+	"create_enchantment_industry.ponder.copy.header": "인쇄기 사용하기",
+
+	"create_enchantment_industry.ponder.disenchant.header": "마법 해제",
+	"create_enchantment_industry.ponder.disenchant.text_1": "올라간 마법 부여된 아이템에서 마법은 제거되고 액체 경험치로 전환됩니다.",
+	"create_enchantment_industry.ponder.disenchant.text_2": "또한, 마법 해제대 위에 플레이어가 서면 경험치 레벨이 줄어들고 액체 경험치로 전환됩니다.",
+
+	"create_enchantment_industry.ponder.drop_experience_nugget.header": "일종의 경험치 팜?",
+	"create_enchantment_industry.ponder.drop_experience_nugget.text_1": "몬스터가 기계 손에게 죽으면, 경험의 조각을 떨어뜨립니다.",
+
+	"create_enchantment_industry.ponder.enchant.header": "마법 부여",
+
+	"create_enchantment_industry.ponder.experience_bottle.header": "경험치 병 사용하기",
+	"create_enchantment_industry.ponder.experience_bottle.text_1": "경험치 병은 아이템 배수구로 비울 수 있습니다.",
+	"create_enchantment_industry.ponder.experience_bottle.text_2": "경험치 병은 주입기로 생산할 수도 있습니다.",
+
+	"create_enchantment_industry.ponder.hyper_enchant.header": "상위 마법",
+	"create_enchantment_industry.ponder.hyper_enchant.text_1": "이것은 고농축 액체 경험치입니다.",
+	"create_enchantment_industry.ponder.hyper_enchant.text_2": "고농축 경험치는 블레이즈 마법 부여대를 초고온으로 만들며, 이 상태에서는 기존보다 1레벨 높게 부여합니다.",
+
+	"create_enchantment_industry.ponder.leak.header": "누출사고!",
+	"create_enchantment_industry.ponder.leak.text_1": "경험치로 가득찬 탱크를 가지고 있고,",
+	"create_enchantment_industry.ponder.leak.text_2": "끝이 열린 파이프가 연결되어 있다면...",
+	"create_enchantment_industry.ponder.leak.text_3": "으악!",
+	"create_enchantment_industry.ponder.leak.text_4": "하지만 걱정하지 마세요, 흘러나온 액체 경험치는 경험치 구슬로 변합니다. 여기 서서 경험치를 흡수할 수도 있겠죠.",
+
+	"create_enchantment_industry.ponder.transform.header": "마법 유도서 사용하기",
+	"create_enchantment_industry.ponder.transform.text_1": "설정된 마법 유도서를 들고, 웅크리면서 블레이즈 버너에 우클릭하세요.",
+	"create_enchantment_industry.ponder.transform.text_2": "마법 유도서를 되돌려 받으려면, 맨손으로 블레이즈 마법 부여대를 우클릭하세요.",
+
+
+	"_": "->------------------------]  Item Descriptions  [------------------------<-",
+
+	"create_enchantment_industry.tooltip.guide_header": "현재 마법:",
+	"create_enchantment_industry.tooltip.guide_not_configured": "설정되지 않음",
 
 
 	"_": "->------------------------]  UI & Messages  [------------------------<-",
@@ -56,56 +103,14 @@
 	"create_enchantment_industry.gui.goggles.copier_machine": "인쇄될 내용:",
 	"create_enchantment_industry.gui.goggles.copier_no_target": "없음",
 	"create_enchantment_industry.gui.goggles.blaze_enchanter": "현재 마법:",
-	"create_enchantment_industry.gui.goggles.copier_too_expensive": "너무 비쌉니다!",
+	"create_enchantment_industry.gui.goggles.invalid_target": "UNLOCALIZED: Invalid Target",
+	"create_enchantment_industry.gui.goggles.xp_consumption": "UNLOCALIZED: Consumes Experience: %s mB",
+	"create_enchantment_industry.gui.goggles.ink_consumption": "UNLOCALIZED: Consumes Ink: %s mB",
+	"create_enchantment_industry.gui.goggles.too_expensive": "너무 비쌉니다!",
 
 	"create_enchantment_industry.generic.unit.page": "쪽",
 	"create_enchantment_industry.generic.unit.pages": "쪽",
 
-
-	"_": "->------------------------]  Item Descriptions  [------------------------<-",
-
-	"create_enchantment_industry.enchanting_guide.tooltip": "마법 유도서",
-
-	"create_enchantment_industry.tooltip.guide_header": "현재 마법:",
-	"create_enchantment_industry.tooltip.guide_not_configured": "설정되지 않음",
-
-
-	"_": "->------------------------]  Ponder Content  [------------------------<-",
-
-	"create_enchantment_industry.ponder.disenchant.header": "마법 해제",
-	"create_enchantment_industry.ponder.disenchant.text_1": "올라간 마법 부여된 아이템에서 마법은 제거되고 액체 경험치로 전환됩니다.",
-	"create_enchantment_industry.ponder.disenchant.text_2": "또한, 마법 해제대 위에 플레이어가 서면 경험치 레벨이 줄어들고 액체 경험치로 전환됩니다.",
-
-	"create_enchantment_industry.ponder.experience_bottle.header": "경험치 병 사용하기",
-	"create_enchantment_industry.ponder.experience_bottle.text_1": "경험치 병은 아이템 배수구로 비울 수 있습니다.",
-	"create_enchantment_industry.ponder.experience_bottle.text_2": "경험치 병은 주입기로 생산할 수도 있습니다.",
-
-	"create_enchantment_industry.ponder.transform.header": "마법 유도서 사용하기",
-	"create_enchantment_industry.ponder.transform.text_1": "설정된 마법 유도서를 들고, 웅크리면서 블레이즈 버너에 우클릭하세요.",
-	"create_enchantment_industry.ponder.transform.text_2": "마법 유도서를 되돌려 받으려면, 맨손으로 블레이즈 마법 부여대를 우클릭하세요.",
-
-	"create_enchantment_industry.ponder.copy.header": "인쇄기 사용하기",
-
-	"create_enchantment_industry.ponder.enchant.header": "마법 부여",
-
-	"create_enchantment_industry.ponder.hyper_enchant.header": "상위 마법",
-	"create_enchantment_industry.ponder.hyper_enchant.text_1": "이것은 고농축 액체 경험치입니다.",
-	"create_enchantment_industry.ponder.hyper_enchant.text_2": "고농축 경험치는 블레이즈 마법 부여대를 초고온으로 만들며, 이 상태에서는 기존보다 1레벨 높게 부여합니다.",
-
-	"create_enchantment_industry.ponder.drop_experience_nugget.header": "일종의 경험치 팜?",
-	"create_enchantment_industry.ponder.drop_experience_nugget.text_1": "몬스터가 기계 손에게 죽으면, 경험의 조각을 떨어뜨립니다.",
-
-	"create_enchantment_industry.ponder.absorb_experience_nugget.header": "경험의 조각을 액화시키기",
-	"create_enchantment_industry.ponder.absorb_experience_nugget.text_1": "마법 해제대는 경험의 조각을 흡수할 수 있습니다.",
-
-	"create_enchantment_industry.ponder.leak.header": "누출사고!",
-	"create_enchantment_industry.ponder.leak.text_1": "경험치로 가득찬 탱크를 가지고 있고,",
-	"create_enchantment_industry.ponder.leak.text_2": "끝이 열린 파이프가 연결되어 있다면...",
-	"create_enchantment_industry.ponder.leak.text_3": "으악!",
-	"create_enchantment_industry.ponder.leak.text_4": "하지만 걱정하지 마세요, 흘러나온 액체 경험치는 경험치 구슬로 변합니다. 여기 서서 경험치를 흡수할 수도 있겠죠.",
-	"create_enchantment_industry.ponder.tag.experience": "경험치 관련",
-	"create_enchantment_industry.ponder.tag.experience.description": "경험치와 관련된 아이템과 블록들",
-
-	"_": "Thank you for translating Create: Enchantment Industry!"
+	"_": "Thank you for translating Create Enchantment Industry!"
 
 }
