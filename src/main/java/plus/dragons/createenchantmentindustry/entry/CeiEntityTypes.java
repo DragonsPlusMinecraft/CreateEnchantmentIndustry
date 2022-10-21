@@ -14,16 +14,27 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import plus.dragons.createenchantmentindustry.EnchantmentIndustry;
 import plus.dragons.createenchantmentindustry.content.contraptions.fluids.experience.HyperExperienceBottle;
+import plus.dragons.createenchantmentindustry.content.contraptions.fluids.experience.HyperExperienceOrb;
+import plus.dragons.createenchantmentindustry.content.contraptions.fluids.experience.HyperExperienceOrbRenderer;
 
 public class CeiEntityTypes {
+    
+    public static final EntityEntry<HyperExperienceOrb> HYPER_EXPERIENCE_ORB = builder("hyper_experience_orb",
+        HyperExperienceOrb::new,
+        () -> HyperExperienceOrbRenderer::new,
+        MobCategory.MISC, 6, 20, true, false, HyperExperienceOrb::build
+    ).register();
 
-    public static final EntityEntry<HyperExperienceBottle> HYPER_EXP_BOTTLE = register("hyper_experience_bottle", HyperExperienceBottle::new, () -> ThrownItemRenderer<HyperExperienceBottle>::new,
-            MobCategory.MISC, 4, 10, true, false, HyperExperienceBottle::build).register();
+    public static final EntityEntry<HyperExperienceBottle> HYPER_EXPERIENCE_BOTTLE = builder("hyper_experience_bottle",
+        HyperExperienceBottle::new,
+        () -> ThrownItemRenderer<HyperExperienceBottle>::new,
+        MobCategory.MISC, 4, 10, true, false, HyperExperienceBottle::build
+    ).register();
 
-    private static <T extends Entity> CreateEntityBuilder<T, ?> register(String name, EntityType.EntityFactory<T> factory,
-                                                                         NonNullSupplier<NonNullFunction<EntityRendererProvider.Context, EntityRenderer<? super T>>> renderer,
-                                                                         MobCategory group, int range, int updateFrequency, boolean sendVelocity, boolean immuneToFire,
-                                                                         NonNullConsumer<EntityType.Builder<T>> propertyBuilder) {
+    private static <T extends Entity> CreateEntityBuilder<T, ?> builder(String name, EntityType.EntityFactory<T> factory,
+                                                                        NonNullSupplier<NonNullFunction<EntityRendererProvider.Context, EntityRenderer<? super T>>> renderer,
+                                                                        MobCategory group, int range, int updateFrequency, boolean sendVelocity, boolean immuneToFire,
+                                                                        NonNullConsumer<EntityType.Builder<T>> propertyBuilder) {
         String id = Lang.asId(name);
         return (CreateEntityBuilder<T, ?>) EnchantmentIndustry.registrate()
                 .entity(id, factory, group)
@@ -39,4 +50,5 @@ public class CeiEntityTypes {
     }
 
     public static void register() {}
+    
 }

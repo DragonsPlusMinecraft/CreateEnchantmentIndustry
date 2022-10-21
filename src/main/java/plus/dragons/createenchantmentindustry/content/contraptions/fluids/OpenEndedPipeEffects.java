@@ -6,7 +6,8 @@ import plus.dragons.createenchantmentindustry.content.contraptions.fluids.experi
 public class OpenEndedPipeEffects {
 
     public static void register() {
-        OpenEndedPipe.registerEffectHandler(new ExperienceEffectHandler());
+        OpenEndedPipe.registerEffectHandler(ExperienceEffectHandler.EXPERIENCE);
+        OpenEndedPipe.registerEffectHandler(ExperienceEffectHandler.HYPER_EXPERIENCE);
     }
     
 }
