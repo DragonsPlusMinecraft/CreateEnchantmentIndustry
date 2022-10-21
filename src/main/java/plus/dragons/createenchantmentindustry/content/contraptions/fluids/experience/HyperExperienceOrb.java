@@ -16,27 +16,27 @@ import net.minecraftforge.network.NetworkHooks;
 import plus.dragons.createenchantmentindustry.entry.CeiEntityTypes;
 
 public class HyperExperienceOrb extends ExperienceOrb {
-    
+
     public HyperExperienceOrb(Level level, double x, double y, double z, int value) {
         this(CeiEntityTypes.HYPER_EXPERIENCE_ORB.get(), level);
         this.setPos(x, y, z);
-        this.setYRot((float)(this.random.nextDouble() * 360.0D));
-        this.setDeltaMovement((this.random.nextDouble() * (double)0.2F - (double)0.1F) * 2.0D, this.random.nextDouble() * 0.2D * 2.0D, (this.random.nextDouble() * (double)0.2F - (double)0.1F) * 2.0D);
+        this.setYRot((float) (this.random.nextDouble() * 360.0D));
+        this.setDeltaMovement((this.random.nextDouble() * (double) 0.2F - (double) 0.1F) * 2.0D, this.random.nextDouble() * 0.2D * 2.0D, (this.random.nextDouble() * (double) 0.2F - (double) 0.1F) * 2.0D);
         this.value = value * 10;
     }
-    
+
     public HyperExperienceOrb(EntityType<? extends HyperExperienceOrb> entityType, Level level) {
         super(entityType, level);
     }
-    
+
     @SuppressWarnings("unchecked")
     public static EntityType.Builder<?> build(EntityType.Builder<?> builder) {
         EntityType.Builder<HyperExperienceOrb> entityBuilder = (EntityType.Builder<HyperExperienceOrb>) builder;
         return entityBuilder.sized(.5f, .5f);
     }
-    
+
     public static void award(ServerLevel level, Vec3 pos, int amount) {
-        while(amount > 0) {
+        while (amount > 0) {
             int i = getExperienceValue(amount);
             amount -= i;
             if (!ExperienceOrb.tryMergeToExisting(level, pos, i)) {
@@ -44,13 +44,13 @@ public class HyperExperienceOrb extends ExperienceOrb {
             }
         }
     }
-    
+
     public void applyPlayerEffects(Player player, int amount) {
         int duration = 200 * Mth.ceillog2(amount);
         player.addEffect(new MobEffectInstance(MobEffects.NIGHT_VISION, duration));
         player.addEffect(new MobEffectInstance(MobEffects.GLOWING, duration));
     }
-    
+
     @Override
     public void playerTouch(Player player) {
         if (!this.level.isClientSide) {
@@ -64,7 +64,7 @@ public class HyperExperienceOrb extends ExperienceOrb {
                     player.giveExperiencePoints(i);
                     applyPlayerEffects(player, i);
                 }
-                
+
                 --this.count;
                 if (this.count == 0) {
                     this.discard();
@@ -72,7 +72,7 @@ public class HyperExperienceOrb extends ExperienceOrb {
             }
         }
     }
-    
+
     public int getIcon() {
         int value = this.value / 10;
         if (value >= 2477) {
@@ -97,10 +97,10 @@ public class HyperExperienceOrb extends ExperienceOrb {
             return value >= 3 ? 1 : 0;
         }
     }
-    
+
     @Override
     public Packet<?> getAddEntityPacket() {
         return NetworkHooks.getEntitySpawningPacket(this);
     }
-    
+
 }

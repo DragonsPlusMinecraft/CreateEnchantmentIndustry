@@ -266,7 +266,7 @@ public class DisenchanterBlockEntity extends SmartTileEntity implements IHaveGog
 
     private int getPlayerExperience(Player player) {
         var level = player.experienceLevel;
-        if(player.experienceLevel == 0 && player.experienceProgress == 0)
+        if (player.experienceLevel == 0 && player.experienceProgress == 0)
             return 0;
         var total = Enchanting.expPointFromLevel(level);
         return (int) (total + player.experienceProgress * player.getXpNeededForNextLevel());

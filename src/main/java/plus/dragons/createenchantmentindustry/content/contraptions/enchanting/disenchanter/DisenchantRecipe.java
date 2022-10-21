@@ -17,7 +17,7 @@ public class DisenchantRecipe extends ProcessingRecipe<RecipeWrapper> {
         if (fluidResults.isEmpty())
             throw new IllegalArgumentException("Illegal Disenchanting Recipe: " + id.toString() + " has no fluid output!");
         FluidStack fluid = fluidResults.get(0);
-        if(!fluid.getFluid().isSame(CeiFluids.EXPERIENCE.get().getSource()))
+        if (!fluid.getFluid().isSame(CeiFluids.EXPERIENCE.get().getSource()))
             throw new IllegalArgumentException("Illegal Disenchanting Recipe: " + id.toString() + " has wrong type of fluid output!");
         this.experience = fluid.getAmount();
     }

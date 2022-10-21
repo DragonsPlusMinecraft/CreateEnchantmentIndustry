@@ -55,8 +55,8 @@ public class Enchanting {
             return (int) (4.5 * level * level - 162.5 * level + 2220);
         } else {
             return level >= 17
-                ? (int) (2.5 * level * level - 40.5 * level + 350)
-                : level * level + 6 * level;
+                    ? (int) (2.5 * level * level - 40.5 * level + 350)
+                    : level * level + 6 * level;
         }
     }
 
@@ -65,8 +65,8 @@ public class Enchanting {
             return 9 * level - 158;
         } else {
             return level >= 16
-                ? 5 * level -38
-                : 2 * level + 7;
+                    ? 5 * level - 38
+                    : 2 * level + 7;
         }
     }
 
@@ -76,7 +76,7 @@ public class Enchanting {
         int levelCost = Mth.ceil(cost);
         int endLevel = startLevel - levelCost;
         return expPointFromLevel(startLevel) - expPointFromLevel(endLevel)
-            + (int) (expPointForNextLevel(endLevel) * (cost - levelCost));
+                + (int) (expPointForNextLevel(endLevel) * (cost - levelCost));
     }
 
 }

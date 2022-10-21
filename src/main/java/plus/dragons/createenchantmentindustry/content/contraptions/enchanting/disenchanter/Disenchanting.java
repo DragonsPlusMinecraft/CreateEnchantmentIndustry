@@ -29,23 +29,23 @@ public class Disenchanting {
             return itemStack;
         WRAPPER.setItem(0, itemStack);
         return CeiRecipeTypes.DISENCHANTING.<RecipeWrapper, DisenchantRecipe>find(WRAPPER, be.getLevel())
-            .map(recipe -> {
-                if (!recipe.hasNoResult())
-                    return itemStack;
-                var tank = be.getInternalTank();
-                tank.allowInsertion();
-                int amount = recipe.getExperience();
-                var fluidStack = new FluidStack(CeiFluids.EXPERIENCE.get().getSource(), itemStack.getCount() * amount);
-                int inserted = tank.getPrimaryHandler().fill(fluidStack, IFluidHandler.FluidAction.SIMULATE) / amount;
-                ItemStack ret = itemStack.copy();
-                if (!simulate) {
-                    fluidStack = new FluidStack(CeiFluids.EXPERIENCE.get().getSource(), inserted * 3);
-                    tank.getPrimaryHandler().fill(fluidStack, IFluidHandler.FluidAction.EXECUTE);
-                }
-                ret.shrink(inserted);
-                tank.forbidInsertion();
-                return ret;
-            }).orElse(itemStack);
+                .map(recipe -> {
+                    if (!recipe.hasNoResult())
+                        return itemStack;
+                    var tank = be.getInternalTank();
+                    tank.allowInsertion();
+                    int amount = recipe.getExperience();
+                    var fluidStack = new FluidStack(CeiFluids.EXPERIENCE.get().getSource(), itemStack.getCount() * amount);
+                    int inserted = tank.getPrimaryHandler().fill(fluidStack, IFluidHandler.FluidAction.SIMULATE) / amount;
+                    ItemStack ret = itemStack.copy();
+                    if (!simulate) {
+                        fluidStack = new FluidStack(CeiFluids.EXPERIENCE.get().getSource(), inserted * 3);
+                        tank.getPrimaryHandler().fill(fluidStack, IFluidHandler.FluidAction.EXECUTE);
+                    }
+                    ret.shrink(inserted);
+                    tank.forbidInsertion();
+                    return ret;
+                }).orElse(itemStack);
     }
 
     // Produce result only. Do not modify stack.
@@ -54,7 +54,7 @@ public class Disenchanting {
     public static Pair<FluidStack, ItemStack> disenchantResult(ItemStack itemStack, Level level) {
         if (EnchantmentHelper.getEnchantments(itemStack).keySet().stream().anyMatch(enchantment -> !enchantment.isCurse())) {
             var xp =
-                new FluidStack(CeiFluids.EXPERIENCE.get().getSource(), getDisenchantExperience(itemStack));
+                    new FluidStack(CeiFluids.EXPERIENCE.get().getSource(), getDisenchantExperience(itemStack));
             ItemStack result = disenchant(itemStack);
             return Pair.of(xp, result);
         }
@@ -63,7 +63,7 @@ public class Disenchanting {
         if (recipe != null && !recipe.hasNoResult()) {
             var xp = new FluidStack(CeiFluids.EXPERIENCE.get().getSource(), recipe.getExperience());
             var result = recipe.getResultItem().copy();
-            return Pair.of(xp,result);
+            return Pair.of(xp, result);
         }
         return null;
     }
@@ -73,20 +73,20 @@ public class Disenchanting {
         result.removeTagKey("Enchantments");
         result.removeTagKey("StoredEnchantments");
         Map<Enchantment, Integer> curses = EnchantmentHelper.getEnchantments(itemStack)
-            .entrySet()
-            .stream()
-            .filter(entry -> entry.getKey().isCurse())
-            .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+                .entrySet()
+                .stream()
+                .filter(entry -> entry.getKey().isCurse())
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
         if (result.is(Items.ENCHANTED_BOOK) && curses.isEmpty()) {
             var tag = result.getTag();
             result = new ItemStack(Items.BOOK);
             if (tag != null)
                 tag.remove("RepairCost");
-                result.setTag(tag);
+            result.setTag(tag);
         } else {
             EnchantmentHelper.setEnchantments(curses, result);
             result.setRepairCost(0);
-            for(int i = 0; i < curses.size(); ++i) {
+            for (int i = 0; i < curses.size(); ++i) {
                 result.setRepairCost(AnvilMenu.calculateIncreasedRepairCost(result.getBaseRepairCost()));
             }
         }
@@ -95,10 +95,10 @@ public class Disenchanting {
 
     private static int getDisenchantExperience(ItemStack itemStack) {
         int xp = EnchantmentHelper.getEnchantments(itemStack)
-            .entrySet().stream()
-            .filter(entry -> !entry.getKey().isCurse())
-            .map(entry -> entry.getKey().getMinCost(entry.getValue()))
-            .reduce(0, Integer::sum);
+                .entrySet().stream()
+                .filter(entry -> !entry.getKey().isCurse())
+                .map(entry -> entry.getKey().getMinCost(entry.getValue()))
+                .reduce(0, Integer::sum);
         return xp == 0 ? 0 : Mth.ceil(xp * 0.75);
     }
 

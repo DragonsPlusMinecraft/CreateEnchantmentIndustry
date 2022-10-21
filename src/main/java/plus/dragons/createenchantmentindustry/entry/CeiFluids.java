@@ -17,10 +17,10 @@ import plus.dragons.createdragonlib.entry.RegistrateHelper;
 import plus.dragons.createenchantmentindustry.EnchantmentIndustry;
 
 public class CeiFluids {
-    
-    
+
+
     private static final CreateRegistrate REGISTRATE = EnchantmentIndustry.registrate()
-        .creativeModeTab(() -> Create.BASE_CREATIVE_TAB).startSection(AllSections.MATERIALS);
+            .creativeModeTab(() -> Create.BASE_CREATIVE_TAB).startSection(AllSections.MATERIALS);
 
     public static final ResourceLocation EXPERIENCE_STILL_RL = EnchantmentIndustry.genRL("fluid/experience_still");
     public static final ResourceLocation EXPERIENCE_FLOW_RL = EnchantmentIndustry.genRL("fluid/experience_flow");

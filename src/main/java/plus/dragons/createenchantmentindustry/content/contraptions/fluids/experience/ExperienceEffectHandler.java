@@ -46,8 +46,9 @@ public abstract class ExperienceEffectHandler<T extends ExperienceOrb> implement
 
     public abstract T createExperienceOrb(Level level, double x, double y, double z, int value);
 
-    public void applyPlayerEffects(T orb, Player player, int amount) {}
-    
+    public void applyPlayerEffects(T orb, Player player, int amount) {
+    }
+
     @Override
     public void applyEffects(OpenEndedPipe pipe, FluidStack fluid) {
         var players = pipe.getWorld().getEntitiesOfClass(Player.class, pipe.getAOE(), LivingEntity::isAlive);
@@ -73,9 +74,9 @@ public abstract class ExperienceEffectHandler<T extends ExperienceOrb> implement
             }
         }
     }
-    
+
     protected void awardExperienceOrDrop(@Nullable Player player, Level level, Vec3 pos, Vec3 speed, int amount) {
-        while(amount > 0) {
+        while (amount > 0) {
             int i = ExperienceOrb.getExperienceValue(amount);
             amount -= i;
             var orb = createExperienceOrb(level, pos.x, pos.y, pos.z, i);

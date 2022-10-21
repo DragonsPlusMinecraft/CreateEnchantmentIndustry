@@ -81,7 +81,7 @@ public class CopierBlock extends Block implements IWrenchable, ITE<CopierBlockEn
                     return InteractionResult.SUCCESS;
                 } else return InteractionResult.PASS;
             });
-        } else if ((heldItem.is(Items.ENCHANTED_BOOK) || heldItem.is(Items.WRITTEN_BOOK)) && heldItem.getCount()==1) {
+        } else if ((heldItem.is(Items.ENCHANTED_BOOK) || heldItem.is(Items.WRITTEN_BOOK)) && heldItem.getCount() == 1) {
             return onTileEntityUse(world, pos, be -> {
                 if (be.copyTarget == null) {
                     if (!player.getAbilities().instabuild) player.setItemInHand(hand, ItemStack.EMPTY);

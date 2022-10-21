@@ -49,10 +49,10 @@ public class CopyingBook {
 
     public static int getExperienceFromItem(ItemStack itemStack) {
         return EnchantmentHelper.getEnchantments(itemStack)
-            .entrySet()
-            .stream()
-            .map(entry -> Enchanting.getExperienceConsumption(entry.getKey(), entry.getValue()))
-            .reduce(0, Integer::sum);
+                .entrySet()
+                .stream()
+                .map(entry -> Enchanting.getExperienceConsumption(entry.getKey(), entry.getValue()))
+                .reduce(0, Integer::sum);
     }
 
 }

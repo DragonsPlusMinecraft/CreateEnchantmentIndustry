@@ -44,6 +44,7 @@ import java.util.List;
 public class BlazeEnchanterBlock extends HorizontalDirectionalBlock implements IWrenchable, ITE<BlazeEnchanterBlockEntity> {
 
     public static final EnumProperty<HeatLevel> HEAT_LEVEL = EnumProperty.create("blaze", HeatLevel.class);
+
     public BlazeEnchanterBlock(Properties pProperties) {
         super(pProperties);
         registerDefaultState(defaultBlockState().setValue(HEAT_LEVEL, HeatLevel.SMOULDERING));
@@ -58,7 +59,7 @@ public class BlazeEnchanterBlock extends HorizontalDirectionalBlock implements I
     public BlockEntityType<? extends BlazeEnchanterBlockEntity> getTileEntityType() {
         return CeiBlockEntities.BLAZE_ENCHANTING_ALTER.get();
     }
-    
+
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         super.createBlockStateDefinition(builder);
@@ -102,7 +103,7 @@ public class BlazeEnchanterBlock extends HorizontalDirectionalBlock implements I
                         te.notifyUpdate();
                     }
                     return InteractionResult.SUCCESS;
-                } else if(Enchanting.getValidEnchantment(heldItem, te.targetItem, te.hyper()) != null) {
+                } else if (Enchanting.getValidEnchantment(heldItem, te.targetItem, te.hyper()) != null) {
                     ItemStack heldItemStack = te.getHeldItemStack();
                     if (heldItemStack.isEmpty()) {
                         if (!worldIn.isClientSide) {
@@ -120,12 +121,11 @@ public class BlazeEnchanterBlock extends HorizontalDirectionalBlock implements I
                     te.goggles = true;
                     te.notifyUpdate();
                     return InteractionResult.SUCCESS;
-                }
-                else return InteractionResult.PASS;
+                } else return InteractionResult.PASS;
             });
         } else {
-            if(player.isShiftKeyDown()){
-                if(!player.level.isClientSide()){
+            if (player.isShiftKeyDown()) {
+                if (!player.level.isClientSide()) {
                     worldIn.setBlockAndUpdate(pos, AllBlocks.BLAZE_BURNER.getDefaultState()
                             .setValue(BlazeBurnerBlock.FACING, state.getValue(FACING))
                             .setValue(BlazeBurnerBlock.HEAT_LEVEL, BlazeBurnerBlock.HeatLevel.SMOULDERING));
@@ -141,7 +141,8 @@ public class BlazeEnchanterBlock extends HorizontalDirectionalBlock implements I
                             te.notifyUpdate();
                         }
                         return InteractionResult.SUCCESS;
-                    } if (!te.goggles)
+                    }
+                    if (!te.goggles)
                         return InteractionResult.PASS;
                     te.goggles = false;
                     te.notifyUpdate();
@@ -189,15 +190,16 @@ public class BlazeEnchanterBlock extends HorizontalDirectionalBlock implements I
     @Override
     public int getLightEmission(BlockState state, BlockGetter level, BlockPos pos) {
         var te = level.getBlockEntity(pos);
-        if(te instanceof BlazeEnchanterBlockEntity blazeEnchanterBlockEntity){
-            if(blazeEnchanterBlockEntity.hyper()) return 15;
-            else if(blazeEnchanterBlockEntity.internalTank.isEmpty()) return 7;
+        if (te instanceof BlazeEnchanterBlockEntity blazeEnchanterBlockEntity) {
+            if (blazeEnchanterBlockEntity.hyper()) return 15;
+            else if (blazeEnchanterBlockEntity.internalTank.isEmpty()) return 7;
             else return 11;
         } else return 0;
     }
 
     public enum HeatLevel implements StringRepresentable {
-        SMOULDERING, KINDLED, SEETHING,;
+        SMOULDERING, KINDLED, SEETHING,
+        ;
 
         public static HeatLevel byIndex(int index) {
             return values()[index];

@@ -17,17 +17,17 @@ import net.minecraft.util.Mth;
 public class HyperExperienceOrbRenderer extends EntityRenderer<HyperExperienceOrb> {
     private static final ResourceLocation HYPER_EXPERIENCE_ORB_LOCATION = new ResourceLocation("textures/entity/experience_orb.png");
     private static final RenderType RENDER_TYPE = RenderType.itemEntityTranslucentCull(HYPER_EXPERIENCE_ORB_LOCATION);
-    
+
     public HyperExperienceOrbRenderer(EntityRendererProvider.Context context) {
         super(context);
         this.shadowRadius = 0.15F;
         this.shadowStrength = 0.75F;
     }
-    
+
     protected int getBlockLightLevel(HyperExperienceOrb orb, BlockPos pos) {
         return 15;
     }
-    
+
     public void render(HyperExperienceOrb orb, float yaw, float partialTicks,
                        PoseStack ps, MultiBufferSource buffer, int light) {
         ps.pushPose();
@@ -37,8 +37,8 @@ public class HyperExperienceOrbRenderer extends EntityRenderer<HyperExperienceOr
         float v1 = (i / 4 * 16) / 64.0F;
         float v2 = (i / 4 * 16 + 16) / 64.0F;
         float time = (orb.tickCount + partialTicks) / 2.0F;
-        int red = (int)(((Mth.sin(time + 4.1887903F) + 1.0F) * 0.1F + 0.1F) * 255.0F);
-        int green = (int)(((Mth.sin(time) + 1.0F) * 0.5F + 0.5F) * 255.0F);
+        int red = (int) (((Mth.sin(time + 4.1887903F) + 1.0F) * 0.1F + 0.1F) * 255.0F);
+        int green = (int) (((Mth.sin(time) + 1.0F) * 0.5F + 0.5F) * 255.0F);
         ps.translate(0, .1, 0);
         ps.mulPose(this.entityRenderDispatcher.cameraOrientation());
         ps.mulPose(Vector3f.YP.rotationDegrees(180.0F));
@@ -54,23 +54,23 @@ public class HyperExperienceOrbRenderer extends EntityRenderer<HyperExperienceOr
         ps.popPose();
         super.render(orb, yaw, partialTicks, ps, buffer, light);
     }
-    
+
     private void vertex(VertexConsumer buffer, Matrix4f pose, Matrix3f normal,
-                               float x, float y,
-                               int r, int g, int b,
-                               float u, float v, int light) {
+                        float x, float y,
+                        int r, int g, int b,
+                        float u, float v, int light) {
         buffer.vertex(pose, x, y, 0.0F)
-            .color(r, g, b, 128)
-            .uv(u, v)
-            .overlayCoords(OverlayTexture.NO_OVERLAY)
-            .uv2(light)
-            .normal(normal, 0.0F, 1.0F, 0.0F)
-            .endVertex();
+                .color(r, g, b, 128)
+                .uv(u, v)
+                .overlayCoords(OverlayTexture.NO_OVERLAY)
+                .uv2(light)
+                .normal(normal, 0.0F, 1.0F, 0.0F)
+                .endVertex();
     }
-    
+
     @Override
     public ResourceLocation getTextureLocation(HyperExperienceOrb pEntity) {
         return HYPER_EXPERIENCE_ORB_LOCATION;
     }
-    
+
 }

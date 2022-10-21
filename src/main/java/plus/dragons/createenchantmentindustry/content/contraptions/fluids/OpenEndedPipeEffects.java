@@ -9,5 +9,5 @@ public class OpenEndedPipeEffects {
         OpenEndedPipe.registerEffectHandler(ExperienceEffectHandler.EXPERIENCE);
         OpenEndedPipe.registerEffectHandler(ExperienceEffectHandler.HYPER_EXPERIENCE);
     }
-    
+
 }

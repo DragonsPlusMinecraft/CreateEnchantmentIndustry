@@ -11,10 +11,10 @@ import plus.dragons.createenchantmentindustry.content.contraptions.fluids.experi
 
 public class CeiEntityTypes {
 
-    public static final EntityEntry<HyperExperienceOrb> HYPER_EXPERIENCE_ORB = RegistrateHelper.EntityType.register(EnchantmentIndustry.registrate(),"hyper_experience_orb",
-        HyperExperienceOrb::new,
-        () -> HyperExperienceOrbRenderer::new,
-        MobCategory.MISC, 6, 20, true, false, HyperExperienceOrb::build
+    public static final EntityEntry<HyperExperienceOrb> HYPER_EXPERIENCE_ORB = RegistrateHelper.EntityType.register(EnchantmentIndustry.registrate(), "hyper_experience_orb",
+            HyperExperienceOrb::new,
+            () -> HyperExperienceOrbRenderer::new,
+            MobCategory.MISC, 6, 20, true, false, HyperExperienceOrb::build
     ).register();
 
     public static final EntityEntry<HyperExperienceBottle> HYPER_EXPERIENCE_BOTTLE = RegistrateHelper.EntityType.register(EnchantmentIndustry.registrate(), "hyper_experience_bottle", HyperExperienceBottle::new, () -> ThrownItemRenderer<HyperExperienceBottle>::new,

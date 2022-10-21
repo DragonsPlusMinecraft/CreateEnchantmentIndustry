@@ -30,8 +30,8 @@ public class EnchantmentIndustryClient {
 
     public static void loadComplete(final FMLLoadCompleteEvent event) {
         BaseConfigScreen.setDefaultActionFor(EnchantmentIndustry.MOD_ID, screen -> screen
-            .withTitles(null, null, "Gameplay Settings")
-            .withSpecs(null, null, ModConfigs.SERVER_SPEC)
+                .withTitles(null, null, "Gameplay Settings")
+                .withSpecs(null, null, ModConfigs.SERVER_SPEC)
         );
     }
 

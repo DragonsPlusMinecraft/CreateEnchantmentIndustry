@@ -10,10 +10,10 @@ import org.apache.commons.lang3.tuple.Pair;
 
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
 public class ModConfigs {
-    
+
     public static ModServerConfig SERVER;
     public static ForgeConfigSpec SERVER_SPEC;
-    
+
     public static void register(ModLoadingContext context) {
         Pair<ModServerConfig, ForgeConfigSpec> serverConfigPair = new ForgeConfigSpec.Builder().configure(builder -> {
             ModServerConfig config = new ModServerConfig();
@@ -24,17 +24,17 @@ public class ModConfigs {
         SERVER_SPEC = serverConfigPair.getValue();
         context.registerConfig(ModConfig.Type.SERVER, SERVER_SPEC);
     }
-    
+
     @SubscribeEvent
     public static void onLoad(ModConfigEvent.Loading event) {
         if (SERVER_SPEC == event.getConfig().getSpec())
             SERVER.onLoad();
     }
-    
+
     @SubscribeEvent
     public static void onReload(ModConfigEvent.Reloading event) {
         if (SERVER_SPEC == event.getConfig().getSpec())
             SERVER.onReload();
     }
-    
+
 }

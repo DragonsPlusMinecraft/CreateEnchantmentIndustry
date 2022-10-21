@@ -63,7 +63,7 @@ public class EnchantmentIndustry {
         CeiTags.register();
         CeiTriggers.register();
     }
-    
+
     private void addForgeEventListeners(IEventBus forgeEventBus) {
         forgeEventBus.addListener(CeiItems::fillCreateItemGroup);
         forgeEventBus.addListener(CeiFluids::handleInkEffect);
