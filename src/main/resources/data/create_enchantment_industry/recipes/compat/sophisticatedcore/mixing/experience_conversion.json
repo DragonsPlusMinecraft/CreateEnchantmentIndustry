@@ -1,0 +1,24 @@
+{
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "sophisticatedcore"
+    }
+  ],
+  "type": "create:mixing",
+  "ingredients": [
+    {
+      "item": "create_enchantment_industry:experience_rotor"
+    },
+    {
+      "fluid": "sophisticatedcore:xp_still",
+      "amount": 200
+    }
+  ],
+  "results": [
+    {
+      "fluid": "create_enchantment_industry:experience",
+      "amount": 10
+    }
+  ]
+}

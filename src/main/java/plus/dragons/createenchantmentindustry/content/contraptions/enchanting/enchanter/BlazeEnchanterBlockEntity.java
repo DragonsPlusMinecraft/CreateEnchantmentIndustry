@@ -98,8 +98,9 @@ public class BlazeEnchanterBlockEntity extends SmartTileEntity implements IHaveG
                     updateHeatLevel(BlazeEnchanterBlock.HeatLevel.SMOULDERING);
             }));
         registerAwardables(behaviours,
-                CeiAdvancements.FIRST_ORDER.asCreateAdvancement(),
-                CeiAdvancements.ADDITIONAL_ORDER.asCreateAdvancement());
+            CeiAdvancements.FIRST_ORDER.asCreateAdvancement(),
+            CeiAdvancements.ADDITIONAL_ORDER.asCreateAdvancement(),
+            CeiAdvancements.HYPOTHETICAL_EXTENSION.asCreateAdvancement());
     }
 
     @Override
