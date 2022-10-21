@@ -299,9 +299,9 @@ public class BlazeEnchanterBlockEntity extends SmartTileEntity implements IHaveG
             return;
     
         boolean empty = level.getBlockState(worldPosition.above())
-                .getCollisionShape(level, worldPosition.above())
-                .isEmpty();
-
+            .getCollisionShape(level, worldPosition.above())
+            .isEmpty();
+    
         double yMotion = empty ? .0625f : r.nextDouble() * .0125f;
         Vec3 v2 = c.add(VecHelper.offsetRandomly(Vec3.ZERO, r, .5f)
                 .multiply(1, .25f, 1)
