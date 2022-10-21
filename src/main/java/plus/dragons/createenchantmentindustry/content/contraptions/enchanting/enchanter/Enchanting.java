@@ -1,7 +1,6 @@
 package plus.dragons.createenchantmentindustry.content.contraptions.enchanting.enchanter;
 
 import com.simibubi.create.foundation.utility.Pair;
-import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
@@ -70,13 +69,18 @@ public class Enchanting {
         }
     }
     
+    public static int rarityLevel(Enchantment.Rarity rarity) {
+        return switch(rarity) {
+            case COMMON -> 1;
+            case UNCOMMON -> 2;
+            case RARE -> 3;
+            case VERY_RARE -> 4;
+        };
+    }
+    
     public static int getExperienceConsumption(Enchantment enchantment, int level) {
-        int startLevel = enchantment.getMaxCost(level);
-        float cost = Mth.sqrt((float) level / enchantment.getRarity().getWeight());
-        int levelCost = Mth.ceil(cost);
-        int endLevel = startLevel - levelCost;
-        return expPointFromLevel(startLevel) - expPointFromLevel(endLevel)
-            + (int) (expPointForNextLevel(endLevel) * (cost - levelCost));
+        int xpLevel = enchantment.getMinCost(level) + level * rarityLevel(enchantment.getRarity());
+        return expPointForNextLevel(xpLevel);
     }
     
 }
