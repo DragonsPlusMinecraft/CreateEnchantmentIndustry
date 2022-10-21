@@ -2,7 +2,6 @@ package plus.dragons.createenchantmentindustry.content.contraptions.fluids.exper
 
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.ExperienceOrb;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.ThrowableItemProjectile;
 import net.minecraft.world.item.Item;
@@ -19,13 +18,12 @@ public class HyperExperienceBottle extends ThrowableItemProjectile {
     }
 
     public HyperExperienceBottle(double pX, double pY, double pZ, Level pLevel) {
-        super(CeiEntityTypes.HYPER_EXP_BOTTLE.get(), pX, pY, pZ, pLevel);
+        super(CeiEntityTypes.HYPER_EXPERIENCE_BOTTLE.get(), pX, pY, pZ, pLevel);
     }
 
     public HyperExperienceBottle(LivingEntity pShooter, Level pLevel) {
-        super(CeiEntityTypes.HYPER_EXP_BOTTLE.get(), pShooter, pLevel);
+        super(CeiEntityTypes.HYPER_EXPERIENCE_BOTTLE.get(), pShooter, pLevel);
     }
-
 
     @Override
     protected Item getDefaultItem() {
@@ -52,8 +50,8 @@ public class HyperExperienceBottle extends ThrowableItemProjectile {
         super.onHit(pResult);
         if (this.level instanceof ServerLevel) {
             this.level.levelEvent(2002, this.blockPosition(), PotionUtils.getColor(Potions.WATER));
-            int amount = 30 + this.level.random.nextInt(50) + this.level.random.nextInt(50);
-            ExperienceOrb.award((ServerLevel) this.level, this.position(), amount);
+            int amount = 3 + this.level.random.nextInt(5) + this.level.random.nextInt(5);
+            HyperExperienceOrb.award((ServerLevel)this.level, this.position(), amount);
             this.discard();
         }
     }
