@@ -19,7 +19,6 @@ import plus.dragons.createenchantmentindustry.content.contraptions.fluids.OpenEn
 import plus.dragons.createenchantmentindustry.entry.*;
 import plus.dragons.createenchantmentindustry.foundation.config.ModConfigs;
 import plus.dragons.createenchantmentindustry.foundation.data.advancement.CeiAdvancements;
-import plus.dragons.createenchantmentindustry.foundation.data.advancement.CeiTriggers;
 import plus.dragons.createenchantmentindustry.foundation.ponder.content.CeiPonderIndex;
 
 @Mod(EnchantmentIndustry.MOD_ID)
@@ -61,7 +60,6 @@ public class EnchantmentIndustry {
         CeiFluids.register();
         CeiContainerTypes.register();
         CeiTags.register();
-        CeiTriggers.register();
     }
 
     private void addForgeEventListeners(IEventBus forgeEventBus) {
@@ -71,9 +69,9 @@ public class EnchantmentIndustry {
     }
 
     public static void init(final FMLCommonSetupEvent event) {
+        CeiAdvancements.register();
         event.enqueueWork(() -> {
             CeiPackets.registerPackets();
-            CeiAdvancements.register();
             OpenEndedPipeEffects.register();
         });
     }

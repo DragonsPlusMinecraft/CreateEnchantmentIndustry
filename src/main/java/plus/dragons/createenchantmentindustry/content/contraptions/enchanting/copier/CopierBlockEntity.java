@@ -37,7 +37,6 @@ import plus.dragons.createdragonlib.utility.ModLang;
 import plus.dragons.createenchantmentindustry.EnchantmentIndustry;
 import plus.dragons.createenchantmentindustry.foundation.config.ModConfigs;
 import plus.dragons.createenchantmentindustry.foundation.data.advancement.CeiAdvancements;
-import plus.dragons.createenchantmentindustry.foundation.data.advancement.CeiTriggers;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -147,7 +146,7 @@ public class CopierBlockEntity extends SmartTileEntity implements IHaveGoggleInf
             var playerId = ((AdvancementBehaviourAccessor) advancementBehaviour).getPlayerId();
             if (playerId != null) {
                 var player = level.getPlayerByUUID(playerId);
-                CeiTriggers.BOOK_PRINTED.trigger(player, 1);
+                CeiAdvancements.Triggers.BOOK_PRINTED.trigger(player, 1);
             }
         }
 

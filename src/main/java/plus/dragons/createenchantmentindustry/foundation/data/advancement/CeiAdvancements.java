@@ -15,8 +15,8 @@ import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraftforge.data.event.GatherDataEvent;
 import plus.dragons.createdragonlib.advancement.AccumulativeTrigger;
-import plus.dragons.createdragonlib.advancement.ModAdvancement;
-import plus.dragons.createdragonlib.advancement.ModAdvancementFactory;
+import plus.dragons.createdragonlib.advancement.Advancement;
+import plus.dragons.createdragonlib.advancement.AdvancementFactory;
 import plus.dragons.createenchantmentindustry.EnchantmentIndustry;
 import plus.dragons.createenchantmentindustry.entry.CeiBlocks;
 import plus.dragons.createenchantmentindustry.entry.CeiFluids;
@@ -28,12 +28,12 @@ import java.util.Map;
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
 public class CeiAdvancements {
-    public static final ModAdvancementFactory FACTORY = ModAdvancementFactory.create(EnchantmentIndustry.MOD_ID);
+    public static final AdvancementFactory FACTORY = new AdvancementFactory(EnchantmentIndustry.MOD_ID);
 
-    public static final ModAdvancement
+    public static final Advancement
             START = null,
     // Root
-    EXPERIENCED_ENGINEER = FACTORY.builder("experienced_engineer")
+    EXPERIENCED_ENGINEER = FACTORY.create("experienced_engineer")
             .title("Experienced Engineer")
             .description("Get some Nuggets of Experience from crushing ores or killing mobs using deployer")
             .icon(AllItems.EXP_NUGGET)
@@ -41,27 +41,27 @@ public class CeiAdvancements {
             .parent(Create.asResource("display_board_0"))
             .build(),
     // Copier Branch
-    BLACK_AS_INK = FACTORY.builder("black_as_ink")
+    BLACK_AS_INK = FACTORY.create("black_as_ink")
             .title("Black as Ink!")
             .description("Get a bucket of Ink for your copying business")
             .icon(CeiFluids.INK.get().getBucket())
             .externalTrigger("have_bucket_of_ink", InventoryChangeTrigger.TriggerInstance.hasItems(CeiFluids.INK.get().getBucket()))
             .parent(EXPERIENCED_ENGINEER)
             .build(),
-            COPIABLE_MASTERPIECE = FACTORY.builder("copiable_masterpiece")
+            COPIABLE_MASTERPIECE = FACTORY.create("copiable_masterpiece")
                     .title("Copiable Masterpiece")
                     .description("Copy a Written Book using Copier")
                     .icon(Items.WRITTEN_BOOK)
                     .parent(BLACK_AS_INK)
                     .build(),
-            COPIABLE_MYSTERY = FACTORY.builder("copiable_mystery")
+            COPIABLE_MYSTERY = FACTORY.create("copiable_mystery")
                     .title("Copiable Mystery")
                     .description("Copy a Enchanted Book using Copier")
                     .icon(Items.ENCHANTED_BOOK)
                     .announce(true)
                     .parent(COPIABLE_MASTERPIECE)
                     .build(),
-            RELIC_RESTORATION = FACTORY.builder("relic_restoration")
+            RELIC_RESTORATION = FACTORY.create("relic_restoration")
                     .title("Relic Restoration")
                     .description("Make brand new copy from a tattered book")
                     .icon(Items.WRITABLE_BOOK)
@@ -69,35 +69,35 @@ public class CeiAdvancements {
                     .frame(FrameType.GOAL)
                     .parent(COPIABLE_MYSTERY)
                     .build(),
-            GREAT_PUBLISHER = FACTORY.builder("great_publisher")
+            GREAT_PUBLISHER = FACTORY.create("great_publisher")
                     .title("Great Publisher")
                     .description("Copy 1000 books using Copier")
-                    .externalTrigger("book_copied", new AccumulativeTrigger.TriggerInstance(CeiTriggers.BOOK_PRINTED.getId(), EntityPredicate.Composite.ANY, MinMaxBounds.Ints.atLeast(1000)))
+                    .externalTrigger("book_copied", new AccumulativeTrigger.TriggerInstance(Triggers.BOOK_PRINTED.getId(), EntityPredicate.Composite.ANY, MinMaxBounds.Ints.atLeast(1000)))
                     .icon(CeiBlocks.COPIER)
                     .announce(true)
                     .frame(FrameType.CHALLENGE)
                     .parent(RELIC_RESTORATION)
                     .build(),
-            EXPERIMENTAL = FACTORY.builder("experimental")
+            EXPERIMENTAL = FACTORY.create("experimental")
                     .title("Experimental")
                     .description("Get some Liquid Experience for your enchanting experiment!")
                     .icon(Items.EXPERIENCE_BOTTLE)
                     .parent(EXPERIENCED_ENGINEER)
                     .build(),
-            GONE_WITH_THE_FOIL = FACTORY.builder("gone_with_the_foil")
+            GONE_WITH_THE_FOIL = FACTORY.create("gone_with_the_foil")
                     .title("Gone with the Foil")
                     .description("Watch an enchanted item be disenchanted by a Disenchanter")
                     .icon(CeiBlocks.DISENCHANTER)
                     .parent(EXPERIMENTAL)
                     .build(),
-            SPIRIT_TAKING = FACTORY.builder("spirit_taking")
+            SPIRIT_TAKING = FACTORY.create("spirit_taking")
                     .title("Spirit Taking")
                     .description("Get your experience absorbed by a Disenchanter")
                     .icon(AllBlocks.MECHANICAL_PUMP)
                     .announce(true)
                     .parent(GONE_WITH_THE_FOIL)
                     .build(),
-            A_SHOWER_EXPERIENCE = FACTORY.builder("a_shower_experience")
+            A_SHOWER_EXPERIENCE = FACTORY.create("a_shower_experience")
                     .title("A Shower \"Experience\"")
                     .description("Break a Fluid Pipe and bathe in the leaked experience")
                     .icon(AllBlocks.FLUID_PIPE)
@@ -105,29 +105,29 @@ public class CeiAdvancements {
                     .frame(FrameType.GOAL)
                     .parent(SPIRIT_TAKING)
                     .build(),
-            EXPERIENCED_RECYCLER = FACTORY.builder("experienced_recycler")
+            EXPERIENCED_RECYCLER = FACTORY.create("experienced_recycler")
                     .title("Experienced Recycler")
                     .description("Recycle 1,000,000 mB of experience from Disenchanter")
                     .icon(AllBlocks.COPPER_VALVE_HANDLE)
-                    .externalTrigger("experience_recycled", new AccumulativeTrigger.TriggerInstance(CeiTriggers.DISENCHANTED.getId(), EntityPredicate.Composite.ANY, MinMaxBounds.Ints.atLeast(1000000)))
+                    .externalTrigger("experience_recycled", new AccumulativeTrigger.TriggerInstance(Triggers.DISENCHANTED.getId(), EntityPredicate.Composite.ANY, MinMaxBounds.Ints.atLeast(1000000)))
                     .announce(true)
                     .frame(FrameType.CHALLENGE)
                     .parent(A_SHOWER_EXPERIENCE)
                     .build(),
     // Blaze Enchanter Branch
-    BLAZES_NEW_JOB = FACTORY.builder("blazes_new_job")
+    BLAZES_NEW_JOB = FACTORY.create("blazes_new_job")
             .title("Blaze's New Job")
             .description("Give your Blaze Burner a Enchanting Guide and turn it into a Blaze Enchanter")
             .icon(CeiItems.ENCHANTING_GUIDE)
             .parent(EXPERIENCED_ENGINEER)
             .build(),
-            FIRST_ORDER = FACTORY.builder("first_order")
+            FIRST_ORDER = FACTORY.create("first_order")
                     .title("First Order")
                     .description("Add a new enchantment to an unenchanted item using Blaze Enchanter")
                     .icon(Items.GOLDEN_HELMET)
                     .parent(BLAZES_NEW_JOB)
                     .build(),
-            ADDITIONAL_ORDER = FACTORY.builder("additional_order")
+            ADDITIONAL_ORDER = FACTORY.create("additional_order")
                     .title("Additional Order")
                     .description("Add a new enchantment to an enchanted item using Blaze Enchanter")
                     .icon(Util.make(
@@ -136,7 +136,7 @@ public class CeiAdvancements {
                     ))
                     .parent(FIRST_ORDER)
                     .build(),
-            HYPOTHETICAL_EXTENSION = FACTORY.builder("hypothetical_extension")
+            HYPOTHETICAL_EXTENSION = FACTORY.create("hypothetical_extension")
                     .title("Hypothetical Extension")
                     .description("Add a new enchantment to an item using Blaze Enchanter's hyper-enchanting")
                     .icon(Items.DIAMOND_HELMET)
@@ -144,7 +144,13 @@ public class CeiAdvancements {
                     .build(),
             END = null;
 
+    public static class Triggers {
+        public static final AccumulativeTrigger BOOK_PRINTED = FACTORY.getTriggerFactory().addAccumulative(EnchantmentIndustry.genRL("book_printed"));
+        public static final AccumulativeTrigger DISENCHANTED = FACTORY.getTriggerFactory().addAccumulative(EnchantmentIndustry.genRL("disenchanted"));
+    }
+
     public static void register() {
+        FACTORY.getTriggerFactory().register();
     }
 
     public static void registerDataGen(GatherDataEvent event) {
