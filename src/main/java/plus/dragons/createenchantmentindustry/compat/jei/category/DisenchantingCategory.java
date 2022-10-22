@@ -30,7 +30,8 @@ public class DisenchantingCategory extends CreateRecipeCategory<DisenchantRecipe
 
         builder.addSlot(RecipeIngredientRole.OUTPUT, 139, 25)
                 .setBackground(getRenderedSlot(), -1, -1)
-                .addFluidStack(CeiFluids.EXPERIENCE.get().getSource(),recipe.getExperience());
+                .addFluidStack(CeiFluids.EXPERIENCE.get().getSource(),recipe.getExperience())
+                .addTooltipCallback(addFluidTooltip());
 
         if(!recipe.hasNoResult())
             builder.addSlot(RecipeIngredientRole.OUTPUT, 139, 5)
