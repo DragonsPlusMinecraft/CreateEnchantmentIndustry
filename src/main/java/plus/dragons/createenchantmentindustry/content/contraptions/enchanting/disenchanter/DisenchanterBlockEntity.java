@@ -37,8 +37,9 @@ import org.jetbrains.annotations.Nullable;
 import plus.dragons.createdragonlib.mixin.AdvancementBehaviourAccessor;
 import plus.dragons.createenchantmentindustry.content.contraptions.enchanting.enchanter.Enchanting;
 import plus.dragons.createenchantmentindustry.entry.CeiFluids;
+import plus.dragons.createenchantmentindustry.foundation.advancement.CeiTriggers;
 import plus.dragons.createenchantmentindustry.foundation.config.ModConfigs;
-import plus.dragons.createenchantmentindustry.foundation.data.advancement.CeiAdvancements;
+import plus.dragons.createenchantmentindustry.foundation.advancement.CeiAdvancements;
 
 import java.util.IdentityHashMap;
 import java.util.List;
@@ -302,7 +303,7 @@ public class DisenchanterBlockEntity extends SmartTileEntity implements IHaveGog
         var playerId = ((AdvancementBehaviourAccessor) advancementBehaviour).getPlayerId();
         if (playerId != null) {
             var player = level.getPlayerByUUID(playerId);
-            CeiAdvancements.Triggers.DISENCHANTED.trigger(player, xp.getAmount());
+            CeiTriggers.DISENCHANTED.trigger(player, xp.getAmount());
         }
 
         // Process finished

@@ -125,7 +125,7 @@ repositories {
     // If you have mod jar dependencies in ./libs, you can declare them as a repository like so:
     // flatDir {
     //     dir 'libs'
-    // loca
+    // local maven
     mavenLocal()
     maven {
         name = 'tterrag maven'
@@ -157,7 +157,7 @@ dependencies {
     // The userdev artifact is a special name and will get all sorts of transformations applied to it.
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
 
-    jarJar(group: 'plus.dragons.createdragonlib', name: "create_dragon_lib-${minecraft_version}", version: '[1.0.0,1.1.0)') {
+    jarJar(group: 'plus.dragons.createdragonlib', name: "create_dragon_lib-${minecraft_version}", version: "${create_dragon_lib_version_range}") {
         jarJar.pin(it, project.create_dragon_lib_version)
     }
 

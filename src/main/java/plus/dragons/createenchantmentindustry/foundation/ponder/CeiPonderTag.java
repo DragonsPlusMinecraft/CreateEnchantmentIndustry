@@ -8,7 +8,7 @@ import plus.dragons.createenchantmentindustry.entry.CeiBlocks;
 public class CeiPonderTag extends PonderTag {
 
     public static final PonderTag EXPERIENCE = create("experience")
-            .defaultLang("Experience RelatedExperience Related", "Items and Components related to experience")
+            .defaultLang("Experience Related", "Items and Components related to experience")
             .item(CeiBlocks.DISENCHANTER.get(), true, false).addToIndex();
 
     public CeiPonderTag(ResourceLocation id) {

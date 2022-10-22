@@ -7,7 +7,6 @@ import mezz.jei.api.recipe.category.IRecipeCategory;
 import mezz.jei.api.registration.IRecipeCatalystRegistration;
 import mezz.jei.api.registration.IRecipeCategoryRegistration;
 import mezz.jei.api.registration.IRecipeRegistration;
-import mezz.jei.api.registration.ISubtypeRegistration;
 import mezz.jei.api.runtime.IIngredientManager;
 import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.resources.ResourceLocation;
@@ -55,7 +54,7 @@ public class CeiJEIPlugin implements IModPlugin {
     }
 
     private static <T extends Recipe<?>> RecipeCategoryBuilder<T> builder(Class<T> cls) {
-        return new RecipeCategoryBuilder<>(EnchantmentIndustry.MOD_ID, cls);
+        return new RecipeCategoryBuilder<>(EnchantmentIndustry.ID, cls);
     }
 
     private void loadCategories(IRecipeCategoryRegistration registration) {

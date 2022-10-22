@@ -13,7 +13,7 @@ import net.minecraftforge.event.entity.player.PlayerXpEvent;
 import net.minecraftforge.fluids.FluidStack;
 import org.jetbrains.annotations.Nullable;
 import plus.dragons.createenchantmentindustry.entry.CeiFluids;
-import plus.dragons.createenchantmentindustry.foundation.data.advancement.CeiAdvancements;
+import plus.dragons.createenchantmentindustry.foundation.advancement.CeiAdvancements;
 
 public abstract class ExperienceEffectHandler<T extends ExperienceOrb> implements OpenEndedPipe.IEffectHandler {
     public static final ExperienceEffectHandler<ExperienceOrb> EXPERIENCE = new ExperienceEffectHandler<>() {

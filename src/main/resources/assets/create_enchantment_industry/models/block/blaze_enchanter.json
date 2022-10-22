@@ -1,5 +1,6 @@
 {
 	"parent": "block/block",
+	"render_type": "cutout_mipped",
 	"loader": "forge:obj",
 	"flip-v": true,
 	"model": "create:models/block/blaze_burner/blaze_cage.obj",

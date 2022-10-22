@@ -4,5 +4,5 @@ import plus.dragons.createdragonlib.gui.GuiTexture;
 import plus.dragons.createenchantmentindustry.EnchantmentIndustry;
 
 public class CeiGuiTextures {
-    public static GuiTexture ENCHANTING_GUIDE = new GuiTexture(EnchantmentIndustry.MOD_ID, "enchanting_guide", 185, 48);
+    public static GuiTexture ENCHANTING_GUIDE = new GuiTexture(EnchantmentIndustry.ID, "enchanting_guide", 185, 48);
 }

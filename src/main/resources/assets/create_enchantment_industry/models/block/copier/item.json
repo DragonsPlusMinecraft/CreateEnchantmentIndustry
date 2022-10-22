@@ -1,6 +1,7 @@
 {
 	"credit": "By LimonBlaze, made with Blockbench",
 	"parent": "block/block",
+	"render_type": "cutout_mipped",
 	"textures": {
 		"tank": "create:block/spout",
 		"head": "create:block/mechanical_press_head",

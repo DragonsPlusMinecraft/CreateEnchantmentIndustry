@@ -37,16 +37,16 @@ import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.items.ItemHandlerHelper;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import plus.dragons.createdragonlib.utility.ModLang;
-import plus.dragons.createenchantmentindustry.EnchantmentIndustry;
 import plus.dragons.createenchantmentindustry.entry.CeiFluids;
+import plus.dragons.createenchantmentindustry.foundation.advancement.CeiAdvancements;
 import plus.dragons.createenchantmentindustry.foundation.config.ModConfigs;
-import plus.dragons.createenchantmentindustry.foundation.data.advancement.CeiAdvancements;
 
 import java.util.IdentityHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+
+import static plus.dragons.createenchantmentindustry.EnchantmentIndustry.LANG;
 
 public class BlazeEnchanterBlockEntity extends SmartTileEntity implements IHaveGoggleInformation {
 
@@ -477,8 +477,7 @@ public class BlazeEnchanterBlockEntity extends SmartTileEntity implements IHaveG
 
     @Override
     public boolean addToGoggleTooltip(List<Component> tooltip, boolean isPlayerSneaking) {
-        var modid = EnchantmentIndustry.MOD_ID;
-        ModLang.translate(modid, "gui.goggles.blaze_enchanter").forGoggles(tooltip);
+        LANG.translate("gui.goggles.blaze_enchanter").forGoggles(tooltip);
         if (targetItem != null) {
             EnchantmentEntry entry = Enchanting.getTargetEnchantment(targetItem, hyper());
             if (entry != null) {
@@ -486,17 +485,17 @@ public class BlazeEnchanterBlockEntity extends SmartTileEntity implements IHaveG
                         .append(entry.getFirst().getFullname(entry.getSecond())));
                 if (!entry.valid())
                     tooltip.add(Component.literal("     ")
-                            .append(ModLang.translate(modid, "gui.goggles.invalid_target").component())
+                            .append(LANG.translate("gui.goggles.invalid_target").component())
                             .withStyle(ChatFormatting.RED));
                 else {
                     int consumption = Enchanting.getExperienceConsumption(entry.getFirst(), entry.getSecond());
                     if (consumption > ModConfigs.SERVER.blazeEnchanterTankCapacity.get())
-                        tooltip.add(Component.literal("     ").append(ModLang.translate(modid, "gui.goggles.too_expensive")
+                        tooltip.add(Component.literal("     ").append(LANG.translate("gui.goggles.too_expensive")
                                         .component())
                                 .withStyle(ChatFormatting.RED));
                     else
                         tooltip.add(Component.literal("     ")
-                                .append(ModLang.translate(modid, "gui.goggles.xp_consumption", consumption).component())
+                                .append(LANG.translate("gui.goggles.xp_consumption", consumption).component())
                                 .withStyle(ChatFormatting.GREEN));
                 }
             }

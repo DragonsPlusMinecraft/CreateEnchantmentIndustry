@@ -22,14 +22,14 @@ import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.Nullable;
-import plus.dragons.createdragonlib.utility.ModLang;
-import plus.dragons.createenchantmentindustry.EnchantmentIndustry;
 import plus.dragons.createenchantmentindustry.entry.CeiBlocks;
 import plus.dragons.createenchantmentindustry.entry.CeiContainerTypes;
 import plus.dragons.createenchantmentindustry.entry.CeiItems;
-import plus.dragons.createenchantmentindustry.foundation.data.advancement.CeiAdvancements;
+import plus.dragons.createenchantmentindustry.foundation.advancement.CeiAdvancements;
 
 import java.util.List;
+
+import static plus.dragons.createenchantmentindustry.EnchantmentIndustry.LANG;
 
 public class EnchantingGuideItem extends Item implements MenuProvider {
     public EnchantingGuideItem(Properties pProperties) {
@@ -92,10 +92,10 @@ public class EnchantingGuideItem extends Item implements MenuProvider {
     @Override
     public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> pTooltipComponents, TooltipFlag pIsAdvanced) {
         super.appendHoverText(pStack, pLevel, pTooltipComponents, pIsAdvanced);
-        pTooltipComponents.add(ModLang.translate(EnchantmentIndustry.MOD_ID, "tooltip.guide_header").component());
+        pTooltipComponents.add(LANG.translate("tooltip.guide_header").component());
         EnchantmentEntry enchantment = getEnchantment(pStack);
         if (enchantment == null) {
-            pTooltipComponents.add(ModLang.translate(EnchantmentIndustry.MOD_ID, "tooltip.guide_not_configured").component());
+            pTooltipComponents.add(LANG.translate("tooltip.guide_not_configured").component());
         } else
             pTooltipComponents.add(enchantment.getFirst().getFullname(enchantment.getSecond()));
     }
