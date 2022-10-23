@@ -9,5 +9,7 @@
   "create_enchantment_industry.gui.goggles.too_expensive": "Too Expensive!",
 
   "create_enchantment_industry.generic.unit.page": "Page",
-  "create_enchantment_industry.generic.unit.pages": "Pages"
+  "create_enchantment_industry.generic.unit.pages": "Pages",
+
+  "recipe.create_enchantment_industry.disenchanting": "Disenchanting"
 }
