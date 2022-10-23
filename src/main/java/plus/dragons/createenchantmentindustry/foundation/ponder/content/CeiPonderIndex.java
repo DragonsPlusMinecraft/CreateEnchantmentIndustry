@@ -10,7 +10,7 @@ import plus.dragons.createenchantmentindustry.entry.CeiItems;
 import plus.dragons.createenchantmentindustry.foundation.ponder.CeiPonderTag;
 
 public class CeiPonderIndex {
-    static final PonderRegistrationHelper HELPER = new PonderRegistrationHelper(EnchantmentIndustry.MOD_ID);
+    static final PonderRegistrationHelper HELPER = new PonderRegistrationHelper(EnchantmentIndustry.ID);
 
     public static void register() {
         HELPER.forComponents(CeiBlocks.DISENCHANTER)

@@ -5,19 +5,20 @@ import com.simibubi.create.AllFluids;
 import com.simibubi.create.AllItems;
 import com.simibubi.create.Create;
 import com.simibubi.create.content.AllSections;
-import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.tterrag.registrate.util.entry.ItemEntry;
 import net.minecraft.world.item.Rarity;
-import plus.dragons.createdragonlib.api.event.FillCreateItemGroupEvent;
-import plus.dragons.createenchantmentindustry.EnchantmentIndustry;
+import plus.dragons.createdragonlib.init.FillCreateItemGroupEvent;
 import plus.dragons.createenchantmentindustry.content.contraptions.enchanting.enchanter.EnchantingGuideItem;
 import plus.dragons.createenchantmentindustry.content.contraptions.fluids.experience.ExperienceRotorItem;
 import plus.dragons.createenchantmentindustry.content.contraptions.fluids.experience.HyperExperienceBottleItem;
 
-public class CeiItems {
+import static plus.dragons.createenchantmentindustry.EnchantmentIndustry.REGISTRATE;
 
-    private static final CreateRegistrate REGISTRATE = EnchantmentIndustry.registrate()
-            .creativeModeTab(() -> Create.BASE_CREATIVE_TAB).startSection(AllSections.KINETICS);
+public class CeiItems {
+    
+    static {
+        REGISTRATE.creativeModeTab(() -> Create.BASE_CREATIVE_TAB).startSection(AllSections.KINETICS);
+    }
 
     public static final ItemEntry<EnchantingGuideItem> ENCHANTING_GUIDE = REGISTRATE.item("enchanting_guide", EnchantingGuideItem::new)
             .properties(prop -> prop.stacksTo(1))

@@ -1,6 +1,5 @@
 package plus.dragons.createenchantmentindustry.entry;
 
-import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.tterrag.registrate.builders.BlockBuilder;
 import com.tterrag.registrate.builders.ItemBuilder;
 import com.tterrag.registrate.providers.ProviderType;
@@ -21,6 +20,8 @@ import plus.dragons.createenchantmentindustry.EnchantmentIndustry;
 import java.util.Arrays;
 import java.util.Locale;
 import java.util.Objects;
+
+import static plus.dragons.createenchantmentindustry.EnchantmentIndustry.REGISTRATE;
 
 public interface CeiTags<T, P extends RegistrateTagsProvider<T>> {
     ITagManager<Block> BLOCK_TAGS = Objects.requireNonNull(ForgeRegistries.BLOCKS.tags());
@@ -53,16 +54,15 @@ public interface CeiTags<T, P extends RegistrateTagsProvider<T>> {
     }
 
     static void register() {
-        CreateRegistrate registrate = EnchantmentIndustry.registrate();
         Arrays.stream(BlockTags.values())
                 .filter(CeiTags::hasDatagen)
-                .forEach(tag -> registrate.addDataGenerator(ProviderType.BLOCK_TAGS, tag::datagen));
+                .forEach(tag -> REGISTRATE.addDataGenerator(ProviderType.BLOCK_TAGS, tag::datagen));
         Arrays.stream(ItemTags.values())
                 .filter(CeiTags::hasDatagen)
-                .forEach(tag -> registrate.addDataGenerator(ProviderType.ITEM_TAGS, tag::datagen));
+                .forEach(tag -> REGISTRATE.addDataGenerator(ProviderType.ITEM_TAGS, tag::datagen));
         Arrays.stream(FluidTags.values())
                 .filter(CeiTags::hasDatagen)
-                .forEach(tag -> registrate.addDataGenerator(ProviderType.FLUID_TAGS, tag::datagen));
+                .forEach(tag -> REGISTRATE.addDataGenerator(ProviderType.FLUID_TAGS, tag::datagen));
     }
 
     enum BlockTags implements CeiTags<Block, RegistrateTagsProvider<Block>> {
@@ -77,7 +77,7 @@ public interface CeiTags<T, P extends RegistrateTagsProvider<T>> {
         }
 
         BlockTags(boolean datagen) {
-            this(EnchantmentIndustry.MOD_ID, datagen);
+            this(EnchantmentIndustry.ID, datagen);
         }
 
         @Override
@@ -114,7 +114,7 @@ public interface CeiTags<T, P extends RegistrateTagsProvider<T>> {
         }
 
         ItemTags(boolean datagen) {
-            this(EnchantmentIndustry.MOD_ID, datagen);
+            this(EnchantmentIndustry.ID, datagen);
         }
 
         @Override
@@ -141,7 +141,7 @@ public interface CeiTags<T, P extends RegistrateTagsProvider<T>> {
         }
 
         FluidTags(boolean datagen) {
-            this(EnchantmentIndustry.MOD_ID, datagen);
+            this(EnchantmentIndustry.ID, datagen);
         }
 
         @Override

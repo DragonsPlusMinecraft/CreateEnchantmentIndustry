@@ -83,7 +83,7 @@ public enum CeiRecipeTypes implements IRecipeTypeInfo {
     }
 
     private static class Registers {
-        private static final DeferredRegister<RecipeSerializer<?>> SERIALIZER_REGISTER = DeferredRegister.create(ForgeRegistries.RECIPE_SERIALIZERS, EnchantmentIndustry.MOD_ID);
-        private static final DeferredRegister<RecipeType<?>> TYPE_REGISTER = DeferredRegister.create(Registry.RECIPE_TYPE_REGISTRY, EnchantmentIndustry.MOD_ID);
+        private static final DeferredRegister<RecipeSerializer<?>> SERIALIZER_REGISTER = DeferredRegister.create(ForgeRegistries.RECIPE_SERIALIZERS, EnchantmentIndustry.ID);
+        private static final DeferredRegister<RecipeType<?>> TYPE_REGISTER = DeferredRegister.create(Registry.RECIPE_TYPE_REGISTRY, EnchantmentIndustry.ID);
     }
 }

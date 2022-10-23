@@ -15,8 +15,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.ItemLike;
-import plus.dragons.createdragonlib.utility.ModLang;
-import plus.dragons.createenchantmentindustry.EnchantmentIndustry;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -26,6 +24,8 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
+
+import static plus.dragons.createenchantmentindustry.EnchantmentIndustry.LANG;
 
 /*
 MIT License
@@ -202,7 +202,7 @@ public class RecipeCategoryBuilder<T extends Recipe<?>> {
         ResourceLocation id = new ResourceLocation(modid, name);
         CreateRecipeCategory.Info<T> info = new CreateRecipeCategory.Info<>(
             new mezz.jei.api.recipe.RecipeType<>(id, recipeClass),
-            ModLang.fromRL(EnchantmentIndustry.MOD_ID,"recipe", id).component(),
+            LANG.fromRL("recipe", id).component(),
             background, icon, recipesSupplier, catalysts);
         return factory.create(info);
     }
