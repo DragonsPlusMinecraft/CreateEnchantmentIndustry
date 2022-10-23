@@ -218,22 +218,23 @@ public class DisenchanterBlockEntity extends SmartTileEntity implements IHaveGog
                 var inserted = internalTank.getPrimaryHandler().fill(fluidStack, IFluidHandler.FluidAction.EXECUTE);
                 if (inserted != 0) {
                     for (var player : players) {
+                        var total = getPlayerExperience(player);
                         if (inserted >= ABSORB_AMOUNT) {
-                            if (getPlayerExperience(player) >= ABSORB_AMOUNT) {
+                            if (total >= ABSORB_AMOUNT) {
                                 player.giveExperiencePoints(-ABSORB_AMOUNT);
                                 inserted -= ABSORB_AMOUNT;
-                            } else if (getPlayerExperience(player) != 0) {
-                                inserted -= getPlayerExperience(player);
-                                player.giveExperiencePoints(-player.totalExperience);
+                            } else if (total != 0) {
+                                inserted -= total;
+                                player.giveExperiencePoints(-total);
                             }
                             CeiAdvancements.SPIRIT_TAKING.getTrigger().trigger((ServerPlayer) player);
-                        } else if (sum.get() > 0) {
-                            if (getPlayerExperience(player) >= sum.get()) {
-                                player.giveExperiencePoints(-sum.get());
+                        } else if (inserted > 0) {
+                            if (total >= inserted) {
+                                player.giveExperiencePoints(-inserted);
                                 inserted = 0;
                             } else {
-                                inserted -= getPlayerExperience(player);
-                                player.giveExperiencePoints(-player.totalExperience);
+                                inserted -= total;
+                                player.giveExperiencePoints(-total);
                             }
                             CeiAdvancements.SPIRIT_TAKING.getTrigger().trigger((ServerPlayer) player);
                         } else {
@@ -268,7 +269,8 @@ public class DisenchanterBlockEntity extends SmartTileEntity implements IHaveGog
         if (player.experienceLevel == 0 && player.experienceProgress == 0)
             return 0;
         var total = Enchanting.expPointFromLevel(level);
-        return (int) (total + player.experienceProgress * player.getXpNeededForNextLevel());
+        var bar = (int) (total + player.experienceProgress * player.getXpNeededForNextLevel());
+        return Math.max(bar, 1);
     }
 
 

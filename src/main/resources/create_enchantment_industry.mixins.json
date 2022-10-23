@@ -10,6 +10,8 @@
     "FluidTankBlockMixin",
     "ItemDrainBlockMixin",
     "ItemDrainTileEntityAccessor",
+    "OpenEndedPipeInvoker",
+    "OpenEndFluidHandlerMixin",
     "SpoutBlockMixin",
     "SpoutTileEntityAccessor"
   ],
