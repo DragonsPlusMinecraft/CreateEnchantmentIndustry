@@ -19,7 +19,7 @@ public abstract class OpenEndFluidHandlerMixin extends FluidTank {
     }
 
     @Final
-    @Shadow
+    @Shadow(remap = false)
     OpenEndedPipe this$0;
 
     // Sadly, fluidStack in OpenEndedPipe#registerEffectHandler thing does not be provided as expected.
