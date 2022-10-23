@@ -48,27 +48,26 @@ public class Enchanting {
         map.put(enchantment.getFirst(), enchantment.getSecond());
         EnchantmentHelper.setEnchantments(map, itemStack);
     }
-    
+
     public static int expPointFromLevel(int level) {
-        if (level >= 32) {
+        if (level > 31) {
             return (int) (4.5 * level * level - 162.5 * level + 2220);
         } else {
-            return level >= 17
-                ? (int) (2.5 * level * level - 40.5 * level + 350)
-                : level * level + 6 * level;
+            return level > 16
+                    ? (int) (2.5 * level * level - 40.5 * level + 360)
+                    : level * level + 6 * level;
         }
     }
-    
+
     public static int expPointForNextLevel(int level) {
-        if (level >= 31) {
+        if (level > 30) {
             return 9 * level - 158;
         } else {
-            return level >= 16
-                ? 5 * level -38
-                : 2 * level + 7;
+            return level > 15
+                    ? 5 * level -38
+                    : 2 * level + 7;
         }
     }
-    
     public static int rarityLevel(Enchantment.Rarity rarity) {
         return switch(rarity) {
             case COMMON -> 1;

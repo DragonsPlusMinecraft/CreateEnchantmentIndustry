@@ -64,7 +64,6 @@ public abstract class ExperienceEffectHandler<T extends ExperienceOrb> implement
             int left = amount % players.size();
             players.forEach(player -> {
                 CeiAdvancements.A_SHOWER_EXPERIENCE.getTrigger().trigger((ServerPlayer) player);
-                player.giveExperiencePoints(partial);
                 awardExperienceOrDrop(player, level, xpPos, speed, partial);
             });
             if (left != 0) {
@@ -75,19 +74,15 @@ public abstract class ExperienceEffectHandler<T extends ExperienceOrb> implement
     }
     
     protected void awardExperienceOrDrop(@Nullable Player player, Level level, Vec3 pos, Vec3 speed, int amount) {
-        while(amount > 0) {
-            int i = ExperienceOrb.getExperienceValue(amount);
-            amount -= i;
-            var orb = createExperienceOrb(level, pos.x, pos.y, pos.z, i);
-            if (player == null || MinecraftForge.EVENT_BUS.post(new PlayerXpEvent.PickupXp(player, orb))) {
-                orb.setDeltaMovement(speed);
-                level.addFreshEntity(orb);
-            } else {
-                int left = orb.repairPlayerItems(player, orb.value);
-                if (left > 0) {
-                    player.giveExperiencePoints(left);
-                    applyPlayerEffects(orb, player, left);
-                }
+        var orb = createExperienceOrb(level, pos.x, pos.y, pos.z, amount);
+        if (player == null || MinecraftForge.EVENT_BUS.post(new PlayerXpEvent.PickupXp(player, orb))) {
+            orb.setDeltaMovement(speed);
+            level.addFreshEntity(orb);
+        } else {
+            int left = orb.repairPlayerItems(player, orb.value);
+            if (left > 0) {
+                player.giveExperiencePoints(left);
+                applyPlayerEffects(orb, player, left);
             }
         }
     }
