@@ -1,5 +1,5 @@
 {
-	"_": "Missing Localizations: 8",
+	"_": "Missing Localizations: 10",
 
 	"_": "->------------------------]  Game Elements  [------------------------<-",
 
@@ -9,6 +9,7 @@
 	"block.create_enchantment_industry.ink": "잉크",
 
 	"entity.create_enchantment_industry.hyper_experience_bottle": "고농축 경험치 병",
+	"entity.create_enchantment_industry.hyper_experience_orb": "UNLOCALIZED: Hyper Experience Orb",
 
 	"fluid.create_enchantment_industry.experience": "액체 경험치",
 	"fluid.create_enchantment_industry.hyper_experience": "고농축 액체 경험치",
@@ -66,6 +67,8 @@
 
 	"create_enchantment_industry.generic.unit.page": "쪽",
 	"create_enchantment_industry.generic.unit.pages": "쪽",
+
+	"recipe.create_enchantment_industry.disenchanting": "UNLOCALIZED: Disenchanting",
 
 
 	"_": "->------------------------]  Item Descriptions  [------------------------<-",

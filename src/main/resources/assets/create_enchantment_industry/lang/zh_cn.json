@@ -1,5 +1,5 @@
 {
-	"_": "Missing Localizations: 0",
+	"_": "Missing Localizations: 2",
 
 	"_": "->------------------------]  Game Elements  [------------------------<-",
 
@@ -9,6 +9,7 @@
 	"block.create_enchantment_industry.ink": "墨水",
 
 	"entity.create_enchantment_industry.hyper_experience_bottle": "超越附魔之瓶",
+	"entity.create_enchantment_industry.hyper_experience_orb": "UNLOCALIZED: Hyper Experience Orb",
 
 	"fluid.create_enchantment_industry.experience": "液态经验",
 	"fluid.create_enchantment_industry.hyper_experience": "液态超经验",
@@ -66,6 +67,8 @@
 
 	"create_enchantment_industry.generic.unit.page": "页",
 	"create_enchantment_industry.generic.unit.pages": "页",
+
+	"recipe.create_enchantment_industry.disenchanting": "UNLOCALIZED: Disenchanting",
 
 
 	"_": "->------------------------]  Item Descriptions  [------------------------<-",
