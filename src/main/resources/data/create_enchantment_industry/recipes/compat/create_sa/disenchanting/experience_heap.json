@@ -8,7 +8,7 @@
   "type": "create_enchantment_industry:disenchanting",
   "ingredients": [
     {
-      "item": "create_sa:experience_heap"
+      "item": "create_sa:heap_of_experience"
     }
   ],
   "results": [
