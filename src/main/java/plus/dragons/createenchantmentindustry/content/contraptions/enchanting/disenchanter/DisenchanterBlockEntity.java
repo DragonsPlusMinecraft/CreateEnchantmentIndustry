@@ -204,6 +204,7 @@ public class DisenchanterBlockEntity extends SmartTileEntity implements IHaveGog
     }
 
     protected void absorbExperienceFromWorld() {
+        boolean absorbedXp = false;
         List<Player> players = level.getEntitiesOfClass(Player.class, absorbArea, LivingEntity::isAlive);
         if (!players.isEmpty()) {
             AtomicInteger sum = new AtomicInteger();
@@ -238,6 +239,7 @@ public class DisenchanterBlockEntity extends SmartTileEntity implements IHaveGog
                                 inserted -= total;
                                 player.giveExperiencePoints(-total);
                             }
+                            absorbedXp = true;
                             CeiAdvancements.SPIRIT_TAKING.getTrigger().trigger((ServerPlayer) player);
                         } else {
                             break;
@@ -255,15 +257,20 @@ public class DisenchanterBlockEntity extends SmartTileEntity implements IHaveGog
                 var fluidStack = new FluidStack(CeiFluids.EXPERIENCE.get().getSource(), amount);
                 var inserted = internalTank.getPrimaryHandler().fill(fluidStack, IFluidHandler.FluidAction.EXECUTE);
                 if (inserted == amount) {
+                    absorbedXp = true;
                     orb.remove(Entity.RemovalReason.DISCARDED);
                 } else {
-                    if (inserted != 0)
+                    if (inserted != 0) {
+                        absorbedXp = true;
                         orb.value -= inserted;
+                    }
                     break;
                 }
             }
             internalTank.forbidInsertion();
         }
+        if (absorbedXp)
+            award(CeiAdvancements.EXPERIMENTAL.asCreateAdvancement());
     }
 
     private int getPlayerExperience(Player player) {
