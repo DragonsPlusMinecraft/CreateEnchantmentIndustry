@@ -39,7 +39,7 @@ public class Disenchanting {
                     int inserted = tank.getPrimaryHandler().fill(fluidStack, IFluidHandler.FluidAction.SIMULATE) / amount;
                     ItemStack ret = itemStack.copy();
                     if (!simulate) {
-                        fluidStack = new FluidStack(CeiFluids.EXPERIENCE.get().getSource(), inserted * 3);
+                        fluidStack = new FluidStack(CeiFluids.EXPERIENCE.get().getSource(), inserted * amount);
                         tank.getPrimaryHandler().fill(fluidStack, IFluidHandler.FluidAction.EXECUTE);
                     }
                     ret.shrink(inserted);
