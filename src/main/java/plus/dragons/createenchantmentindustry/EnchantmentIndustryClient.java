@@ -1,11 +1,9 @@
 package plus.dragons.createenchantmentindustry;
 
 import com.simibubi.create.foundation.config.ui.BaseConfigScreen;
-import net.minecraft.client.resources.model.ModelBakery;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
-import plus.dragons.createenchantmentindustry.content.contraptions.enchanting.enchanter.BlazeEnchanterRenderer;
 import plus.dragons.createenchantmentindustry.content.contraptions.fluids.ink.InkRenderingCamera;
 import plus.dragons.createenchantmentindustry.entry.CeiBlockPartials;
 import plus.dragons.createenchantmentindustry.foundation.config.CeiConfigs;
@@ -25,7 +23,6 @@ public class EnchantmentIndustryClient {
     public static void clientInit(final FMLClientSetupEvent event) {
         CeiPonderIndex.register();
         CeiPonderIndex.registerTags();
-        ModelBakery.UNREFERENCED_TEXTURES.add(BlazeEnchanterRenderer.BOOK_MATERIAL);
     }
     
     public static void loadComplete(final FMLLoadCompleteEvent event) {
