@@ -391,7 +391,7 @@ public class BlazeEnchanterBlockEntity extends SmartTileEntity implements IHaveG
         if (!getHeldItemStack().isEmpty())
             return inserted;
 
-        if (inserted.getCount() > 1 && Enchanting.getValidEnchantment(heldItem.stack, targetItem, hyper()) != null) {
+        if (inserted.getCount() > 1 && Enchanting.getValidEnchantment(inserted, targetItem, hyper()) != null) {
             returned = ItemHandlerHelper.copyStackWithSize(inserted, inserted.getCount() - 1);
             inserted = ItemHandlerHelper.copyStackWithSize(inserted, 1);
         }
