@@ -36,6 +36,7 @@ import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
 import plus.dragons.createenchantmentindustry.content.contraptions.enchanting.copier.CopierBlockEntity;
+import plus.dragons.createenchantmentindustry.content.contraptions.enchanting.enchanter.BlazeEnchanterBlock;
 import plus.dragons.createenchantmentindustry.content.contraptions.enchanting.enchanter.BlazeEnchanterBlockEntity;
 import plus.dragons.createenchantmentindustry.entry.CeiBlocks;
 import plus.dragons.createenchantmentindustry.entry.CeiFluids;
@@ -125,6 +126,14 @@ public class EnchantmentScenes {
         scene.world.setKineticSpeed(util.select.everywhere(), 80F);
         scene.world.setKineticSpeed(util.select.fromTo(0, 2, 7, 5, 2, 7), -80F);
         scene.world.setKineticSpeed(util.select.fromTo(7, 2, 2, 7, 2, 7), -80F);
+        scene.world.setBlock(util.grid.at(1,2,0),CeiBlocks.BLAZE_ENCHANTER.getDefaultState().setValue(BlazeEnchanterBlock.HEAT_LEVEL,
+                BlazeEnchanterBlock.HeatLevel.KINDLED),false);
+        scene.world.setBlock(util.grid.at(0,2,6),CeiBlocks.BLAZE_ENCHANTER.getDefaultState().setValue(BlazeEnchanterBlock.HEAT_LEVEL,
+                BlazeEnchanterBlock.HeatLevel.KINDLED),false);
+        scene.world.setBlock(util.grid.at(6,2,7),CeiBlocks.BLAZE_ENCHANTER.getDefaultState().setValue(BlazeEnchanterBlock.HEAT_LEVEL,
+                BlazeEnchanterBlock.HeatLevel.KINDLED),false);
+        scene.world.setBlock(util.grid.at(7,2,1),CeiBlocks.BLAZE_ENCHANTER.getDefaultState().setValue(BlazeEnchanterBlock.HEAT_LEVEL,
+                BlazeEnchanterBlock.HeatLevel.KINDLED),false);
         scene.world.modifyTileEntity(util.grid.at(1, 2, 0), BlazeEnchanterBlockEntity.class, be -> {
             be.setTargetItem(enchantingGuide(Enchantments.MENDING, 1));
             be.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY).ifPresent(tank ->
@@ -174,6 +183,10 @@ public class EnchantmentScenes {
         scene.scaleSceneView(.68f);
         scene.showBasePlate();
         scene.idle(5);
+        scene.world.setBlock(util.grid.at(1,2,1),CeiBlocks.BLAZE_ENCHANTER.getDefaultState().setValue(BlazeEnchanterBlock.HEAT_LEVEL,
+                BlazeEnchanterBlock.HeatLevel.KINDLED),false);
+        scene.world.setBlock(util.grid.at(1,2,3),CeiBlocks.BLAZE_ENCHANTER.getDefaultState().setValue(BlazeEnchanterBlock.HEAT_LEVEL,
+                BlazeEnchanterBlock.HeatLevel.SEETHING),false);
         scene.world.modifyTileEntity(util.grid.at(3, 1, 1), CreativeFluidTankTileEntity.class, be -> ((CreativeFluidTankTileEntity.CreativeSmartFluidTank) be.getTankInventory())
                 .setContainedFluid(new FluidStack(CeiFluids.EXPERIENCE.get().getSource(), 1000)));
         scene.world.modifyTileEntity(util.grid.at(3, 1, 3), CreativeFluidTankTileEntity.class, be -> ((CreativeFluidTankTileEntity.CreativeSmartFluidTank) be.getTankInventory())
