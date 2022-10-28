@@ -314,7 +314,8 @@ public class DisenchanterBlockEntity extends SmartTileEntity implements IHaveGog
         var playerId = ((AdvancementBehaviourAccessor) advancementBehaviour).getPlayerId();
         if (playerId != null) {
             var player = level.getPlayerByUUID(playerId);
-            CeiTriggers.DISENCHANTED.trigger(player, xp.getAmount());
+            if(player!=null) 
+                CeiTriggers.DISENCHANTED.trigger(player, xp.getAmount());
         }
 
         // Process finished

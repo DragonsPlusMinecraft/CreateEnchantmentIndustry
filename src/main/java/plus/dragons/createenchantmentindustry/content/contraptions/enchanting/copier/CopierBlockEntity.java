@@ -148,7 +148,8 @@ public class CopierBlockEntity extends SmartTileEntity implements IHaveGoggleInf
             var playerId = ((AdvancementBehaviourAccessor) advancementBehaviour).getPlayerId();
             if(playerId!=null){
                 var player = level.getPlayerByUUID(playerId);
-                CeiTriggers.BOOK_PRINTED.trigger(player,1);
+                if(player!=null)
+                    CeiTriggers.BOOK_PRINTED.trigger(player,1);
             }
         }
 
