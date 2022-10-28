@@ -77,8 +77,7 @@ public class DisenchanterBlockEntity extends SmartTileEntity implements IHaveGog
                 .forbidInsertion());
         registerAwardables(behaviours,
                 CeiAdvancements.EXPERIMENTAL.asCreateAdvancement(),
-                CeiAdvancements.GONE_WITH_THE_FOIL.asCreateAdvancement(),
-                CeiAdvancements.SPIRIT_TAKING.asCreateAdvancement());
+                CeiAdvancements.GONE_WITH_THE_FOIL.asCreateAdvancement());
     }
 
     @Override
