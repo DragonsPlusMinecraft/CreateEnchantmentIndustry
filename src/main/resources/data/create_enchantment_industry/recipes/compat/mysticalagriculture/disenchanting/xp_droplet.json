@@ -1,0 +1,20 @@
+{
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "mysticalagriculture"
+    }
+  ],
+  "type": "create_enchantment_industry:disenchanting",
+  "ingredients": [
+    {
+      "item": "mysticalagriculture:xp_droplet"
+    }
+  ],
+  "results": [
+    {
+      "fluid": "create_enchantment_industry:experience",
+      "amount": 10
+    }
+  ]
+}
