@@ -8,7 +8,7 @@
   "type": "create_enchantment_industry:disenchanting",
   "ingredients": [
     {
-      "item": "mysticalagriculture:xp_droplet"
+      "item": "mysticalagriculture:experience_droplet"
     }
   ],
   "results": [
