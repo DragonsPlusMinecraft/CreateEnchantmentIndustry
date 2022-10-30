@@ -57,7 +57,7 @@ public class BlazeEnchanterBlock extends HorizontalDirectionalBlock implements I
 
     @Override
     public BlockEntityType<? extends BlazeEnchanterBlockEntity> getTileEntityType() {
-        return CeiBlockEntities.BLAZE_ENCHANTING_ALTER.get();
+        return CeiBlockEntities.BLAZE_ENCHANTER.get();
     }
 
     @Override
