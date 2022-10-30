@@ -1,6 +1,10 @@
 package plus.dragons.createenchantmentindustry.entry;
 
+import com.google.common.collect.ImmutableMap;
 import com.tterrag.registrate.util.entry.BlockEntityEntry;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraftforge.event.RegistryEvent;
 import plus.dragons.createenchantmentindustry.EnchantmentIndustry;
 import plus.dragons.createenchantmentindustry.content.contraptions.enchanting.copier.CopierBlockEntity;
 import plus.dragons.createenchantmentindustry.content.contraptions.enchanting.copier.CopierRenderer;
@@ -18,17 +22,32 @@ public class CeiBlockEntities {
             .register();
 
     public static final BlockEntityEntry<CopierBlockEntity> COPIER = EnchantmentIndustry.registrate()
-            .tileEntity("copier_machine", CopierBlockEntity::new)
+            .tileEntity("copier", CopierBlockEntity::new)
             .validBlocks(CeiBlocks.COPIER)
             .renderer(() -> CopierRenderer::new)
             .register();
 
-    public static final BlockEntityEntry<BlazeEnchanterBlockEntity> BLAZE_ENCHANTING_ALTER = EnchantmentIndustry.registrate()
-            .tileEntity("blaze_enchanting_later", BlazeEnchanterBlockEntity::new)
+    public static final BlockEntityEntry<BlazeEnchanterBlockEntity> BLAZE_ENCHANTER = EnchantmentIndustry.registrate()
+            .tileEntity("blaze_enchanter", BlazeEnchanterBlockEntity::new)
             .validBlocks(CeiBlocks.BLAZE_ENCHANTER)
             .renderer(() -> BlazeEnchanterRenderer::new)
             .register();
-
-    public static void register() {
+    
+    public static void remap(RegistryEvent.MissingMappings<BlockEntityType<?>> event) {
+        var mappings = event.getMappings(EnchantmentIndustry.ID);
+        var remaps = ImmutableMap.<ResourceLocation, BlockEntityEntry<?>>builder()
+            .put(EnchantmentIndustry.genRL("copier_machine"), COPIER)
+            .put(EnchantmentIndustry.genRL("blaze_enchanting_later"), BLAZE_ENCHANTER)
+            .build();
+        for (var mapping : mappings) {
+            var remap = remaps.get(mapping.key);
+            if (remap != null) {
+                mapping.remap(remap.get());
+                EnchantmentIndustry.LOGGER.warn("Remapping block entity '{}' to '{}'...", mapping.key, remap.getId());
+            }
+        }
     }
+
+    public static void register() {}
+    
 }

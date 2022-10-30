@@ -4,6 +4,7 @@ import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.tterrag.registrate.util.nullness.NonNullSupplier;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -24,7 +25,7 @@ import plus.dragons.createenchantmentindustry.foundation.data.lang.LangMerger;
 
 @Mod(EnchantmentIndustry.ID)
 public class EnchantmentIndustry {
-    private static final Logger LOGGER = LogManager.getLogger();
+    public static final Logger LOGGER = LogManager.getLogger();
     public static final String ID = "create_enchantment_industry";
     private static final NonNullSupplier<CreateRegistrate> REGISTRATE = CreateRegistrate.lazy(ID);
 
@@ -33,32 +34,34 @@ public class EnchantmentIndustry {
         IEventBus forgeEventBus = MinecraftForge.EVENT_BUS;
     
         CeiConfigs.register(ModLoadingContext.get());
-        initAllEntries();
-        CeiRecipeTypes.register(modEventBus);
-
-        addForgeEventListeners(forgeEventBus);
-        modEventBus.addListener(EnchantmentIndustry::init);
+        
+        registerEntries(modEventBus);
+        registerForgeEvents(forgeEventBus);
+        
+        modEventBus.addListener(EnchantmentIndustry::setup);
         modEventBus.addListener(EnchantmentIndustry::datagen);
+        
         DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> EnchantmentIndustryClient.onClient(modEventBus, forgeEventBus));
     }
 
-    private void initAllEntries() {
-        CeiItems.register();
+    private void registerEntries(IEventBus modEventBus) {
         CeiBlocks.register();
         CeiBlockEntities.register();
+        CeiContainerTypes.register();
         CeiEntityTypes.register();
         CeiFluids.register();
-        CeiContainerTypes.register();
+        CeiItems.register();
+        CeiRecipeTypes.register(modEventBus);
         CeiTags.register();
-
     }
     
-    private void addForgeEventListeners(IEventBus forgeEventBus) {
-        forgeEventBus.addListener(CeiItems::fillCreateItemGroup);
+    private void registerForgeEvents(IEventBus forgeEventBus) {
+        forgeEventBus.addGenericListener(BlockEntityType.class, CeiBlockEntities::remap);
         forgeEventBus.addListener(CeiFluids::handleInkEffect);
+        forgeEventBus.addListener(CeiItems::fillCreateItemGroup);
     }
 
-    public static void init(final FMLCommonSetupEvent event) {
+    public static void setup(final FMLCommonSetupEvent event) {
         event.enqueueWork(() -> {
             CeiPackets.registerPackets();
             CeiAdvancements.register();
