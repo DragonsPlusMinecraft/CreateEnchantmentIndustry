@@ -3,9 +3,9 @@
 	"_": "->------------------------]  Game Elements  [------------------------<-",
 
 	"block.create_enchantment_industry.blaze_enchanter": "Blaze Enchanter",
-	"block.create_enchantment_industry.copier": "Copier",
 	"block.create_enchantment_industry.disenchanter": "Disenchanter",
 	"block.create_enchantment_industry.ink": "Ink",
+	"block.create_enchantment_industry.printer": "Printer",
 
 	"entity.create_enchantment_industry.hyper_experience_bottle": "Hyper Experience Bottle",
 	"entity.create_enchantment_industry.hyper_experience_orb": "Hyper Experience Orb",
@@ -25,15 +25,15 @@
 	"advancement.create_enchantment_industry.experienced_engineer": "Experienced Engineer",
 	"advancement.create_enchantment_industry.experienced_engineer.desc": "Get some Nuggets of Experience from crushing ores or killing mobs using deployer",
 	"advancement.create_enchantment_industry.black_as_ink": "Black as Ink!",
-	"advancement.create_enchantment_industry.black_as_ink.desc": "Get a bucket of Ink for your copying business",
+	"advancement.create_enchantment_industry.black_as_ink.desc": "Get a bucket of Ink for your publishing business",
 	"advancement.create_enchantment_industry.copiable_masterpiece": "Copiable Masterpiece",
-	"advancement.create_enchantment_industry.copiable_masterpiece.desc": "Copy a Written Book using Copier",
+	"advancement.create_enchantment_industry.copiable_masterpiece.desc": "Copy a Written Book using Printer",
 	"advancement.create_enchantment_industry.copiable_mystery": "Copiable Mystery",
-	"advancement.create_enchantment_industry.copiable_mystery.desc": "Copy a Enchanted Book using Copier",
+	"advancement.create_enchantment_industry.copiable_mystery.desc": "Copy a Enchanted Book using Printer",
 	"advancement.create_enchantment_industry.relic_restoration": "Relic Restoration",
 	"advancement.create_enchantment_industry.relic_restoration.desc": "Make brand new copy from a tattered book",
 	"advancement.create_enchantment_industry.great_publisher": "Great Publisher",
-	"advancement.create_enchantment_industry.great_publisher.desc": "Copy 1000 books using Copier",
+	"advancement.create_enchantment_industry.great_publisher.desc": "Copy 1000 books using Printer",
 	"advancement.create_enchantment_industry.experimental": "Experimental",
 	"advancement.create_enchantment_industry.experimental.desc": "Get some Liquid Experience for your enchanting experiment!",
 	"advancement.create_enchantment_industry.gone_with_the_foil": "Gone with the Foil",
@@ -56,13 +56,13 @@
 
 	"_": "->------------------------]  Ponder Content  [------------------------<-",
 
-	"create_enchantment_industry.ponder.tag.experience": "Experience RelatedExperience Related",
+	"create_enchantment_industry.ponder.tag.experience": "Experience Related",
 	"create_enchantment_industry.ponder.tag.experience.description": "Items and Components related to experience",
 
 	"create_enchantment_industry.ponder.absorb_experience_nugget.header": "Converting Experience Nugget to Liquid",
 	"create_enchantment_industry.ponder.absorb_experience_nugget.text_1": "Experience nugget can be absorbed by disenchanter.",
 
-	"create_enchantment_industry.ponder.copy.header": "Using Copier",
+	"create_enchantment_industry.ponder.copy.header": "Using Printer",
 
 	"create_enchantment_industry.ponder.disenchant.header": "Disenchanting",
 	"create_enchantment_industry.ponder.disenchant.text_1": "All received items will have their enchantments removed and the removed enchantments will be converted to liquid experience for storage.",
@@ -94,17 +94,21 @@
 
 	"_": "->------------------------]  Item Descriptions  [------------------------<-",
 
-	"create_enchantment_industry.tooltip.guide_header": "Current Enchantment:",
-	"create_enchantment_industry.tooltip.guide_not_configured": "Not Configured",
+	"item.create_enchantment_industry.enchanting_guide.tooltip": "ENCHANTING GUIDE TOOLTIPS",
+	"item.create_enchantment_industry.enchanting_guide.tooltip.current_enchantment": "Current Enchantment:",
+	"item.create_enchantment_industry.enchanting_guide.tooltip.not_configured": "Not Configured",
+
+	"item.create_enchantment_industry.experience_rotor.tooltip": "EXPERIENCE ROTOR",
+	"item.create_enchantment_industry.experience_rotor.tooltip.summary": "Used in _Mixing_ _Recipes_ to convert _Experience_ _Fluids_.",
 
 
 	"_": "->------------------------]  UI & Messages  [------------------------<-",
 
 	"create_enchantment_industry.gui.enchanting_guide.no_enchantment": "No Available Enchantment",
-	"create_enchantment_industry.gui.goggles.copier_machine": "Object to be copied:",
-	"create_enchantment_industry.gui.goggles.copier_no_target": "None",
+	"create_enchantment_industry.gui.goggles.printer": "Object to be copied:",
+	"create_enchantment_industry.gui.goggles.printer.no_target": "None",
 	"create_enchantment_industry.gui.goggles.blaze_enchanter": "Active Enchantment:",
-	"create_enchantment_industry.gui.goggles.invalid_target": "Invalid Target",
+	"create_enchantment_industry.gui.goggles.blaze_enchanter.invalid_target": "Invalid Target",
 	"create_enchantment_industry.gui.goggles.xp_consumption": "Consumes Experience: %s mB",
 	"create_enchantment_industry.gui.goggles.ink_consumption": "Consumes Ink: %s mB",
 	"create_enchantment_industry.gui.goggles.too_expensive": "Too Expensive!",
@@ -114,6 +118,6 @@
 
 	"recipe.create_enchantment_industry.disenchanting": "Disenchanting",
 
-	"_": "Thank you for translating Create Enchantment Industry!"
+	"_": "Thank you for translating Create: Enchantment Industry!"
 
 }

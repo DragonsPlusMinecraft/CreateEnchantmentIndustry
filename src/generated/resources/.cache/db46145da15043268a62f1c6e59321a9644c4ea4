@@ -1,21 +1,21 @@
-// 1.19.2	2022-10-21T19:48:15.4611809	Registrate Provider for create_enchantment_industry [Recipes, Advancements, Loot tables, Tags (blocks), Tags (items), Tags (fluids), Tags (entity_types), Blockstates, Item models, Lang (en_us/en_ud)]
+// 1.19.2	2022-10-30T23:42:23.7798566	Registrate Provider for create_enchantment_industry [Recipes, Advancements, Loot tables, Tags (blocks), Tags (items), Tags (fluids), Tags (entity_types), Blockstates, Item models, Lang (en_us/en_ud)]
 88f73ef97f52294b19161e10aad77704336e0544 assets/create_enchantment_industry/blockstates/blaze_enchanter.json
-a60b899a45f64f11dc2429795aa82fb09f9ba5c1 assets/create_enchantment_industry/blockstates/copier.json
 b906ace9e6b212e429e06eabb32921f76c818927 assets/create_enchantment_industry/blockstates/disenchanter.json
 4694ec9b6941ce15ec9cc99b0800fe2dfe4e7bcd assets/create_enchantment_industry/blockstates/ink.json
-5f33c3d5b53eedd88391d4aab643dd95c959eef5 assets/create_enchantment_industry/lang/en_ud.json
-9040b0304b48ad5ce090a1bd7d2a3e5c94fb9c51 assets/create_enchantment_industry/lang/en_us.json
+efd6ddb60930fc97b134f111b22d1c44f2cb0372 assets/create_enchantment_industry/blockstates/printer.json
+4941f3b2ed2fa6d6b70a63d885b310609e92807c assets/create_enchantment_industry/lang/en_ud.json
+c71e25c82a1e71c22d179ebadd297b790dce2f2d assets/create_enchantment_industry/lang/en_us.json
 4053a644101e03d49d56707d504b728fd1617353 assets/create_enchantment_industry/models/block/ink.json
-58115967a6eac2ee3b85bcacb1098657af4ba21a assets/create_enchantment_industry/models/item/copier.json
 e744a7aedaa0c74746aedd1405b15f4a12d7628c assets/create_enchantment_industry/models/item/disenchanter.json
 de16d83e19bb086c0e7699fe1fcf888a5e10cb10 assets/create_enchantment_industry/models/item/enchanting_guide.json
 abc3a8e4de7afdffb40b69c98af68435daf78825 assets/create_enchantment_industry/models/item/experience_rotor.json
 0170d8b146d25e6adac4fa1e5776b2ea2fdbab6c assets/create_enchantment_industry/models/item/hyper_experience_bottle.json
 19ee8c7a9cf1e86c33a5f652908a24a13c7002a2 assets/create_enchantment_industry/models/item/ink_bucket.json
+eb0186d0c7bb2a5fac2d629a4d82858936ac95b2 assets/create_enchantment_industry/models/item/printer.json
 2ff26d9fa71b48421a303350432127a111650d52 data/create/tags/items/upright_on_belt.json
 2b2a4bde1a1c86393b28fa3ff9b81ef1ddeed22d data/create_enchantment_industry/loot_tables/blocks/blaze_enchanter.json
-0077d56751be9dd90efa553ae56e2aba66fe1754 data/create_enchantment_industry/loot_tables/blocks/copier.json
 b755b755d0c36182c4aaccd9946cac3814ef8166 data/create_enchantment_industry/loot_tables/blocks/disenchanter.json
+0f863259ed68e1679c3bb9ada0f9873a94f9539b data/create_enchantment_industry/loot_tables/blocks/printer.json
 b89413cc07836def32dd8fef2f81359544921cd1 data/create_enchantment_industry/tags/items/ink_ingredient.json
 d812edf5d9d2f2959edb361184a86d2704032a99 data/forge/tags/fluids/ink.json
-1eda00207f836b153e0c29021af54ffc826890e8 data/minecraft/tags/blocks/mineable/pickaxe.json
+ecfc0746b0711b1e4997e82b55629789e865c935 data/minecraft/tags/blocks/mineable/pickaxe.json

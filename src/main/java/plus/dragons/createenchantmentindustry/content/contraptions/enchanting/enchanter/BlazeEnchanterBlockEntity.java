@@ -485,7 +485,7 @@ public class BlazeEnchanterBlockEntity extends SmartTileEntity implements IHaveG
                         .append(entry.getFirst().getFullname(entry.getSecond())));
                 if (!entry.valid())
                     tooltip.add(Component.literal("     ")
-                            .append(LANG.translate("gui.goggles.invalid_target").component())
+                            .append(LANG.translate("gui.goggles.blaze_enchanter.invalid_target").component())
                             .withStyle(ChatFormatting.RED));
                 else {
                     int consumption = Enchanting.getExperienceConsumption(entry.getFirst(), entry.getSecond());

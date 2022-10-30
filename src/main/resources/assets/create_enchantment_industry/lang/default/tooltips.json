@@ -1,4 +1,8 @@
 {
-  "create_enchantment_industry.tooltip.guide_header": "Current Enchantment:",
-  "create_enchantment_industry.tooltip.guide_not_configured": "Not Configured"
+  "item.create_enchantment_industry.enchanting_guide.tooltip": "ENCHANTING GUIDE TOOLTIPS",
+  "item.create_enchantment_industry.enchanting_guide.tooltip.current_enchantment": "Current Enchantment:",
+  "item.create_enchantment_industry.enchanting_guide.tooltip.not_configured": "Not Configured",
+
+  "item.create_enchantment_industry.experience_rotor.tooltip": "EXPERIENCE ROTOR",
+  "item.create_enchantment_industry.experience_rotor.tooltip.summary": "Used in _Mixing_ _Recipes_ to convert _Experience_ _Fluids_."
 }

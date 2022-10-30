@@ -35,7 +35,7 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
-import plus.dragons.createenchantmentindustry.content.contraptions.enchanting.copier.CopierBlockEntity;
+import plus.dragons.createenchantmentindustry.content.contraptions.enchanting.printer.PrinterBlockEntity;
 import plus.dragons.createenchantmentindustry.content.contraptions.enchanting.enchanter.BlazeEnchanterBlock;
 import plus.dragons.createenchantmentindustry.content.contraptions.enchanting.enchanter.BlazeEnchanterBlockEntity;
 import plus.dragons.createenchantmentindustry.entry.CeiBlocks;
@@ -48,7 +48,7 @@ import java.util.stream.Stream;
 
 public class EnchantmentScenes {
     public static void disenchant(SceneBuilder scene, SceneBuildingUtil util) {
-        scene.title("disenchant", "Disenchanting"); // We do not use PonderLocalization. For title only
+        scene.title("disenchant", "Disenchanting");
         scene.configureBasePlate(0, 0, 7);
         scene.scaleSceneView(.68f);
         scene.world.setKineticSpeed(util.select.everywhere(), 32f);
@@ -88,7 +88,7 @@ public class EnchantmentScenes {
     }
 
     public static void transformBlazeBurner(SceneBuilder scene, SceneBuildingUtil util) {
-        scene.title("transform", "Using Enchanting Guide"); // We do not use PonderLocalization. For title only
+        scene.title("transform", "Using Enchanting Guide");
         scene.configureBasePlate(0, 0, 3);
         scene.showBasePlate();
         scene.idle(5);
@@ -117,7 +117,7 @@ public class EnchantmentScenes {
     }
 
     public static void enchant(SceneBuilder scene, SceneBuildingUtil util) {
-        scene.title("enchant", "Enchanting"); // We do not use PonderLocalization. For title only
+        scene.title("enchant", "Enchanting");
         scene.configureBasePlate(0, 0, 8);
         scene.scaleSceneView(.60f);
         scene.world.setKineticSpeed(util.select.everywhere(), 0);
@@ -178,7 +178,7 @@ public class EnchantmentScenes {
     }
 
     public static void hyperEnchant(SceneBuilder scene, SceneBuildingUtil util) {
-        scene.title("hyper_enchant", "Hyper-enchanting"); // We do not use PonderLocalization. For title only
+        scene.title("hyper_enchant", "Hyper-enchanting");
         scene.configureBasePlate(0, 0, 5);
         scene.scaleSceneView(.68f);
         scene.showBasePlate();
@@ -215,7 +215,7 @@ public class EnchantmentScenes {
     }
 
     public static void handleExperienceNugget(SceneBuilder scene, SceneBuildingUtil util) {
-        scene.title("absorb_experience_nugget", "Converting Experience Nugget to Liquid"); // We do not use PonderLocalization. For title only
+        scene.title("absorb_experience_nugget", "Converting Experience Nugget to Liquid");
         scene.configureBasePlate(0, 0, 5);
         scene.scaleSceneView(.68f);
         scene.world.setKineticSpeed(util.select.everywhere(), 32f);
@@ -243,7 +243,7 @@ public class EnchantmentScenes {
     }
 
     public static void dropExperienceNugget(SceneBuilder scene, SceneBuildingUtil util) {
-        scene.title("drop_experience_nugget", "Maybe A Exp-farm?"); // We do not use PonderLocalization. For title only
+        scene.title("drop_experience_nugget", "Maybe A Exp-farm?");
         scene.configureBasePlate(0, 0, 3);
         scene.showBasePlate();
         scene.idle(5);
@@ -309,7 +309,7 @@ public class EnchantmentScenes {
     }
 
     public static void handleExperienceBottle(SceneBuilder scene, SceneBuildingUtil util) {
-        scene.title("experience_bottle", "Dealing with Bottle o' Enchanting"); // We do not use PonderLocalization. For title only
+        scene.title("experience_bottle", "Dealing with Bottle o' Enchanting");
         scene.configureBasePlate(0, 0, 6);
         scene.scaleSceneView(.68f);
         scene.world.setKineticSpeed(util.select.everywhere(), 16f);
@@ -364,7 +364,7 @@ public class EnchantmentScenes {
     }
 
     public static void copy(SceneBuilder scene, SceneBuildingUtil util) {
-        scene.title("copy", "Using Copier"); // We do not use PonderLocalization. For title only
+        scene.title("copy", "Using Printer");
         scene.configureBasePlate(0, 0, 7);
         scene.scaleSceneView(.68f);
         scene.world.setKineticSpeed(util.select.everywhere(), 32f);
@@ -376,7 +376,7 @@ public class EnchantmentScenes {
                 .withItem(Items.ENCHANTED_BOOK.getDefaultInstance()), 40);
         scene.world.modifyTileEntity(util.grid.at(2, 1, 5), CreativeFluidTankTileEntity.class, be -> ((CreativeFluidTankTileEntity.CreativeSmartFluidTank) be.getTankInventory())
                 .setContainedFluid(new FluidStack(CeiFluids.EXPERIENCE.get().getSource(), 1000)));
-        scene.world.modifyTileEntity(util.grid.at(2, 3, 2), CopierBlockEntity.class, be ->
+        scene.world.modifyTileEntity(util.grid.at(2, 3, 2), PrinterBlockEntity.class, be ->
                 be.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY).ifPresent(tank ->
                         tank.fill(new FluidStack(CeiFluids.EXPERIENCE.get().getSource(), 3000), IFluidHandler.FluidAction.EXECUTE)));
         scene.idle(40);
@@ -388,7 +388,7 @@ public class EnchantmentScenes {
         BlockPos copierPos = util.grid.at(2, 3, 2);
         scene.idle(60);
         scene.world.stallBeltItem(beltItem, true);
-        scene.world.modifyTileNBT(copier, CopierBlockEntity.class, nbt -> nbt.putInt("ProcessingTicks", 100));
+        scene.world.modifyTileNBT(copier, PrinterBlockEntity.class, nbt -> nbt.putInt("ProcessingTicks", 100));
         scene.idle(95);
         scene.world.removeItemsFromBelt(copierPos.below(2));
         scene.world.createItemOnBelt(copierPos.below(2), Direction.UP, Items.ENCHANTED_BOOK.getDefaultInstance());
@@ -399,7 +399,7 @@ public class EnchantmentScenes {
                 .withItem(Items.WRITTEN_BOOK.getDefaultInstance()), 40);
         scene.world.modifyTileEntity(util.grid.at(2, 1, 5), CreativeFluidTankTileEntity.class, be -> ((CreativeFluidTankTileEntity.CreativeSmartFluidTank) be.getTankInventory())
                 .setContainedFluid(new FluidStack(CeiFluids.INK.get().getSource(), 1000)));
-        scene.world.modifyTileEntity(util.grid.at(2, 3, 2), CopierBlockEntity.class, be ->
+        scene.world.modifyTileEntity(util.grid.at(2, 3, 2), PrinterBlockEntity.class, be ->
                 be.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY).ifPresent(tank -> {
                     tank.drain(3000, IFluidHandler.FluidAction.EXECUTE);
                     tank.fill(new FluidStack(CeiFluids.INK.get().getSource(), 3000), IFluidHandler.FluidAction.EXECUTE);
@@ -413,14 +413,14 @@ public class EnchantmentScenes {
         copierPos = util.grid.at(2, 3, 2);
         scene.idle(60);
         scene.world.stallBeltItem(beltItem, true);
-        scene.world.modifyTileNBT(copier, CopierBlockEntity.class, nbt -> nbt.putInt("ProcessingTicks", 100));
+        scene.world.modifyTileNBT(copier, PrinterBlockEntity.class, nbt -> nbt.putInt("ProcessingTicks", 100));
         scene.idle(95);
         scene.world.removeItemsFromBelt(copierPos.below(2));
         scene.world.createItemOnBelt(copierPos.below(2), Direction.UP, Items.WRITTEN_BOOK.getDefaultInstance());
     }
 
     public static void leak(SceneBuilder scene, SceneBuildingUtil util) {
-        scene.title("leak", "Oh no! It's leaking!"); // We do not use PonderLocalization. For title only
+        scene.title("leak", "Oh no! It's leaking!");
         scene.configureBasePlate(0, 0, 5);
         scene.scaleSceneView(.5f);
         scene.world.setKineticSpeed(util.select.everywhere(), 0f);

@@ -16,7 +16,7 @@ public class CeiPonderIndex {
         HELPER.forComponents(CeiBlocks.DISENCHANTER)
                 .addStoryBoard("disenchant", EnchantmentScenes::disenchant, CeiPonderTag.EXPERIENCE);
 
-        HELPER.forComponents(CeiBlocks.COPIER)
+        HELPER.forComponents(CeiBlocks.PRINTER)
                 .addStoryBoard("copy", EnchantmentScenes::copy, CeiPonderTag.EXPERIENCE);
 
         HELPER.forComponents(CeiItems.ENCHANTING_GUIDE)
@@ -34,7 +34,7 @@ public class CeiPonderIndex {
     public static void registerTags() {
         PonderRegistry.TAGS.forTag(CeiPonderTag.EXPERIENCE)
                 .add(CeiBlocks.DISENCHANTER)
-                .add(CeiBlocks.COPIER)
+                .add(CeiBlocks.PRINTER)
                 .add(CeiItems.ENCHANTING_GUIDE)
                 .add(AllItems.EXP_NUGGET)
                 .add(CeiItems.HYPER_EXP_BOTTLE)

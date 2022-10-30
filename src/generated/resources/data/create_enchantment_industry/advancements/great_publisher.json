@@ -19,7 +19,7 @@
     "frame": "challenge",
     "hidden": false,
     "icon": {
-      "item": "create_enchantment_industry:copier"
+      "item": "create_enchantment_industry:printer"
     },
     "show_toast": true,
     "title": {

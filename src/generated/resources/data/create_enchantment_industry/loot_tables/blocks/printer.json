@@ -11,7 +11,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "create_enchantment_industry:copier"
+          "name": "create_enchantment_industry:printer"
         }
       ],
       "rolls": 1.0

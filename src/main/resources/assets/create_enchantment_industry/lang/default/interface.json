@@ -1,9 +1,9 @@
 {
   "create_enchantment_industry.gui.enchanting_guide.no_enchantment": "No Available Enchantment",
-  "create_enchantment_industry.gui.goggles.copier_machine": "Object to be copied:",
-  "create_enchantment_industry.gui.goggles.copier_no_target": "None",
+  "create_enchantment_industry.gui.goggles.printer": "Object to be copied:",
+  "create_enchantment_industry.gui.goggles.printer.no_target": "None",
   "create_enchantment_industry.gui.goggles.blaze_enchanter": "Active Enchantment:",
-  "create_enchantment_industry.gui.goggles.invalid_target": "Invalid Target",
+  "create_enchantment_industry.gui.goggles.blaze_enchanter.invalid_target": "Invalid Target",
   "create_enchantment_industry.gui.goggles.xp_consumption": "Consumes Experience: %s mB",
   "create_enchantment_industry.gui.goggles.ink_consumption": "Consumes Ink: %s mB",
   "create_enchantment_industry.gui.goggles.too_expensive": "Too Expensive!",

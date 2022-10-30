@@ -8,9 +8,9 @@ import plus.dragons.createenchantmentindustry.content.contraptions.enchanting.en
 public class CeiBlockPartials {
 
     public static final PartialModel
-            COPIER_TOP = block("copier/top"),
-            COPIER_MIDDLE = block("copier/middle"),
-            COPIER_BOTTOM = block("copier/bottom");
+            PRINTER_TOP = block("printer/top"),
+            PRINTER_MIDDLE = block("printer/middle"),
+            PRINTER_BOTTOM = block("printer/bottom");
 
     private static PartialModel block(String path) {
         return new PartialModel(EnchantmentIndustry.genRL("block/" + path));

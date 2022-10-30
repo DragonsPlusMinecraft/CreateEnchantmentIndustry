@@ -3,6 +3,7 @@ package plus.dragons.createenchantmentindustry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.data.event.GatherDataEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.DistExecutor;
@@ -29,9 +30,10 @@ public class EnchantmentIndustry {
     public static final String ID = "create_enchantment_industry";
     public static final SafeRegistrate REGISTRATE = new SafeRegistrate(ID);
     public static final Lang LANG = new Lang(ID);
-    public static final AdvancementFactory ADVANCEMENT_FACTORY = AdvancementFactory.create(NAME, ID);
+    public static final AdvancementFactory ADVANCEMENT_FACTORY = AdvancementFactory.create(NAME, ID,
+        CeiAdvancements::register);
     public static final LangFactory LANG_FACTORY = LangFactory.create(NAME, ID)
-        .advancements(CeiAdvancements::register)
+        .advancements(() -> {})
         .ponders(() -> {
             CeiPonderIndex.register();
             CeiPonderIndex.registerTags();
@@ -49,7 +51,7 @@ public class EnchantmentIndustry {
         registerForgeEvents(forgeEventBus);
         
         modEventBus.addListener(EnchantmentIndustry::setup);
-        modEventBus.addListener(ADVANCEMENT_FACTORY::datagen);
+        modEventBus.addListener(EventPriority.LOWEST, ADVANCEMENT_FACTORY::datagen);
         modEventBus.addListener(EventPriority.LOWEST, LANG_FACTORY::datagen);
         
         DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> EnchantmentIndustryClient.onClient(modEventBus, forgeEventBus));
@@ -69,8 +71,10 @@ public class EnchantmentIndustry {
 
     private void registerForgeEvents(IEventBus forgeEventBus) {
         forgeEventBus.addListener(CeiBlockEntities::remap);
-        forgeEventBus.addListener(CeiFluids::handleInkEffect);
+        forgeEventBus.addListener(CeiBlocks::remap);
+        forgeEventBus.addListener(CeiItems::remap);
         forgeEventBus.addListener(CeiItems::fillCreateItemGroup);
+        forgeEventBus.addListener(CeiFluids::handleInkEffect);
     }
 
     public static void setup(final FMLCommonSetupEvent event) {

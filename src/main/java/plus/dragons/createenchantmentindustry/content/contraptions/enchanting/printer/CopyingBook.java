@@ -1,4 +1,4 @@
-package plus.dragons.createenchantmentindustry.content.contraptions.enchanting.copier;
+package plus.dragons.createenchantmentindustry.content.contraptions.enchanting.printer;
 
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;

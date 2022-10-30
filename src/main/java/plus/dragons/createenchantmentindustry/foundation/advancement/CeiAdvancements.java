@@ -24,8 +24,6 @@ import java.util.Map;
 
 import static plus.dragons.createenchantmentindustry.EnchantmentIndustry.ADVANCEMENT_FACTORY;
 
-@ParametersAreNonnullByDefault
-@MethodsReturnNonnullByDefault
 public class CeiAdvancements {
     
     public static final AdvancementHolder
@@ -38,23 +36,23 @@ public class CeiAdvancements {
             .externalTrigger("have_experience_nugget", InventoryChangeTrigger.TriggerInstance.hasItems(AllItems.EXP_NUGGET.get()))
             .parent(Create.asResource("display_board_0"))
             .build(),
-    // Copier Branch
+    // Printer Branch
     BLACK_AS_INK = ADVANCEMENT_FACTORY.builder("black_as_ink")
             .title("Black as Ink!")
-            .description("Get a bucket of Ink for your copying business")
+            .description("Get a bucket of Ink for your publishing business")
             .icon(CeiFluids.INK.get().getBucket())
             .externalTrigger("have_bucket_of_ink", InventoryChangeTrigger.TriggerInstance.hasItems(CeiFluids.INK.get().getBucket()))
             .parent(EXPERIENCED_ENGINEER)
             .build(),
     COPIABLE_MASTERPIECE = ADVANCEMENT_FACTORY.builder("copiable_masterpiece")
             .title("Copiable Masterpiece")
-            .description("Copy a Written Book using Copier")
+            .description("Copy a Written Book using Printer")
             .icon(Items.WRITTEN_BOOK)
             .parent(BLACK_AS_INK)
             .build(),
     COPIABLE_MYSTERY = ADVANCEMENT_FACTORY.builder("copiable_mystery")
             .title("Copiable Mystery")
-            .description("Copy a Enchanted Book using Copier")
+            .description("Copy a Enchanted Book using Printer")
             .icon(Items.ENCHANTED_BOOK)
             .announce(true)
             .parent(COPIABLE_MASTERPIECE)
@@ -69,9 +67,9 @@ public class CeiAdvancements {
             .build(),
     GREAT_PUBLISHER = ADVANCEMENT_FACTORY.builder("great_publisher")
             .title("Great Publisher")
-            .description("Copy 1000 books using Copier")
+            .description("Copy 1000 books using Printer")
             .externalTrigger("book_copied", new AccumulativeTrigger.TriggerInstance(CeiTriggers.BOOK_PRINTED.getId(), EntityPredicate.Composite.ANY, MinMaxBounds.Ints.atLeast(1000)))
-            .icon(CeiBlocks.COPIER)
+            .icon(CeiBlocks.PRINTER)
             .announce(true)
             .frame(FrameType.CHALLENGE)
             .parent(RELIC_RESTORATION)
