@@ -1,4 +1,4 @@
-package plus.dragons.createenchantmentindustry.content.contraptions.enchanting.copier;
+package plus.dragons.createenchantmentindustry.content.contraptions.enchanting.printer;
 
 import com.jozufozu.flywheel.core.PartialModel;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -14,15 +14,15 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.fluids.FluidStack;
 import plus.dragons.createenchantmentindustry.entry.CeiBlockPartials;
 
-public class CopierRenderer extends SmartTileEntityRenderer<CopierBlockEntity> {
-    public CopierRenderer(BlockEntityRendererProvider.Context context) {
+public class PrinterRenderer extends SmartTileEntityRenderer<PrinterBlockEntity> {
+    public PrinterRenderer(BlockEntityRendererProvider.Context context) {
         super(context);
     }
     
-    private static final PartialModel[] TUBE = { CeiBlockPartials.COPIER_TOP, CeiBlockPartials.COPIER_MIDDLE};
+    private static final PartialModel[] TUBE = { CeiBlockPartials.PRINTER_TOP, CeiBlockPartials.PRINTER_MIDDLE};
     
     @Override
-    protected void renderSafe(CopierBlockEntity be, float partialTicks, PoseStack ms, MultiBufferSource buffer, int light, int overlay) {
+    protected void renderSafe(PrinterBlockEntity be, float partialTicks, PoseStack ms, MultiBufferSource buffer, int light, int overlay) {
         super.renderSafe(be, partialTicks, ms, buffer, light, overlay);
         SmartFluidTankBehaviour tank = be.tank;
         if (tank == null)
@@ -71,7 +71,7 @@ public class CopierRenderer extends SmartTileEntityRenderer<CopierBlockEntity> {
         
         BlockState blockState = be.getBlockState();
         CachedBufferer
-            .partial(CeiBlockPartials.COPIER_BOTTOM, blockState)
+            .partial(CeiBlockPartials.PRINTER_BOTTOM, blockState)
             .translate(0, squeeze / 2f, 0)
             .light(light)
             .renderInto(ms, buffer.getBuffer(RenderType.solid()));

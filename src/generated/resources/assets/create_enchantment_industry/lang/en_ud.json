@@ -1,8 +1,8 @@
 {
   "block.create_enchantment_industry.blaze_enchanter": "\u0279\u01DD\u0287u\u0250\u0265\u0254u\u018E \u01DDz\u0250\u05DF\u15FA",
-  "block.create_enchantment_industry.copier": "\u0279\u01DD\u0131do\u0186",
   "block.create_enchantment_industry.disenchanter": "\u0279\u01DD\u0287u\u0250\u0265\u0254u\u01DDs\u0131\u15E1",
   "block.create_enchantment_industry.ink": "\u029EuI",
+  "block.create_enchantment_industry.printer": "\u0279\u01DD\u0287u\u0131\u0279\u0500",
   "entity.create_enchantment_industry.hyper_experience_bottle": "\u01DD\u05DF\u0287\u0287o\u15FA \u01DD\u0254u\u01DD\u0131\u0279\u01DDdx\u018E \u0279\u01DDd\u028EH",
   "entity.create_enchantment_industry.hyper_experience_orb": "q\u0279O \u01DD\u0254u\u01DD\u0131\u0279\u01DDdx\u018E \u0279\u01DDd\u028EH",
   "fluid.create_enchantment_industry.experience": "\u01DD\u0254u\u01DD\u0131\u0279\u01DDdx\u018E p\u0131nb\u0131\uA780",

@@ -4,6 +4,8 @@ import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.tterrag.registrate.util.nullness.NonNullSupplier;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
@@ -56,9 +58,11 @@ public class EnchantmentIndustry {
     }
     
     private void registerForgeEvents(IEventBus forgeEventBus) {
+        forgeEventBus.addGenericListener(Block.class, CeiBlocks::remap);
         forgeEventBus.addGenericListener(BlockEntityType.class, CeiBlockEntities::remap);
-        forgeEventBus.addListener(CeiFluids::handleInkEffect);
+        forgeEventBus.addGenericListener(Item.class, CeiItems::remap);
         forgeEventBus.addListener(CeiItems::fillCreateItemGroup);
+        forgeEventBus.addListener(CeiFluids::handleInkEffect);
     }
 
     public static void setup(final FMLCommonSetupEvent event) {
@@ -83,4 +87,5 @@ public class EnchantmentIndustry {
     public static CreateRegistrate registrate() {
         return REGISTRATE.get();
     }
+    
 }

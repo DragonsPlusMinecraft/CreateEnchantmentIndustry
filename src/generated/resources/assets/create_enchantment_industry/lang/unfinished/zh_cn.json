@@ -4,12 +4,12 @@
 	"_": "->------------------------]  Game Elements  [------------------------<-",
 
 	"block.create_enchantment_industry.blaze_enchanter": "烈焰人附魔室",
-	"block.create_enchantment_industry.copier": "复印机",
 	"block.create_enchantment_industry.disenchanter": "祛魔池",
 	"block.create_enchantment_industry.ink": "墨水",
+	"block.create_enchantment_industry.printer": "打印机",
 
 	"entity.create_enchantment_industry.hyper_experience_bottle": "超越附魔之瓶",
-	"entity.create_enchantment_industry.hyper_experience_orb": "UNLOCALIZED: Hyper Experience Orb",
+	"entity.create_enchantment_industry.hyper_experience_orb": "超经验球",
 
 	"fluid.create_enchantment_industry.experience": "液态经验",
 	"fluid.create_enchantment_industry.hyper_experience": "液态超经验",
@@ -25,15 +25,15 @@
 	"advancement.create_enchantment_industry.experienced_engineer": "“经验丰富”的工程师",
 	"advancement.create_enchantment_industry.experienced_engineer.desc": "通过粉碎矿物或机械手击杀生物获取一些经验颗粒",
 	"advancement.create_enchantment_industry.black_as_ink": "漆黑如墨！",
-	"advancement.create_enchantment_industry.black_as_ink.desc": "获取一桶墨水来开启你的复印大业",
+	"advancement.create_enchantment_industry.black_as_ink.desc": "获取一桶墨水来开启你的出版大业",
 	"advancement.create_enchantment_industry.copiable_masterpiece": "誊写杰作",
-	"advancement.create_enchantment_industry.copiable_masterpiece.desc": "用复印机复制一本成书",
+	"advancement.create_enchantment_industry.copiable_masterpiece.desc": "用打印机复印一本成书",
 	"advancement.create_enchantment_industry.copiable_mystery": "复刻奥秘",
-	"advancement.create_enchantment_industry.copiable_mystery.desc": "用复印机复制一本附魔书",
+	"advancement.create_enchantment_industry.copiable_mystery.desc": "用打印机复印一本附魔书",
 	"advancement.create_enchantment_industry.relic_restoration": "文物修复",
 	"advancement.create_enchantment_industry.relic_restoration.desc": "复印一本破烂不堪的成书",
 	"advancement.create_enchantment_industry.great_publisher": "大出版商",
-	"advancement.create_enchantment_industry.great_publisher.desc": "复印 1000 本书",
+	"advancement.create_enchantment_industry.great_publisher.desc": "用打印机复印 1000 本书",
 	"advancement.create_enchantment_industry.experimental": "实践经验",
 	"advancement.create_enchantment_industry.experimental.desc": "获取一些液态经验来完成你的附魔实验",
 	"advancement.create_enchantment_industry.gone_with_the_foil": "洗尽铅华",
@@ -57,10 +57,10 @@
 	"_": "->------------------------]  UI & Messages  [------------------------<-",
 
 	"create_enchantment_industry.gui.enchanting_guide.no_enchantment": "无可用附魔",
-	"create_enchantment_industry.gui.goggles.copier_machine": "复印物品：",
-	"create_enchantment_industry.gui.goggles.copier_no_target": "无",
+	"create_enchantment_industry.gui.goggles.printer": "复印物品：",
+	"create_enchantment_industry.gui.goggles.printer.no_target": "无",
 	"create_enchantment_industry.gui.goggles.blaze_enchanter": "当前附魔：",
-	"create_enchantment_industry.gui.goggles.invalid_target": "无效目标",
+	"create_enchantment_industry.gui.goggles.blaze_enchanter.invalid_target": "无效目标",
 	"create_enchantment_industry.gui.goggles.xp_consumption": "消耗经验：%s mB",
 	"create_enchantment_industry.gui.goggles.ink_consumption": "消耗墨水：%s mB",
 	"create_enchantment_industry.gui.goggles.too_expensive": "过于昂贵！",
@@ -68,7 +68,7 @@
 	"create_enchantment_industry.generic.unit.page": "页",
 	"create_enchantment_industry.generic.unit.pages": "页",
 
-	"recipe.create_enchantment_industry.disenchanting": "UNLOCALIZED: Disenchanting",
+	"recipe.create_enchantment_industry.disenchanting": "祛魔",
 
 
 	"_": "->------------------------]  Item Descriptions  [------------------------<-",

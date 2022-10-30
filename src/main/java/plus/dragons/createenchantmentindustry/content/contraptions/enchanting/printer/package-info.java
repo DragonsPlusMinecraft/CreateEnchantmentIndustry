@@ -1,6 +1,6 @@
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
-package plus.dragons.createenchantmentindustry.content.contraptions.enchanting.copier;
+package plus.dragons.createenchantmentindustry.content.contraptions.enchanting.printer;
 
 import net.minecraft.MethodsReturnNonnullByDefault;
 

@@ -1,12 +1,12 @@
 {
-	"_": "Missing Localizations: 0",
+	"_": "Missing Localizations: 11",
 
 	"_": "->------------------------]  Game Elements  [------------------------<-",
 
 	"block.create_enchantment_industry.blaze_enchanter": "블레이즈 마법 부여대",
-	"block.create_enchantment_industry.copier": "인쇄기",
 	"block.create_enchantment_industry.disenchanter": "마법 해제대",
 	"block.create_enchantment_industry.ink": "잉크",
+	"block.create_enchantment_industry.printer": "UNLOCALIZED: Printer",
 
 	"entity.create_enchantment_industry.hyper_experience_bottle": "고농축 경험치 병",
 	"entity.create_enchantment_industry.hyper_experience_orb": "UNLOCALIZED: Hyper Experience Orb",
@@ -57,10 +57,10 @@
 	"_": "->------------------------]  UI & Messages  [------------------------<-",
 
 	"create_enchantment_industry.gui.enchanting_guide.no_enchantment": "마법 없음",
-	"create_enchantment_industry.gui.goggles.copier_machine": "인쇄될 내용:",
-	"create_enchantment_industry.gui.goggles.copier_no_target": "없음",
+	"create_enchantment_industry.gui.goggles.printer": "인쇄될 내용:",
+	"create_enchantment_industry.gui.goggles.printer.no_target": "없음",
 	"create_enchantment_industry.gui.goggles.blaze_enchanter": "현재 마법:",
-	"create_enchantment_industry.gui.goggles.invalid_target": "UNLOCALIZED: Invalid Target",
+	"create_enchantment_industry.gui.goggles.blaze_enchanter.invalid_target": "UNLOCALIZED: Invalid Target",
 	"create_enchantment_industry.gui.goggles.xp_consumption": "UNLOCALIZED: Consumes Experience: %s mB",
 	"create_enchantment_industry.gui.goggles.ink_consumption": "UNLOCALIZED: Consumes Ink: %s mB",
 	"create_enchantment_industry.gui.goggles.too_expensive": "너무 비쌉니다!",

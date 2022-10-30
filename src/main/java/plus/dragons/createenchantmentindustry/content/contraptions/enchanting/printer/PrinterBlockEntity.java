@@ -1,4 +1,4 @@
-package plus.dragons.createenchantmentindustry.content.contraptions.enchanting.copier;
+package plus.dragons.createenchantmentindustry.content.contraptions.enchanting.printer;
 
 import com.simibubi.create.content.contraptions.goggles.IHaveGoggleInformation;
 import com.simibubi.create.content.contraptions.relays.belt.transport.TransportedItemStack;
@@ -45,7 +45,7 @@ import java.util.List;
 import static com.simibubi.create.foundation.tileEntity.behaviour.belt.BeltProcessingBehaviour.ProcessingResult.HOLD;
 import static com.simibubi.create.foundation.tileEntity.behaviour.belt.BeltProcessingBehaviour.ProcessingResult.PASS;
 
-public class CopierBlockEntity extends SmartTileEntity implements IHaveGoggleInformation {
+public class PrinterBlockEntity extends SmartTileEntity implements IHaveGoggleInformation {
 
     public static final int COPYING_TIME = 100;
     protected BeltProcessingBehaviour beltProcessing;
@@ -55,7 +55,7 @@ public class CopierBlockEntity extends SmartTileEntity implements IHaveGoggleInf
     public boolean tooExpensive;
     boolean sendParticles;
 
-    public CopierBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
+    public PrinterBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
         processingTicks = -1;
         copyTarget = null;
@@ -217,9 +217,9 @@ public class CopierBlockEntity extends SmartTileEntity implements IHaveGoggleInf
 
     @Override
     public boolean addToGoggleTooltip(List<Component> tooltip, boolean isPlayerSneaking) {
-        CeiLang.translate("gui.goggles.copier_machine").forGoggles(tooltip);
+        CeiLang.translate("gui.goggles.printer").forGoggles(tooltip);
         if (copyTarget == null) {
-            CeiLang.translate("gui.goggles.copier_no_target")
+            CeiLang.translate("gui.goggles.printer.no_target")
                     .style(ChatFormatting.GRAY)
                     .forGoggles(tooltip, 1);
         } else {

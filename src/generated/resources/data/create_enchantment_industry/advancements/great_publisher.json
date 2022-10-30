@@ -2,7 +2,7 @@
   "parent": "create_enchantment_industry:relic_restoration",
   "display": {
     "icon": {
-      "item": "create_enchantment_industry:copier"
+      "item": "create_enchantment_industry:printer"
     },
     "title": {
       "translate": "advancement.create_enchantment_industry.great_publisher"

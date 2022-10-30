@@ -34,7 +34,7 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
-import plus.dragons.createenchantmentindustry.content.contraptions.enchanting.copier.CopierBlockEntity;
+import plus.dragons.createenchantmentindustry.content.contraptions.enchanting.printer.PrinterBlockEntity;
 import plus.dragons.createenchantmentindustry.content.contraptions.enchanting.enchanter.BlazeEnchanterBlock;
 import plus.dragons.createenchantmentindustry.content.contraptions.enchanting.enchanter.BlazeEnchanterBlockEntity;
 import plus.dragons.createenchantmentindustry.entry.CeiBlocks;
@@ -377,7 +377,7 @@ public class EnchantmentScenes {
                 .withItem(Items.ENCHANTED_BOOK.getDefaultInstance()), 40);
         scene.world.modifyTileEntity(util.grid.at(2,1,5), CreativeFluidTankTileEntity.class, be -> ((CreativeFluidTankTileEntity.CreativeSmartFluidTank) be.getTankInventory())
                 .setContainedFluid(new FluidStack(CeiFluids.EXPERIENCE.get().getSource(), 1000)));
-        scene.world.modifyTileEntity(util.grid.at(2,3,2), CopierBlockEntity.class, be ->
+        scene.world.modifyTileEntity(util.grid.at(2,3,2), PrinterBlockEntity.class, be ->
                 be.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY).ifPresent(tank->
                         tank.fill(new FluidStack(CeiFluids.EXPERIENCE.get().getSource(),3000), IFluidHandler.FluidAction.EXECUTE)));
         scene.idle(40);
@@ -389,7 +389,7 @@ public class EnchantmentScenes {
         BlockPos copierPos = util.grid.at(2, 3, 2);
         scene.idle(60);
         scene.world.stallBeltItem(beltItem, true);
-        scene.world.modifyTileNBT(copier, CopierBlockEntity.class, nbt -> nbt.putInt("ProcessingTicks", 100));
+        scene.world.modifyTileNBT(copier, PrinterBlockEntity.class, nbt -> nbt.putInt("ProcessingTicks", 100));
         scene.idle(95);
         scene.world.removeItemsFromBelt(copierPos.below(2));
         scene.world.createItemOnBelt(copierPos.below(2), Direction.UP, Items.ENCHANTED_BOOK.getDefaultInstance());
@@ -400,7 +400,7 @@ public class EnchantmentScenes {
                 .withItem(Items.WRITTEN_BOOK.getDefaultInstance()), 40);
         scene.world.modifyTileEntity(util.grid.at(2,1,5), CreativeFluidTankTileEntity.class, be -> ((CreativeFluidTankTileEntity.CreativeSmartFluidTank) be.getTankInventory())
                 .setContainedFluid(new FluidStack(CeiFluids.INK.get().getSource(), 1000)));
-        scene.world.modifyTileEntity(util.grid.at(2,3,2), CopierBlockEntity.class, be ->
+        scene.world.modifyTileEntity(util.grid.at(2,3,2), PrinterBlockEntity.class, be ->
                 be.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY).ifPresent(tank->{
                     tank.drain(3000, IFluidHandler.FluidAction.EXECUTE);
                     tank.fill(new FluidStack(CeiFluids.INK.get().getSource(),3000), IFluidHandler.FluidAction.EXECUTE);
@@ -414,7 +414,7 @@ public class EnchantmentScenes {
         copierPos = util.grid.at(2, 3, 2);
         scene.idle(60);
         scene.world.stallBeltItem(beltItem, true);
-        scene.world.modifyTileNBT(copier, CopierBlockEntity.class, nbt -> nbt.putInt("ProcessingTicks", 100));
+        scene.world.modifyTileNBT(copier, PrinterBlockEntity.class, nbt -> nbt.putInt("ProcessingTicks", 100));
         scene.idle(95);
         scene.world.removeItemsFromBelt(copierPos.below(2));
         scene.world.createItemOnBelt(copierPos.below(2), Direction.UP, Items.WRITTEN_BOOK.getDefaultInstance());

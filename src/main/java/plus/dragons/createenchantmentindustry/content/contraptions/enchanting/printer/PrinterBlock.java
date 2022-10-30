@@ -1,4 +1,4 @@
-package plus.dragons.createenchantmentindustry.content.contraptions.enchanting.copier;
+package plus.dragons.createenchantmentindustry.content.contraptions.enchanting.printer;
 
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.AllShapes;
@@ -36,8 +36,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 @SuppressWarnings("deprecation")
-public class CopierBlock extends Block implements IWrenchable, ITE<CopierBlockEntity> {
-    public CopierBlock(Properties pProperties) {
+public class PrinterBlock extends Block implements IWrenchable, ITE<PrinterBlockEntity> {
+    public PrinterBlock(Properties pProperties) {
         super(pProperties);
     }
 
@@ -55,7 +55,7 @@ public class CopierBlock extends Block implements IWrenchable, ITE<CopierBlockEn
     @Override
     public List<ItemStack> getDrops(BlockState pState, LootContext.Builder pBuilder) {
         var ret = new ArrayList<ItemStack>();
-        ret.add(CeiBlocks.COPIER.asStack());
+        ret.add(CeiBlocks.PRINTER.asStack());
         return ret;
     }
 
@@ -131,12 +131,12 @@ public class CopierBlock extends Block implements IWrenchable, ITE<CopierBlockEn
     }
 
     @Override
-    public Class<CopierBlockEntity> getTileEntityClass() {
-        return CopierBlockEntity.class;
+    public Class<PrinterBlockEntity> getTileEntityClass() {
+        return PrinterBlockEntity.class;
     }
 
     @Override
-    public BlockEntityType<? extends CopierBlockEntity> getTileEntityType() {
-        return CeiBlockEntities.COPIER.get();
+    public BlockEntityType<? extends PrinterBlockEntity> getTileEntityType() {
+        return CeiBlockEntities.PRINTER.get();
     }
 }

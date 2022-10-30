@@ -1,5 +1,6 @@
 package plus.dragons.createenchantmentindustry.entry;
 
+import com.google.common.collect.ImmutableMap;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.AllFluids;
 import com.simibubi.create.AllItems;
@@ -7,12 +8,16 @@ import com.simibubi.create.Create;
 import com.simibubi.create.content.AllSections;
 import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.tterrag.registrate.util.entry.ItemEntry;
+import com.tterrag.registrate.util.entry.ItemProviderEntry;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Rarity;
+import net.minecraftforge.event.RegistryEvent;
 import plus.dragons.createenchantmentindustry.EnchantmentIndustry;
 import plus.dragons.createenchantmentindustry.api.event.FillCreateItemGroupEvent;
+import plus.dragons.createenchantmentindustry.content.contraptions.enchanting.enchanter.EnchantingGuideItem;
 import plus.dragons.createenchantmentindustry.content.contraptions.fluids.experience.ExperienceRotorItem;
 import plus.dragons.createenchantmentindustry.content.contraptions.fluids.experience.HyperExperienceBottleItem;
-import plus.dragons.createenchantmentindustry.content.contraptions.enchanting.enchanter.EnchantingGuideItem;
 
 public class CeiItems {
 
@@ -38,7 +43,7 @@ public class CeiItems {
     public static void fillCreateItemGroup(FillCreateItemGroupEvent event) {
         if (event.getItemGroup() == Create.BASE_CREATIVE_TAB) {
             event.addInsertion(AllBlocks.ITEM_DRAIN.get(), CeiBlocks.DISENCHANTER.asStack());
-            event.addInsertion(AllBlocks.SPOUT.get(), CeiBlocks.COPIER.asStack());
+            event.addInsertion(AllBlocks.SPOUT.get(), CeiBlocks.PRINTER.asStack());
             event.addInsertion(AllBlocks.BLAZE_BURNER.get(), ENCHANTING_GUIDE.asStack());
             event.addInsertion(AllItems.ELECTRON_TUBE.get(), EXPERIENCE_ROTOR.asStack());
             event.addInsertion(AllFluids.CHOCOLATE.get().getBucket(), CeiFluids.INK.get().getBucket().getDefaultInstance());
@@ -46,6 +51,20 @@ public class CeiItems {
         }
     }
     
-    public static void register() {
+    public static void remap(RegistryEvent.MissingMappings<Item> event) {
+        var mappings = event.getMappings(EnchantmentIndustry.ID);
+        var remaps = ImmutableMap.<ResourceLocation, ItemProviderEntry<?>>builder()
+            .put(EnchantmentIndustry.genRL("copier"), CeiBlocks.PRINTER)
+            .build();
+        for (var mapping : mappings) {
+            var remap = remaps.get(mapping.key);
+            if (remap != null) {
+                mapping.remap(remap.get().asItem());
+                EnchantmentIndustry.LOGGER.warn("Remapping item [{}] to [{}]...", mapping.key, remap.getId());
+            }
+        }
     }
+    
+    public static void register() {}
+    
 }

@@ -51,23 +51,23 @@ public class CeiAdvancements implements DataProvider {
         .externalTrigger("have_experience_nugget", InventoryChangeTrigger.TriggerInstance.hasItems(AllItems.EXP_NUGGET.get()))
         .parent(Create.asResource("display_board_0"))
         .build(),
-    // Copier Branch
+    // Printer Branch
     BLACK_AS_INK = builder("black_as_ink")
         .title("Black as Ink!")
-        .description("Get a bucket of Ink for your copying business")
+        .description("Get a bucket of Ink for your publishing business")
         .icon(CeiFluids.INK.get().getBucket())
         .externalTrigger("have_bucket_of_ink", InventoryChangeTrigger.TriggerInstance.hasItems(CeiFluids.INK.get().getBucket()))
         .parent(EXPERIENCED_ENGINEER)
         .build(),
     COPIABLE_MASTERPIECE = builder("copiable_masterpiece")
         .title("Copiable Masterpiece")
-        .description("Copy a Written Book using Copier")
+        .description("Copy a Written Book using Printer")
         .icon(Items.WRITTEN_BOOK)
         .parent(BLACK_AS_INK)
         .build(),
     COPIABLE_MYSTERY = builder("copiable_mystery")
         .title("Copiable Mystery")
-        .description("Copy a Enchanted Book using Copier")
+        .description("Copy a Enchanted Book using Printer")
         .icon(Items.ENCHANTED_BOOK)
         .announce(true)
         .parent(COPIABLE_MASTERPIECE)
@@ -82,9 +82,9 @@ public class CeiAdvancements implements DataProvider {
         .build(),
     GREAT_PUBLISHER = builder("great_publisher")
         .title("Great Publisher")
-        .description("Copy 1000 books using Copier")
+        .description("Copy 1000 books using Printer")
         .externalTrigger("book_copied", AccumulativeTrigger.TriggerInstance.ofBook(1000))
-        .icon(CeiBlocks.COPIER)
+        .icon(CeiBlocks.PRINTER)
         .announce(true)
         .frame(FrameType.CHALLENGE)
         .parent(RELIC_RESTORATION)

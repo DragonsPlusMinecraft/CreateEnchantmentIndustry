@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "create_enchantment_industry:block/printer/block"
+    }
+  }
+}

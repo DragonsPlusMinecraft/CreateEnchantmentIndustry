@@ -6,8 +6,8 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraftforge.event.RegistryEvent;
 import plus.dragons.createenchantmentindustry.EnchantmentIndustry;
-import plus.dragons.createenchantmentindustry.content.contraptions.enchanting.copier.CopierBlockEntity;
-import plus.dragons.createenchantmentindustry.content.contraptions.enchanting.copier.CopierRenderer;
+import plus.dragons.createenchantmentindustry.content.contraptions.enchanting.printer.PrinterBlockEntity;
+import plus.dragons.createenchantmentindustry.content.contraptions.enchanting.printer.PrinterRenderer;
 import plus.dragons.createenchantmentindustry.content.contraptions.enchanting.disenchanter.DisenchanterBlockEntity;
 import plus.dragons.createenchantmentindustry.content.contraptions.enchanting.disenchanter.DisenchanterRenderer;
 import plus.dragons.createenchantmentindustry.content.contraptions.enchanting.enchanter.BlazeEnchanterBlockEntity;
@@ -21,10 +21,10 @@ public class CeiBlockEntities {
             .renderer(() -> DisenchanterRenderer::new)
             .register();
 
-    public static final BlockEntityEntry<CopierBlockEntity> COPIER = EnchantmentIndustry.registrate()
-            .tileEntity("copier", CopierBlockEntity::new)
-            .validBlocks(CeiBlocks.COPIER)
-            .renderer(() -> CopierRenderer::new)
+    public static final BlockEntityEntry<PrinterBlockEntity> PRINTER = EnchantmentIndustry.registrate()
+            .tileEntity("printer", PrinterBlockEntity::new)
+            .validBlocks(CeiBlocks.PRINTER)
+            .renderer(() -> PrinterRenderer::new)
             .register();
 
     public static final BlockEntityEntry<BlazeEnchanterBlockEntity> BLAZE_ENCHANTER = EnchantmentIndustry.registrate()
@@ -36,14 +36,14 @@ public class CeiBlockEntities {
     public static void remap(RegistryEvent.MissingMappings<BlockEntityType<?>> event) {
         var mappings = event.getMappings(EnchantmentIndustry.ID);
         var remaps = ImmutableMap.<ResourceLocation, BlockEntityEntry<?>>builder()
-            .put(EnchantmentIndustry.genRL("copier_machine"), COPIER)
+            .put(EnchantmentIndustry.genRL("copier_machine"), PRINTER)
             .put(EnchantmentIndustry.genRL("blaze_enchanting_later"), BLAZE_ENCHANTER)
             .build();
         for (var mapping : mappings) {
             var remap = remaps.get(mapping.key);
             if (remap != null) {
                 mapping.remap(remap.get());
-                EnchantmentIndustry.LOGGER.warn("Remapping block entity '{}' to '{}'...", mapping.key, remap.getId());
+                EnchantmentIndustry.LOGGER.warn("Remapping block entity [{}] to [{}]...", mapping.key, remap.getId());
             }
         }
     }
