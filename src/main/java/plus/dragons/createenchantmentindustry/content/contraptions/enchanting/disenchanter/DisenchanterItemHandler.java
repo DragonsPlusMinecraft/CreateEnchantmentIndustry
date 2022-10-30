@@ -34,7 +34,7 @@ public class DisenchanterItemHandler implements IItemHandler {
             return stack;
 
         ItemStack disenchanted = Disenchanting.disenchantAndInsert(be, stack, simulate);
-        if (!ItemStack.isSameItemSameTags(stack, disenchanted)) {
+        if (!ItemStack.matches(stack, disenchanted)) {
             return disenchanted;
         }
 
