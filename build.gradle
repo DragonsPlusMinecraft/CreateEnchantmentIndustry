@@ -1,71 +1,32 @@
-buildscript {
-    repositories {
-        // These repositories are only for Gradle plugins, put any other repositories in the repository block further below
-        maven { url = 'https://maven.minecraftforge.net' }
-        mavenCentral()
-        maven { url = 'https://maven.parchmentmc.org' }
-        maven { url = 'https://repo.spongepowered.org/repository/maven-public' }
-    }
-    dependencies {
-        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: "${forgegradle_version}", changing: true
-        classpath "org.parchmentmc:librarian:${librarian_version}"
-        classpath "org.spongepowered:mixingradle:${mixingradle_version}"
-    }
+plugins {
+    id 'idea'
+    id 'net.minecraftforge.gradle'
+    id 'org.spongepowered.mixin'
+    id 'org.parchmentmc.librarian.forgegradle'
+    id 'maven-publish'
+    id 'com.matthewprenger.cursegradle' version '1.4.0'
 }
-// Only edit below this line, the above code adds and enables the necessary things for Forge to be setup.
-apply plugin: 'net.minecraftforge.gradle'
-apply plugin: 'org.parchmentmc.librarian.forgegradle'
-apply plugin: 'eclipse'
-apply plugin: 'maven-publish'
-apply plugin: 'org.spongepowered.mixin'
 
 version = mod_version
-group = 'plus.dragons.createenchantmentindustry' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
+group = 'plus.dragons.createenchantmentindustry'
 archivesBaseName = "create_enchantment_industry-${artifact_minecraft_version}-for-create-${create_version}"
 
-// Mojang ships Java 17 to end users in 1.18+, so your mod should target Java 17.
 java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 
 println "Java: ${System.getProperty 'java.version'}, JVM: ${System.getProperty 'java.vm.version'} (${System.getProperty 'java.vendor'}), Arch: ${System.getProperty 'os.arch'}"
 minecraft {
-    // The mappings can be changed at any time and must be in the following format.
-    // Channel:   Version:
-    // official   MCVersion             Official field/method names from Mojang mapping files
-    // parchment  YYYY.MM.DD-MCVersion  Open community-sourced parameter names and javadocs layered on top of official
-    //
-    // You must be aware of the Mojang license when using the 'official' or 'parchment' mappings.
-    // See more information here: https://github.com/MinecraftForge/MCPConfig/blob/master/Mojang.md
-    //
-    // Parchment is an unofficial project maintained by ParchmentMC, separate from MinecraftForge
-    // Additional setup is needed to use their mappings: https://github.com/ParchmentMC/Parchment/wiki/Getting-Started
-    //
-    // Use non-default mappings at your own risk. They may not always work.
-    // Simply re-run your setup task after changing the mappings to update your workspace.
     mappings channel: 'parchment', version: "${parchment_version}-${minecraft_version}"
 
-    accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg') // Currently, this location cannot be changed from the default.
+    accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
 
-    // Default run configurations.
-    // These can be tweaked, removed, or duplicated as needed.
     runs {
         client {
             workingDirectory project.file('run')
 
             arg '-mixin.config=create_enchantment_industry.mixins.json'
 
-            // Recommended logging data for a userdev environment
-            // The markers can be added/remove as needed separated by commas.
-            // "SCAN": For mods scan.
-            // "REGISTRIES": For firing of registry events.
-            // "REGISTRYDUMP": For getting the contents of all registries.
             property 'forge.logging.markers', 'REGISTRIES'
 
-            // Recommended logging level for the console
-            // You can set various levels here.
-            // Please read: https://stackoverflow.com/questions/2031163/when-to-use-the-different-log-levels
-            property 'forge.logging.console.level', 'debug'
-
-            // Comma-separated list of namespaces to load gametests from. Empty = all namespaces.
             property 'forge.enabledGameTestNamespaces', 'create_enchantment_industry'
 
             mods {
@@ -84,7 +45,6 @@ minecraft {
 
             property 'forge.logging.console.level', 'debug'
 
-            // Comma-separated list of namespaces to load gametests from. Empty = all namespaces.
             property 'forge.enabledGameTestNamespaces', 'create_enchantment_industry'
 
             mods {
@@ -101,7 +61,6 @@ minecraft {
 
             property 'forge.logging.console.level', 'debug'
 
-            // Specify the modid for data generation, where to output the resulting resource, and where to look for existing resources.
             args '--mod', 'create_enchantment_industry',
                  '--all', '--output', file('src/generated/resources/'),
                  '--existing', file('src/main/resources/'),
@@ -118,46 +77,27 @@ minecraft {
 
 
 repositories {
-    // Put repositories for dependencies here
-    // ForgeGradle automatically adds the Forge maven and Maven Central for you
-
-    // If you have mod jar dependencies in ./libs, you can declare them as a repository like so:
-    // flatDir {
-    //     dir 'libs'
-    // }
     maven {
-        name = 'tterrag maven'
-        url = 'https://maven.tterrag.com/'
+        name 'Tterrag Maven'
+        url 'https://maven.tterrag.com/'
     }
     maven {
-        // Location of the maven that hosts JEI files (and TiC)
-        name 'Progwml6 maven'
+        name 'Progwml6 Maven'
         url 'https://dvs1.progwml6.com/files/maven'
     }
     maven {
-        // Location of the maven for vazkii's mods
-        name 'blamejared'
+        name 'Blamejared Maven'
         url 'https://maven.blamejared.com'
     }
     maven {
-        //location of the maven for curios api
-        url = "https://maven.theillusivec4.top/"
+        name 'The Illusive C4 Maven'
+        url 'https://maven.theillusivec4.top/'
     }
 }
 
 dependencies {
-    // Specify the version of Minecraft to use. If this is any group other than 'net.minecraft', it is assumed
-    // that the dep is a ForgeGradle 'patcher' dependency, and its patches will be applied.
-    // The userdev artifact is a special name and will get all sorts of transformations applied to it.
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
 
-    // Real mod deobf dependency examples - these get remapped to your current mappings
-    // compileOnly fg.deobf("mezz.jei:jei-${mc_version}:${jei_version}:api") // Adds JEI API as a compile dependency
-    // runtimeOnly fg.deobf("mezz.jei:jei-${mc_version}:${jei_version}") // Adds the full JEI mod as a runtime dependency
-    // implementation fg.deobf("com.tterrag.registrate:Registrate:MC${mc_version}-${registrate_version}") // Adds registrate as a dependency
-
-    // Examples using mod jars from ./libs
-    // implementation fg.deobf("blank:coolmod-${mc_version}:${coolmod_version}")
     implementation fg.deobf("com.simibubi.create:create-${create_minecraft_version}:${create_version}-${create_version_build}:all") { transitive = false }
     implementation fg.deobf("com.jozufozu.flywheel:flywheel-forge-${flywheel_minecraft_version}:${flywheel_version}")
     compileOnly fg.deobf("com.tterrag.registrate:Registrate:${registrate_version}")
@@ -168,13 +108,9 @@ dependencies {
     compileOnly fg.deobf("top.theillusivec4.curios:curios-forge:${curios_minecraft_version}-${curios_version}:api")
     runtimeOnly fg.deobf("top.theillusivec4.curios:curios-forge:${curios_minecraft_version}-${curios_version}")
 
-    // For more info...
-    // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html
-    // http://www.gradle.org/docs/current/userguide/dependency_management.html
     annotationProcessor "org.spongepowered:mixin:${mixin_version}:processor"
 }
 
-// Include resources generated by data generators.
 sourceSets.main.resources { srcDir 'src/generated/resources' }
 
 mixin {
@@ -185,8 +121,6 @@ mixin {
     debug.export = true
 }
 
-
-// Example for how to get properties into the manifest for reading at runtime.
 jar {
     manifest {
         attributes([
@@ -210,6 +144,41 @@ jar.finalizedBy('reobfJar')
 
 addLicense(jar)
 
+curseforge {
+    if (System.getenv('CURSEFORGE_API_KEY') != null && project.hasProperty('cf_project_id')) {
+        apiKey = System.getenv("CURSEFORGE_API_KEY")
+        project {
+            id = project.cf_project_id
+            releaseType = project.cf_release_type
+            if (project.hasProperty('cf_game_versions')) {
+                def gameVersions = project.cf_game_versions.split(", ")
+                gameVersions.each { String gameVersion ->
+                    addGameVersion gameVersion
+                }
+            }
+            if (project.hasProperty('cf_java_versions')) {
+                def gameVersions = project.cf_java_versions.split(", ")
+                gameVersions.each { String gameVersion ->
+                    addGameVersion gameVersion
+                }
+            }
+            addGameVersion project.cf_modloader
+            mainArtifact(jar) {
+                displayName = "CEI ${mod_version} for Create ${artifact_minecraft_version}-${create_version}"
+                relations {
+                    if(project.hasProperty('cf_required_dependencies')) {
+                        project.cf_required_dependencies.split(", ").each { String slug ->
+                            requiredDependency slug
+                        }
+                    }
+                }
+            }
+            changelog = file("${projectDir}/changelog/${mod_version}.md")
+            changelogType = 'markdown'
+        }
+    }
+}
+
 publishing {
     publications {
         mavenJava(MavenPublication) {
@@ -224,5 +193,5 @@ publishing {
 }
 
 tasks.withType(JavaCompile).configureEach {
-    options.encoding = 'UTF-8' // Use the UTF-8 charset for Java compilation
+    options.encoding = 'UTF-8'
 }
