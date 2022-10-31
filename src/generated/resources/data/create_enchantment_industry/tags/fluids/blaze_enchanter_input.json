@@ -1,0 +1,9 @@
+{
+  "replace": false,
+  "values": [
+    "create_enchantment_industry:flowing_experience",
+    "create_enchantment_industry:experience",
+    "create_enchantment_industry:flowing_hyper_experience",
+    "create_enchantment_industry:hyper_experience"
+  ]
+}

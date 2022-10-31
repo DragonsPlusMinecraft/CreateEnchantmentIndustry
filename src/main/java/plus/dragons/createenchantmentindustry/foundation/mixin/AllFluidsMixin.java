@@ -15,7 +15,7 @@ public class AllFluidsMixin {
     
     @Inject(method = "getLavaInteraction", at = @At("HEAD"), cancellable = true)
     private static void enchantmentIndustry$handleInkLavaInteraction(FluidState fluidState, CallbackInfoReturnable<BlockState> cir) {
-        if(fluidState.is(CeiTags.ModFluidTags.INK.tag())) {
+        if(fluidState.is(CeiTags.FluidTag.INK.tag())) {
             cir.setReturnValue(Blocks.BLACKSTONE.defaultBlockState());
         }
     }
