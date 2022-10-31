@@ -3,27 +3,19 @@ package plus.dragons.createenchantmentindustry.compat.jei;
 import com.simibubi.create.compat.jei.category.CreateRecipeCategory;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
-import mezz.jei.api.forge.ForgeTypes;
-import mezz.jei.api.helpers.IColorHelper;
-import mezz.jei.api.ingredients.subtypes.ISubtypeManager;
 import mezz.jei.api.recipe.category.IRecipeCategory;
-import mezz.jei.api.registration.IModIngredientRegistration;
 import mezz.jei.api.registration.IRecipeCatalystRegistration;
 import mezz.jei.api.registration.IRecipeCategoryRegistration;
 import mezz.jei.api.registration.IRecipeRegistration;
 import mezz.jei.api.runtime.IIngredientManager;
-import mezz.jei.forge.plugins.forge.ingredients.fluid.FluidStackHelper;
-import mezz.jei.forge.plugins.forge.ingredients.fluid.FluidStackRenderer;
 import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.Recipe;
-import net.minecraftforge.fluids.FluidStack;
 import plus.dragons.createenchantmentindustry.EnchantmentIndustry;
 import plus.dragons.createenchantmentindustry.compat.jei.category.DisenchantingCategory;
 import plus.dragons.createenchantmentindustry.compat.jei.category.RecipeCategoryBuilder;
 import plus.dragons.createenchantmentindustry.content.contraptions.enchanting.disenchanter.DisenchantRecipe;
 import plus.dragons.createenchantmentindustry.entry.CeiBlocks;
-import plus.dragons.createenchantmentindustry.entry.CeiFluids;
 import plus.dragons.createenchantmentindustry.entry.CeiRecipeTypes;
 
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -35,30 +27,12 @@ import java.util.List;
 @JeiPlugin
 public class CeiJEIPlugin implements IModPlugin {
     private static final ResourceLocation ID = EnchantmentIndustry.genRL("jei_plugin");
-
     protected final List<CreateRecipeCategory<?>> allCategories = new ArrayList<>();
     protected IIngredientManager ingredientManager;
 
     @Override
     public ResourceLocation getPluginUid() {
         return ID;
-    }
-    
-    @Override
-    public void registerIngredients(IModIngredientRegistration registration) {
-        ISubtypeManager subtypeManager = registration.getSubtypeManager();
-        IColorHelper colorHelper = registration.getColorHelper();
-        
-        FluidStackHelper fluidStackHelper = new FluidStackHelper(subtypeManager, colorHelper);
-        FluidStackRenderer fluidStackRenderer = new FluidStackRenderer();
-        registration.register(ForgeTypes.FLUID_STACK,
-            List.of(
-                new FluidStack(CeiFluids.EXPERIENCE.get(), 1000),
-                new FluidStack(CeiFluids.HYPER_EXPERIENCE.get(), 1000)
-            ),
-            fluidStackHelper,
-            fluidStackRenderer
-        );
     }
     
     @Override
