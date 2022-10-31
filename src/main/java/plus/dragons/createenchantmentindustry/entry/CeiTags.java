@@ -54,29 +54,29 @@ public interface CeiTags<T, P extends RegistrateTagsProvider<T>> {
     }
 
     static void register() {
-        Arrays.stream(BlockTags.values())
+        Arrays.stream(BlockTag.values())
                 .filter(CeiTags::hasDatagen)
                 .forEach(tag -> REGISTRATE.addDataGenerator(ProviderType.BLOCK_TAGS, tag::datagen));
-        Arrays.stream(ItemTags.values())
+        Arrays.stream(ItemTag.values())
                 .filter(CeiTags::hasDatagen)
                 .forEach(tag -> REGISTRATE.addDataGenerator(ProviderType.ITEM_TAGS, tag::datagen));
-        Arrays.stream(FluidTags.values())
+        Arrays.stream(FluidTag.values())
                 .filter(CeiTags::hasDatagen)
                 .forEach(tag -> REGISTRATE.addDataGenerator(ProviderType.FLUID_TAGS, tag::datagen));
     }
 
-    enum BlockTags implements CeiTags<Block, RegistrateTagsProvider<Block>> {
+    enum BlockTag implements CeiTags<Block, RegistrateTagsProvider<Block>> {
         ;
 
         final TagKey<Block> tag;
         final boolean datagen;
 
-        BlockTags(String namespace, boolean datagen) {
+        BlockTag(String namespace, boolean datagen) {
             this.tag = BLOCK_TAGS.createTagKey(new ResourceLocation(namespace, toTagName(name())));
             this.datagen = datagen;
         }
 
-        BlockTags(boolean datagen) {
+        BlockTag(boolean datagen) {
             this(EnchantmentIndustry.ID, datagen);
         }
 
@@ -91,7 +91,7 @@ public interface CeiTags<T, P extends RegistrateTagsProvider<T>> {
         }
     }
 
-    enum ItemTags implements CeiTags<Item, RegistrateItemTagsProvider> {
+    enum ItemTag implements CeiTags<Item, RegistrateItemTagsProvider> {
         INK_INGREDIENT(true) {
             @Override
             public void datagen(RegistrateItemTagsProvider pov) {
@@ -108,12 +108,12 @@ public interface CeiTags<T, P extends RegistrateTagsProvider<T>> {
         final TagKey<Item> tag;
         final boolean datagen;
 
-        ItemTags(String namespace, boolean datagen) {
+        ItemTag(String namespace, boolean datagen) {
             this.tag = ITEM_TAGS.createTagKey(new ResourceLocation(namespace, toTagName(name())));
             this.datagen = datagen;
         }
 
-        ItemTags(boolean datagen) {
+        ItemTag(boolean datagen) {
             this(EnchantmentIndustry.ID, datagen);
         }
 
@@ -128,19 +128,20 @@ public interface CeiTags<T, P extends RegistrateTagsProvider<T>> {
         }
     }
 
-    enum FluidTags implements CeiTags<Fluid, RegistrateTagsProvider<Fluid>> {
+    enum FluidTag implements CeiTags<Fluid, RegistrateTagsProvider<Fluid>> {
         //No experience fluid tag here as different ratios is not acceptable
-        INK(FORGE, false);
+        INK(FORGE, false),
+        BLAZE_ENCHANTER_INPUT(false);
 
         final TagKey<Fluid> tag;
         final boolean datagen;
 
-        FluidTags(String namespace, boolean datagen) {
+        FluidTag(String namespace, boolean datagen) {
             this.tag = FLUID_TAGS.createTagKey(new ResourceLocation(namespace, toTagName(name())));
             this.datagen = datagen;
         }
 
-        FluidTags(boolean datagen) {
+        FluidTag(boolean datagen) {
             this(EnchantmentIndustry.ID, datagen);
         }
 

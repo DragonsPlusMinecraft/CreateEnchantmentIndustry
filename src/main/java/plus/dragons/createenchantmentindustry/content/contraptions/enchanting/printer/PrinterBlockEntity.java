@@ -35,7 +35,7 @@ import org.jetbrains.annotations.Nullable;
 import plus.dragons.createdragonlib.mixin.AdvancementBehaviourAccessor;
 import plus.dragons.createenchantmentindustry.foundation.advancement.CeiAdvancements;
 import plus.dragons.createenchantmentindustry.foundation.advancement.CeiTriggers;
-import plus.dragons.createenchantmentindustry.foundation.config.ModConfigs;
+import plus.dragons.createenchantmentindustry.foundation.config.CeiConfigs;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -63,7 +63,7 @@ public class PrinterBlockEntity extends SmartTileEntity implements IHaveGoggleIn
 
     @Override
     public void addBehaviours(List<TileEntityBehaviour> behaviours) {
-        behaviours.add(tank = SmartFluidTankBehaviour.single(this, ModConfigs.SERVER.copierTankCapacity.get()));
+        behaviours.add(tank = SmartFluidTankBehaviour.single(this, CeiConfigs.SERVER.copierTankCapacity.get()));
         behaviours.add(beltProcessing = new BeltProcessingBehaviour(this).whenItemEnters(this::onItemReceived)
                 .whileItemHeld(this::whenItemHeld));
         registerAwardables(behaviours,
@@ -232,7 +232,7 @@ public class PrinterBlockEntity extends SmartTileEntity implements IHaveGoggleIn
                                 .add(page == 1 ? LANG.translate("generic.unit.page") : LANG.translate("generic.unit.pages"))
                                 .style(ChatFormatting.DARK_GRAY));
                 b.forGoggles(tooltip, 1);
-                if (CopyingBook.isTooExpensive(copyTarget, ModConfigs.SERVER.copierTankCapacity.get()))
+                if (CopyingBook.isTooExpensive(copyTarget, CeiConfigs.SERVER.copierTankCapacity.get()))
                     tooltip.add(Component.literal("     ").append(LANG.translate(
                             "gui.goggles.too_expensive").component()
                     ).withStyle(ChatFormatting.RED));
@@ -244,7 +244,7 @@ public class PrinterBlockEntity extends SmartTileEntity implements IHaveGoggleIn
             } else if (copyTarget.is(Items.ENCHANTED_BOOK)) {
                 var b = LANG.itemName(copyTarget).style(ChatFormatting.LIGHT_PURPLE);
                 b.forGoggles(tooltip, 1);
-                boolean tooExpensive = CopyingBook.isTooExpensive(copyTarget, ModConfigs.SERVER.copierTankCapacity.get());
+                boolean tooExpensive = CopyingBook.isTooExpensive(copyTarget, CeiConfigs.SERVER.copierTankCapacity.get());
                 if (tooExpensive)
                     tooltip.add(Component.literal("     ").append(LANG.translate(
                         "gui.goggles.too_expensive").component()

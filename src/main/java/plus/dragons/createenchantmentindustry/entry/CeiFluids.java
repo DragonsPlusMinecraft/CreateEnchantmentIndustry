@@ -27,10 +27,11 @@ public class CeiFluids {
     public static final ResourceLocation EXPERIENCE_FLOW_RL = EnchantmentIndustry.genRL("fluid/experience_flow");
 
     public static final FluidEntry<VirtualFluid> EXPERIENCE = REGISTRATE
-        .virtualFluid("experience", EXPERIENCE_STILL_RL, EXPERIENCE_FLOW_RL)
-        .lang("Liquid Experience")
-        .properties(builder -> builder.lightLevel(15))
-        .register();
+            .virtualFluid("experience", EXPERIENCE_STILL_RL, EXPERIENCE_FLOW_RL)
+            .lang("Liquid Experience")
+            .properties(builder -> builder.lightLevel(15))
+            .tag(CeiTags.FluidTag.BLAZE_ENCHANTER_INPUT.tag)
+            .register();
 
     public static final ResourceLocation HYPER_EXPERIENCE_STILL_RL = EnchantmentIndustry.genRL("fluid/hyper_experience_still");
     public static final ResourceLocation HYPER_EXPERIENCE_FLOW_RL = EnchantmentIndustry.genRL("fluid/hyper_experience_flow");
@@ -39,6 +40,7 @@ public class CeiFluids {
             .virtualFluid("hyper_experience", HYPER_EXPERIENCE_STILL_RL, HYPER_EXPERIENCE_FLOW_RL)
             .lang("Liquid Hyper Experience")
             .properties(builder -> builder.lightLevel(15))
+            .tag(CeiTags.FluidTag.BLAZE_ENCHANTER_INPUT.tag)
             .register();
 
     public static final ResourceLocation INK_STILL_RL = EnchantmentIndustry.genRL("fluid/ink_still");
@@ -53,7 +55,7 @@ public class CeiFluids {
                     .slopeFindDistance(4)
                     .explosionResistance(100f))
             .source(ForgeFlowingFluid.Source::new) // TODO: remove when Registrate fixes FluidBuilder
-            .tag(CeiTags.FluidTags.INK.tag())
+            .tag(CeiTags.FluidTag.INK.tag())
             .bucket()
             .build()
             .register();

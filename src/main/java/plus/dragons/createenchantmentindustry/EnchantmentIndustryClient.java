@@ -6,7 +6,7 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
 import plus.dragons.createenchantmentindustry.content.contraptions.fluids.ink.InkRenderingCamera;
 import plus.dragons.createenchantmentindustry.entry.CeiBlockPartials;
-import plus.dragons.createenchantmentindustry.foundation.config.ModConfigs;
+import plus.dragons.createenchantmentindustry.foundation.config.CeiConfigs;
 import plus.dragons.createenchantmentindustry.foundation.ponder.content.CeiPonderIndex;
 
 public class EnchantmentIndustryClient {
@@ -28,7 +28,7 @@ public class EnchantmentIndustryClient {
     public static void loadComplete(final FMLLoadCompleteEvent event) {
         BaseConfigScreen.setDefaultActionFor(EnchantmentIndustry.ID, screen -> screen
                 .withTitles(null, null, "Gameplay Settings")
-                .withSpecs(null, null, ModConfigs.SERVER_SPEC)
+                .withSpecs(null, null, CeiConfigs.SERVER_SPEC)
         );
     }
 

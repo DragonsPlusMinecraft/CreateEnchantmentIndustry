@@ -13,7 +13,8 @@
     "OpenEndedPipeInvoker",
     "OpenEndFluidHandlerMixin",
     "SpoutBlockMixin",
-    "SpoutTileEntityAccessor"
+    "SpoutTileEntityAccessor",
+    "TankSegmentAccessor"
   ],
   "client": [
     "CameraMixin"

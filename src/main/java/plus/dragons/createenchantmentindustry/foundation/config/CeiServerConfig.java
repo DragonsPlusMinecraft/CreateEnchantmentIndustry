@@ -4,7 +4,7 @@ import com.simibubi.create.foundation.config.ConfigBase;
 import com.simibubi.create.foundation.config.ui.ConfigAnnotations;
 import net.minecraftforge.common.ForgeConfigSpec;
 
-public class ModServerConfig extends ConfigBase {
+public class CeiServerConfig extends ConfigBase {
 
     public final ConfigInt disenchanterTankCapacity = i(1500, 0,
             "disenchanterTankCapacity",

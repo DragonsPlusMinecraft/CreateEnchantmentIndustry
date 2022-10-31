@@ -38,7 +38,7 @@ import plus.dragons.createdragonlib.mixin.AdvancementBehaviourAccessor;
 import plus.dragons.createenchantmentindustry.content.contraptions.enchanting.enchanter.Enchanting;
 import plus.dragons.createenchantmentindustry.entry.CeiFluids;
 import plus.dragons.createenchantmentindustry.foundation.advancement.CeiTriggers;
-import plus.dragons.createenchantmentindustry.foundation.config.ModConfigs;
+import plus.dragons.createenchantmentindustry.foundation.config.CeiConfigs;
 import plus.dragons.createenchantmentindustry.foundation.advancement.CeiAdvancements;
 
 import java.util.IdentityHashMap;
@@ -72,7 +72,7 @@ public class DisenchanterBlockEntity extends SmartTileEntity implements IHaveGog
     public void addBehaviours(List<TileEntityBehaviour> behaviours) {
         behaviours.add(new DirectBeltInputBehaviour(this).allowingBeltFunnels()
                 .setInsertionHandler(this::tryInsertingFromSide));
-        behaviours.add(internalTank = SmartFluidTankBehaviour.single(this, ModConfigs.SERVER.disenchanterTankCapacity.get())
+        behaviours.add(internalTank = SmartFluidTankBehaviour.single(this, CeiConfigs.SERVER.disenchanterTankCapacity.get())
                 .allowExtraction()
                 .forbidInsertion());
         registerAwardables(behaviours,

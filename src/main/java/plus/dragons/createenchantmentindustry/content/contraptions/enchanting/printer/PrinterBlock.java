@@ -30,7 +30,7 @@ import org.jetbrains.annotations.Nullable;
 import plus.dragons.createenchantmentindustry.entry.CeiBlockEntities;
 import plus.dragons.createenchantmentindustry.entry.CeiBlocks;
 import plus.dragons.createenchantmentindustry.entry.CeiFluids;
-import plus.dragons.createenchantmentindustry.foundation.config.ModConfigs;
+import plus.dragons.createenchantmentindustry.foundation.config.CeiConfigs;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -88,7 +88,7 @@ public class PrinterBlock extends Block implements IWrenchable, ITE<PrinterBlock
                 } else {
                     player.setItemInHand(hand, be.copyTarget);
                 }
-                be.tooExpensive = CopyingBook.isTooExpensive(heldItem, ModConfigs.SERVER.copierTankCapacity.get());
+                be.tooExpensive = CopyingBook.isTooExpensive(heldItem, CeiConfigs.SERVER.copierTankCapacity.get());
                 be.copyTarget = heldItem;
                 be.processingTicks = -1;
                 be.notifyUpdate();

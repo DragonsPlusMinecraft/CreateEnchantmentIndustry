@@ -3,7 +3,6 @@ package plus.dragons.createenchantmentindustry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.data.event.GatherDataEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.DistExecutor;
@@ -20,7 +19,7 @@ import plus.dragons.createdragonlib.lang.LangFactory;
 import plus.dragons.createenchantmentindustry.content.contraptions.fluids.OpenEndedPipeEffects;
 import plus.dragons.createenchantmentindustry.entry.*;
 import plus.dragons.createenchantmentindustry.foundation.advancement.CeiAdvancements;
-import plus.dragons.createenchantmentindustry.foundation.config.ModConfigs;
+import plus.dragons.createenchantmentindustry.foundation.config.CeiConfigs;
 import plus.dragons.createenchantmentindustry.foundation.ponder.content.CeiPonderIndex;
 
 @Mod(EnchantmentIndustry.ID)
@@ -45,7 +44,7 @@ public class EnchantmentIndustry {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
         IEventBus forgeEventBus = MinecraftForge.EVENT_BUS;
         
-        ModConfigs.register(ModLoadingContext.get());
+        CeiConfigs.register(ModLoadingContext.get());
         
         registerEntries(modEventBus);
         registerForgeEvents(forgeEventBus);

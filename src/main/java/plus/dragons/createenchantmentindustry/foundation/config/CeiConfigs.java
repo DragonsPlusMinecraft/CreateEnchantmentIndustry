@@ -9,14 +9,14 @@ import net.minecraftforge.fml.event.config.ModConfigEvent;
 import org.apache.commons.lang3.tuple.Pair;
 
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
-public class ModConfigs {
+public class CeiConfigs {
 
-    public static ModServerConfig SERVER;
+    public static CeiServerConfig SERVER;
     public static ForgeConfigSpec SERVER_SPEC;
 
     public static void register(ModLoadingContext context) {
-        Pair<ModServerConfig, ForgeConfigSpec> serverConfigPair = new ForgeConfigSpec.Builder().configure(builder -> {
-            ModServerConfig config = new ModServerConfig();
+        Pair<CeiServerConfig, ForgeConfigSpec> serverConfigPair = new ForgeConfigSpec.Builder().configure(builder -> {
+            CeiServerConfig config = new CeiServerConfig();
             config.registerAll(builder);
             return config;
         });

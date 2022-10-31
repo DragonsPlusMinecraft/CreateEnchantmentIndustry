@@ -37,9 +37,11 @@ import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.items.ItemHandlerHelper;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import plus.dragons.createenchantmentindustry.content.contraptions.fluids.FilteringFluidTankBehaviour;
 import plus.dragons.createenchantmentindustry.entry.CeiFluids;
+import plus.dragons.createenchantmentindustry.entry.CeiTags;
 import plus.dragons.createenchantmentindustry.foundation.advancement.CeiAdvancements;
-import plus.dragons.createenchantmentindustry.foundation.config.ModConfigs;
+import plus.dragons.createenchantmentindustry.foundation.config.CeiConfigs;
 
 import java.util.IdentityHashMap;
 import java.util.List;
@@ -83,11 +85,13 @@ public class BlazeEnchanterBlockEntity extends SmartTileEntity implements IHaveG
     }
 
     @Override
+    @SuppressWarnings("deprecation") //Fluid Tags are still useful for mod interaction
     public void addBehaviours(List<TileEntityBehaviour> behaviours) {
         behaviours.add(new DirectBeltInputBehaviour(this).allowingBeltFunnels()
                 .setInsertionHandler(this::tryInsertingFromSide));
-        behaviours.add(internalTank = SmartFluidTankBehaviour
-                .single(this, ModConfigs.SERVER.blazeEnchanterTankCapacity.get())
+        behaviours.add(internalTank = FilteringFluidTankBehaviour
+                .single(fluidStack -> fluidStack.getFluid().is(CeiTags.FluidTag.BLAZE_ENCHANTER_INPUT.tag()),
+                    this, CeiConfigs.SERVER.blazeEnchanterTankCapacity.get())
                 .whenFluidUpdates(() -> {
                     var fluid = internalTank.getPrimaryHandler().getFluid().getFluid();
                     if (CeiFluids.EXPERIENCE.is(fluid))
@@ -489,7 +493,7 @@ public class BlazeEnchanterBlockEntity extends SmartTileEntity implements IHaveG
                             .withStyle(ChatFormatting.RED));
                 else {
                     int consumption = Enchanting.getExperienceConsumption(entry.getFirst(), entry.getSecond());
-                    if (consumption > ModConfigs.SERVER.blazeEnchanterTankCapacity.get())
+                    if (consumption > CeiConfigs.SERVER.blazeEnchanterTankCapacity.get())
                         tooltip.add(Component.literal("     ").append(LANG.translate("gui.goggles.too_expensive")
                                         .component())
                                 .withStyle(ChatFormatting.RED));
