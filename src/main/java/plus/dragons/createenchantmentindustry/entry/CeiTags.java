@@ -131,8 +131,14 @@ public interface CeiTags<T, P extends RegistrateTagsProvider<T>> {
     enum FluidTag implements CeiTags<Fluid, RegistrateTagsProvider<Fluid>> {
         //No experience fluid tag here as different ratios is not acceptable
         INK(FORGE, false),
-        BLAZE_ENCHANTER_INPUT(false);
-
+        BLAZE_ENCHANTER_INPUT(false),
+        PRINTER_INPUT(true) {
+            @Override
+            public void datagen(RegistrateTagsProvider<Fluid> pov) {
+                pov.tag(tag).addTag(INK.tag);
+            }
+        };
+        
         final TagKey<Fluid> tag;
         final boolean datagen;
 

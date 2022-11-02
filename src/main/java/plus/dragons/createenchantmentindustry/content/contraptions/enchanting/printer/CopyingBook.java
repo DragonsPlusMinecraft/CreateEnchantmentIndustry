@@ -7,6 +7,7 @@ import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraftforge.fluids.FluidStack;
 import plus.dragons.createenchantmentindustry.content.contraptions.enchanting.enchanter.Enchanting;
 import plus.dragons.createenchantmentindustry.entry.CeiFluids;
+import plus.dragons.createenchantmentindustry.entry.CeiTags;
 
 
 public class CopyingBook {
@@ -23,10 +24,11 @@ public class CopyingBook {
             return getExperienceFromItem(target);
         else return -1;
     }
-
-    public static boolean isCorrectInt(ItemStack target, FluidStack fluidStack) {
+    
+    @SuppressWarnings("deprecation") //Fluid Tags are still useful for mod interaction
+    public static boolean isCorrectInk(ItemStack target, FluidStack fluidStack) {
         if (target.is(Items.ENCHANTED_BOOK) && fluidStack.getFluid().isSame(CeiFluids.EXPERIENCE.get())) return true;
-        else return target.is(Items.WRITTEN_BOOK) && fluidStack.getFluid().isSame(CeiFluids.INK.get());
+        else return target.is(Items.WRITTEN_BOOK) && fluidStack.getFluid().is(CeiTags.FluidTag.INK.tag());
     }
 
     public static ItemStack print(ItemStack target, int requiredAmount, ItemStack stack, FluidStack availableFluid) {
