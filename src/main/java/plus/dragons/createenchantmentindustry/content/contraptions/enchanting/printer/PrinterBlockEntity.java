@@ -33,6 +33,8 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import plus.dragons.createenchantmentindustry.content.contraptions.fluids.FilteringFluidTankBehaviour;
+import plus.dragons.createenchantmentindustry.entry.CeiTags;
 import plus.dragons.createenchantmentindustry.foundation.config.CeiConfigs;
 import plus.dragons.createenchantmentindustry.foundation.data.advancement.CeiAdvancements;
 import plus.dragons.createenchantmentindustry.foundation.data.advancement.CeiTriggers;
@@ -63,8 +65,11 @@ public class PrinterBlockEntity extends SmartTileEntity implements IHaveGoggleIn
     }
 
     @Override
+    @SuppressWarnings("deprecation") //Fluid Tags are still useful for mod interaction
     public void addBehaviours(List<TileEntityBehaviour> behaviours) {
-        behaviours.add(tank = SmartFluidTankBehaviour.single(this, CeiConfigs.SERVER.copierTankCapacity.get()));
+        behaviours.add(tank = FilteringFluidTankBehaviour
+            .single(fluidStack -> fluidStack.getFluid().is(CeiTags.FluidTag.PRINTER_INPUT.tag()),
+                this, CeiConfigs.SERVER.copierTankCapacity.get()));
         behaviours.add(beltProcessing = new BeltProcessingBehaviour(this).whenItemEnters(this::onItemReceived)
                 .whileItemHeld(this::whenItemHeld));
         registerAwardables(behaviours,
@@ -105,7 +110,7 @@ public class PrinterBlockEntity extends SmartTileEntity implements IHaveGoggleIn
             return PASS;
         if (!CopyingBook.valid(transported.stack))
             return PASS;
-        if (tank.isEmpty() || CopyingBook.isCorrectInt(copyTarget, getCurrentFluidInTank()))
+        if (tank.isEmpty() || CopyingBook.isCorrectInk(copyTarget, getCurrentFluidInTank()))
             return HOLD;
         if (CopyingBook.getRequiredAmountForItem(copyTarget) == -1)
             return PASS;
@@ -120,7 +125,7 @@ public class PrinterBlockEntity extends SmartTileEntity implements IHaveGoggleIn
             return PASS;
         if (!CopyingBook.valid(transported.stack))
             return PASS;
-        if (tank.isEmpty() || !CopyingBook.isCorrectInt(copyTarget, getCurrentFluidInTank()))
+        if (tank.isEmpty() || !CopyingBook.isCorrectInk(copyTarget, getCurrentFluidInTank()))
             return HOLD;
         FluidStack fluid = getCurrentFluidInTank();
         int requiredAmountForItem = CopyingBook.getRequiredAmountForItem(copyTarget);

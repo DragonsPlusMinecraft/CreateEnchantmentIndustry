@@ -29,7 +29,7 @@ public class CeiFluids {
             REGISTRATE.virtualFluid("experience", EXPERIENCE_STILL_RL, EXPERIENCE_FLOW_RL)
                     .lang("Liquid Experience")
                     .attributes(builder -> builder.luminosity(15))
-                    .tag(CeiTags.FluidTag.BLAZE_ENCHANTER_INPUT.tag)
+                    .tag(CeiTags.FluidTag.BLAZE_ENCHANTER_INPUT.tag, CeiTags.FluidTag.PRINTER_INPUT.tag)
                     .register();
 
     public static final ResourceLocation HYPER_EXPERIENCE_STILL_RL = EnchantmentIndustry.genRL("fluid/hyper_experience_still");
