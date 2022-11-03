@@ -9,6 +9,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import plus.dragons.createenchantmentindustry.foundation.config.CeiConfigs;
 
 @Mixin(value = DeployerFakePlayer.class, remap = false)
 public class DeployerFakePlayerMixin {
@@ -19,7 +20,9 @@ public class DeployerFakePlayerMixin {
         if (xp <= 0) return;
         DeployerFakePlayer player = (DeployerFakePlayer) event.getAttackingPlayer();
         assert player != null;
-        int amount = xp / 3 + (event.getEntityLiving().getRandom().nextInt(3) < xp % 3 ? 1 : 0);
+        if (player.getRandom().nextFloat() > CeiConfigs.SERVER.deployerXpDropChance.getF())
+            return;
+        int amount = xp / 3 + (player.getRandom().nextInt(3) < xp % 3 ? 1 : 0);
         if (amount <= 0) return;
         Item nugget = AllItems.EXP_NUGGET.get();
         int maxStackSize = nugget.getItemStackLimit(nugget.getDefaultInstance());
@@ -27,7 +30,7 @@ public class DeployerFakePlayerMixin {
             player.getInventory().placeItemBackInInventory(new ItemStack(nugget, maxStackSize));
         }
         amount %= maxStackSize;
-        if (amount> 0)
+        if (amount > 0)
             player.getInventory().placeItemBackInInventory(new ItemStack(nugget, amount));
     }
     

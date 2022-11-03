@@ -21,6 +21,9 @@ public class CeiServerConfig extends ConfigBase {
     public final ConfigInt maxHyperEnchantingLevelExtension = i(2, 0,
         "maxHyperEnchantingLevelExtension",
         Comments.maxHyperEnchantingLevelExtension);
+    public final ConfigFloat deployerXpDropChance = f(1, 0, 1,
+        "deployerXpDropChance",
+        Comments.deployerXpDropChance);
     
     @Override
     protected void registerAll(ForgeConfigSpec.Builder builder) {
@@ -41,7 +44,9 @@ public class CeiServerConfig extends ConfigBase {
         static String blazeEnchanterTankCapacity =
             "The Tank Capacity of the Blaze Enchanter";
         static String maxHyperEnchantingLevelExtension =
-            "The Maximum Extended Levels beyond Enchantment's Max Level that can be reached through Hyper-Enchanting.";
+            "The Maximum Extended Levels beyond Enchantment's Max Level that can be reached through Hyper-Enchanting";
+        static String deployerXpDropChance =
+            "The Chance of whether Deployer-killed entities will drop Nugget of Experience";
         
     }
     
