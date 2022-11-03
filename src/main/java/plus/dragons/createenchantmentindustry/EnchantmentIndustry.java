@@ -9,7 +9,9 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
@@ -37,13 +39,11 @@ public class EnchantmentIndustry {
     
         CeiConfigs.register(ModLoadingContext.get());
         
+        modEventBus.register(this);
         registerEntries(modEventBus);
         registerForgeEvents(forgeEventBus);
         
-        modEventBus.addListener(EnchantmentIndustry::setup);
-        modEventBus.addListener(EnchantmentIndustry::datagen);
-        
-        DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> EnchantmentIndustryClient.onClient(modEventBus, forgeEventBus));
+        DistExecutor.safeRunWhenOn(Dist.CLIENT, () -> EnchantmentIndustryClient::new);
     }
 
     private void registerEntries(IEventBus modEventBus) {
@@ -65,7 +65,8 @@ public class EnchantmentIndustry {
         forgeEventBus.addListener(CeiFluids::handleInkEffect);
     }
 
-    public static void setup(final FMLCommonSetupEvent event) {
+    @SubscribeEvent
+    public void setup(final FMLCommonSetupEvent event) {
         event.enqueueWork(() -> {
             CeiPackets.registerPackets();
             CeiAdvancements.register();
@@ -74,10 +75,11 @@ public class EnchantmentIndustry {
         });
     }
     
-    public static void datagen(final GatherDataEvent event) {
+    @SubscribeEvent(priority = EventPriority.LOWEST)
+    public void datagen(final GatherDataEvent event) {
         DataGenerator datagen = event.getGenerator();
-        datagen.addProvider(new LangMerger(datagen));
         datagen.addProvider(new CeiAdvancements(datagen));
+        datagen.addProvider(new LangMerger(datagen));
     }
 
     public static ResourceLocation genRL(String name) {

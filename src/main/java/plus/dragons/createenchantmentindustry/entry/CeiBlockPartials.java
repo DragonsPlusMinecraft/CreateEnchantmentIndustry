@@ -1,9 +1,7 @@
 package plus.dragons.createenchantmentindustry.entry;
 
 import com.jozufozu.flywheel.core.PartialModel;
-import net.minecraft.client.resources.model.ModelBakery;
 import plus.dragons.createenchantmentindustry.EnchantmentIndustry;
-import plus.dragons.createenchantmentindustry.content.contraptions.enchanting.enchanter.BlazeEnchanterRenderer;
 
 public class CeiBlockPartials {
     
@@ -16,8 +14,6 @@ public class CeiBlockPartials {
         return new PartialModel(EnchantmentIndustry.genRL("block/" + path));
     }
     
-    public static void register() {
-        ModelBakery.UNREFERENCED_TEXTURES.add(BlazeEnchanterRenderer.BOOK_MATERIAL);
-    }
+    public static void register() {}
     
 }
