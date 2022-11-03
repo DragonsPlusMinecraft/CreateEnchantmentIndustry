@@ -5,6 +5,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
@@ -46,14 +47,13 @@ public class EnchantmentIndustry {
         
         CeiConfigs.register(ModLoadingContext.get());
         
+        modEventBus.register(this);
+        modEventBus.addListener(EventPriority.LOWEST, ADVANCEMENT_FACTORY::datagen);
+        modEventBus.addListener(EventPriority.LOWEST, LANG_FACTORY::datagen);
         registerEntries(modEventBus);
         registerForgeEvents(forgeEventBus);
         
-        modEventBus.addListener(EnchantmentIndustry::setup);
-        modEventBus.addListener(EventPriority.LOWEST, ADVANCEMENT_FACTORY::datagen);
-        modEventBus.addListener(EventPriority.LOWEST, LANG_FACTORY::datagen);
-        
-        DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> EnchantmentIndustryClient.onClient(modEventBus, forgeEventBus));
+        DistExecutor.safeRunWhenOn(Dist.CLIENT, () -> EnchantmentIndustryClient::new);
     }
 
     private void registerEntries(IEventBus modEventBus) {
@@ -75,7 +75,8 @@ public class EnchantmentIndustry {
         forgeEventBus.addListener(CeiItems::fillCreateItemGroup);
         forgeEventBus.addListener(CeiFluids::handleInkEffect);
     }
-
+    
+    @SubscribeEvent
     public static void setup(final FMLCommonSetupEvent event) {
         CeiAdvancements.register();
         event.enqueueWork(() -> {
