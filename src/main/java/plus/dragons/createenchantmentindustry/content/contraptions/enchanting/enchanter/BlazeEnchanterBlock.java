@@ -10,12 +10,13 @@ import com.simibubi.create.foundation.advancement.AdvancementBehaviour;
 import com.simibubi.create.foundation.block.ITE;
 import com.simibubi.create.foundation.tileEntity.ComparatorUtil;
 import com.simibubi.create.foundation.utility.Lang;
+import com.simibubi.create.foundation.utility.VecHelper;
 import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.entity.ExperienceOrb;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -33,8 +34,8 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
+import plus.dragons.createenchantmentindustry.content.contraptions.fluids.experience.ExperienceFluid;
 import plus.dragons.createenchantmentindustry.entry.CeiBlockEntities;
-import plus.dragons.createenchantmentindustry.entry.CeiFluids;
 import plus.dragons.createenchantmentindustry.entry.CeiItems;
 
 import java.util.ArrayList;
@@ -71,21 +72,23 @@ public class BlazeEnchanterBlock extends HorizontalDirectionalBlock implements I
     }
 
     @Override
-    public void onRemove(BlockState state, Level worldIn, BlockPos pos, BlockState newState, boolean isMoving) {
+    public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
         if (!state.hasBlockEntity() || state.getBlock() == newState.getBlock())
             return;
-        withTileEntityDo(worldIn, pos, te -> {
-            ItemStack heldItemStack = te.getHeldItemStack();
-            if (!heldItemStack.isEmpty())
-                Containers.dropItemStack(worldIn, pos.getX(), pos.getY(), pos.getZ(), heldItemStack);
-            Containers.dropItemStack(worldIn, pos.getX(), pos.getY(), pos.getZ(), te.targetItem);
-            var tank = te.internalTank.getPrimaryHandler();
-            if(tank.getFluid().getFluid().isSame(CeiFluids.EXPERIENCE.get().getSource())){
-                var expBall = new ExperienceOrb(worldIn, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, tank.getFluid().getAmount());
-                worldIn.addFreshEntity(expBall);
-            }
-        });
-        worldIn.removeBlockEntity(pos);
+        if (level instanceof ServerLevel serverLevel) {
+            withTileEntityDo(level, pos, te -> {
+                ItemStack heldItemStack = te.getHeldItemStack();
+                if (!heldItemStack.isEmpty())
+                    Containers.dropItemStack(level, pos.getX(), pos.getY(), pos.getZ(), heldItemStack);
+                Containers.dropItemStack(level, pos.getX(), pos.getY(), pos.getZ(), te.targetItem);
+                var tank = te.internalTank.getPrimaryHandler();
+                var fluidStack = tank.getFluid();
+                if(fluidStack.getFluid() instanceof ExperienceFluid expFluid) {
+                    expFluid.drop(serverLevel, VecHelper.getCenterOf(pos), fluidStack.getAmount());
+                }
+            });
+        }
+        level.removeBlockEntity(pos);
     }
 
     @Override

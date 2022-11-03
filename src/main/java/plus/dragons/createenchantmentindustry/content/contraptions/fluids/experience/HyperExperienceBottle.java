@@ -10,6 +10,7 @@ import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.HitResult;
 import plus.dragons.createenchantmentindustry.entry.CeiEntityTypes;
+import plus.dragons.createenchantmentindustry.entry.CeiFluids;
 import plus.dragons.createenchantmentindustry.entry.CeiItems;
 
 public class HyperExperienceBottle extends ThrowableItemProjectile {
@@ -52,7 +53,7 @@ public class HyperExperienceBottle extends ThrowableItemProjectile {
         if (this.level instanceof ServerLevel) {
             this.level.levelEvent(2002, this.blockPosition(), PotionUtils.getColor(Potions.WATER));
             int amount = 3 + this.level.random.nextInt(5) + this.level.random.nextInt(5);
-            HyperExperienceOrb.award((ServerLevel)this.level, this.position(), amount);
+            CeiFluids.HYPER_EXPERIENCE.get().drop((ServerLevel)this.level, this.position(), amount);
             this.discard();
         }
     }
