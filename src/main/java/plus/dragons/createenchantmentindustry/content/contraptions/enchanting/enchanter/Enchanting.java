@@ -68,6 +68,7 @@ public class Enchanting {
                     : 2 * level + 7;
         }
     }
+    
     public static int rarityLevel(Enchantment.Rarity rarity) {
         return switch(rarity) {
             case COMMON -> 1;

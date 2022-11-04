@@ -26,11 +26,9 @@ public class CeiFluids {
     public static final ResourceLocation EXPERIENCE_STILL_RL = EnchantmentIndustry.genRL("fluid/experience_still");
     public static final ResourceLocation EXPERIENCE_FLOW_RL = EnchantmentIndustry.genRL("fluid/experience_flow");
 
-    public static final FluidEntry<ExperienceFluid> EXPERIENCE =
-            REGISTRATE.virtualFluid("experience",
-                    EXPERIENCE_STILL_RL, EXPERIENCE_FLOW_RL,
-                    null, ExperienceFluid::new
-                ).lang("Liquid Experience")
+    public static final FluidEntry<ExperienceFluid> EXPERIENCE = REGISTRATE.virtualFluid("experience",
+                    EXPERIENCE_STILL_RL, EXPERIENCE_FLOW_RL, null, ExperienceFluid::new)
+                .lang("Liquid Experience")
                 .attributes(builder -> builder.luminosity(15))
                 .tag(CeiTags.FluidTag.BLAZE_ENCHANTER_INPUT.tag, CeiTags.FluidTag.PRINTER_INPUT.tag)
                 .register();
@@ -38,11 +36,9 @@ public class CeiFluids {
     public static final ResourceLocation HYPER_EXPERIENCE_STILL_RL = EnchantmentIndustry.genRL("fluid/hyper_experience_still");
     public static final ResourceLocation HYPER_EXPERIENCE_FLOW_RL = EnchantmentIndustry.genRL("fluid/hyper_experience_flow");
 
-    public static final FluidEntry<HyperExperienceFluid> HYPER_EXPERIENCE =
-            REGISTRATE.virtualFluid("hyper_experience",
-                    HYPER_EXPERIENCE_STILL_RL, HYPER_EXPERIENCE_FLOW_RL,
-                    null, HyperExperienceFluid::new
-                ).lang("Liquid Hyper Experience")
+    public static final FluidEntry<HyperExperienceFluid> HYPER_EXPERIENCE = REGISTRATE.virtualFluid("hyper_experience",
+                    HYPER_EXPERIENCE_STILL_RL, HYPER_EXPERIENCE_FLOW_RL, null, HyperExperienceFluid::new)
+                .lang("Liquid Hyper Experience")
                 .attributes(builder -> builder.luminosity(15))
                 .tag(CeiTags.FluidTag.BLAZE_ENCHANTER_INPUT.tag)
                 .register();
