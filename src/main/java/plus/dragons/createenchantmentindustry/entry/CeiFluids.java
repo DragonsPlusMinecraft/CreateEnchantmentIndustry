@@ -2,7 +2,7 @@ package plus.dragons.createenchantmentindustry.entry;
 
 import com.simibubi.create.Create;
 import com.simibubi.create.content.AllSections;
-import com.simibubi.create.content.contraptions.fluids.VirtualFluid;
+import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.tterrag.registrate.util.entry.FluidEntry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -14,6 +14,8 @@ import net.minecraftforge.fluids.ForgeFlowingFluid;
 import plus.dragons.createdragonlib.fluid.FluidLavaReaction;
 import plus.dragons.createdragonlib.fluid.NoTintFluidType;
 import plus.dragons.createenchantmentindustry.EnchantmentIndustry;
+import plus.dragons.createenchantmentindustry.content.contraptions.fluids.experience.ExperienceFluid;
+import plus.dragons.createenchantmentindustry.content.contraptions.fluids.experience.HyperExperienceFluid;
 
 import static plus.dragons.createenchantmentindustry.EnchantmentIndustry.REGISTRATE;
 
@@ -26,8 +28,8 @@ public class CeiFluids {
     public static final ResourceLocation EXPERIENCE_STILL_RL = EnchantmentIndustry.genRL("fluid/experience_still");
     public static final ResourceLocation EXPERIENCE_FLOW_RL = EnchantmentIndustry.genRL("fluid/experience_flow");
 
-    public static final FluidEntry<VirtualFluid> EXPERIENCE = REGISTRATE
-            .virtualFluid("experience", EXPERIENCE_STILL_RL, EXPERIENCE_FLOW_RL)
+    public static final FluidEntry<ExperienceFluid> EXPERIENCE = REGISTRATE.virtualFluid("experience",
+            EXPERIENCE_STILL_RL, EXPERIENCE_FLOW_RL, CreateRegistrate::defaultFluidType, ExperienceFluid::new)
             .lang("Liquid Experience")
             .properties(builder -> builder.lightLevel(15))
             .tag(CeiTags.FluidTag.BLAZE_ENCHANTER_INPUT.tag, CeiTags.FluidTag.PRINTER_INPUT.tag)
@@ -36,8 +38,8 @@ public class CeiFluids {
     public static final ResourceLocation HYPER_EXPERIENCE_STILL_RL = EnchantmentIndustry.genRL("fluid/hyper_experience_still");
     public static final ResourceLocation HYPER_EXPERIENCE_FLOW_RL = EnchantmentIndustry.genRL("fluid/hyper_experience_flow");
 
-    public static final FluidEntry<VirtualFluid> HYPER_EXPERIENCE = REGISTRATE
-            .virtualFluid("hyper_experience", HYPER_EXPERIENCE_STILL_RL, HYPER_EXPERIENCE_FLOW_RL)
+    public static final FluidEntry<HyperExperienceFluid> HYPER_EXPERIENCE = REGISTRATE.virtualFluid("hyper_experience",
+            HYPER_EXPERIENCE_STILL_RL, HYPER_EXPERIENCE_FLOW_RL, CreateRegistrate::defaultFluidType, HyperExperienceFluid::new)
             .lang("Liquid Hyper Experience")
             .properties(builder -> builder.lightLevel(15))
             .tag(CeiTags.FluidTag.BLAZE_ENCHANTER_INPUT.tag)

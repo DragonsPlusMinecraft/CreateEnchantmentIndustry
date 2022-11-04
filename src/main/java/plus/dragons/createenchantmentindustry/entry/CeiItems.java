@@ -6,7 +6,6 @@ import com.simibubi.create.AllFluids;
 import com.simibubi.create.AllItems;
 import com.simibubi.create.Create;
 import com.simibubi.create.content.AllSections;
-import com.tterrag.registrate.util.entry.BlockEntry;
 import com.tterrag.registrate.util.entry.ItemEntry;
 import com.tterrag.registrate.util.entry.ItemProviderEntry;
 import net.minecraft.resources.ResourceLocation;
@@ -38,6 +37,7 @@ public class CeiItems {
     public static final ItemEntry<HyperExperienceBottleItem> HYPER_EXP_BOTTLE = REGISTRATE.item("hyper_experience_bottle", HyperExperienceBottleItem::new)
             .properties(prop -> prop.rarity(Rarity.RARE))
             .lang("Bottle O' Hyper Enchanting")
+            .tag(CeiTags.ItemTag.UPRIGHT_ON_BELT.tag)
             .register();
 
     public static final ItemEntry<ExperienceRotorItem> EXPERIENCE_ROTOR = REGISTRATE.item("experience_rotor", ExperienceRotorItem::new)

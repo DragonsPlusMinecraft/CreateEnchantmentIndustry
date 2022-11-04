@@ -38,7 +38,7 @@ public class EnchantmentIndustryClient {
     }
     
     @SubscribeEvent
-    public void modelRegistry(final ModelEvent event) {
+    public void modelRegistry(final ModelEvent.RegisterAdditional event) {
         ModelBakery.UNREFERENCED_TEXTURES.add(BlazeEnchanterRenderer.BOOK_MATERIAL);
     }
     

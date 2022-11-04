@@ -32,7 +32,7 @@ public class EnchantmentIndustry {
     public static final Lang LANG = new Lang(ID);
     public static final AdvancementFactory ADVANCEMENT_FACTORY = AdvancementFactory.create(NAME, ID,
         CeiAdvancements::register);
-    public static final LangFactory LANG_FACTORY = LangFactory.create(NAME, ID)
+    private static final LangFactory LANG_FACTORY = LangFactory.create(NAME, ID)
         .advancements(() -> {})
         .ponders(() -> {
             CeiPonderIndex.register();
@@ -48,9 +48,9 @@ public class EnchantmentIndustry {
         CeiConfigs.register(ModLoadingContext.get());
         
         modEventBus.register(this);
+        registerEntries(modEventBus);
         modEventBus.addListener(EventPriority.LOWEST, ADVANCEMENT_FACTORY::datagen);
         modEventBus.addListener(EventPriority.LOWEST, LANG_FACTORY::datagen);
-        registerEntries(modEventBus);
         registerForgeEvents(forgeEventBus);
         
         DistExecutor.safeRunWhenOn(Dist.CLIENT, () -> EnchantmentIndustryClient::new);
