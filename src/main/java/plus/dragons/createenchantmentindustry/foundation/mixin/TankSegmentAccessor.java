@@ -5,7 +5,7 @@ import com.simibubi.create.foundation.tileEntity.behaviour.fluid.SmartFluidTankB
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Accessor;
 
-@Mixin(SmartFluidTankBehaviour.TankSegment.class)
+@Mixin(value = SmartFluidTankBehaviour.TankSegment.class, remap = false)
 public interface TankSegmentAccessor {
     
     @Accessor
