@@ -1,7 +1,7 @@
 {
   "values": [
-    "minecraft:air",
-    "minecraft:air",
-    "minecraft:air"
+    "create_enchantment_industry:disenchanter",
+    "create_enchantment_industry:printer",
+    "create_enchantment_industry:blaze_enchanter"
   ]
 }

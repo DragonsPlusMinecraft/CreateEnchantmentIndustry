@@ -1,6 +1,6 @@
 {
   "values": [
-    "minecraft:empty",
-    "minecraft:empty"
+    "create_enchantment_industry:flowing_ink",
+    "create_enchantment_industry:ink"
   ]
 }
