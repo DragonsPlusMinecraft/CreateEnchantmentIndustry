@@ -139,7 +139,9 @@ public class CeiAdvancements {
     END = null;
     
     public static void register() {
-        if (!registered) ADVANCEMENT_FACTORY.register();
+        if (!registered) {
+            ADVANCEMENT_FACTORY.register();
+        }
         registered = true;
     }
     

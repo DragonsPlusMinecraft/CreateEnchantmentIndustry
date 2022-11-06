@@ -47,8 +47,8 @@ public class EnchantmentIndustry {
         
         CeiConfigs.register(ModLoadingContext.get());
         
-        modEventBus.register(this);
         registerEntries(modEventBus);
+        modEventBus.register(this);
         modEventBus.addListener(EventPriority.LOWEST, ADVANCEMENT_FACTORY::datagen);
         modEventBus.addListener(EventPriority.LOWEST, LANG_FACTORY::datagen);
         registerForgeEvents(forgeEventBus);
@@ -77,9 +77,9 @@ public class EnchantmentIndustry {
     }
     
     @SubscribeEvent
-    public static void setup(final FMLCommonSetupEvent event) {
-        CeiAdvancements.register();
+    public void setup(final FMLCommonSetupEvent event) {
         event.enqueueWork(() -> {
+            CeiAdvancements.register();
             CeiPackets.registerPackets();
             CeiFluids.registerLavaReaction();
             OpenEndedPipeEffects.register();
