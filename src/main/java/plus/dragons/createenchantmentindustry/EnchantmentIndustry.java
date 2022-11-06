@@ -33,7 +33,7 @@ public class EnchantmentIndustry {
     public static final AdvancementFactory ADVANCEMENT_FACTORY = AdvancementFactory.create(NAME, ID,
         CeiAdvancements::register);
     private static final LangFactory LANG_FACTORY = LangFactory.create(NAME, ID)
-        .advancements(() -> {})
+        .advancements(CeiAdvancements::register)
         .ponders(() -> {
             CeiPonderIndex.register();
             CeiPonderIndex.registerTags();

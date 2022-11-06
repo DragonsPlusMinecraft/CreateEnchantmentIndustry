@@ -3,7 +3,6 @@ package plus.dragons.createenchantmentindustry.foundation.advancement;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.AllItems;
 import com.simibubi.create.Create;
-import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.Util;
 import net.minecraft.advancements.FrameType;
 import net.minecraft.advancements.critereon.EntityPredicate;
@@ -19,13 +18,12 @@ import plus.dragons.createenchantmentindustry.entry.CeiBlocks;
 import plus.dragons.createenchantmentindustry.entry.CeiFluids;
 import plus.dragons.createenchantmentindustry.entry.CeiItems;
 
-import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.Map;
 
 import static plus.dragons.createenchantmentindustry.EnchantmentIndustry.ADVANCEMENT_FACTORY;
 
 public class CeiAdvancements {
-    
+    private static boolean registered = false;
     public static final AdvancementHolder
     START = null,
     // Root
@@ -141,7 +139,8 @@ public class CeiAdvancements {
     END = null;
     
     public static void register() {
-        ADVANCEMENT_FACTORY.register();
+        if (!registered) ADVANCEMENT_FACTORY.register();
+        registered = true;
     }
     
 }
