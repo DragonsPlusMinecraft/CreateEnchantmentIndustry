@@ -1,0 +1,121 @@
+{
+
+	"_": "->------------------------]  Game Elements  [------------------------<-",
+
+	"block.create_enchantment_industry.blaze_enchanter": "ブレイズエンチャンター",
+	"block.create_enchantment_industry.disenchanter": "エンチャント吸収口",
+	"block.create_enchantment_industry.ink": "インク",
+	"block.create_enchantment_industry.printer": "印刷機",
+
+	"entity.create_enchantment_industry.hyper_experience_bottle": "ハイパーエンチャントの瓶",
+	"entity.create_enchantment_industry.hyper_experience_orb": "ハイパー経験値オーブ",
+
+	"fluid.create_enchantment_industry.experience": "液化経験値",
+	"fluid.create_enchantment_industry.hyper_experience": "液化ハイパー経験値",
+
+	"item.create_enchantment_industry.enchanting_guide": "エンチャントの手引き",
+	"item.create_enchantment_industry.experience_rotor": "経験値ローター",
+	"item.create_enchantment_industry.hyper_experience_bottle": "ハイパーエンチャントの瓶",
+	"item.create_enchantment_industry.ink_bucket": "インクバケツ",
+
+
+	"_": "->------------------------]  Advancements  [------------------------<-",
+
+	"advancement.create_enchantment_industry.experienced_engineer": "経験豊富なエンジニア",
+	"advancement.create_enchantment_industry.experienced_engineer.desc": "鉱石を砕くかデプロイヤーでMobを殺して経験値の塊を手に入れる",
+	"advancement.create_enchantment_industry.black_as_ink": "真っ黒!",
+	"advancement.create_enchantment_industry.black_as_ink.desc": "出版業のためにインクバケツを手に入れる",
+	"advancement.create_enchantment_industry.copiable_masterpiece": "コピーできる名作",
+	"advancement.create_enchantment_industry.copiable_masterpiece.desc": "印刷機で記入済みの本をコピーする",
+	"advancement.create_enchantment_industry.copiable_mystery": "コピーできる秘伝",
+	"advancement.create_enchantment_industry.copiable_mystery.desc": "印刷機でエンチャントの本をコピーする",
+	"advancement.create_enchantment_industry.relic_restoration": "遺物の修復",
+	"advancement.create_enchantment_industry.relic_restoration.desc": "ボロボロの本をコピーする",
+	"advancement.create_enchantment_industry.great_publisher": "立派な出版社",
+	"advancement.create_enchantment_industry.great_publisher.desc": "印刷機で本を1000回コピーする",
+	"advancement.create_enchantment_industry.experimental": "経験で実験",
+	"advancement.create_enchantment_industry.experimental.desc": "魅惑的な実験をするために液化経験値を手に入れる",
+	"advancement.create_enchantment_industry.gone_with_the_foil": "エンチャントと共に去りぬ",
+	"advancement.create_enchantment_industry.gone_with_the_foil.desc": "エンチャントされたアイテムが、エンチャント吸収口でエンチャント除去されるのを見る",
+	"advancement.create_enchantment_industry.spirit_taking": "魂の吸収",
+	"advancement.create_enchantment_industry.spirit_taking.desc": "エンチャント吸収口で自身の経験値を取り出す",
+	"advancement.create_enchantment_industry.a_shower_experience": "シャワーを\"経験\"",
+	"advancement.create_enchantment_industry.a_shower_experience.desc": "液体パイプを破壊し、流れ出した経験値を浴びる",
+	"advancement.create_enchantment_industry.experienced_recycler": "経験のリサイクル",
+	"advancement.create_enchantment_industry.experienced_recycler.desc": "エンチャント吸収口から経験値1,000,000mBをリサイクルする。",
+	"advancement.create_enchantment_industry.blazes_new_job": "ブレイズの新しい仕事",
+	"advancement.create_enchantment_industry.blazes_new_job.desc": "ブレイズバーナーにエンチャントの手引きを渡し、ブレイズエンチャンターにする",
+	"advancement.create_enchantment_industry.first_order": "最初の仕事",
+	"advancement.create_enchantment_industry.first_order.desc": "ブレイズエンチャンターでエンチャントされていないアイテムをエンチャントする",
+	"advancement.create_enchantment_industry.additional_order": "追加の仕事",
+	"advancement.create_enchantment_industry.additional_order.desc": "ブレイズエンチャンターでエンチャントされたアイテムをさらにエンチャントする",
+	"advancement.create_enchantment_industry.hypothetical_extension": "仮説の拡張",
+	"advancement.create_enchantment_industry.hypothetical_extension.desc": "ブレイズエンチャンターでアイテムをハイパーエンチャントする",
+
+
+	"_": "->------------------------]  UI & Messages  [------------------------<-",
+
+	"create_enchantment_industry.gui.enchanting_guide.no_enchantment": "設定可能なエンチャントがありません",
+	"create_enchantment_industry.gui.goggles.printer": "コピーされるもの:",
+	"create_enchantment_industry.gui.goggles.printer.no_target": "なし",
+	"create_enchantment_industry.gui.goggles.blaze_enchanter": "設定中のエンチャント:",
+	"create_enchantment_industry.gui.goggles.blaze_enchanter.invalid_target": "無効なターゲット",
+	"create_enchantment_industry.gui.goggles.xp_consumption": "必要経験値: %s mB",
+	"create_enchantment_industry.gui.goggles.ink_consumption": "必要インク: %s mB",
+	"create_enchantment_industry.gui.goggles.too_expensive": "コストが高すぎます!",
+
+	"create_enchantment_industry.generic.unit.page": "ページ",
+	"create_enchantment_industry.generic.unit.pages": "ページ",
+
+	"recipe.create_enchantment_industry.disenchanting": "エンチャント除去",
+
+
+	"_": "->------------------------]  Item Descriptions  [------------------------<-",
+
+	"item.create_enchantment_industry.enchanting_guide.tooltip": "ENCHANTING GUIDE TOOLTIPS",
+	"item.create_enchantment_industry.enchanting_guide.tooltip.current_enchantment": "設定中のエンチャント:",
+	"item.create_enchantment_industry.enchanting_guide.tooltip.not_configured": "設定無し",
+
+	"item.create_enchantment_industry.experience_rotor.tooltip": "EXPERIENCE ROTOR",
+	"item.create_enchantment_industry.experience_rotor.tooltip.summary": "撹拌レシピを液化経験値に変換するために使用する",
+
+
+	"_": "->------------------------]  Ponder Content  [------------------------<-",
+
+	"create_enchantment_industry.ponder.disenchant.header": "エンチャント除去",
+	"create_enchantment_industry.ponder.disenchant.text_1": "投入されたアイテムはすべてエンチャントが除去され、除去されたエンチャントは液化経験値に変換されて保管されます。",
+	"create_enchantment_industry.ponder.disenchant.text_2": "また、エンチャント吸収口の上に立っているプレイヤーの経験値は自動的に吸収され、液体経験値に変換されて保管されます。",
+
+	"create_enchantment_industry.ponder.experience_bottle.header": "エンチャントの瓶の排出",
+	"create_enchantment_industry.ponder.experience_bottle.text_1": "アイテム排液口でエンチャントの瓶を空にすることができます。",
+	"create_enchantment_industry.ponder.experience_bottle.text_2": "アイテム注液口でエンチャントの瓶を作ることもできます。",
+
+	"create_enchantment_industry.ponder.transform.header": "エンチャントの手引きの使用",
+	"create_enchantment_industry.ponder.transform.text_1": "設定済みのエンチャントの手引きを手に持ち、スニークしながらブレイズバーナーを右クリックします。",
+	"create_enchantment_industry.ponder.transform.text_2": "エンチャントの手引きを取り出すには、ブレイズエンチャンターを何も持たずに右クリックします。",
+
+	"create_enchantment_industry.ponder.copy.header": "印刷機の使用",
+
+	"create_enchantment_industry.ponder.enchant.header": "エンチャント",
+
+	"create_enchantment_industry.ponder.hyper_enchant.header": "ハイパーエンチャント",
+	"create_enchantment_industry.ponder.hyper_enchant.text_1": "これは液化ハイパー経験値です。",
+	"create_enchantment_industry.ponder.hyper_enchant.text_2": "ハイパー経験値でブレイズエンチャンターを極度の加熱状態にすることができ、この状態で生成されるエンチャントのレベルは設定されたエンチャントより1段階高くなります。",
+
+	"create_enchantment_industry.ponder.drop_experience_nugget.header": "経験値トラップかな？",
+	"create_enchantment_industry.ponder.drop_experience_nugget.text_1": "Mobがデプロイヤーに殺されると、経験値の塊をドロップします。",
+
+	"create_enchantment_industry.ponder.absorb_experience_nugget.header": "経験値の塊の液化経験値への変換",
+	"create_enchantment_industry.ponder.absorb_experience_nugget.text_1": "経験値の塊はエンチャント吸収口で吸収することができます。",
+
+	"create_enchantment_industry.ponder.leak.header": "漏れてる漏れてる!",
+	"create_enchantment_industry.ponder.leak.text_1": "液化経験値でいっぱいの液体タンクがあります。",
+	"create_enchantment_industry.ponder.leak.text_2": "そして終点が開いている液体パイプが...",
+	"create_enchantment_industry.ponder.leak.text_3": "うわ!",
+	"create_enchantment_industry.ponder.leak.text_4": "大丈夫!漏れた液化経験値は経験値オーブに変化します。また、パイプの開口部に立って経験値を吸収することも可能です。",
+	"create_enchantment_industry.ponder.tag.experience": "経験値機械",
+	"create_enchantment_industry.ponder.tag.experience.description": "経験値に関する道具や機械",
+
+	"_": "Thank you for translating Create: Enchantment Industry!"
+
+}
