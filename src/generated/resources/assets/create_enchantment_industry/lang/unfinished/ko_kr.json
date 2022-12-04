@@ -1,22 +1,22 @@
 {
-	"_": "Missing Localizations: 12",
+	"_": "Missing Localizations: 0",
 
 	"_": "->------------------------]  Game Elements  [------------------------<-",
 
 	"block.create_enchantment_industry.blaze_enchanter": "블레이즈 마법 부여대",
 	"block.create_enchantment_industry.disenchanter": "마법 해제대",
 	"block.create_enchantment_industry.ink": "잉크",
-	"block.create_enchantment_industry.printer": "UNLOCALIZED: Printer",
+	"block.create_enchantment_industry.printer": "인쇄기",
 
 	"entity.create_enchantment_industry.hyper_experience_bottle": "고농축 경험치 병",
-	"entity.create_enchantment_industry.hyper_experience_orb": "UNLOCALIZED: Hyper Experience Orb",
+	"entity.create_enchantment_industry.hyper_experience_orb": "고농축 경험 구슬",
 
 	"fluid.create_enchantment_industry.experience": "액체 경험치",
 	"fluid.create_enchantment_industry.hyper_experience": "고농축 액체 경험치",
-	"fluid.create_enchantment_industry.ink": "UNLOCALIZED: Ink",
+	"fluid.create_enchantment_industry.ink": "잉크",
 
 	"item.create_enchantment_industry.enchanting_guide": "마법 유도서",
-	"item.create_enchantment_industry.experience_rotor": "UNLOCALIZED: Experience Rotor",
+	"item.create_enchantment_industry.experience_rotor": "경험치 로터",
 	"item.create_enchantment_industry.hyper_experience_bottle": "고농축 경험치 병",
 	"item.create_enchantment_industry.ink_bucket": "잉크 양동이",
 
@@ -51,8 +51,8 @@
 	"advancement.create_enchantment_industry.first_order.desc": "블레이즈 마법 부여대로 기존 아이템에 마법을 부여하세요",
 	"advancement.create_enchantment_industry.additional_order": "추가 주문",
 	"advancement.create_enchantment_industry.additional_order.desc": "블레이즈 마법 부여대로 마법 부여된 아이템에 마법을 또 부여하세요",
-	"advancement.create_enchantment_industry.hypothetical_extension": "UNLOCALIZED: Hypothetical Extension",
-	"advancement.create_enchantment_industry.hypothetical_extension.desc": "UNLOCALIZED: Add a new enchantment to an item using Blaze Enchanter's hyper-enchanting",
+	"advancement.create_enchantment_industry.hypothetical_extension": "가설 ",
+	"advancement.create_enchantment_industry.hypothetical_extension.desc": "초고열 블레이즈 마법 부여대를 사용해서 더 높은 레벨의 마법을 부여하세요",
 
 
 	"_": "->------------------------]  Ponder Content  [------------------------<-",
@@ -99,8 +99,8 @@
 	"item.create_enchantment_industry.enchanting_guide.tooltip.current_enchantment": "현재 마법:",
 	"item.create_enchantment_industry.enchanting_guide.tooltip.not_configured": "설정되지 않음",
 
-	"item.create_enchantment_industry.experience_rotor.tooltip": "UNLOCALIZED: EXPERIENCE ROTOR",
-	"item.create_enchantment_industry.experience_rotor.tooltip.summary": "UNLOCALIZED: Used in _Mixing_ _Recipes_ to convert _Experience_ _Fluids_.",
+	"item.create_enchantment_industry.experience_rotor.tooltip": "경험치 ",
+	"item.create_enchantment_industry.experience_rotor.tooltip.summary": "_액체 경험치_를 만들기 위한 _혼합 조합법_에서 사용됩니다.",
 
 
 	"_": "->------------------------]  UI & Messages  [------------------------<-",
@@ -109,15 +109,15 @@
 	"create_enchantment_industry.gui.goggles.printer": "인쇄될 내용:",
 	"create_enchantment_industry.gui.goggles.printer.no_target": "없음",
 	"create_enchantment_industry.gui.goggles.blaze_enchanter": "현재 마법:",
-	"create_enchantment_industry.gui.goggles.blaze_enchanter.invalid_target": "UNLOCALIZED: Invalid Target",
-	"create_enchantment_industry.gui.goggles.xp_consumption": "UNLOCALIZED: Consumes Experience: %s mB",
-	"create_enchantment_industry.gui.goggles.ink_consumption": "UNLOCALIZED: Consumes Ink: %s mB",
+	"create_enchantment_industry.gui.goggles.blaze_enchanter.invalid_target": "대상 없음",
+	"create_enchantment_industry.gui.goggles.xp_consumption": "경험치 사용량 %s mB",
+	"create_enchantment_industry.gui.goggles.ink_consumption": "잉크 사용량: %s mB",
 	"create_enchantment_industry.gui.goggles.too_expensive": "너무 비쌉니다!",
 
 	"create_enchantment_industry.generic.unit.page": "쪽",
 	"create_enchantment_industry.generic.unit.pages": "쪽",
 
-	"recipe.create_enchantment_industry.disenchanting": "UNLOCALIZED: Disenchanting",
+	"recipe.create_enchantment_industry.disenchanting": "마법 해제",
 
 	"_": "Thank you for translating Create: Enchantment Industry!"
 
