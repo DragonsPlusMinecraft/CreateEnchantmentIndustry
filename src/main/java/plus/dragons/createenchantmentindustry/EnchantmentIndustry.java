@@ -17,6 +17,7 @@ import plus.dragons.createdragonlib.advancement.AdvancementFactory;
 import plus.dragons.createdragonlib.init.SafeRegistrate;
 import plus.dragons.createdragonlib.lang.Lang;
 import plus.dragons.createdragonlib.lang.LangFactory;
+import plus.dragons.createdragonlib.tag.TagGen;
 import plus.dragons.createenchantmentindustry.content.contraptions.fluids.OpenEndedPipeEffects;
 import plus.dragons.createenchantmentindustry.entry.*;
 import plus.dragons.createenchantmentindustry.foundation.advancement.CeiAdvancements;
@@ -52,6 +53,10 @@ public class EnchantmentIndustry {
         modEventBus.addListener(EventPriority.LOWEST, ADVANCEMENT_FACTORY::datagen);
         modEventBus.addListener(EventPriority.LOWEST, LANG_FACTORY::datagen);
         registerForgeEvents(forgeEventBus);
+        new TagGen.Builder(REGISTRATE)
+                .addItemTagFactory(CeiTags::genItemTag)
+                .addFluidTagFactory(CeiTags::genFluidTag)
+                .build().activate();
         
         DistExecutor.safeRunWhenOn(Dist.CLIENT, () -> EnchantmentIndustryClient::new);
     }

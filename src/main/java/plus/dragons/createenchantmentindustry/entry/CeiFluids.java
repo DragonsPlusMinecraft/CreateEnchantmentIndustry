@@ -57,7 +57,7 @@ public class CeiFluids {
                     .slopeFindDistance(4)
                     .explosionResistance(100f))
             .source(ForgeFlowingFluid.Source::new) // TODO: remove when Registrate fixes FluidBuilder
-            .tag(CeiTags.FluidTag.INK.tag())
+            .tag(CeiTags.FluidTag.INK.tag)
             .bucket()
             .build()
             .register();
