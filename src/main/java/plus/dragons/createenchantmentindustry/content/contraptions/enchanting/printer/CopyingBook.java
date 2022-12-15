@@ -28,7 +28,7 @@ public class CopyingBook {
     @SuppressWarnings("deprecation") //Fluid Tags are still useful for mod interaction
     public static boolean isCorrectInk(ItemStack target, FluidStack fluidStack) {
         if (target.is(Items.ENCHANTED_BOOK) && fluidStack.getFluid().isSame(CeiFluids.EXPERIENCE.get())) return true;
-        else return target.is(Items.WRITTEN_BOOK) && fluidStack.getFluid().is(CeiTags.FluidTag.INK.tag());
+        else return target.is(Items.WRITTEN_BOOK) && fluidStack.getFluid().is(CeiTags.FluidTag.INK.tag);
     }
 
     public static ItemStack print(ItemStack target, int requiredAmount, ItemStack stack, FluidStack availableFluid) {

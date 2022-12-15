@@ -74,7 +74,7 @@ public class CeiTags {
         }
     }
 
-    enum BlockTag {
+    public enum BlockTag {
         ;
 
         public final TagKey<Block> tag;
@@ -128,7 +128,7 @@ public class CeiTags {
         }
     }
 
-    enum ItemTag {
+    public enum ItemTag {
         INK_INGREDIENT(true),
         UPRIGHT_ON_BELT(NameSpace.CREATE, true);
 
@@ -183,7 +183,7 @@ public class CeiTags {
         }
     }
 
-    enum FluidTag {
+    public enum FluidTag {
         //No experience fluid tag here as different ratios is not acceptable
         INK(NameSpace.FORGE, false),
         BLAZE_ENCHANTER_INPUT(false),

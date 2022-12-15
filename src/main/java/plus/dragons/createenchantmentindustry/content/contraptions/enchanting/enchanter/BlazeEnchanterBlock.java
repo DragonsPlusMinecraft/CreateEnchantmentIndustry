@@ -73,22 +73,7 @@ public class BlazeEnchanterBlock extends HorizontalDirectionalBlock implements I
 
     @Override
     public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
-        if (!state.hasBlockEntity() || state.getBlock() == newState.getBlock())
-            return;
-        if (level instanceof ServerLevel serverLevel) {
-            withTileEntityDo(level, pos, te -> {
-                ItemStack heldItemStack = te.getHeldItemStack();
-                if (!heldItemStack.isEmpty())
-                    Containers.dropItemStack(level, pos.getX(), pos.getY(), pos.getZ(), heldItemStack);
-                Containers.dropItemStack(level, pos.getX(), pos.getY(), pos.getZ(), te.targetItem);
-                var tank = te.internalTank.getPrimaryHandler();
-                var fluidStack = tank.getFluid();
-                if(fluidStack.getFluid() instanceof ExperienceFluid expFluid) {
-                    expFluid.drop(serverLevel, VecHelper.getCenterOf(pos), fluidStack.getAmount());
-                }
-            });
-        }
-        level.removeBlockEntity(pos);
+        ITE.onRemove(state,level,pos,newState);
     }
 
     @Override

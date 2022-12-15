@@ -16,8 +16,10 @@ import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.Containers;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.WrittenBookItem;
@@ -34,6 +36,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import plus.dragons.createdragonlib.mixin.AdvancementBehaviourAccessor;
 import plus.dragons.createenchantmentindustry.content.contraptions.fluids.FilteringFluidTankBehaviour;
+import plus.dragons.createenchantmentindustry.content.contraptions.fluids.experience.ExperienceFluid;
 import plus.dragons.createenchantmentindustry.entry.CeiTags;
 import plus.dragons.createenchantmentindustry.foundation.advancement.CeiAdvancements;
 import plus.dragons.createenchantmentindustry.foundation.advancement.CeiTriggers;
@@ -67,7 +70,7 @@ public class PrinterBlockEntity extends SmartTileEntity implements IHaveGoggleIn
     @SuppressWarnings("deprecation") //Fluid Tags are still useful for mod interaction
     public void addBehaviours(List<TileEntityBehaviour> behaviours) {
         behaviours.add(tank = FilteringFluidTankBehaviour
-            .single(fluidStack -> fluidStack.getFluid().is(CeiTags.FluidTag.PRINTER_INPUT.tag()),
+            .single(fluidStack -> fluidStack.getFluid().is(CeiTags.FluidTag.PRINTER_INPUT.tag),
                 this, CeiConfigs.SERVER.copierTankCapacity.get()));
         behaviours.add(beltProcessing = new BeltProcessingBehaviour(this).whenItemEnters(this::onItemReceived)
                 .whileItemHeld(this::whenItemHeld));
@@ -175,6 +178,21 @@ public class PrinterBlockEntity extends SmartTileEntity implements IHaveGoggleIn
     private FluidStack getCurrentFluidInTank() {
         return tank.getPrimaryHandler()
                 .getFluid();
+    }
+
+    @Override
+    public void destroy() {
+        super.destroy();
+        if (level instanceof ServerLevel serverLevel) {
+            ItemStack heldItemStack = copyTarget;
+            var pos = getBlockPos();
+            if(heldItemStack != null)
+                Containers.dropItemStack(level, pos.getX(), pos.getY(), pos.getZ(), heldItemStack);
+            var fluidStack = tank.getPrimaryHandler().getFluid();
+            if(fluidStack.getFluid() instanceof ExperienceFluid expFluid) {
+                expFluid.drop(serverLevel, VecHelper.getCenterOf(pos), fluidStack.getAmount());
+            }
+        }
     }
 
     @Override
