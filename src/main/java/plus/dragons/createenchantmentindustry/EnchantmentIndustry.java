@@ -31,11 +31,13 @@ import plus.dragons.createenchantmentindustry.foundation.data.lang.LangMerger;
 public class EnchantmentIndustry {
     public static final Logger LOGGER = LogManager.getLogger();
     public static final String ID = "create_enchantment_industry";
-    private static final NonNullSupplier<CreateRegistrate> REGISTRATE = CreateRegistrate.lazy(ID);
+    private static final CreateRegistrate REGISTRATE = CreateRegistrate.create(ID);
 
     public EnchantmentIndustry() {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
         IEventBus forgeEventBus = MinecraftForge.EVENT_BUS;
+
+        REGISTRATE.registerEventListeners(modEventBus);
     
         CeiConfigs.register(ModLoadingContext.get());
         
@@ -87,7 +89,7 @@ public class EnchantmentIndustry {
     }
 
     public static CreateRegistrate registrate() {
-        return REGISTRATE.get();
+        return REGISTRATE;
     }
     
 }

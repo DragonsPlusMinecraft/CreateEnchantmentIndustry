@@ -22,6 +22,7 @@ import plus.dragons.createenchantmentindustry.EnchantmentIndustry;
 import java.util.*;
 
 public interface CeiTags<T, P extends RegistrateTagsProvider<T>> {
+    // There is no No need to Change there to follow Create >= 0.5.0.g TagGen Change. Since support of 1.18.2 will be dropped.
     ITagManager<Block> BLOCK_TAGS = Objects.requireNonNull(ForgeRegistries.BLOCKS.tags());
     ITagManager<Item> ITEM_TAGS = Objects.requireNonNull(ForgeRegistries.ITEMS.tags());
     ITagManager<Fluid> FLUID_TAGS = Objects.requireNonNull(ForgeRegistries.FLUIDS.tags());

@@ -21,9 +21,11 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
+import net.minecraft.world.Containers;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
@@ -39,6 +41,7 @@ import net.minecraftforge.items.ItemHandlerHelper;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import plus.dragons.createenchantmentindustry.content.contraptions.fluids.FilteringFluidTankBehaviour;
+import plus.dragons.createenchantmentindustry.content.contraptions.fluids.experience.ExperienceFluid;
 import plus.dragons.createenchantmentindustry.entry.CeiFluids;
 import plus.dragons.createenchantmentindustry.entry.CeiTags;
 import plus.dragons.createenchantmentindustry.foundation.config.CeiConfigs;
@@ -427,10 +430,27 @@ public class BlazeEnchanterBlockEntity extends SmartTileEntity implements IHaveG
     }
 
     @Override
-    public void setRemoved() {
-        super.setRemoved();
+    public void invalidate() {
+        super.invalidate();
         for (LazyOptional<EnchantingItemHandler> lazyOptional : itemHandlers.values())
             lazyOptional.invalidate();
+    }
+
+    @Override
+    public void destroy() {
+        super.destroy();
+        if (level instanceof ServerLevel serverLevel) {
+            ItemStack heldItemStack = getHeldItemStack();
+            var pos = getBlockPos();
+            if (!heldItemStack.isEmpty())
+                Containers.dropItemStack(level, pos.getX(), pos.getY(), pos.getZ(), heldItemStack);
+            Containers.dropItemStack(level, pos.getX(), pos.getY(), pos.getZ(), targetItem);
+            var tank = internalTank.getPrimaryHandler();
+            var fluidStack = tank.getFluid();
+            if(fluidStack.getFluid() instanceof ExperienceFluid expFluid) {
+                expFluid.drop(serverLevel, VecHelper.getCenterOf(pos), fluidStack.getAmount());
+            }
+        }
     }
 
     public boolean hyper() {
