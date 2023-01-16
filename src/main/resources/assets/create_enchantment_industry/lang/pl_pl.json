@@ -1,0 +1,122 @@
+{
+	"_": "Missing Localizations: 0",
+
+	"_": "->------------------------]  Game Elements  [------------------------<-",
+
+	"block.create_enchantment_industry.blaze_enchanter": "Płomienny Zaklinacz",
+	"block.create_enchantment_industry.disenchanter": "Odklinacz",
+	"block.create_enchantment_industry.ink": "Atrament",
+	"block.create_enchantment_industry.printer": "Kopiarka",
+
+	"entity.create_enchantment_industry.hyper_experience_bottle": "Hiper Zaklęta Butelka",
+	"entity.create_enchantment_industry.hyper_experience_orb": "Kulka Hiper Doświadczenia",
+
+	"fluid.create_enchantment_industry.experience": "Zaklęta Ciecz",
+	"fluid.create_enchantment_industry.hyper_experience": "Hiper Zaklęta Ciecz",
+
+	"item.create_enchantment_industry.enchanting_guide": "Przewodnik Zaklęć",
+	"item.create_enchantment_industry.experience_rotor": "Zaklęty Wirnik",
+	"item.create_enchantment_industry.hyper_experience_bottle": "Hiper Zaklęta Butelka",
+	"item.create_enchantment_industry.ink_bucket": "Wiadro Atramentu",
+
+
+	"_": "->------------------------]  Advancements  [------------------------<-",
+
+	"advancement.create_enchantment_industry.experienced_engineer": "Doświadczony Inżynier",
+	"advancement.create_enchantment_industry.experienced_engineer.desc": "Zdobądź trochę zaklętych samorodków z kruszenia rud, lub pokonywania mobów aplikatorem",
+	"advancement.create_enchantment_industry.black_as_ink": "Czarny Jak Atrament!",
+	"advancement.create_enchantment_industry.black_as_ink.desc": "Zdobądź wiadro Atramentu dla twojego biznesu!",
+	"advancement.create_enchantment_industry.copiable_masterpiece": "Skopiowane Dzieło Sztuki",
+	"advancement.create_enchantment_industry.copiable_masterpiece.desc": "Skopiuj zapisaną książke używając Kopiarki",
+	"advancement.create_enchantment_industry.copiable_mystery": "Skopiowana Tajemnica",
+	"advancement.create_enchantment_industry.copiable_mystery.desc": "Skopiuj zaklętą książkę używając Kopiarki",
+	"advancement.create_enchantment_industry.relic_restoration": "Przywrócenie Relikwii",
+	"advancement.create_enchantment_industry.relic_restoration.desc": "Zrób zupełnie nową kopię z postrzępionej książki",
+	"advancement.create_enchantment_industry.great_publisher": "Znany Twórca",
+	"advancement.create_enchantment_industry.great_publisher.desc": "Skopiuj ponad 1000 książek używając jednej Kopiarki!",
+	"advancement.create_enchantment_industry.experimental": "Eksperymentalne",
+	"advancement.create_enchantment_industry.experimental.desc": "Stwórz trochę zaklętego płynu dla twojego zaczarowanego eksperymentu!",
+	"advancement.create_enchantment_industry.gone_with_the_foil": "Przeminęło z Folią",
+	"advancement.create_enchantment_industry.gone_with_the_foil.desc": "Patrz na zaklęty przedmiot będący odklinany za pomocą Odklinacza",
+	"advancement.create_enchantment_industry.spirit_taking": "Wyzionąłem Ducha",
+	"advancement.create_enchantment_industry.spirit_taking.desc": "Spraw, by Odklinacz zabrał twoje doświadczenie!",
+	"advancement.create_enchantment_industry.a_shower_experience": "Deszcz Zaklęć",
+	"advancement.create_enchantment_industry.a_shower_experience.desc": "Stań przed rurą wypompowującą zaklęty płyn i wykąp się w doświadczeniu!",
+	"advancement.create_enchantment_industry.experienced_recycler": "Doświadczony Recykler",
+	"advancement.create_enchantment_industry.experienced_recycler.desc": "Poddaj 1 000 000 mW zaklętego płynu z odklinacza",
+	"advancement.create_enchantment_industry.blazes_new_job": "Nowe Hobby Płomyka",
+	"advancement.create_enchantment_industry.blazes_new_job.desc": "Daj swojemu Płomiennemu Palnikowi Poradnik Zaklinania, zmieniając go w Płomiennego Zaklinacza",
+	"advancement.create_enchantment_industry.first_order": "Pierwsze Zamówienie",
+	"advancement.create_enchantment_industry.first_order.desc": "Zaklnij niezaklęty przedmiot za pomocą Płomiennego Zaklinacza",
+	"advancement.create_enchantment_industry.additional_order": "Dodatkowe Zamówienie",
+	"advancement.create_enchantment_industry.additional_order.desc": "Dodaj zaklęcie do przedmiotu za pomocą Płomiennego Zaklinacza",
+	"advancement.create_enchantment_industry.hypothetical_extension": "Hipotetyczne rozszerzenie",
+	"advancement.create_enchantment_industry.hypothetical_extension.desc": "Zasil Płomiennego Zaklinacza Hiper Zaklęciem i zaklnij nim przedmiot",
+
+
+	"_": "->------------------------]  UI & Messages  [------------------------<-",
+
+	"create_enchantment_industry.gui.enchanting_guide.no_enchantment": "Brak Zaklęcia",
+	"create_enchantment_industry.gui.goggles.printer": "Kopiowana lektura:",
+	"create_enchantment_industry.gui.goggles.printer.no_target": "Brak",
+	"create_enchantment_industry.gui.goggles.blaze_enchanter": "Aktywne Zaklęcie:",
+	"create_enchantment_industry.gui.goggles.blaze_enchanter.invalid_target": "Niepoprawny Przedmiot",
+	"create_enchantment_industry.gui.goggles.xp_consumption": "Pobiera %s mW",
+	"create_enchantment_industry.gui.goggles.ink_consumption": "Pobiera %s mW",
+	"create_enchantment_industry.gui.goggles.too_expensive": "Zbyt Drogo!",
+
+	"create_enchantment_industry.generic.unit.page": "Strona",
+	"create_enchantment_industry.generic.unit.pages": "Strony",
+
+	"recipe.create_enchantment_industry.disenchanting": "Odklinanie",
+
+
+	"_": "->------------------------]  Item Descriptions  [------------------------<-",
+
+	"item.create_enchantment_industry.enchanting_guide.tooltip": "ETYKIETY PORADNIKA ZAKLINANIA",
+	"item.create_enchantment_industry.enchanting_guide.tooltip.current_enchantment": "Obecne Zaklęcie:",
+	"item.create_enchantment_industry.enchanting_guide.tooltip.not_configured": "Nie Ustawione",
+
+	"item.create_enchantment_industry.experience_rotor.tooltip": "ZAKLĘTY ROTOR",
+	"item.create_enchantment_industry.experience_rotor.tooltip.summary": "Używany w _Przepisach_ _Mieszania_ do konwertowania _Zaklętych_ _Cieczy_.",
+
+
+	"_": "->------------------------]  Ponder Content  [------------------------<-",
+
+	"create_enchantment_industry.ponder.disenchant.header": "Odklinanie",
+	"create_enchantment_industry.ponder.disenchant.text_1": "Wszystkie przedmioty otrzymane przez odklinacz stracą swoje zaklęcia, które zostaną przerobione na zaklętą ciecz do przechowywania",
+	"create_enchantment_industry.ponder.disenchant.text_2": "Gracze stojący na odklinaczu zostaną pozbawieni swojego poziomu doświadczenia, a liczba poziomów zostanie przerobiona na zaklętą ciecz",
+
+	"create_enchantment_industry.ponder.experience_bottle.header": "Użytek Zaklętych Butelek",
+	"create_enchantment_industry.ponder.experience_bottle.text_1": "Zaklęte butelki mogą być opróżniane przy pomocy odklinacza...",
+	"create_enchantment_industry.ponder.experience_bottle.text_2": "...tak samo jak mogą być wytwarzane przy pomocy wypełniacza",
+
+	"create_enchantment_industry.ponder.transform.header": "Używanie Poradnika Zaklęć",
+	"create_enchantment_industry.ponder.transform.text_1": "Kliknij na Płomienny Palnik skonfigurowanym Poradnikiem Zaklęć skradając się, aby przemienić go w Płomiennego Zaklinacza",
+	"create_enchantment_industry.ponder.transform.text_2": "Aby odebrać Poradnik Zaklęć, kliknij Płomiennego Zaklinacza",
+
+	"create_enchantment_industry.ponder.copy.header": "Używanie Kopiarki",
+
+	"create_enchantment_industry.ponder.enchant.header": "Zaklinanie",
+
+	"create_enchantment_industry.ponder.hyper_enchant.header": "Hiper-Zaklinanie",
+	"create_enchantment_industry.ponder.hyper_enchant.text_1": "W Zbiorniku znajduje się Hiper Zaklęta Ciecz",
+	"create_enchantment_industry.ponder.hyper_enchant.text_2": "Płomienny Zaklinacz nakarmiony Hiper Zaklętą Cieczą będzie przekazywał na przedmioty zaklęcie o jeden poziom wyższy niż ustawione",
+
+	"create_enchantment_industry.ponder.drop_experience_nugget.header": "A może farma Expa?",
+	"create_enchantment_industry.ponder.drop_experience_nugget.text_1": "Kiedy mob zostanie pokonany za pomocą aplikatora, ma szansę upuścić zaklęte samorodki",
+
+	"create_enchantment_industry.ponder.absorb_experience_nugget.header": "Zamienianie Bryłek Doświadczenia w Ciecz",
+	"create_enchantment_industry.ponder.absorb_experience_nugget.text_1": "Bryłki Doświadczenia mogą zostać zaabsorbowane przez Odklinacz",
+
+	"create_enchantment_industry.ponder.leak.header": "O nie! Jest wyciek!",
+	"create_enchantment_industry.ponder.leak.text_1": "Jeśli w zbiorniku znajduje się Zaklęta Ciecz...",
+	"create_enchantment_industry.ponder.leak.text_2": "...a w obwodzie rur znajduje się otwarty koniec...",
+	"create_enchantment_industry.ponder.leak.text_3": "Eh!",
+	"create_enchantment_industry.ponder.leak.text_4": "Na szczęście, wycieknięte doświadczenie wydostanie się w postaci Kulek Doświadczenia, które mogą zostać wchłonięte przez Odklinacz lub graczy",
+	"create_enchantment_industry.ponder.tag.experience": "Punkty Doświadczenia i Zaklinanie",
+	"create_enchantment_industry.ponder.tag.experience.description": "Przedmioty oraz Mechanizmy powiązanie z Zaklęciami",
+
+	"_": "Thank you for translating Create: Enchantment Industry!"
+
+}
