@@ -194,7 +194,7 @@ public class DisenchanterBlockEntity extends SmartTileEntity implements IHaveGog
         }
 
         if (heldItem.prevBeltPosition < .5f && heldItem.beltPosition >= .5f) {
-            if (Disenchanting.disenchantResult(heldItem.stack, level) == null)
+            if (Disenchanting.disenchantResult(heldItem.stack.copy(), level) == null)
                 return;
             heldItem.beltPosition = .5f;
             if (onClient)
@@ -296,6 +296,7 @@ public class DisenchanterBlockEntity extends SmartTileEntity implements IHaveGog
         if (result == null)
             return false;
         FluidStack xp = result.getFirst();
+        xp.setAmount(xp.getAmount() * heldItem.stack.getCount());
 
         if (processingTicks > 5) {
             internalTank.allowInsertion();
@@ -321,7 +322,9 @@ public class DisenchanterBlockEntity extends SmartTileEntity implements IHaveGog
         }
 
         // Process finished
-        heldItem.stack = result.getSecond();
+        var resultItem = result.getSecond();
+        resultItem.setCount(heldItem.stack.getCount());
+        heldItem.stack = resultItem;
         internalTank.allowInsertion();
         internalTank.getPrimaryHandler().fill(xp, IFluidHandler.FluidAction.EXECUTE);
         internalTank.forbidInsertion();
