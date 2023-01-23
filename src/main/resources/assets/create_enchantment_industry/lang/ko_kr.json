@@ -1,4 +1,6 @@
 {
+	"_": "Missing Localizations: 1",
+
 	"_": "->------------------------]  Game Elements  [------------------------<-",
 
 	"block.create_enchantment_industry.blaze_enchanter": "블레이즈 마법 부여대",
@@ -67,6 +69,8 @@
 	"create_enchantment_industry.generic.unit.pages": "쪽",
 
 	"recipe.create_enchantment_industry.disenchanting": "마법 해제",
+
+	"create_enchantment_industry.display_source.blaze_enchanter_source_target_enchantment": "UNLOCALIZED: Target Enchantment",
 
 
 	"_": "->------------------------]  Item Descriptions  [------------------------<-",
