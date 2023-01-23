@@ -24,6 +24,8 @@ public class CeiServerConfig extends ConfigBase {
     public final ConfigFloat deployerXpDropChance = f(1, 0, 1,
         "deployerXpDropChance",
         Comments.deployerXpDropChance);
+
+    public final ConfigBool enableHyperEnchant = b(true, "enableHyperEnchant");
     
     @Override
     protected void registerAll(ForgeConfigSpec.Builder builder) {
