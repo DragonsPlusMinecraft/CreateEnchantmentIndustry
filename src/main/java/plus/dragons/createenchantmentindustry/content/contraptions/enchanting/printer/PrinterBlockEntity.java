@@ -33,6 +33,7 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
+import net.minecraftforge.items.CapabilityItemHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import plus.dragons.createenchantmentindustry.content.contraptions.fluids.FilteringFluidTankBehaviour;
@@ -59,6 +60,8 @@ public class PrinterBlockEntity extends SmartTileEntity implements IHaveGoggleIn
     public ItemStack copyTarget;
     public boolean tooExpensive;
     boolean sendParticles;
+
+    LazyOptional<PrinterTargetItemHandler> itemHandler = LazyOptional.of(()->new PrinterTargetItemHandler());
 
     public PrinterBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
@@ -225,11 +228,19 @@ public class PrinterBlockEntity extends SmartTileEntity implements IHaveGoggleIn
     }
 
     @Override
+    public void invalidate() {
+        super.invalidate();
+        this.itemHandler.invalidate();
+    }
+
+    @Override
     @NotNull
     public <T> LazyOptional<T> getCapability(Capability<T> cap, @Nullable Direction side) {
         if (cap == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY && side != Direction.DOWN)
             return tank.getCapability()
                     .cast();
+        else if(cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+            return itemHandler.cast();
         return super.getCapability(cap, side);
     }
 
