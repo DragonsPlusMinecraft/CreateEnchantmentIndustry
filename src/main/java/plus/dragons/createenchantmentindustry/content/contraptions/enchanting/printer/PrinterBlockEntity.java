@@ -29,10 +29,9 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
-import net.minecraftforge.items.CapabilityItemHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import plus.dragons.createdragonlib.mixin.AdvancementBehaviourAccessor;
@@ -234,10 +233,10 @@ public class PrinterBlockEntity extends SmartTileEntity implements IHaveGoggleIn
     @Override
     @NotNull
     public <T> LazyOptional<T> getCapability(Capability<T> cap, @Nullable Direction side) {
-        if (cap == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY && side != Direction.DOWN)
+        if (cap == ForgeCapabilities.FLUID_HANDLER && side != Direction.DOWN)
             return tank.getCapability()
                     .cast();
-        else if(cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+        else if(cap == ForgeCapabilities.ITEM_HANDLER)
             return itemHandler.cast();
         return super.getCapability(cap, side);
     }
@@ -295,7 +294,7 @@ public class PrinterBlockEntity extends SmartTileEntity implements IHaveGoggleIn
                 }
             }
         }
-        containedFluidTooltip(tooltip, isPlayerSneaking, getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY));
+        containedFluidTooltip(tooltip, isPlayerSneaking, getCapability(ForgeCapabilities.FLUID_HANDLER));
         return true;
     }
 
