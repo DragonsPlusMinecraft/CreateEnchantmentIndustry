@@ -1,5 +1,5 @@
 {
-	"_": "Missing Localizations: 0",
+	"_": "Missing Localizations: 1",
 
 	"_": "->------------------------]  Game Elements  [------------------------<-",
 
@@ -118,6 +118,8 @@
 	"create_enchantment_industry.generic.unit.pages": "ページ",
 
 	"recipe.create_enchantment_industry.disenchanting": "エンチャント除去",
+
+	"create_enchantment_industry.display_source.blaze_enchanter_source_target_enchantment": "UNLOCALIZED: Target Enchantment",
 
 	"_": "Thank you for translating Create: Enchantment Industry!"
 

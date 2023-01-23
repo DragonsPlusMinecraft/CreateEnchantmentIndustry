@@ -59,7 +59,7 @@ public class PrinterBlockEntity extends SmartTileEntity implements IHaveGoggleIn
     public boolean tooExpensive;
     boolean sendParticles;
 
-    LazyOptional<PrinterTargetItemHandler> itemHandler = LazyOptional.of(()->new PrinterTargetItemHandler());
+    LazyOptional<PrinterTargetItemHandler> itemHandler = LazyOptional.of(()->new PrinterTargetItemHandler(this));
 
     public PrinterBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);

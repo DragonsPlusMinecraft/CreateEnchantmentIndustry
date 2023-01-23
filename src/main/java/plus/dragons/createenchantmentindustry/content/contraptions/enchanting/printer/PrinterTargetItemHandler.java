@@ -9,6 +9,10 @@ import plus.dragons.createenchantmentindustry.foundation.config.CeiConfigs;
 public class PrinterTargetItemHandler implements IItemHandler {
     PrinterBlockEntity be;
 
+    public PrinterTargetItemHandler(PrinterBlockEntity be) {
+        this.be = be;
+    }
+
     @Override
     public int getSlots() {
         return 1;
@@ -23,7 +27,7 @@ public class PrinterTargetItemHandler implements IItemHandler {
     public @NotNull ItemStack insertItem(int slot, @NotNull ItemStack stack, boolean simulate) {
         if(be.copyTarget!=null) return stack;
         else{
-            if(simulate){
+            if(!simulate){
                 be.tooExpensive = CopyingBook.isTooExpensive(stack, CeiConfigs.SERVER.copierTankCapacity.get());
                 be.copyTarget = stack;
                 be.processingTicks = -1;
