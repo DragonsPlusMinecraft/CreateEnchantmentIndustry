@@ -12,10 +12,12 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.MissingMappingsEvent;
 import plus.dragons.createenchantmentindustry.EnchantmentIndustry;
+import plus.dragons.createenchantmentindustry.content.contraptions.enchanting.enchanter.TargetEnchantmentDisplaySource;
 import plus.dragons.createenchantmentindustry.content.contraptions.enchanting.printer.PrinterBlock;
 import plus.dragons.createenchantmentindustry.content.contraptions.enchanting.disenchanter.DisenchanterBlock;
 import plus.dragons.createenchantmentindustry.content.contraptions.enchanting.enchanter.BlazeEnchanterBlock;
 
+import static com.simibubi.create.content.logistics.block.display.AllDisplayBehaviours.assignDataBehaviour;
 import static plus.dragons.createenchantmentindustry.EnchantmentIndustry.REGISTRATE;
 
 
@@ -46,6 +48,7 @@ public class CeiBlocks {
     public static final BlockEntry<BlazeEnchanterBlock> BLAZE_ENCHANTER = REGISTRATE
             .block("blaze_enchanter", BlazeEnchanterBlock::new)
             .initialProperties(SharedProperties::softMetal)
+            .onRegister(assignDataBehaviour(new TargetEnchantmentDisplaySource(), "target_enchantment"))
             .transform(TagGen.pickaxeOnly())
             .blockstate((ctx, pov) -> pov.simpleBlock(ctx.get(), AssetLookup.standardModel(ctx, pov)))
             .register();
