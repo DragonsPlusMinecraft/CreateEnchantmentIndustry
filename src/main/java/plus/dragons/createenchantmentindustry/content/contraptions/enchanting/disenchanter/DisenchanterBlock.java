@@ -68,16 +68,17 @@ public class DisenchanterBlock extends Block implements IWrenchable, ITE<Disench
             });
         }
         return onTileEntityUse(worldIn, pos, te -> {
-            ItemStack disenchanted = Disenchanting.disenchantAndInsert(te, heldItem, false);
-            if (!ItemStack.matches(disenchanted, heldItem)) {
-                player.setItemInHand(handIn, disenchanted);
-                return InteractionResult.sidedSuccess(worldIn.isClientSide);
-            }
             if (te.getHeldItemStack().isEmpty()) {
-                if (!worldIn.isClientSide) {
-                    te.heldItem = new TransportedItemStack(heldItem);
-                    player.setItemInHand(handIn, ItemStack.EMPTY);
-                    te.notifyUpdate();
+                var insert = heldItem.copy();
+                insert.setCount(1);
+                var result = Disenchanting.disenchantResult(insert,worldIn);
+                if (!result.getFirst().isEmpty()) {
+                    if(!worldIn.isClientSide()){
+                        te.heldItem = new TransportedItemStack(insert);
+                        te.notifyUpdate();
+                        heldItem.shrink(1);
+                        return InteractionResult.sidedSuccess(worldIn.isClientSide);
+                    }
                 }
                 return InteractionResult.sidedSuccess(worldIn.isClientSide);
             }
