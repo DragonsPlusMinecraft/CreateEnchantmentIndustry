@@ -92,10 +92,10 @@ public class EnchantingGuideItem extends Item implements MenuProvider {
     @Override
     public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> pTooltipComponents, TooltipFlag pIsAdvanced) {
         super.appendHoverText(pStack, pLevel, pTooltipComponents, pIsAdvanced);
-        pTooltipComponents.add(LANG.translate("tooltip.guide_header").component());
+        pTooltipComponents.add(LANG.translate("tooltip.current_enchantment").component());
         EnchantmentEntry enchantment = getEnchantment(pStack);
         if (enchantment == null) {
-            pTooltipComponents.add(LANG.translate("tooltip.guide_not_configured").component());
+            pTooltipComponents.add(LANG.translate("tooltip.not_configured").component());
         } else
             pTooltipComponents.add(enchantment.getFirst().getFullname(enchantment.getSecond()));
     }
