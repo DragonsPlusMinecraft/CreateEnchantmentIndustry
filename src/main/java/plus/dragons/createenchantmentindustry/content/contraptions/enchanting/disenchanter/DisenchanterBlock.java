@@ -72,17 +72,16 @@ public class DisenchanterBlock extends Block implements IWrenchable, ITE<Disench
                 var insert = heldItem.copy();
                 insert.setCount(1);
                 var result = Disenchanting.disenchantResult(insert,worldIn);
-                if (!result.getFirst().isEmpty()) {
+                if (result!=null) {
                     if(!worldIn.isClientSide()){
                         te.heldItem = new TransportedItemStack(insert);
                         te.notifyUpdate();
                         heldItem.shrink(1);
-                        return InteractionResult.sidedSuccess(worldIn.isClientSide);
                     }
                 }
                 return InteractionResult.sidedSuccess(worldIn.isClientSide);
             }
-            return InteractionResult.FAIL;
+            return InteractionResult.PASS;
         });
     }
 
