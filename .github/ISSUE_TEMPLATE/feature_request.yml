@@ -1,0 +1,13 @@
+name: Feature Request
+description: Create a feature request to help us improve this mod
+labels: [ "enhancement", "triage" ]
+body:
+  -   type: textarea
+      attributes:
+        label: Describe the your request
+        description: A clear and concise description of feature request
+      validations:
+        required: true
+  -   type: markdown
+      attributes:
+        value: "Thank you for taking the time to make this feature request and help improve this mod!"
