@@ -11,6 +11,7 @@ import net.minecraftforge.network.NetworkRegistry;
 import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.network.simple.SimpleChannel;
 import plus.dragons.createenchantmentindustry.EnchantmentIndustry;
+import plus.dragons.createenchantmentindustry.content.contraptions.enchanting.enchanter.BlazeEnchanterEditPacket;
 import plus.dragons.createenchantmentindustry.content.contraptions.enchanting.enchanter.EnchantingGuideEditPacket;
 
 import java.util.function.BiConsumer;
@@ -22,7 +23,8 @@ import static net.minecraftforge.network.NetworkDirection.PLAY_TO_SERVER;
 public enum CeiPackets {
 
     // Client to Server
-    CONFIGURE_ENCHANTING_GUIDE_FOR_BLAZE(EnchantingGuideEditPacket.class, EnchantingGuideEditPacket::new, PLAY_TO_SERVER);
+    CONFIGURE_ENCHANTING_GUIDE_FOR_BLAZE(EnchantingGuideEditPacket.class, EnchantingGuideEditPacket::new, PLAY_TO_SERVER),
+    CONFIGURE_BLAZE_ENCHANTER(BlazeEnchanterEditPacket.class, BlazeEnchanterEditPacket::new, PLAY_TO_SERVER);
 
     public static final ResourceLocation CHANNEL_NAME = EnchantmentIndustry.genRL("main");
     public static final int NETWORK_VERSION = 1;

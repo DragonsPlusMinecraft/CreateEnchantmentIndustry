@@ -51,10 +51,8 @@ public class EnchantingGuideItem extends Item implements MenuProvider {
                 var blockPos = pContext.getClickedPos();
                 var blockState = level.getBlockState(blockPos);
                 var blockEntity = level.getBlockEntity(blockPos);
-                if (EnchantingGuideItem.getEnchantment(itemStack) != null &&
-                    blockState.getBlock() instanceof BlazeBurnerBlock &&
-                    blockEntity instanceof BlazeBurnerTileEntity)
-                {
+                if (blockState.getBlock() instanceof BlazeBurnerBlock &&
+                        blockEntity instanceof BlazeBurnerTileEntity) {
                     if (!level.isClientSide()) {
                         level.setBlockAndUpdate(blockPos, CeiBlocks.BLAZE_ENCHANTER.getDefaultState()
                             .setValue(BlazeEnchanterBlock.FACING, level.getBlockState(blockPos).getValue(BlazeBurnerBlock.FACING))

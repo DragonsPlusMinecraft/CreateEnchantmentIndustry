@@ -3,6 +3,7 @@ package plus.dragons.createenchantmentindustry.content.contraptions.enchanting.e
 import com.google.common.collect.ImmutableList;
 import com.simibubi.create.foundation.gui.container.GhostItemContainer;
 import net.minecraft.client.Minecraft;
+import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
@@ -19,18 +20,34 @@ import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.items.SlotItemHandler;
 import plus.dragons.createenchantmentindustry.foundation.utility.CeiLang;
 
+import javax.annotation.Nullable;
+
 public class EnchantingGuideMenu extends GhostItemContainer<ItemStack> {
     private static final Component NO_ENCHANTMENT = CeiLang.translate("gui.enchanting_guide.no_enchantment").component();
     ImmutableList<Component> enchantments = ImmutableList.of(NO_ENCHANTMENT);
+    boolean directItemStackEdit;
+    @Nullable
+    BlockPos blockPos = null;
 
     public EnchantingGuideMenu(MenuType<?> type, int id, Inventory inv, FriendlyByteBuf extraData) {
         super(type, id, inv, extraData);
+        directItemStackEdit = extraData.readBoolean();
+        if(extraData.isReadable()){
+            blockPos = extraData.readBlockPos();
+        }
     }
 
     public EnchantingGuideMenu(MenuType<?> type, int id, Inventory inv, ItemStack contentHolder) {
         super(type, id, inv, contentHolder);
+        directItemStackEdit = true;
     }
-    
+
+    public EnchantingGuideMenu(MenuType<?> type, int id, Inventory inv, ItemStack contentHolder, BlockPos blockPos) {
+        super(type, id, inv, contentHolder);
+        directItemStackEdit = false;
+        this.blockPos = blockPos;
+    }
+
     private void updateEnchantments(ItemStack stack) {
         var map = EnchantmentHelper.getEnchantments(stack);
         if (map.isEmpty())
@@ -74,7 +91,7 @@ public class EnchantingGuideMenu extends GhostItemContainer<ItemStack> {
     protected ItemStack createOnClient(FriendlyByteBuf extraData) {
         return extraData.readItem();
     }
-    
+
     @Override
     protected void addSlots() {
         addPlayerSlots(44, 70);
@@ -83,6 +100,14 @@ public class EnchantingGuideMenu extends GhostItemContainer<ItemStack> {
 
     @Override
     protected void saveData(ItemStack contentHolder) {
+    }
+
+    @Override
+    public boolean stillValid(Player player) {
+        if(!directItemStackEdit){
+            return super.stillValid(player) && player.level.getBlockEntity(blockPos) instanceof BlazeEnchanterBlockEntity;
+        }
+        return super.stillValid(player);
     }
 
 
@@ -96,13 +121,13 @@ public class EnchantingGuideMenu extends GhostItemContainer<ItemStack> {
         public boolean mayPlace(ItemStack pStack) {
             return pStack.is(Items.ENCHANTED_BOOK) && !EnchantmentHelper.getEnchantments(pStack).isEmpty();
         }
-    
+
         @Override
         public void setChanged() {
             super.setChanged();
             updateEnchantments(getItem());
         }
-        
+
     }
 
     @Override
