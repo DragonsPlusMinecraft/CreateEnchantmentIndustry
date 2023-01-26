@@ -40,7 +40,7 @@ public class BlazeEnchanterEditPacket extends SimplePacketBase {
     public void handle(Supplier<NetworkEvent.Context> context) {
         context.get()
                 .enqueueWork(() -> {
-                    // TODO
+
                     ServerPlayer sender = context.get()
                             .getSender();
                     if(!(sender.level.getBlockEntity(blockPos) instanceof BlazeEnchanterBlockEntity blazeEnchanter))
@@ -49,10 +49,13 @@ public class BlazeEnchanterEditPacket extends SimplePacketBase {
                     CompoundTag tag = blazeEnchanter.targetItem.getOrCreateTag();
                     tag.putInt("index", index);
                     tag.put("target", itemStack.serializeNBT());
+                    tag.remove("blockPos");
 
                     if(blazeEnchanter.processingTicks>5){
                         blazeEnchanter.processingTicks = BlazeEnchanterBlockEntity.ENCHANTING_TIME;
                     }
+
+                    blazeEnchanter.notifyUpdate();
                 });
         context.get()
                 .setPacketHandled(true);

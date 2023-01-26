@@ -33,20 +33,19 @@ public class EnchantingGuideMenu extends GhostItemContainer<ItemStack> {
     public EnchantingGuideMenu(MenuType<?> type, int id, Inventory inv, FriendlyByteBuf extraData) {
         super(type, id, inv, extraData);
         directItemStackEdit = extraData.readBoolean();
-        if(extraData.isReadable()){
+        if(!directItemStackEdit){
             blockPos = extraData.readBlockPos();
         }
     }
 
-    public EnchantingGuideMenu(MenuType<?> type, int id, Inventory inv, ItemStack contentHolder) {
+    public EnchantingGuideMenu(MenuType<?> type, int id, Inventory inv, ItemStack contentHolder, @Nullable BlockPos blockPos) {
         super(type, id, inv, contentHolder);
-        directItemStackEdit = true;
-    }
-
-    public EnchantingGuideMenu(MenuType<?> type, int id, Inventory inv, ItemStack contentHolder, BlockPos blockPos) {
-        super(type, id, inv, contentHolder);
-        directItemStackEdit = false;
-        this.blockPos = blockPos;
+        if(blockPos!=null){
+            directItemStackEdit = false;
+            this.blockPos = blockPos;
+        } else {
+            directItemStackEdit = true;
+        }
     }
 
     private void updateEnchantments(ItemStack stack) {

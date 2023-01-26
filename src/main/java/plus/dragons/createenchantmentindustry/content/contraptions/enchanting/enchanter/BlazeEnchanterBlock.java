@@ -10,8 +10,10 @@ import com.simibubi.create.foundation.advancement.AdvancementBehaviour;
 import com.simibubi.create.foundation.block.ITE;
 import com.simibubi.create.foundation.tileEntity.ComparatorUtil;
 import com.simibubi.create.foundation.utility.Lang;
+import com.simibubi.create.foundation.utility.NBTHelper;
 import com.simibubi.create.foundation.utility.VecHelper;
 import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.NbtUtils;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.StringRepresentable;
@@ -120,7 +122,7 @@ public class BlazeEnchanterBlock extends HorizontalDirectionalBlock implements I
                     if(player.level.getBlockEntity(pos) instanceof BlazeEnchanterBlockEntity blazeEnchanter){
                         withTileEntityDo(player.level, pos,
                                 toolbox -> NetworkHooks.openScreen((ServerPlayer) player,
-                                        (EnchantingGuideItem) blazeEnchanter.targetItem.getItem(), buf -> {
+                                        blazeEnchanter, buf -> {
                                     buf.writeItem(blazeEnchanter.targetItem);
                                     buf.writeBoolean(false);
                                     buf.writeBlockPos(pos);
