@@ -31,8 +31,8 @@ import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
 import plus.dragons.createenchantmentindustry.content.contraptions.enchanting.printer.PrinterBlockEntity;
@@ -136,22 +136,22 @@ public class EnchantmentScenes {
                 BlazeEnchanterBlock.HeatLevel.KINDLED),false);
         scene.world.modifyTileEntity(util.grid.at(1, 2, 0), BlazeEnchanterBlockEntity.class, be -> {
             be.setTargetItem(enchantingGuide(Enchantments.MENDING, 1));
-            be.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY).ifPresent(tank ->
+            be.getCapability(ForgeCapabilities.FLUID_HANDLER).ifPresent(tank ->
                     tank.fill(new FluidStack(CeiFluids.EXPERIENCE.get().getSource(), 1000), IFluidHandler.FluidAction.EXECUTE));
         });
         scene.world.modifyTileEntity(util.grid.at(0, 2, 6), BlazeEnchanterBlockEntity.class, be -> {
             be.setTargetItem(enchantingGuide(Enchantments.UNBREAKING, 3));
-            be.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY).ifPresent(tank ->
+            be.getCapability(ForgeCapabilities.FLUID_HANDLER).ifPresent(tank ->
                     tank.fill(new FluidStack(CeiFluids.EXPERIENCE.get().getSource(), 1000), IFluidHandler.FluidAction.EXECUTE));
         });
         scene.world.modifyTileEntity(util.grid.at(6, 2, 7), BlazeEnchanterBlockEntity.class, be -> {
             be.setTargetItem(enchantingGuide(Enchantments.THORNS, 1));
-            be.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY).ifPresent(tank ->
+            be.getCapability(ForgeCapabilities.FLUID_HANDLER).ifPresent(tank ->
                     tank.fill(new FluidStack(CeiFluids.EXPERIENCE.get().getSource(), 1000), IFluidHandler.FluidAction.EXECUTE));
         });
         scene.world.modifyTileEntity(util.grid.at(7, 2, 1), BlazeEnchanterBlockEntity.class, be -> {
             be.setTargetItem(enchantingGuide(Enchantments.ALL_DAMAGE_PROTECTION, 3));
-            be.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY).ifPresent(tank ->
+            be.getCapability(ForgeCapabilities.FLUID_HANDLER).ifPresent(tank ->
                     tank.fill(new FluidStack(CeiFluids.EXPERIENCE.get().getSource(), 1000), IFluidHandler.FluidAction.EXECUTE));
         });
         scene.world.modifyTileEntity(util.grid.at(3, 1, 3), CreativeFluidTankTileEntity.class, be -> ((CreativeFluidTankTileEntity.CreativeSmartFluidTank) be.getTankInventory())
@@ -377,7 +377,7 @@ public class EnchantmentScenes {
         scene.world.modifyTileEntity(util.grid.at(2, 1, 5), CreativeFluidTankTileEntity.class, be -> ((CreativeFluidTankTileEntity.CreativeSmartFluidTank) be.getTankInventory())
                 .setContainedFluid(new FluidStack(CeiFluids.EXPERIENCE.get().getSource(), 1000)));
         scene.world.modifyTileEntity(util.grid.at(2, 3, 2), PrinterBlockEntity.class, be ->
-                be.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY).ifPresent(tank ->
+                be.getCapability(ForgeCapabilities.FLUID_HANDLER).ifPresent(tank ->
                         tank.fill(new FluidStack(CeiFluids.EXPERIENCE.get().getSource(), 3000), IFluidHandler.FluidAction.EXECUTE)));
         scene.idle(40);
 
@@ -400,7 +400,7 @@ public class EnchantmentScenes {
         scene.world.modifyTileEntity(util.grid.at(2, 1, 5), CreativeFluidTankTileEntity.class, be -> ((CreativeFluidTankTileEntity.CreativeSmartFluidTank) be.getTankInventory())
                 .setContainedFluid(new FluidStack(CeiFluids.INK.get().getSource(), 1000)));
         scene.world.modifyTileEntity(util.grid.at(2, 3, 2), PrinterBlockEntity.class, be ->
-                be.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY).ifPresent(tank -> {
+                be.getCapability(ForgeCapabilities.FLUID_HANDLER).ifPresent(tank -> {
                     tank.drain(3000, IFluidHandler.FluidAction.EXECUTE);
                     tank.fill(new FluidStack(CeiFluids.INK.get().getSource(), 3000), IFluidHandler.FluidAction.EXECUTE);
                 }));
