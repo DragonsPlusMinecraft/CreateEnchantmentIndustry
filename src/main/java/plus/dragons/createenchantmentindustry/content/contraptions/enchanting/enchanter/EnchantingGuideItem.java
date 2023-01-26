@@ -52,8 +52,7 @@ public class EnchantingGuideItem extends Item implements MenuProvider {
                 var blockPos = pContext.getClickedPos();
                 var blockState = level.getBlockState(blockPos);
                 var blockEntity = level.getBlockEntity(blockPos);
-                if (EnchantingGuideItem.getEnchantment(itemStack) != null &&
-                        blockState.getBlock() instanceof BlazeBurnerBlock &&
+                if (blockState.getBlock() instanceof BlazeBurnerBlock &&
                         blockEntity instanceof BlazeBurnerTileEntity) {
                     if (!level.isClientSide()) {
                         level.setBlockAndUpdate(blockPos, CeiBlocks.BLAZE_ENCHANTER.getDefaultState()
@@ -83,6 +82,7 @@ public class EnchantingGuideItem extends Item implements MenuProvider {
             if (!world.isClientSide && player instanceof ServerPlayer)
                 NetworkHooks.openScreen((ServerPlayer) player, this, buf -> {
                     buf.writeItem(heldItem);
+                    buf.writeBoolean(true);
                 });
             return InteractionResultHolder.success(heldItem);
         }

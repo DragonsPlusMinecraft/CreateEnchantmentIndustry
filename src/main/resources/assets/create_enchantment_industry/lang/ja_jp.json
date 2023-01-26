@@ -90,7 +90,7 @@
 
 	"create_enchantment_industry.ponder.transform.header": "エンチャントの手引きの使用",
 	"create_enchantment_industry.ponder.transform.text_1": "設定済みのエンチャントの手引きを手に持ち、スニークしながらブレイズバーナーを右クリックします。",
-	"create_enchantment_industry.ponder.transform.text_2": "エンチャントの手引きを取り出すには、ブレイズエンチャンターを何も持たずに右クリックします。",
+	"create_enchantment_industry.ponder.transform.text_2": "UNLOCALIZED: To retrieve the enchanting guide, right-click the Blaze Enchanter with wrench when sneaking",
 
 
 	"_": "->------------------------]  Item Descriptions  [------------------------<-",

@@ -90,7 +90,7 @@
 
 	"create_enchantment_industry.ponder.transform.header": "Używanie Poradnika Zaklęć",
 	"create_enchantment_industry.ponder.transform.text_1": "Kliknij na Płomienny Palnik skonfigurowanym Poradnikiem Zaklęć skradając się, aby przemienić go w Płomiennego Zaklinacza",
-	"create_enchantment_industry.ponder.transform.text_2": "Aby odebrać Poradnik Zaklęć, kliknij Płomiennego Zaklinacza",
+	"create_enchantment_industry.ponder.transform.text_2": "UNLOCALIZED: To retrieve the enchanting guide, right-click the Blaze Enchanter with wrench when sneaking",
 
 
 	"_": "->------------------------]  Item Descriptions  [------------------------<-",

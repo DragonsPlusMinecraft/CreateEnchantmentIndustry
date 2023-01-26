@@ -121,13 +121,6 @@ public class BlazeEnchanterBlockEntity extends SmartTileEntity implements IHaveG
             blazeTick();
         }
 
-        if (EnchantingGuideItem.getEnchantment(targetItem) == null) {
-            if (!onClient) {
-                level.setBlockAndUpdate(getBlockPos(), AllBlocks.BLAZE_BURNER.getDefaultState().setValue(BlazeBurnerBlock.HEAT_LEVEL, BlazeBurnerBlock.HeatLevel.SMOULDERING));
-                return;
-            }
-        }
-
         if (heldItem == null) {
             processingTicks = 0;
             return;

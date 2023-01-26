@@ -106,13 +106,13 @@ public class EnchantmentScenes {
                 .withItem(CeiItems.ENCHANTING_GUIDE.asStack()), 40);
         scene.idle(50);
         scene.overlay.showText(40)
-                .text("To retrieve the enchanting guide, right-click the Blaze Enchanter with your empty hand") // We do not use PonderLocalization. For registerText only
+                .text("To retrieve the enchanting guide, right-click the Blaze Enchanter with wrench when sneaking") // We do not use PonderLocalization. For registerText only
                 .attachKeyFrame()
                 .placeNearTarget()
                 .pointAt(util.vector.topOf(1, 1, 1));
         scene.idle(40);
         scene.world.setBlock(util.grid.at(1, 1, 1), AllBlocks.BLAZE_BURNER.getDefaultState().setValue(BlazeBurnerBlock.HEAT_LEVEL, BlazeBurnerBlock.HeatLevel.SMOULDERING), false);
-        scene.overlay.showControls(new InputWindowElement(util.vector.centerOf(1, 1, 1), Pointing.DOWN).rightClick(), 40);
+        scene.overlay.showControls(new InputWindowElement(util.vector.centerOf(1, 1, 1), Pointing.DOWN).whileSneaking().rightClick().withWrench(), 40);
         scene.idle(40);
     }
 

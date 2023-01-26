@@ -13,6 +13,7 @@ import com.simibubi.create.foundation.utility.Lang;
 import com.simibubi.create.foundation.utility.VecHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
@@ -20,6 +21,7 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -33,6 +35,7 @@ import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.Nullable;
 import plus.dragons.createenchantmentindustry.content.contraptions.fluids.experience.ExperienceFluid;
 import plus.dragons.createenchantmentindustry.entry.CeiBlockEntities;
@@ -81,7 +84,7 @@ public class BlazeEnchanterBlock extends HorizontalDirectionalBlock implements I
         ItemStack heldItem = player.getItemInHand(handIn);
         if (!heldItem.isEmpty()){
             return onTileEntityUse(worldIn, pos, te -> {
-                if(heldItem.is(CeiItems.ENCHANTING_GUIDE.get()) && EnchantingGuideItem.getEnchantment(heldItem) != null){
+                if(heldItem.is(CeiItems.ENCHANTING_GUIDE.get())){
                     if (!worldIn.isClientSide) {
                         var target = te.targetItem.copy();
                         te.targetItem = heldItem;
@@ -114,9 +117,15 @@ public class BlazeEnchanterBlock extends HorizontalDirectionalBlock implements I
         } else {
             if(player.isShiftKeyDown()){
                 if(!player.level.isClientSide()){
-                    worldIn.setBlockAndUpdate(pos, AllBlocks.BLAZE_BURNER.getDefaultState()
-                            .setValue(BlazeBurnerBlock.FACING, state.getValue(FACING))
-                            .setValue(BlazeBurnerBlock.HEAT_LEVEL, BlazeBurnerBlock.HeatLevel.SMOULDERING));
+                    if(player.level.getBlockEntity(pos) instanceof BlazeEnchanterBlockEntity blazeEnchanter){
+                        withTileEntityDo(player.level, pos,
+                                toolbox -> NetworkHooks.openScreen((ServerPlayer) player,
+                                        (EnchantingGuideItem) blazeEnchanter.targetItem.getItem(), buf -> {
+                                    buf.writeItem(blazeEnchanter.targetItem);
+                                    buf.writeBoolean(false);
+                                    buf.writeBlockPos(pos);
+                                }));
+                    }
                 }
                 return InteractionResult.SUCCESS;
             } else {
@@ -137,6 +146,20 @@ public class BlazeEnchanterBlock extends HorizontalDirectionalBlock implements I
                 });
             }
         }
+    }
+
+    @Override
+    public InteractionResult onSneakWrenched(BlockState state, UseOnContext context) {
+        Level world = context.getLevel();
+        BlockPos pos = context.getClickedPos();
+        Player player = context.getPlayer();
+        if (world instanceof ServerLevel) {
+            if (player != null)
+                player.level.setBlockAndUpdate(pos, AllBlocks.BLAZE_BURNER.getDefaultState()
+                        .setValue(BlazeBurnerBlock.FACING, state.getValue(FACING))
+                        .setValue(BlazeBurnerBlock.HEAT_LEVEL, BlazeBurnerBlock.HeatLevel.SMOULDERING));
+        }
+        return InteractionResult.SUCCESS;
     }
 
 
