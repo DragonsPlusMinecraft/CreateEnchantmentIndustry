@@ -42,6 +42,7 @@ body:
         label: Mod Version
         description: The version of the mod you were using when the bug occured
         options:
+          - "1.1.12"
           - "1.1.11"
           - "Older version"
       validations:
