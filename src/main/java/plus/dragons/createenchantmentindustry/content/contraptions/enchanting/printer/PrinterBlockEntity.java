@@ -252,7 +252,7 @@ public class PrinterBlockEntity extends SmartTileEntity implements IHaveGoggleIn
     @Override
     public boolean addToGoggleTooltip(List<Component> tooltip, boolean isPlayerSneaking) {
         CeiLang.translate("gui.goggles.printer").forGoggles(tooltip);
-        if (copyTarget == null) {
+        if (copyTarget == null || (!copyTarget.is(Items.WRITTEN_BOOK) && !copyTarget.is(Items.ENCHANTED_BOOK))) {
             CeiLang.translate("gui.goggles.printer.no_target")
                     .style(ChatFormatting.GRAY)
                     .forGoggles(tooltip, 1);

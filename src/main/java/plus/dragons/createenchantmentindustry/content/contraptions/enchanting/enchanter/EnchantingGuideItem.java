@@ -79,7 +79,10 @@ public class EnchantingGuideItem extends Item implements MenuProvider {
         ItemStack heldItem = player.getItemInHand(hand);
         if (!player.isShiftKeyDown() && hand == InteractionHand.MAIN_HAND) {
             if (!world.isClientSide && player instanceof ServerPlayer)
-                NetworkHooks.openGui((ServerPlayer) player, this, buf -> buf.writeItem(heldItem));
+                NetworkHooks.openGui((ServerPlayer) player, this, buf -> {
+                    buf.writeItem(heldItem);
+                    buf.writeBoolean(true);
+                });
             return InteractionResultHolder.success(heldItem);
         }
         return InteractionResultHolder.pass(heldItem);
@@ -105,7 +108,7 @@ public class EnchantingGuideItem extends Item implements MenuProvider {
     @Override
     public AbstractContainerMenu createMenu(int pContainerId, Inventory pPlayerInventory, Player pPlayer) {
         ItemStack heldItem = pPlayer.getMainHandItem();
-        return new EnchantingGuideMenu(CeiContainerTypes.ENCHANTING_GUIDE_FOR_BLAZE.get(), pContainerId, pPlayerInventory, heldItem);
+        return new EnchantingGuideMenu(CeiContainerTypes.ENCHANTING_GUIDE_FOR_BLAZE.get(), pContainerId, pPlayerInventory, heldItem, null);
     }
 
     @Nullable

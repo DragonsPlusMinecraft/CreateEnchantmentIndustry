@@ -117,7 +117,7 @@ public class BlazeEnchanterBlock extends HorizontalDirectionalBlock implements I
                     if(player.level.getBlockEntity(pos) instanceof BlazeEnchanterBlockEntity blazeEnchanter){
                         withTileEntityDo(player.level, pos,
                                 toolbox -> NetworkHooks.openGui((ServerPlayer) player,
-                                        (EnchantingGuideItem) blazeEnchanter.targetItem.getItem(), buf -> {
+                                        blazeEnchanter, buf -> {
                                     buf.writeItem(blazeEnchanter.targetItem);
                                     buf.writeBoolean(false);
                                     buf.writeBlockPos(pos);

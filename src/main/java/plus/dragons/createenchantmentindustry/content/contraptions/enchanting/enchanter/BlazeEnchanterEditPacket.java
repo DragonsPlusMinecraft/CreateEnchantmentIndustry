@@ -53,6 +53,8 @@ public class BlazeEnchanterEditPacket extends SimplePacketBase {
                     if(blazeEnchanter.processingTicks>5){
                         blazeEnchanter.processingTicks = BlazeEnchanterBlockEntity.ENCHANTING_TIME;
                     }
+
+                    blazeEnchanter.notifyUpdate();
                 });
         context.get()
                 .setPacketHandled(true);
