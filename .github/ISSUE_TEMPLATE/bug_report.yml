@@ -2,6 +2,15 @@ name: Bug Report
 description: Create a bug report to help us improve this mod
 labels: [ "bug", "triage" ]
 body:
+  -   type: dropdown
+      attributes:
+        label: Minecraft Version
+        description: The version of Minecraft you were using when the bug occured
+        options:
+          - "1.19.2"
+          - "1.18.2"
+      validations:
+        required: true
   -   type: textarea
       attributes:
         label: Describe the Bug
@@ -37,42 +46,27 @@ body:
         description: If applicable, please add a **link** to the crash report or log that was created when this issue occured. You can upload the crash report to a site like Pastebin or GitHub Gist. Please **do not** paste the whole crash report in this issue.
       validations:
         required: false
-  -   type: dropdown
-      attributes:
-        label: Mod Version
-        description: The version of the mod you were using when the bug occured
-        options:
-          - "1.1.12"
-          - "1.1.11"
-          - "Older version"
-      validations:
-        required: true
-  -   type: dropdown
-      attributes:
-        label: Minecraft Version
-        description: The version of Minecraft you were using when the bug occured
-        options:
-          - "1.19.2"
-          - "1.18.2"
-      validations:
-        required: true
-  -   type: input
-      attributes:
-        label: Forge Version
-        description: The version of Forge you were using when the bug occured
-        placeholder: 43.1.52
-      validations:
-        required: true
   -   type: textarea
       attributes:
         label: Other Mods
         description: Please list any other mods that were running when the crash happened.
       validations:
         required: false
-  -   type: textarea
+  -   type: markdown
       attributes:
-        label: Additional Context
-        description: Add any extra context about the bug here
+        value: "If you are not using latest version of our mod, or not using recommended version of forge, please fill form below."
+  -   type: input
+      attributes:
+        label: Mod Version
+        description: The version of the mod you were using when the incompatibility occurred
+        placeholder: x.y.z
+      validations:
+        required: true
+  -   type: input
+      attributes:
+        label: Forge Version
+        description: The version of Forge you were using when the bug incompatibility occurred
+        placeholder: x.y.z
       validations:
         required: false
   -   type: markdown
