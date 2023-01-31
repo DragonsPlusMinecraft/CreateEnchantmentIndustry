@@ -29,7 +29,7 @@ public class CeiEntityTypes {
         HyperExperienceBottle::new,
         () -> ThrownItemRenderer<HyperExperienceBottle>::new,
         MobCategory.MISC, 4, 10, true, false, HyperExperienceBottle::build
-    ).register();
+    ).lang("Thrown Bottle O' Hyper Enchanting").register();
 
     private static <T extends Entity> CreateEntityBuilder<T, ?> builder(String name, EntityType.EntityFactory<T> factory,
                                                                         NonNullSupplier<NonNullFunction<EntityRendererProvider.Context, EntityRenderer<? super T>>> renderer,

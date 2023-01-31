@@ -144,41 +144,6 @@ jar.finalizedBy('reobfJar')
 
 addLicense(jar)
 
-curseforge {
-    if (System.getenv('CURSEFORGE_API_KEY') != null && project.hasProperty('cf_project_id')) {
-        apiKey = System.getenv("CURSEFORGE_API_KEY")
-        project {
-            id = project.cf_project_id
-            releaseType = project.cf_release_type
-            if (project.hasProperty('cf_game_versions')) {
-                def gameVersions = project.cf_game_versions.split(", ")
-                gameVersions.each { String gameVersion ->
-                    addGameVersion gameVersion
-                }
-            }
-            if (project.hasProperty('cf_java_versions')) {
-                def gameVersions = project.cf_java_versions.split(", ")
-                gameVersions.each { String gameVersion ->
-                    addGameVersion gameVersion
-                }
-            }
-            addGameVersion project.cf_modloader
-            mainArtifact(jar) {
-                displayName = "CEI ${mod_version} for Create ${artifact_minecraft_version}-${create_version}"
-                relations {
-                    if(project.hasProperty('cf_required_dependencies')) {
-                        project.cf_required_dependencies.split(", ").each { String slug ->
-                            requiredDependency slug
-                        }
-                    }
-                }
-            }
-            changelog = file("${projectDir}/changelog/${mod_version}.md")
-            changelogType = 'markdown'
-        }
-    }
-}
-
 publishing {
     publications {
         mavenJava(MavenPublication) {
