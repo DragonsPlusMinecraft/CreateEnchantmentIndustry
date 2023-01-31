@@ -1,10 +1,10 @@
-// 1.19.2	2022-11-04T23:31:48.6234346	Registrate Provider for create_enchantment_industry [Recipes, Advancements, Loot tables, Tags (blocks), Tags (items), Tags (fluids), Tags (entity_types), Blockstates, Item models, Lang (en_us/en_ud)]
+// 1.19.2	2023-01-31T09:35:05.5700049	Registrate Provider for create_enchantment_industry [Recipes, Advancements, Loot tables, Tags (blocks), Tags (items), Tags (fluids), Tags (entity_types), Blockstates, Item models, Lang (en_us/en_ud)]
 88f73ef97f52294b19161e10aad77704336e0544 assets/create_enchantment_industry/blockstates/blaze_enchanter.json
 b906ace9e6b212e429e06eabb32921f76c818927 assets/create_enchantment_industry/blockstates/disenchanter.json
 4694ec9b6941ce15ec9cc99b0800fe2dfe4e7bcd assets/create_enchantment_industry/blockstates/ink.json
 efd6ddb60930fc97b134f111b22d1c44f2cb0372 assets/create_enchantment_industry/blockstates/printer.json
-4941f3b2ed2fa6d6b70a63d885b310609e92807c assets/create_enchantment_industry/lang/en_ud.json
-c71e25c82a1e71c22d179ebadd297b790dce2f2d assets/create_enchantment_industry/lang/en_us.json
+e296fee83384ccc08851b432c67d72da9726261c assets/create_enchantment_industry/lang/en_ud.json
+a8d865b277b843a2f19880027f11f9eae2b05b6d assets/create_enchantment_industry/lang/en_us.json
 4053a644101e03d49d56707d504b728fd1617353 assets/create_enchantment_industry/models/block/ink.json
 e744a7aedaa0c74746aedd1405b15f4a12d7628c assets/create_enchantment_industry/models/item/disenchanter.json
 de16d83e19bb086c0e7699fe1fcf888a5e10cb10 assets/create_enchantment_industry/models/item/enchanting_guide.json

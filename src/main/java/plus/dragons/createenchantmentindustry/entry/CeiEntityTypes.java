@@ -25,7 +25,7 @@ public class CeiEntityTypes {
         MobCategory.MISC,
         4, 10, true, false,
         HyperExperienceBottle::build
-    ).register();
+    ).lang("Thrown Bottle O' Hyper Enchanting").register();
 
     public static void register() {
     }

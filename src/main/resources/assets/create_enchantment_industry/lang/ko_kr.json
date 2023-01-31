@@ -1,5 +1,4 @@
 {
-	"_": "Missing Localizations: 1",
 
 	"_": "->------------------------]  Game Elements  [------------------------<-",
 
@@ -89,7 +88,7 @@
 	"create_enchantment_industry.ponder.leak.text_4": "하지만 걱정하지 마세요, 흘러나온 액체 경험치는 경험치 구슬로 변합니다. 여기 서서 경험치를 흡수할 수도 있겠죠.",
 
 	"create_enchantment_industry.ponder.transform.header": "마법 유도서 사용하기",
-	"create_enchantment_industry.ponder.transform.text_1": "설정된 마법 유도서를 들고, 웅크리면서 블레이즈 버너에 우클릭하세요.",
+	"create_enchantment_industry.ponder.transform.text_1": "UNLOCALIZED: Right-click the Blaze Burner with an Enchanting Guide in hand when sneaking",
 	"create_enchantment_industry.ponder.transform.text_2": "UNLOCALIZED: To retrieve the enchanting guide, right-click the Blaze Enchanter with wrench when sneaking",
 
 

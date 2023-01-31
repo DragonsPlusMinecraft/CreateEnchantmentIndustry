@@ -7,7 +7,7 @@
 	"block.create_enchantment_industry.ink": "Ink",
 	"block.create_enchantment_industry.printer": "Printer",
 
-	"entity.create_enchantment_industry.hyper_experience_bottle": "Hyper Experience Bottle",
+	"entity.create_enchantment_industry.hyper_experience_bottle": "Thrown Bottle O' Hyper Enchanting",
 	"entity.create_enchantment_industry.hyper_experience_orb": "Hyper Experience Orb",
 
 	"fluid.create_enchantment_industry.experience": "Liquid Experience",
@@ -88,7 +88,7 @@
 	"create_enchantment_industry.ponder.leak.text_4": "Don't worry, the leaked liquid experience will turn into experience orbs. Players can also stand at the opening of the pipe to absorb experience.",
 
 	"create_enchantment_industry.ponder.transform.header": "Using Enchanting Guide",
-	"create_enchantment_industry.ponder.transform.text_1": "Right-click the Blaze Burner with a configured Enchanting Guide in hand when sneaking",
+	"create_enchantment_industry.ponder.transform.text_1": "Right-click the Blaze Burner with an Enchanting Guide in hand when sneaking",
 	"create_enchantment_industry.ponder.transform.text_2": "To retrieve the enchanting guide, right-click the Blaze Enchanter with wrench when sneaking",
 
 

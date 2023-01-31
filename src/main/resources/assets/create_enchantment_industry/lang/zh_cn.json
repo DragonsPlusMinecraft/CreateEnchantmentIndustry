@@ -1,5 +1,4 @@
 {
-	"_": "Missing Localizations: 0",
 
 	"_": "->------------------------]  Game Elements  [------------------------<-",
 
@@ -89,7 +88,7 @@
 	"create_enchantment_industry.ponder.leak.text_4": "不用担心，泄露的液态经验会变为经验球。玩家也可以站在管道开口处吸收经验。",
 
 	"create_enchantment_industry.ponder.transform.header": "使用附魔指南",
-	"create_enchantment_industry.ponder.transform.text_1": "手持配置好的附魔指南潜行右键烈焰人燃烧室",
+	"create_enchantment_industry.ponder.transform.text_1": "手持附魔指南潜行右键烈焰人燃烧室",
 	"create_enchantment_industry.ponder.transform.text_2": "如需取回附魔指南，请持扳手潜行右键烈焰人附魔室",
 
 
