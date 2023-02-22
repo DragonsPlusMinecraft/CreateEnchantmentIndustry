@@ -1,0 +1,125 @@
+{
+
+	"_": "->------------------------]  Game Elements  [------------------------<-",
+
+	"block.create_enchantment_industry.blaze_enchanter": "Encantador de Blaze",
+	"block.create_enchantment_industry.disenchanter": "Desencantador",
+	"block.create_enchantment_industry.ink": "Tinta",
+	"block.create_enchantment_industry.printer": "Impresora",
+	
+	"entity.create_enchantment_industry.hyper_experience_bottle": "Botella arrojadiza de hiperencantamiento",
+	"entity.create_enchantment_industry.hyper_experience_orb": "Orbe de hiperexperiencia",
+	
+	"fluid.create_enchantment_industry.experience": "Experiencia líquida",
+	"fluid.create_enchantment_industry.hyper_experience": "Hiperexperiencia líquida",
+	"fluid.create_enchantment_industry.ink": "Tinta",
+	
+	"item.create_enchantment_industry.enchanting_guide": "Guía de encantamiento",
+	"item.create_enchantment_industry.experience_rotor": "Hélice de experiencia",
+	"item.create_enchantment_industry.hyper_experience_bottle": "Botella de hiperencantamiento",
+	"item.create_enchantment_industry.ink_bucket": "Cubo de tinta",
+
+
+	"_": "->------------------------]  Advancements  [------------------------<-",
+
+	"advancement.create_enchantment_industry.experienced_engineer": "Ingeniero experimentado",
+	"advancement.create_enchantment_industry.experienced_engineer.desc": "Obtén algunas pepitas de experiencia triturando minerales o matando mobs usando el desplegador",
+	"advancement.create_enchantment_industry.black_as_ink": "¡Negro como la tinta!",
+	"advancement.create_enchantment_industry.black_as_ink.desc": "Consigue un balde de tinta para tu negocio editorial",
+	"advancement.create_enchantment_industry.copiable_masterpiece": "Obra maestra copiable",
+	"advancement.create_enchantment_industry.copiable_masterpiece.desc": "Copiar un libro escrito usando una impresora",
+	"advancement.create_enchantment_industry.copiable_mystery": "Misterio copiable",
+	"advancement.create_enchantment_industry.copiable_mystery.desc": "Copiar un libro encantado usando la impresora",
+	"advancement.create_enchantment_industry.relic_restoration": "Restauración de reliquias",
+	"advancement.create_enchantment_industry.relic_restoration.desc": "Hacer una copia nueva de un libro hecho jirones",
+	"advancement.create_enchantment_industry.great_publisher": "Gran editor",
+	"advancement.create_enchantment_industry.great_publisher.desc": "Copiar 1000 libros usando la impresora",
+	"advancement.create_enchantment_industry.experimental": "Experimental",
+	"advancement.create_enchantment_industry.experimental.desc": "¡Consigue experiencia líquida para tu encantador experimento!",
+	"advancement.create_enchantment_industry.gone_with_the_foil": "Lo que el aluminio se llevó",
+	"advancement.create_enchantment_industry.gone_with_the_foil.desc": "Mira cómo un desencantador desencanta un objeto encantado",
+	"advancement.create_enchantment_industry.spirit_take": "Toma de espíritus",
+	"advancement.create_enchantment_industry.spirit_take.desc": "Haz que un desencantador absorba tu experiencia",
+	"advancement.create_enchantment_industry.a_shower_experience": "Una ducha \"experiencia\"",
+	"advancement.create_enchantment_industry.a_shower_experience.desc": "Rompe una tubería de fluido y báñate en la experiencia filtrada",
+	"advancement.create_enchantment_industry.experienced_recycler": "Reciclador experimentado",
+	"advancement.create_enchantment_industry.experienced_recycler.desc": "Reciclar 1,000,000 mB de experiencia de desencantador",
+	"advancement.create_enchantment_industry.blazes_new_job": "Nuevo trabajo de Blaze",
+	"advancement.create_enchantment_industry.blazes_new_job.desc": "Dale a tu quemador de Blaze una guía de encantamiento y conviértelo en un encantador de Blaze",
+	"advancement.create_enchantment_industry.first_order": "Primer pedido",
+	"advancement.create_enchantment_industry.first_order.desc": "Agrega un nuevo encantamiento a un objeto sin encantar usando el encantador de Blaze",
+	"advancement.create_enchantment_industry.additional_order": "Orden adicional",
+	"advancement.create_enchantment_industry.additional_order.desc": "Agrega un nuevo encantamiento a un objeto encantado usando el encantador de Blaze",
+	"advancement.create_enchantment_industry.hypothetical_extension": "Extensión hipotética",
+	"advancement.create_enchantment_industry.hypothetical_extension.desc": "Agrega un nuevo encantamiento a un objeto usando el hiperencantamiento con el encantador de Blaze",
+
+
+	"_": "->------------------------]  Ponder Content  [------------------------<-",
+
+	"create_enchantment_industry.ponder.tag.experience": "Relacionado con la experiencia",
+	"create_enchantment_industry.ponder.tag.experience.description": "Objetos y componentes relacionados con la experiencia",
+	
+	"create_enchantment_industry.ponder.absorb_experience_nugget.header": "Conversión de pepita de experiencia en líquido",
+	"create_enchantment_industry.ponder.absorb_experience_nugget.text_1": "La pepita de experiencia puede ser absorbida por el desencantador.",
+
+	"create_enchantment_industry.ponder.copy.header": "Uso de la impresora",
+
+	"create_enchantment_industry.ponder.disenchant.header": "Desencantar",
+	"create_enchantment_industry.ponder.disenchant.text_1": "Se eliminarán los encantamientos de todos los elementos recibidos y los encantamientos eliminados se convertirán en experiencia líquida para su almacenamiento.",
+	"create_enchantment_industry.ponder.disenchant.text_2": "Los jugadores que estén parados en el desencantador perderán rápidamente su nivel de experiencia, y el valor de experiencia eliminado se convertirá en experiencia líquida para almacenar",
+
+    "create_enchantment_industry.ponder.drop_experience_nugget.header": "¿Tal vez una granja de experiencia?",
+    "create_enchantment_industry.ponder.drop_experience_nugget.text_1": "Cuando el desplegador mata un mob, se obtienen pepitas de experiencia.",
+
+    "create_enchantment_industry.ponder.enchant.header": "Encantamiento",
+
+	"create_enchantment_industry.ponder.experience_bottle.header": "Lidiando con botellas de experiencias",
+	"create_enchantment_industry.ponder.experience_bottle.text_1": "Las botellas de experiencia se pueden vaciar con el drenador.",
+	"create_enchantment_industry.ponder.experience_bottle.text_2": "Las botellas de experiencia también pueden ser llenadas.",
+
+	"create_enchantment_industry.ponder.hyper_enchant.header": "Hiperencantamiento",
+	"create_enchantment_industry.ponder.hyper_enchant.text_1": "Esto es hiperexperiencia líquida",
+	"create_enchantment_industry.ponder.hyper_enchant.text_2": "La hiperexperiencia puede hacer que el encantador de Blaze entre en estado de ebullición, y el nivel del encantamiento producido en este estado será un nivel más alto que el encantamiento establecido",
+
+	"create_enchantment_industry.ponder.leak.header": "¡Oh, no! ¡Está goteando!",
+	"create_enchantment_industry.ponder.leak.text_1": "Tengo un tanque lleno de experiencia.",
+	"create_enchantment_industry.ponder.leak.text_2": "Tengo una tubería abierta.",
+	"create_enchantment_industry.ponder.leak.text_3": "¡Uf!",
+	"create_enchantment_industry.ponder.leak.text_4": "No te preocupes, la experiencia líquida filtrada se convertirá en orbes de experiencia. Los jugadores también pueden quedarse en la abertura de la tubería para absorber experiencia.",
+
+	"create_enchantment_industry.ponder.transform.header": "Uso de la guía de encantamiento",
+	"create_enchantment_industry.ponder.transform.text_1": "Haz click con el botón derecho en un quemador de Blaze con una guía de encantamiento mientras te agachas.",
+	"create_enchantment_industry.ponder.transform.text_2": "Para recuperar la guía de encantamiento, haz click con el botón derecho en el quemador de Blaze con la llave inglesa mientras te agachas.",
+
+
+	"_": "->------------------------]  Item Descriptions  [------------------------<-",
+
+	"item.create_enchantment_industry.enchanting_guide.tooltip": "CONSEJOS PARA LA GUÍA DE ENCANTAMIENTO",
+	"item.create_enchantment_industry.enchanting_guide.tooltip.current_enchantment": "Encantamiento actual:",
+	"item.create_enchantment_industry.enchanting_guide.tooltip.not_configured": "No configurado",
+
+	"item.create_enchantment_industry.experience_rotor.tooltip": "ROTOR DE EXPERIENCIA",
+	"item.create_enchantment_industry.experience_rotor.tooltip.summary": "Usado en _recetas_ _mezcladas_ para convertir las cosas en  _experiencia_ _líquida_.",
+
+
+	"_": "->------------------------]  UI & Messages  [------------------------<-",
+
+	"create_enchantment_industry.gui.enchanting_guide.no_enchantment": "No hay encantamiento disponible",
+	"create_enchantment_industry.gui.goggles.printer": "Objeto a copiar:",
+	"create_enchantment_industry.gui.goggles.printer.no_target": "Ninguno",
+	"create_enchantment_industry.gui.goggles.blaze_enchanter": "Encantamiento activo:",
+	"create_enchantment_industry.gui.goggles.blaze_enchanter.invalid_target": "Objetivo no válido",
+	"create_enchantment_industry.gui.goggles.xp_consumiendo": "Consumo de experiencia: %s MB",
+	"create_enchantment_industry.gui.goggles.ink_consumiendo": "Consumo de tinta: %s mB",
+	"create_enchantment_industry.gui.goggles.too_expensive": "¡Demasiado caro!",
+
+	"create_enchantment_industry.generic.unit.page": "Página",
+	"create_enchantment_industry.generic.unit.pages": "Páginas",
+
+	"recipe.create_enchantment_industry.disenchanting": "Desencantar",
+
+	"create_enchantment_industry.display_source.blaze_enchanter_source_target_enchantment": "Encantamiento objetivo",
+
+	"_": "¡Gracias por traducir Create: Enchantment Industry!"
+
+}
