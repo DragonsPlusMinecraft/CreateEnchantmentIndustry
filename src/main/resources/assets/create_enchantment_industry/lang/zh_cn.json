@@ -63,10 +63,12 @@
 	"create_enchantment_industry.ponder.absorb_experience_nugget.text_1": "经验颗粒可被祛魔池吸收。",
 
 	"create_enchantment_industry.ponder.copy.header": "复印机使用",
+	"create_enchantment_industry.ponder.copy.text_1": "复印附魔书需要液态经验。",
+	"create_enchantment_industry.ponder.copy.text_2": "复印成书需要墨囊。",
 
 	"create_enchantment_industry.ponder.disenchant.header": "祛魔池使用",
 	"create_enchantment_industry.ponder.disenchant.text_1": "所有接收的物品都将被祛除附魔，被去除的附魔将被折算成液态经验存储。",
-	"create_enchantment_industry.ponder.disenchant.text_2": "站在祛魔池上方的玩家将被快速洗去经验等级，所洗去的经验值将被转换为液态经验存储",
+	"create_enchantment_industry.ponder.disenchant.text_2": "站在祛魔池上方的玩家将被快速洗去经验等级，所洗去的经验值将被转换为液态经验存储。",
 
 	"create_enchantment_industry.ponder.drop_experience_nugget.header": "...经验农场？",
 	"create_enchantment_industry.ponder.drop_experience_nugget.text_1": "机械手杀死生物时将掉落经验颗粒。",
@@ -78,8 +80,9 @@
 	"create_enchantment_industry.ponder.experience_bottle.text_2": "附魔之瓶也能通过注液器制造。",
 
 	"create_enchantment_industry.ponder.hyper_enchant.header": "超越附魔",
-	"create_enchantment_industry.ponder.hyper_enchant.text_1": "这是一罐液态超经验",
-	"create_enchantment_industry.ponder.hyper_enchant.text_2": "超经验可以让烈焰人附魔室进入超级燃烧状态，此状态下产出的附魔的等级将比设定附魔高出一个等级",
+	"create_enchantment_industry.ponder.hyper_enchant.text_1": "这是一罐液态超经验。",
+	"create_enchantment_industry.ponder.hyper_enchant.text_2": "超经验可以让烈焰人附魔室进入超级燃烧状态，此状态下产出的附魔的等级将比设定附魔高出一个等级。",
+	"create_enchantment_industry.ponder.hyper_enchant.text_3": "最大附魔等级为1的附魔无法在超越附魔中被附魔为等级2。",
 
 	"create_enchantment_industry.ponder.leak.header": "噢不！漏出来了！",
 	"create_enchantment_industry.ponder.leak.text_1": "I have a tank full of experience",
@@ -88,8 +91,9 @@
 	"create_enchantment_industry.ponder.leak.text_4": "不用担心，泄露的液态经验会变为经验球。玩家也可以站在管道开口处吸收经验。",
 
 	"create_enchantment_industry.ponder.transform.header": "使用附魔指南",
-	"create_enchantment_industry.ponder.transform.text_1": "手持附魔指南潜行右键烈焰人燃烧室",
-	"create_enchantment_industry.ponder.transform.text_2": "如需取回附魔指南，请持扳手潜行右键烈焰人附魔室",
+	"create_enchantment_industry.ponder.transform.text_1": "手持附魔指南潜行右键烈焰人燃烧室将其转化为烈焰人附魔室。",
+	"create_enchantment_industry.ponder.transform.text_2": "要使烈焰人附魔室正常工作，应首先配置好附魔指南。右键附魔指南或右击烈焰人附魔室都可打开配置面板。",
+	"create_enchantment_industry.ponder.transform.text_3": "如需取回附魔指南，请持扳手潜行右键烈焰人附魔室。",
 
 
 	"_": "->------------------------]  Item Descriptions  [------------------------<-",

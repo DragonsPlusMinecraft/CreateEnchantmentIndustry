@@ -88,8 +88,6 @@
 	"create_enchantment_industry.ponder.leak.text_4": "大丈夫!漏れた液化経験値は経験値オーブに変化します。また、パイプの開口部に立って経験値を吸収することも可能です。",
 
 	"create_enchantment_industry.ponder.transform.header": "エンチャントの手引きの使用",
-	"create_enchantment_industry.ponder.transform.text_1": "UNLOCALIZED: Right-click the Blaze Burner with an Enchanting Guide in hand when sneaking",
-	"create_enchantment_industry.ponder.transform.text_2": "UNLOCALIZED: To retrieve the enchanting guide, right-click the Blaze Enchanter with wrench when sneaking",
 
 
 	"_": "->------------------------]  Item Descriptions  [------------------------<-",

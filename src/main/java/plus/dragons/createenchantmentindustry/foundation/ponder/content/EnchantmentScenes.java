@@ -57,7 +57,7 @@ public class EnchantmentScenes {
         scene.world.showSection(util.select.fromTo(0, 1, 0, 6, 4, 6), Direction.DOWN);
 
         scene.overlay.showText(100)
-                .text("All received items will have their enchantments removed and the removed enchantments will be converted to liquid experience for storage.") // We do not use PonderLocalization. For registerText only
+                .text("All received items will have their enchantments removed and the removed enchantments will be converted to liquid experience for storage.")
                 .attachKeyFrame()
                 .placeNearTarget()
                 .pointAt(util.vector.topOf(1, 1, 1));
@@ -79,7 +79,7 @@ public class EnchantmentScenes {
         scene.idle(80);
 
         scene.overlay.showText(100)
-                .text("Players standing on the disenchanter will be quickly washed away their experience level, and the washed away experience value will be converted into liquid experience for storage") // We do not use PonderLocalization. For registerText only
+                .text("Players standing on the disenchanter will be quickly washed away their experience level, and the washed away experience value will be converted into liquid experience for storage")
                 .attachKeyFrame()
                 .placeNearTarget()
                 .pointAt(util.vector.topOf(1, 1, 1));
@@ -95,18 +95,28 @@ public class EnchantmentScenes {
         scene.world.showSection(util.select.fromTo(0, 1, 0, 2, 1, 2), Direction.DOWN);
 
         scene.overlay.showText(40)
-                .text("Right-click the Blaze Burner with an Enchanting Guide in hand when sneaking") // We do not use PonderLocalization. For registerText only
+                .text("Right-click the Blaze Burner with an Enchanting Guide in hand when sneaking to transform it to a Blaze Enchanter.")
                 .attachKeyFrame()
                 .placeNearTarget()
                 .pointAt(util.vector.topOf(1, 1, 1));
         scene.idle(40);
+
         scene.world.setBlock(util.grid.at(1, 1, 1), CeiBlocks.BLAZE_ENCHANTER.getDefaultState(), false);
         scene.world.modifyTileEntity(util.grid.at(1, 1, 1), BlazeEnchanterBlockEntity.class, be -> be.setTargetItem(enchantingGuide(Enchantments.MENDING, 1)));
+
+        scene.overlay.showText(140)
+                .text("To make Blaze Enchanter work, Enchanting Guide must be configured first. " +
+                        "Right-clicking Blaze Enchanter or right-clicking Enchanting Guide in hands can open configuration panel.")
+                .attachKeyFrame()
+                .placeNearTarget()
+                .pointAt(util.vector.topOf(1, 1, 1));
+        scene.idle(140);
+
         scene.overlay.showControls(new InputWindowElement(util.vector.centerOf(1, 1, 1), Pointing.DOWN).whileSneaking().rightClick()
                 .withItem(CeiItems.ENCHANTING_GUIDE.asStack()), 40);
         scene.idle(50);
         scene.overlay.showText(40)
-                .text("To retrieve the enchanting guide, right-click the Blaze Enchanter with wrench when sneaking") // We do not use PonderLocalization. For registerText only
+                .text("To retrieve the enchanting guide, right-click the Blaze Enchanter with wrench when sneaking.")
                 .attachKeyFrame()
                 .placeNearTarget()
                 .pointAt(util.vector.topOf(1, 1, 1));
@@ -196,7 +206,7 @@ public class EnchantmentScenes {
         scene.world.showSection(util.select.fromTo(0, 1, 0, 4, 3, 4), Direction.DOWN);
 
         scene.overlay.showText(60)
-                .text("This is liquid hyper experience") // We do not use PonderLocalization. For registerText only
+                .text("This is liquid hyper experience")
                 .attachKeyFrame()
                 .placeNearTarget()
                 .pointAt(util.vector.topOf(3, 3, 3));
@@ -207,11 +217,18 @@ public class EnchantmentScenes {
         scene.idle(40);
 
         scene.overlay.showText(80)
-                .text("Hyper experience can make the Blaze Enchanter into seething state, and the level of the enchantment produced in this state will be one level higher than the set enchantment") // We do not use PonderLocalization. For registerText only
+                .text("Hyper experience can make the Blaze Enchanter into seething state, and the level of the enchantment produced in this state will be one level higher than the set enchantment.")
                 .attachKeyFrame()
                 .placeNearTarget()
                 .pointAt(util.vector.topOf(1, 2, 3));
         scene.idle(90);
+
+        scene.overlay.showText(60)
+                .text("Enchantment with level cap of 1 level cannot be upgraded to level 2 in hyper-enchant.")
+                .attachKeyFrame()
+                .placeNearTarget()
+                .pointAt(util.vector.topOf(1, 2, 3));
+        scene.idle(70);
     }
 
     public static void handleExperienceNugget(SceneBuilder scene, SceneBuildingUtil util) {
@@ -235,7 +252,7 @@ public class EnchantmentScenes {
         }
 
         scene.overlay.showText(60)
-                .text("Experience nugget can be absorbed by disenchanter.") // We do not use PonderLocalization. For registerText only
+                .text("Experience nugget can be absorbed by disenchanter.")
                 .placeNearTarget()
                 .pointAt(util.vector.topOf(2, 1, 2));
 
@@ -288,7 +305,7 @@ public class EnchantmentScenes {
         scene.world.moveDeployer(deployerPos, -1, 25);
 
         scene.overlay.showText(60)
-                .text("When mob is killed by deployer, experience nuggets are dropped.") // We do not use PonderLocalization. For registerText only
+                .text("When mob is killed by deployer, experience nuggets are dropped.")
                 .placeNearTarget()
                 .pointAt(util.vector.topOf(2, 1, 2));
 
@@ -332,7 +349,7 @@ public class EnchantmentScenes {
         scene.idle(10);
 
         scene.overlay.showText(80)
-                .text("Bottle o' Enchanting can be emptied at Item Drain.") // We do not use PonderLocalization. For registerText only
+                .text("Bottle o' Enchanting can be emptied at Item Drain.")
                 .attachKeyFrame()
                 .placeNearTarget()
                 .pointAt(util.vector.topOf(2, 1, 0));
@@ -340,7 +357,7 @@ public class EnchantmentScenes {
         scene.idle(80);
 
         scene.overlay.showText(80)
-                .text("Bottle o' Enchanting also can be manufactured by Spout as well.") // We do not use PonderLocalization. For registerText only
+                .text("Bottle o' Enchanting also can be manufactured by Spout as well.")
                 .attachKeyFrame()
                 .placeNearTarget()
                 .pointAt(util.vector.topOf(0, 3, 3));
@@ -379,6 +396,11 @@ public class EnchantmentScenes {
         scene.world.modifyTileEntity(util.grid.at(2, 3, 2), PrinterBlockEntity.class, be ->
                 be.getCapability(ForgeCapabilities.FLUID_HANDLER).ifPresent(tank ->
                         tank.fill(new FluidStack(CeiFluids.EXPERIENCE.get().getSource(), 3000), IFluidHandler.FluidAction.EXECUTE)));
+        scene.overlay.showText(40)
+                .text("Liquid Experience is required to duplicate enchanted books.")
+                .attachKeyFrame()
+                .placeNearTarget()
+                .pointAt(util.vector.topOf(2, 3, 2));
         scene.idle(40);
 
         var item = Items.BOOK.getDefaultInstance();
@@ -404,6 +426,11 @@ public class EnchantmentScenes {
                     tank.drain(3000, IFluidHandler.FluidAction.EXECUTE);
                     tank.fill(new FluidStack(CeiFluids.INK.get().getSource(), 3000), IFluidHandler.FluidAction.EXECUTE);
                 }));
+        scene.overlay.showText(40)
+                .text("Ink is required to duplicate written books.")
+                .attachKeyFrame()
+                .placeNearTarget()
+                .pointAt(util.vector.topOf(2, 3, 2));
         scene.idle(40);
 
         item = Items.BOOK.getDefaultInstance();
@@ -432,7 +459,7 @@ public class EnchantmentScenes {
         scene.world.modifyTileEntity(util.grid.at(3, 1, 3), FluidTankTileEntity.class, be -> ((FluidTank) be.getTankInventory())
                 .setFluid(new FluidStack(CeiFluids.EXPERIENCE.get().getSource(), 48000)));
         scene.overlay.showText(40)
-                .text("I have a tank full of experience") // We do not use PonderLocalization. For registerText only
+                .text("I have a tank full of experience")
                 .placeNearTarget()
                 .pointAt(util.vector.topOf(2, 4, 2));
         scene.idle(50);
@@ -442,7 +469,7 @@ public class EnchantmentScenes {
 
         scene.idle(5);
         scene.overlay.showText(40)
-                .text("I have an open-ended pipe") // We do not use PonderLocalization. For registerText only
+                .text("I have an open-ended pipe")
                 .placeNearTarget()
                 .pointAt(util.vector.topOf(3, 4, 0));
         scene.idle(50);
@@ -454,7 +481,7 @@ public class EnchantmentScenes {
         scene.world.propagatePipeChange(util.grid.at(3, 4, 0));
         scene.idle(80);
         scene.overlay.showText(40)
-                .text("Ugh!") // We do not use PonderLocalization. For registerText only
+                .text("Ugh!")
                 .colored(PonderPalette.RED)
                 .placeNearTarget()
                 .pointAt(util.vector.topOf(3, 4, 0));
