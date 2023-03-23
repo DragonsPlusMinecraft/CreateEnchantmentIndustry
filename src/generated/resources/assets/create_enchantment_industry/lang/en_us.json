@@ -63,6 +63,8 @@
 	"create_enchantment_industry.ponder.absorb_experience_nugget.text_1": "Experience nugget can be absorbed by disenchanter.",
 
 	"create_enchantment_industry.ponder.copy.header": "Using Printer",
+	"create_enchantment_industry.ponder.copy.text_1": "Liquid Experience is required to duplicate enchanted books.",
+	"create_enchantment_industry.ponder.copy.text_2": "Ink is required to duplicate written books.",
 
 	"create_enchantment_industry.ponder.disenchant.header": "Disenchanting",
 	"create_enchantment_industry.ponder.disenchant.text_1": "All received items will have their enchantments removed and the removed enchantments will be converted to liquid experience for storage.",
@@ -79,7 +81,8 @@
 
 	"create_enchantment_industry.ponder.hyper_enchant.header": "Hyper-enchanting",
 	"create_enchantment_industry.ponder.hyper_enchant.text_1": "This is liquid hyper experience",
-	"create_enchantment_industry.ponder.hyper_enchant.text_2": "Hyper experience can make the Blaze Enchanter into seething state, and the level of the enchantment produced in this state will be one level higher than the set enchantment",
+	"create_enchantment_industry.ponder.hyper_enchant.text_2": "Hyper experience can make the Blaze Enchanter into seething state, and the level of the enchantment produced in this state will be one level higher than the set enchantment.",
+	"create_enchantment_industry.ponder.hyper_enchant.text_3": "Enchantment with level cap of 1 level cannot be upgraded to level 2 in hyper-enchant.",
 
 	"create_enchantment_industry.ponder.leak.header": "Oh no! It's leaking!",
 	"create_enchantment_industry.ponder.leak.text_1": "I have a tank full of experience",
@@ -88,8 +91,9 @@
 	"create_enchantment_industry.ponder.leak.text_4": "Don't worry, the leaked liquid experience will turn into experience orbs. Players can also stand at the opening of the pipe to absorb experience.",
 
 	"create_enchantment_industry.ponder.transform.header": "Using Enchanting Guide",
-	"create_enchantment_industry.ponder.transform.text_1": "Right-click the Blaze Burner with an Enchanting Guide in hand when sneaking",
-	"create_enchantment_industry.ponder.transform.text_2": "To retrieve the enchanting guide, right-click the Blaze Enchanter with wrench when sneaking",
+	"create_enchantment_industry.ponder.transform.text_1": "Right-click the Blaze Burner with an Enchanting Guide in hand when sneaking to transform it to a Blaze Enchanter.",
+	"create_enchantment_industry.ponder.transform.text_2": "To make Blaze Enchanter work, Enchanting Guide must be configured first. Right-clicking Blaze Enchanter or right-clicking Enchanting Guide in hands can open configuration panel.",
+	"create_enchantment_industry.ponder.transform.text_3": "To retrieve the enchanting guide, right-click the Blaze Enchanter with wrench when sneaking.",
 
 
 	"_": "->------------------------]  Item Descriptions  [------------------------<-",

@@ -1,5 +1,5 @@
 {
-	"_": "Missing Localizations: 0",
+	"_": "Missing Localizations: 6",
 
 	"_": "->------------------------]  Game Elements  [------------------------<-",
 
@@ -64,6 +64,8 @@
 	"create_enchantment_industry.ponder.absorb_experience_nugget.text_1": "Bryłki Doświadczenia mogą zostać zaabsorbowane przez Odklinacz",
 
 	"create_enchantment_industry.ponder.copy.header": "Używanie Kopiarki",
+	"create_enchantment_industry.ponder.copy.text_1": "UNLOCALIZED: Liquid Experience is required to duplicate enchanted books.",
+	"create_enchantment_industry.ponder.copy.text_2": "UNLOCALIZED: Ink is required to duplicate written books.",
 
 	"create_enchantment_industry.ponder.disenchant.header": "Odklinanie",
 	"create_enchantment_industry.ponder.disenchant.text_1": "Wszystkie przedmioty otrzymane przez odklinacz stracą swoje zaklęcia, które zostaną przerobione na zaklętą ciecz do przechowywania",
@@ -81,6 +83,7 @@
 	"create_enchantment_industry.ponder.hyper_enchant.header": "Hiper-Zaklinanie",
 	"create_enchantment_industry.ponder.hyper_enchant.text_1": "W Zbiorniku znajduje się Hiper Zaklęta Ciecz",
 	"create_enchantment_industry.ponder.hyper_enchant.text_2": "Płomienny Zaklinacz nakarmiony Hiper Zaklętą Cieczą będzie przekazywał na przedmioty zaklęcie o jeden poziom wyższy niż ustawione",
+	"create_enchantment_industry.ponder.hyper_enchant.text_3": "UNLOCALIZED: Enchantment with level cap of 1 level cannot be upgraded to level 2 in hyper-enchant.",
 
 	"create_enchantment_industry.ponder.leak.header": "O nie! Jest wyciek!",
 	"create_enchantment_industry.ponder.leak.text_1": "Jeśli w zbiorniku znajduje się Zaklęta Ciecz...",
@@ -89,8 +92,9 @@
 	"create_enchantment_industry.ponder.leak.text_4": "Na szczęście, wycieknięte doświadczenie wydostanie się w postaci Kulek Doświadczenia, które mogą zostać wchłonięte przez Odklinacz lub graczy",
 
 	"create_enchantment_industry.ponder.transform.header": "Używanie Poradnika Zaklęć",
-	"create_enchantment_industry.ponder.transform.text_1": "UNLOCALIZED: Right-click the Blaze Burner with an Enchanting Guide in hand when sneaking",
-	"create_enchantment_industry.ponder.transform.text_2": "UNLOCALIZED: To retrieve the enchanting guide, right-click the Blaze Enchanter with wrench when sneaking",
+	"create_enchantment_industry.ponder.transform.text_1": "UNLOCALIZED: Right-click the Blaze Burner with an Enchanting Guide in hand when sneaking to transform it to a Blaze Enchanter.",
+	"create_enchantment_industry.ponder.transform.text_2": "UNLOCALIZED: To make Blaze Enchanter work, Enchanting Guide must be configured first. Right-clicking Blaze Enchanter or right-clicking Enchanting Guide in hands can open configuration panel.",
+	"create_enchantment_industry.ponder.transform.text_3": "UNLOCALIZED: To retrieve the enchanting guide, right-click the Blaze Enchanter with wrench when sneaking.",
 
 
 	"_": "->------------------------]  Item Descriptions  [------------------------<-",

@@ -63,6 +63,8 @@
 	"create_enchantment_industry.ponder.absorb_experience_nugget.text_1": "La pepita de experiencia puede ser absorbida por el desencantador.",
 
 	"create_enchantment_industry.ponder.copy.header": "Uso de la impresora",
+	"create_enchantment_industry.ponder.copy.text_1": "UNLOCALIZED: Liquid Experience is required to duplicate enchanted books.",
+	"create_enchantment_industry.ponder.copy.text_2": "UNLOCALIZED: Ink is required to duplicate written books.",
 
 	"create_enchantment_industry.ponder.disenchant.header": "Desencantar",
 	"create_enchantment_industry.ponder.disenchant.text_1": "Se eliminarán los encantamientos de todos los elementos recibidos y los encantamientos eliminados se convertirán en experiencia líquida para su almacenamiento.",
@@ -80,6 +82,7 @@
 	"create_enchantment_industry.ponder.hyper_enchant.header": "Hiperencantamiento",
 	"create_enchantment_industry.ponder.hyper_enchant.text_1": "Esto es hiperexperiencia líquida",
 	"create_enchantment_industry.ponder.hyper_enchant.text_2": "La hiperexperiencia puede hacer que el encantador de Blaze entre en estado de ebullición, y el nivel del encantamiento producido en este estado será un nivel más alto que el encantamiento establecido",
+	"create_enchantment_industry.ponder.hyper_enchant.text_3": "UNLOCALIZED: Enchantment with level cap of 1 level cannot be upgraded to level 2 in hyper-enchant.",
 
 	"create_enchantment_industry.ponder.leak.header": "¡Oh, no! ¡Está goteando!",
 	"create_enchantment_industry.ponder.leak.text_1": "Tengo un tanque lleno de experiencia.",
@@ -88,6 +91,8 @@
 	"create_enchantment_industry.ponder.leak.text_4": "No te preocupes, la experiencia líquida filtrada se convertirá en orbes de experiencia. Los jugadores también pueden quedarse en la abertura de la tubería para absorber experiencia.",
 
 	"create_enchantment_industry.ponder.transform.header": "Uso de la guía de encantamiento",
+	"create_enchantment_industry.ponder.transform.text_1": "UNLOCALIZED: Right-click the Blaze Burner with an Enchanting Guide in hand when sneaking to transform it to a Blaze Enchanter.",
+	"create_enchantment_industry.ponder.transform.text_2": "UNLOCALIZED: To make Blaze Enchanter work, Enchanting Guide must be configured first. Right-clicking Blaze Enchanter or right-clicking Enchanting Guide in hands can open configuration panel.",
 	"create_enchantment_industry.ponder.transform.text_3": "Para recuperar la guía de encantamiento, haz click con el botón derecho en el quemador de Blaze con la llave inglesa mientras te agachas.",
 
 
