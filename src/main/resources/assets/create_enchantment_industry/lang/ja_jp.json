@@ -93,16 +93,19 @@
 	"create_enchantment_industry.ponder.experience_bottle.text_2": "アイテム注液口でエンチャントの瓶を作ることもできます。",
 
 	"create_enchantment_industry.ponder.transform.header": "エンチャントの手引きの使用",
-	"create_enchantment_industry.ponder.transform.text_1": "UNLOCALIZED: Right-click the Blaze Burner with an Enchanting Guide in hand when sneaking",
-	"create_enchantment_industry.ponder.transform.text_2": "UNLOCALIZED: To retrieve the enchanting guide, right-click the Blaze Enchanter with wrench when sneaking",
+	"create_enchantment_industry.ponder.transform.text_1": "UNLOCALIZED: Right-click the Blaze Burner with an Enchanting Guide in hand when sneaking to transform it to a Blaze Enchanter.",
+	"create_enchantment_industry.ponder.transform.text_2": "UNLOCALIZED: To make Blaze Enchanter work, Enchanting Guide must be configured first. Right-clicking Blaze Enchanter or right-clicking Enchanting Guide in hands can open configuration panel.",
+	"create_enchantment_industry.ponder.transform.text_3": "UNLOCALIZED: To retrieve the enchanting guide, right-click the Blaze Enchanter with wrench when sneaking.",
 
 	"create_enchantment_industry.ponder.copy.header": "印刷機の使用",
+	"create_enchantment_industry.ponder.copy.text_1": "UNLOCALIZED: Ink is required to duplicate written books.",
 
 	"create_enchantment_industry.ponder.enchant.header": "エンチャント",
 
 	"create_enchantment_industry.ponder.hyper_enchant.header": "ハイパーエンチャント",
 	"create_enchantment_industry.ponder.hyper_enchant.text_1": "これは液化ハイパー経験値です。",
-	"create_enchantment_industry.ponder.hyper_enchant.text_2": "ハイパー経験値でブレイズエンチャンターを極度の加熱状態にすることができ、この状態で生成されるエンチャントのレベルは設定されたエンチャントより1段階高くなります。",
+	"create_enchantment_industry.ponder.hyper_enchant.text_2": "UNLOCALIZED: Hyper experience can make the Blaze Enchanter into seething state, and the level of the enchantment produced in this state will be one level higher than the set enchantment.",
+	"create_enchantment_industry.ponder.hyper_enchant.text_3": "ハイパー経験値でブレイズエンチャンターを極度の加熱状態にすることができ、この状態で生成されるエンチャントのレベルは設定されたエンチャントより1段階高くなります。",
 
 	"create_enchantment_industry.ponder.drop_experience_nugget.header": "経験値トラップかな？",
 	"create_enchantment_industry.ponder.drop_experience_nugget.text_1": "Mobがデプロイヤーに殺されると、経験値の塊をドロップします。",

@@ -1,5 +1,5 @@
 {
-	"_": "Missing Localizations: 0",
+	"_": "Missing Localizations: 5",
 
 	"_": "->------------------------]  Game Elements  [------------------------<-",
 
@@ -94,16 +94,19 @@
 	"create_enchantment_industry.ponder.experience_bottle.text_2": "Создать пузырёк опыта можно, наполнив пустую бутылочку опытом из дозатора.",
 
 	"create_enchantment_industry.ponder.transform.header": "Использование руководства по зачарованию",
-	"create_enchantment_industry.ponder.transform.text_1": "Присев, нажмите ПКМ на горелку всполоха с руководством в руке, чтобы дать его всполоху.",
-	"create_enchantment_industry.ponder.transform.text_2": "Чтобы вернуть руководство, присядьте и нажмите ПКМ по зачарователю, держа гаечный ключ.",
+	"create_enchantment_industry.ponder.transform.text_1": "UNLOCALIZED: Right-click the Blaze Burner with an Enchanting Guide in hand when sneaking to transform it to a Blaze Enchanter.",
+	"create_enchantment_industry.ponder.transform.text_2": "UNLOCALIZED: To make Blaze Enchanter work, Enchanting Guide must be configured first. Right-clicking Blaze Enchanter or right-clicking Enchanting Guide in hands can open configuration panel.",
+	"create_enchantment_industry.ponder.transform.text_3": "UNLOCALIZED: To retrieve the enchanting guide, right-click the Blaze Enchanter with wrench when sneaking.",
 
 	"create_enchantment_industry.ponder.copy.header": "Использование печатного станка",
+	"create_enchantment_industry.ponder.copy.text_1": "UNLOCALIZED: Ink is required to duplicate written books.",
 
 	"create_enchantment_industry.ponder.enchant.header": "Зачарование",
 
 	"create_enchantment_industry.ponder.hyper_enchant.header": "Гиперзачарование",
 	"create_enchantment_industry.ponder.hyper_enchant.text_1": "Это жидкий гиперопыт.",
-	"create_enchantment_industry.ponder.hyper_enchant.text_2": "Употребление гиперопыта разогреет всполоха-зачарователя. В таком состоянии уровень накладываемых им зачарований повышается на один.",
+	"create_enchantment_industry.ponder.hyper_enchant.text_2": "UNLOCALIZED: Hyper experience can make the Blaze Enchanter into seething state, and the level of the enchantment produced in this state will be one level higher than the set enchantment.",
+	"create_enchantment_industry.ponder.hyper_enchant.text_3": "Употребление гиперопыта разогреет всполоха-зачарователя. В таком состоянии уровень накладываемых им зачарований повышается на один.",
 
 	"create_enchantment_industry.ponder.drop_experience_nugget.header": "Автоферма опыта?",
 	"create_enchantment_industry.ponder.drop_experience_nugget.text_1": "При убийстве мобов автономным активатором будут выпадать кусочки опыта.",

@@ -8,16 +8,20 @@
   "create_enchantment_industry.ponder.experience_bottle.text_2": "Bottle o' Enchanting also can be manufactured by Spout as well.",
 
   "create_enchantment_industry.ponder.transform.header": "Using Enchanting Guide",
-  "create_enchantment_industry.ponder.transform.text_1": "Right-click the Blaze Burner with an Enchanting Guide in hand when sneaking",
-  "create_enchantment_industry.ponder.transform.text_2": "To retrieve the enchanting guide, right-click the Blaze Enchanter with wrench when sneaking",
+  "create_enchantment_industry.ponder.transform.text_1": "Right-click the Blaze Burner with an Enchanting Guide in hand when sneaking to transform it to a Blaze Enchanter.",
+  "create_enchantment_industry.ponder.transform.text_2": "To make Blaze Enchanter work, Enchanting Guide must be configured first. Right-clicking Blaze Enchanter or right-clicking Enchanting Guide in hands can open configuration panel.",
+  "create_enchantment_industry.ponder.transform.text_3": "To retrieve the enchanting guide, right-click the Blaze Enchanter with wrench when sneaking.",
 
   "create_enchantment_industry.ponder.copy.header": "Using Printer",
+  "create_enchantment_industry.ponder.copy.text_1": "Liquid Experience is required to duplicate enchanted books.",
+  "create_enchantment_industry.ponder.copy.text_1": "Ink is required to duplicate written books.",
 
   "create_enchantment_industry.ponder.enchant.header": "Enchanting",
 
   "create_enchantment_industry.ponder.hyper_enchant.header": "Hyper-enchanting",
   "create_enchantment_industry.ponder.hyper_enchant.text_1": "This is liquid hyper experience",
-  "create_enchantment_industry.ponder.hyper_enchant.text_2": "Hyper experience can make the Blaze Enchanter into seething state, and the level of the enchantment produced in this state will be one level higher than the set enchantment",
+  "create_enchantment_industry.ponder.hyper_enchant.text_2": "Hyper experience can make the Blaze Enchanter into seething state, and the level of the enchantment produced in this state will be one level higher than the set enchantment.",
+  "create_enchantment_industry.ponder.hyper_enchant.text_3": "Enchantment with level cap of 1 level cannot be upgraded to level 2 in hyper-enchant.",
 
   "create_enchantment_industry.ponder.drop_experience_nugget.header": "Maybe A Exp-farm?",
   "create_enchantment_industry.ponder.drop_experience_nugget.text_1": "When mob is killed by deployer, experience nuggets are dropped.",

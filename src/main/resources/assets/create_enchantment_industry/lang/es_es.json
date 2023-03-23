@@ -93,16 +93,19 @@
 	"create_enchantment_industry.ponder.experience_bottle.text_2": "Las botellas de experiencia también pueden ser llenadas.",
 
 	"create_enchantment_industry.ponder.transform.header": "Uso de la guía de encantamiento",
-	"create_enchantment_industry.ponder.transform.text_1": "Haz click con el botón derecho en un quemador de Blaze con una guía de encantamiento mientras te agachas.",
-	"create_enchantment_industry.ponder.transform.text_2": "Para recuperar la guía de encantamiento, haz click con el botón derecho en el quemador de Blaze con la llave inglesa mientras te agachas.",
+	"create_enchantment_industry.ponder.transform.text_1": "UNLOCALIZED: Right-click the Blaze Burner with an Enchanting Guide in hand when sneaking to transform it to a Blaze Enchanter.",
+	"create_enchantment_industry.ponder.transform.text_2": "UNLOCALIZED: To make Blaze Enchanter work, Enchanting Guide must be configured first. Right-clicking Blaze Enchanter or right-clicking Enchanting Guide in hands can open configuration panel.",
+	"create_enchantment_industry.ponder.transform.text_3": "UNLOCALIZED: To retrieve the enchanting guide, right-click the Blaze Enchanter with wrench when sneaking.",
 
 	"create_enchantment_industry.ponder.copy.header": "Uso de la impresora",
+	"create_enchantment_industry.ponder.copy.text_1": "UNLOCALIZED: Ink is required to duplicate written books.",
 
 	"create_enchantment_industry.ponder.enchant.header": "Encantamiento",
 
 	"create_enchantment_industry.ponder.hyper_enchant.header": "Hiperencantamiento",
 	"create_enchantment_industry.ponder.hyper_enchant.text_1": "Esto es hiperexperiencia líquida",
-	"create_enchantment_industry.ponder.hyper_enchant.text_2": "La hiperexperiencia puede hacer que el encantador de Blaze entre en estado de ebullición, y el nivel del encantamiento producido en este estado será un nivel más alto que el encantamiento establecido",
+	"create_enchantment_industry.ponder.hyper_enchant.text_2": "UNLOCALIZED: Hyper experience can make the Blaze Enchanter into seething state, and the level of the enchantment produced in this state will be one level higher than the set enchantment.",
+	"create_enchantment_industry.ponder.hyper_enchant.text_3": "La hiperexperiencia puede hacer que el encantador de Blaze entre en estado de ebullición, y el nivel del encantamiento producido en este estado será un nivel más alto que el encantamiento establecido",
 
 	"create_enchantment_industry.ponder.drop_experience_nugget.header": "¿Tal vez una granja de experiencia?",
 	"create_enchantment_industry.ponder.drop_experience_nugget.text_1": "Cuando el desplegador mata un mob, se obtienen pepitas de experiencia.",
