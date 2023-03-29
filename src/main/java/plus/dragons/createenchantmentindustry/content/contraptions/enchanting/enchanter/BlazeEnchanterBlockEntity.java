@@ -4,6 +4,7 @@ import com.simibubi.create.AllBlocks;
 import com.simibubi.create.content.contraptions.goggles.IHaveGoggleInformation;
 import com.simibubi.create.content.contraptions.processing.burner.BlazeBurnerBlock;
 import com.simibubi.create.content.contraptions.relays.belt.transport.TransportedItemStack;
+import com.simibubi.create.content.schematics.ItemRequirement;
 import com.simibubi.create.foundation.tileEntity.SmartTileEntity;
 import com.simibubi.create.foundation.tileEntity.TileEntityBehaviour;
 import com.simibubi.create.foundation.tileEntity.behaviour.belt.DirectBeltInputBehaviour;
@@ -54,17 +55,14 @@ import plus.dragons.createenchantmentindustry.foundation.config.CeiConfigs;
 import plus.dragons.createenchantmentindustry.foundation.data.advancement.CeiAdvancements;
 import plus.dragons.createenchantmentindustry.foundation.utility.CeiLang;
 
-import java.util.IdentityHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 
 public class BlazeEnchanterBlockEntity extends SmartTileEntity implements IHaveGoggleInformation, MenuProvider {
 
     public static final int ENCHANTING_TIME = 200;
     SmartFluidTankBehaviour internalTank;
     TransportedItemStack heldItem;
-    ItemStack targetItem = ItemStack.EMPTY;
+    ItemStack targetItem = new ItemStack(CeiItems.ENCHANTING_GUIDE.get());
     int processingTicks;
     Map<Direction, LazyOptional<EnchantingItemHandler>> itemHandlers;
     boolean sendParticles;
@@ -433,6 +431,11 @@ public class BlazeEnchanterBlockEntity extends SmartTileEntity implements IHaveG
         super.invalidate();
         for (LazyOptional<EnchantingItemHandler> lazyOptional : itemHandlers.values())
             lazyOptional.invalidate();
+    }
+
+    @Override
+    public ItemRequirement getRequiredItems(BlockState state){
+        return new ItemRequirement(ItemRequirement.ItemUseType.CONSUME,targetItem);
     }
 
     @Override
