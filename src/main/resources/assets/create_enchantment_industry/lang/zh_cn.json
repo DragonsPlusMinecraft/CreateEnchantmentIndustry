@@ -1,4 +1,5 @@
 {
+	"_": "Missing Localizations: 1",
 
 	"_": "->------------------------]  Game Elements  [------------------------<-",
 
@@ -99,6 +100,7 @@
 
 	"create_enchantment_industry.ponder.copy.header": "复印机使用",
 	"create_enchantment_industry.ponder.copy.text_1": "复印附魔书需要液态经验。",
+	"create_enchantment_industry.ponder.copy.text_2": "复印成书需要墨水。",
 
 	"create_enchantment_industry.ponder.enchant.header": "烈焰人附魔室使用",
 

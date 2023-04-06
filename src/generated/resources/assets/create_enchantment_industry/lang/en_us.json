@@ -98,7 +98,8 @@
 	"create_enchantment_industry.ponder.transform.text_3": "To retrieve the enchanting guide, right-click the Blaze Enchanter with wrench when sneaking.",
 
 	"create_enchantment_industry.ponder.copy.header": "Using Printer",
-	"create_enchantment_industry.ponder.copy.text_1": "Ink is required to duplicate written books.",
+	"create_enchantment_industry.ponder.copy.text_1": "Liquid Experience is required to duplicate enchanted books.",
+	"create_enchantment_industry.ponder.copy.text_2": "Ink is required to duplicate written books.",
 
 	"create_enchantment_industry.ponder.enchant.header": "Enchanting",
 
