@@ -108,7 +108,7 @@
 
 	"_": "->------------------------]  UI & Messages  [------------------------<-",
 
-	"create_enchantment_industry.gui.enchanting_guide.no_enchantment": "Нет доступного зачарования",
+	"create_enchantment_industry.gui.enchanting_guide.no_enchantment": "Нет зачарования",
 	"create_enchantment_industry.gui.goggles.printer": "Исходник:",
 	"create_enchantment_industry.gui.goggles.printer.no_target": "Нет",
 	"create_enchantment_industry.gui.goggles.blaze_enchanter": "Активное зачарование:",
