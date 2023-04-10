@@ -40,7 +40,7 @@
 	"advancement.create_enchantment_industry.experienced_recycler": "Обмен опытом",
 	"advancement.create_enchantment_industry.experienced_recycler.desc": "Переработайте 1,000,000 мВ опыта с помощью Чаросъёмника",
 	"advancement.create_enchantment_industry.blazes_new_job": "Огненный маг",
-	"advancement.create_enchantment_industry.blazes_new_job.desc": "Выдайте всполоху в Горелке Зааровательное задание, чтобы превратить его в Всполоха-чародея",
+	"advancement.create_enchantment_industry.blazes_new_job.desc": "Выдайте всполоху в Горелке Зачаровательное задание, чтобы превратить его в Всполоха-чародея",
 	"advancement.create_enchantment_industry.first_order": "Первые шаги",
 	"advancement.create_enchantment_industry.first_order.desc": "Наложите чары на обычный предмет с помощью зачарователя всполоха",
 	"advancement.create_enchantment_industry.additional_order": "Второй слой",
@@ -87,7 +87,7 @@
 
 	"create_enchantment_industry.ponder.transform.header": "Выдачей Зачаровательного задание",
 	"create_enchantment_industry.ponder.transform.text_1": "Кликните ПКМ по Горелке Всполоха с Зачаровательным заданием в руке, для того чтобы превратить его в Всполоха-чародея",
-	"create_enchantment_industry.ponder.transform.text_2": "Чтобы Всполох-чародей мог работать, сначала необходимо настроить Зачаровательное задание. Кликнув ПКМ по Всполоху-чародею или Зачароветельному заданию в руке вы откроете интерфейс конфигурации",
+	"create_enchantment_industry.ponder.transform.text_2": "Чтобы Всполох-чародей мог работать, сначала необходимо настроить Зачаровательное задание. Кликнув ПКМ по Всполоху-чародею или Зачаровательному заданию в руке вы откроете интерфейс конфигурации",
 	"create_enchantment_industry.ponder.transform.text_3": "Для отзыва Зачаровательного задания от Всполоха-чародея кликните по нему ПКМ крадучись Гаечным ключом",
 	
         
