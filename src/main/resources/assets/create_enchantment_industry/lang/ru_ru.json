@@ -1,6 +1,6 @@
 {
 	"_": "->------------------------]  Game Elements  [------------------------<-",
-	"block.create_enchantment_industry.blaze_enchanter": "Зачарователь всполоха",
+	"block.create_enchantment_industry.blaze_enchanter": "Всполох-чародей",
 	"block.create_enchantment_industry.disenchanter": "Чаросъёмник",
 	"block.create_enchantment_industry.ink": "Чернила",
 	"block.create_enchantment_industry.printer": "Печатный станок",
@@ -39,7 +39,7 @@
 	"advancement.create_enchantment_industry.a_shower_experience.desc": "Сломайте Жидкостную трубу и верните себе пролившийся опыт",
 	"advancement.create_enchantment_industry.experienced_recycler": "Обмен опытом",
 	"advancement.create_enchantment_industry.experienced_recycler.desc": "Переработайте 1,000,000 мВ опыта с помощью Чаросъёмника",
-	"advancement.create_enchantment_industry.blazes_new_job": "Огненный маг",ч
+	"advancement.create_enchantment_industry.blazes_new_job": "Огненный маг",
 	"advancement.create_enchantment_industry.blazes_new_job.desc": "Выдайте всполоху в Горелке Зааровательное задание, чтобы превратить его в Всполоха-чародея",
 	"advancement.create_enchantment_industry.first_order": "Первые шаги",
 	"advancement.create_enchantment_industry.first_order.desc": "Наложите чары на обычный предмет с помощью зачарователя всполоха",
