@@ -2,6 +2,7 @@ package plus.dragons.createenchantmentindustry.content.contraptions.enchanting.p
 
 import com.simibubi.create.content.contraptions.goggles.IHaveGoggleInformation;
 import com.simibubi.create.content.contraptions.relays.belt.transport.TransportedItemStack;
+import com.simibubi.create.content.schematics.ItemRequirement;
 import com.simibubi.create.foundation.advancement.AdvancementBehaviour;
 import com.simibubi.create.foundation.tileEntity.SmartTileEntity;
 import com.simibubi.create.foundation.tileEntity.TileEntityBehaviour;
@@ -208,6 +209,12 @@ public class PrinterBlockEntity extends SmartTileEntity implements IHaveGoggleIn
             compoundTag.putBoolean("SpawnParticles", true);
             sendParticles = false;
         }
+    }
+
+    @Override
+    public void writeSafe(CompoundTag tag) {
+        super.writeSafe(tag);
+        tag.putBoolean("tooExpensive", tooExpensive);
     }
 
     @Override

@@ -472,6 +472,13 @@ public class BlazeEnchanterBlockEntity extends SmartTileEntity implements IHaveG
     }
 
     @Override
+    public void writeSafe(CompoundTag tag) {
+        super.writeSafe(tag);
+        tag.put("TargetItem", new ItemStack(CeiItems.ENCHANTING_GUIDE.get()).serializeNBT());
+        tag.putBoolean("Goggles", goggles);
+    }
+
+    @Override
     protected void read(CompoundTag compoundTag, boolean clientPacket) {
         super.read(compoundTag, clientPacket);
         heldItem = null;
