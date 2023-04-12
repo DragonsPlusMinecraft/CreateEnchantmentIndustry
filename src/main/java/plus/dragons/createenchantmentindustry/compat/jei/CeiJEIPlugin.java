@@ -3,11 +3,19 @@ package plus.dragons.createenchantmentindustry.compat.jei;
 import com.simibubi.create.compat.jei.category.CreateRecipeCategory;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
+import mezz.jei.api.helpers.IColorHelper;
+import mezz.jei.api.ingredients.IIngredientType;
+import mezz.jei.api.ingredients.subtypes.ISubtypeManager;
 import mezz.jei.api.recipe.category.IRecipeCategory;
+import mezz.jei.api.registration.IModIngredientRegistration;
 import mezz.jei.api.registration.IRecipeCatalystRegistration;
 import mezz.jei.api.registration.IRecipeCategoryRegistration;
 import mezz.jei.api.registration.IRecipeRegistration;
 import mezz.jei.api.runtime.IIngredientManager;
+import mezz.jei.common.ingredients.fluid.FluidIngredientHelper;
+import mezz.jei.common.platform.IPlatformFluidHelperInternal;
+import mezz.jei.common.platform.Services;
+import mezz.jei.common.render.FluidTankRenderer;
 import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.Recipe;
@@ -16,6 +24,7 @@ import plus.dragons.createenchantmentindustry.compat.jei.category.DisenchantingC
 import plus.dragons.createenchantmentindustry.compat.jei.category.RecipeCategoryBuilder;
 import plus.dragons.createenchantmentindustry.content.contraptions.enchanting.disenchanter.DisenchantRecipe;
 import plus.dragons.createenchantmentindustry.entry.CeiBlocks;
+import plus.dragons.createenchantmentindustry.entry.CeiFluids;
 import plus.dragons.createenchantmentindustry.entry.CeiRecipeTypes;
 
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -34,6 +43,25 @@ public class CeiJEIPlugin implements IModPlugin {
     @Override
     public ResourceLocation getPluginUid() {
         return ID;
+    }
+
+    @Override
+    public void registerIngredients(IModIngredientRegistration registration) {
+        IPlatformFluidHelperInternal<?> platformFluidHelper = Services.PLATFORM.getFluidHelper();
+        registerFluidIngredients(registration, platformFluidHelper);
+    }
+
+    private <T> void registerFluidIngredients(IModIngredientRegistration registration, IPlatformFluidHelperInternal<T> platformFluidHelper) {
+        ISubtypeManager subtypeManager = registration.getSubtypeManager();
+        IColorHelper colorHelper = registration.getColorHelper();
+        List<T> fluidIngredients = new ArrayList<>();
+        // TODO
+        fluidIngredients.add(platformFluidHelper.create(CeiFluids.EXPERIENCE.get().getSource(),platformFluidHelper.bucketVolume()));
+        fluidIngredients.add(platformFluidHelper.create(CeiFluids.HYPER_EXPERIENCE.get().getSource(),platformFluidHelper.bucketVolume()));
+        FluidIngredientHelper<T> fluidIngredientHelper = new FluidIngredientHelper<>(subtypeManager, colorHelper, platformFluidHelper);
+        FluidTankRenderer<T> fluidTankRenderer = new FluidTankRenderer<>(platformFluidHelper);
+        IIngredientType<T> fluidIngredientType = platformFluidHelper.getFluidIngredientType();
+        registration.register(fluidIngredientType, fluidIngredients, fluidIngredientHelper, fluidTankRenderer);
     }
 
     @Override
