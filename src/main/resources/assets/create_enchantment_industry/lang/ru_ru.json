@@ -1,11 +1,15 @@
 {
+
 	"_": "->------------------------]  Game Elements  [------------------------<-",
+
 	"block.create_enchantment_industry.blaze_enchanter": "Всполох-чародей",
 	"block.create_enchantment_industry.disenchanter": "Чаросъёмник",
 	"block.create_enchantment_industry.ink": "Чернила",
 	"block.create_enchantment_industry.printer": "Печатный станок",
+
 	"entity.create_enchantment_industry.hyper_experience_bottle": "Брошенный пузырёк гиперопыта",
 	"entity.create_enchantment_industry.hyper_experience_orb": "Сфера гиперопыта",
+
 	"fluid.create_enchantment_industry.experience": "Жидкий опыт",
 	"fluid.create_enchantment_industry.hyper_experience": "Жидкий гиперопыт",
 	"fluid.create_enchantment_industry.ink": "Чернила",
@@ -14,8 +18,9 @@
 	"item.create_enchantment_industry.experience_rotor": "Ротор опыта",
 	"item.create_enchantment_industry.hyper_experience_bottle": "Пузырёк гиперопыта",
 	"item.create_enchantment_industry.ink_bucket": "Ведро чернил",
-	
-        "_": "->------------------------]  Advancements  [------------------------<-",
+
+
+	"_": "->------------------------]  Advancements  [------------------------<-",
 
 	"advancement.create_enchantment_industry.experienced_engineer": "Опытный инженер",
 	"advancement.create_enchantment_industry.experienced_engineer.desc": "Получите Кусочки опыта с помощью дробления руд или убийства мобов Автономным активатором",
@@ -47,11 +52,11 @@
 	"advancement.create_enchantment_industry.additional_order.desc": "Наложите чары на уже зачарованный предмет с помощью Всполоха-чародея",
 	"advancement.create_enchantment_industry.hypothetical_extension": "Гипотетический гиперчародей",
 	"advancement.create_enchantment_industry.hypothetical_extension.desc": "Наложите чары на предмет с помощью гиперзачарования всполоха",
-	
 
-        "_": "->------------------------]  Ponder Content  [------------------------<-",
-	
-        "create_enchantment_industry.ponder.tag.experience": "Работа с опытом",
+
+	"_": "->------------------------]  Ponder Content  [------------------------<-",
+
+	"create_enchantment_industry.ponder.tag.experience": "Работа с опытом",
 	"create_enchantment_industry.ponder.tag.experience.description": "Предметы и компоненты для работы с опытом",
 
 	"create_enchantment_industry.ponder.absorb_experience_nugget.header": "Превращение Кусочков опыта в жидкость",
@@ -89,9 +94,10 @@
 	"create_enchantment_industry.ponder.transform.text_1": "Кликните ПКМ по Горелке Всполоха с Зачаровательным заданием в руке, для того чтобы превратить его в Всполоха-чародея",
 	"create_enchantment_industry.ponder.transform.text_2": "Чтобы Всполох-чародей мог работать, сначала необходимо настроить Зачаровательное задание. Кликнув ПКМ по Всполоху-чародею или Зачаровательному заданию в руке вы откроете интерфейс конфигурации",
 	"create_enchantment_industry.ponder.transform.text_3": "Для отзыва Зачаровательного задания от Всполоха-чародея кликните по нему ПКМ крадучись Гаечным ключом",
-	
-        
-        "_": "->------------------------]  Item Descriptions  [------------------------<-",
+
+
+	"_": "->------------------------]  Item Descriptions  [------------------------<-",
+
 	"item.create_enchantment_industry.enchanting_guide.tooltip": "ЗАЧАРОВАТЕЛЬНОЕ ЗАДАНИЕ",
 	"item.create_enchantment_industry.enchanting_guide.tooltip.current_enchantment": "Требуемое зачарование:",
 	"item.create_enchantment_industry.enchanting_guide.tooltip.not_configured": "Не установлено",
@@ -113,7 +119,9 @@
 
 	"create_enchantment_industry.generic.unit.page": "Страница",
 	"create_enchantment_industry.generic.unit.pages": "Страницы",
+
 	"recipe.create_enchantment_industry.disenchanting": "Снятие чар",
+
 	"create_enchantment_industry.display_source.blaze_enchanter_source_target_enchantment": "Желаемое зачарование",
 
 	"_": "Thank you for translating Create: Enchantment Industry!"

@@ -1,4 +1,4 @@
-// 1.19.2	2023-01-31T09:35:05.5700049	Registrate Provider for create_enchantment_industry [Recipes, Advancements, Loot tables, Tags (blocks), Tags (items), Tags (fluids), Tags (entity_types), Blockstates, Item models, Lang (en_us/en_ud)]
+// 1.19.2	2023-04-13T10:40:06.9908286	Registrate Provider for create_enchantment_industry [Recipes, Advancements, Loot tables, Tags (blocks), Tags (items), Tags (fluids), Tags (entity_types), Blockstates, Item models, Lang (en_us/en_ud)]
 88f73ef97f52294b19161e10aad77704336e0544 assets/create_enchantment_industry/blockstates/blaze_enchanter.json
 b906ace9e6b212e429e06eabb32921f76c818927 assets/create_enchantment_industry/blockstates/disenchanter.json
 4694ec9b6941ce15ec9cc99b0800fe2dfe4e7bcd assets/create_enchantment_industry/blockstates/ink.json
@@ -13,7 +13,7 @@ abc3a8e4de7afdffb40b69c98af68435daf78825 assets/create_enchantment_industry/mode
 19ee8c7a9cf1e86c33a5f652908a24a13c7002a2 assets/create_enchantment_industry/models/item/ink_bucket.json
 eb0186d0c7bb2a5fac2d629a4d82858936ac95b2 assets/create_enchantment_industry/models/item/printer.json
 af033ef30836b5700256137991e077f1ae206e9d data/create/tags/items/upright_on_belt.json
-2b2a4bde1a1c86393b28fa3ff9b81ef1ddeed22d data/create_enchantment_industry/loot_tables/blocks/blaze_enchanter.json
+b72a463128effe04661ee3e3452ada166b3196c9 data/create_enchantment_industry/loot_tables/blocks/blaze_enchanter.json
 b755b755d0c36182c4aaccd9946cac3814ef8166 data/create_enchantment_industry/loot_tables/blocks/disenchanter.json
 0f863259ed68e1679c3bb9ada0f9873a94f9539b data/create_enchantment_industry/loot_tables/blocks/printer.json
 afca84aa4d66ddba620dcaa0b20d29fe42e19fbe data/create_enchantment_industry/tags/fluids/blaze_enchanter_input.json
