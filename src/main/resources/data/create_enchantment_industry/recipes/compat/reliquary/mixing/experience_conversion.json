@@ -11,7 +11,7 @@
       "item": "create_enchantment_industry:experience_rotor"
     },
     {
-      "fluid": "reliquary:xp_juice",
+      "fluid": "reliquary:xp_juice_still",
       "amount": 200
     }
   ],
