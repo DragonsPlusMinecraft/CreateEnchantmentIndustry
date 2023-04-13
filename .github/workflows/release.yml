@@ -45,7 +45,7 @@ jobs:
           curseforge-token: ${{ secrets.CURSEFORGE_TOKEN }}
 
           # Config
-          name: "CCK ${{ env.VERSION }} for Create ${{ env.MINECRAFT_VERSION }}-${{ env.CREATE_VERSION }}"
+          name: "CEI ${{ env.VERSION }} for Create ${{ env.MINECRAFT_VERSION }}-${{ env.CREATE_VERSION }}"
           version: ${{ env.VERSION }}
           version-type: release
           changelog-file: changelog/${{ env.VERSION }}.md
