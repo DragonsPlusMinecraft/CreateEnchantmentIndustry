@@ -17,7 +17,7 @@ public abstract class OpenEndFluidHandlerMixin extends FluidTank {
         super(capacity);
     }
 
-    @SuppressWarnings("UnresolvedMixinTarget")
+    @SuppressWarnings("target")
     @Final
     @Shadow(remap = false)
     OpenEndedPipe this$0;
