@@ -24,7 +24,7 @@ public class EnchantmentEntry extends Pair<Enchantment, Integer> {
             method = EnchHooks.getMethod("getMaxLevel", Enchantment.class);
         } catch (Throwable exception) {
             EnchantmentIndustry.LOGGER.debug("Failed to load EnchHooks from Apotheosis, fall back to vanilla method...");
-            method = ObfuscationReflectionHelper.findMethod(Enchantment.class, "m_6586");
+            method = ObfuscationReflectionHelper.findMethod(Enchantment.class, "m_6586_");
         }
         try {
             method.setAccessible(true);
