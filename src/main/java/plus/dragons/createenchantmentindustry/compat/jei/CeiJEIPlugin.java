@@ -4,17 +4,12 @@ import com.simibubi.create.compat.jei.category.CreateRecipeCategory;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
 import mezz.jei.api.forge.ForgeTypes;
-import mezz.jei.api.helpers.IColorHelper;
-import mezz.jei.api.ingredients.subtypes.ISubtypeManager;
 import mezz.jei.api.recipe.category.IRecipeCategory;
-import mezz.jei.api.registration.IModIngredientRegistration;
 import mezz.jei.api.registration.IRecipeCatalystRegistration;
 import mezz.jei.api.registration.IRecipeCategoryRegistration;
 import mezz.jei.api.registration.IRecipeRegistration;
 import mezz.jei.api.runtime.IIngredientManager;
-import mezz.jei.forge.plugins.forge.ingredients.fluid.FluidStackHelper;
-import mezz.jei.forge.plugins.forge.ingredients.fluid.FluidStackListFactory;
-import mezz.jei.forge.plugins.forge.ingredients.fluid.FluidStackRenderer;
+import mezz.jei.api.runtime.IJeiRuntime;
 import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.Recipe;
@@ -46,19 +41,6 @@ public class CeiJEIPlugin implements IModPlugin {
     }
 
     @Override
-    public void registerIngredients(IModIngredientRegistration registration) {
-        ISubtypeManager subtypeManager = registration.getSubtypeManager();
-        IColorHelper colorHelper = registration.getColorHelper();
-
-        List<FluidStack> fluidStacks = new ArrayList<>();
-        fluidStacks.add(new FluidStack(CeiFluids.EXPERIENCE.get().getSource(), FluidAttributes.BUCKET_VOLUME));
-        fluidStacks.add(new FluidStack(CeiFluids.HYPER_EXPERIENCE.get().getSource(), FluidAttributes.BUCKET_VOLUME));
-        FluidStackHelper fluidStackHelper = new FluidStackHelper(subtypeManager, colorHelper);
-        FluidStackRenderer fluidStackRenderer = new FluidStackRenderer();
-        registration.register(ForgeTypes.FLUID_STACK, fluidStacks, fluidStackHelper, fluidStackRenderer);
-    }
-
-    @Override
     public void registerCategories(IRecipeCategoryRegistration registration) {
         loadCategories(registration);
         registration.addRecipeCategories(allCategories.toArray(IRecipeCategory[]::new));
@@ -74,7 +56,15 @@ public class CeiJEIPlugin implements IModPlugin {
     public void registerRecipeCatalysts(IRecipeCatalystRegistration registration) {
         allCategories.forEach(c -> c.registerCatalysts(registration));
     }
-
+    
+    @Override
+    public void onRuntimeAvailable(IJeiRuntime jeiRuntime) {
+        List<FluidStack> fluidIngredients = new ArrayList<>();
+        fluidIngredients.add(new FluidStack(CeiFluids.EXPERIENCE.get().getSource(), FluidAttributes.BUCKET_VOLUME));
+        fluidIngredients.add(new FluidStack(CeiFluids.HYPER_EXPERIENCE.get().getSource(), FluidAttributes.BUCKET_VOLUME));
+        jeiRuntime.getIngredientManager().addIngredientsAtRuntime(ForgeTypes.FLUID_STACK,fluidIngredients);
+    }
+    
     private static <T extends Recipe<?>> RecipeCategoryBuilder<T> builder(Class<T> cls) {
         return new RecipeCategoryBuilder<>(EnchantmentIndustry.ID, cls);
     }
