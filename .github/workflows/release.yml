@@ -30,7 +30,7 @@ jobs:
         run: chmod +x ./gradlew
 
       - name: Build
-        run: ./gradlew clean build --refresh-dependencies
+        run: ./gradlew build
 
       - name: Publish (CurseForge/Modrinth)
         uses: Kir-Antipov/mc-publish@v3.1
@@ -49,7 +49,7 @@ jobs:
           version: ${{ env.VERSION }}
           version-type: release
           changelog-file: changelog/${{ env.VERSION }}.md
-          files-primary: build/libs/!(*-@(dev|sources|slim)).jar
+          files-primary: build/libs/*-${{ env.VERSION }}!(-@(dev|sources|slim)).jar
           files-secondary: ""
 
           loaders: |
