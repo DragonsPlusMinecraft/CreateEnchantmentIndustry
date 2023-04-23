@@ -1,7 +1,6 @@
 package plus.dragons.createenchantmentindustry;
 
 import com.simibubi.create.foundation.data.CreateRegistrate;
-import com.tterrag.registrate.util.nullness.NonNullSupplier;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
@@ -20,6 +19,7 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.forge.event.lifecycle.GatherDataEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import plus.dragons.createenchantmentindustry.compat.apotheosis.ApotheosisCompat;
 import plus.dragons.createenchantmentindustry.content.contraptions.fluids.OpenEndedPipeEffects;
 import plus.dragons.createenchantmentindustry.entry.*;
 import plus.dragons.createenchantmentindustry.foundation.config.CeiConfigs;
@@ -74,6 +74,7 @@ public class EnchantmentIndustry {
             CeiAdvancements.register();
             CeiTriggers.register();
             OpenEndedPipeEffects.register();
+            ApotheosisCompat.addPotionMixingRecipes();
         });
     }
     

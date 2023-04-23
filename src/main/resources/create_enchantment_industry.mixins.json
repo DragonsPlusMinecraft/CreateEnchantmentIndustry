@@ -12,6 +12,7 @@
     "CreateAdvancementMixin",
     "CreateItemGroupBaseMixin",
     "DeployerFakePlayerMixin",
+    "FillingBySpoutMixin",
     "FluidTankBlockMixin",
     "ItemDrainBlockMixin",
     "ItemDrainTileEntityAccessor",
