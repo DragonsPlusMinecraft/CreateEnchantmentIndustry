@@ -1,8 +1,8 @@
 package plus.dragons.createenchantmentindustry;
 
 import com.simibubi.create.foundation.config.ui.BaseConfigScreen;
-import net.minecraft.client.resources.model.ModelBakery;
-import net.minecraftforge.client.event.ModelEvent;
+import net.minecraft.world.inventory.InventoryMenu;
+import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -37,9 +37,12 @@ public class EnchantmentIndustryClient {
         CeiPonderIndex.registerTags();
     }
     
+    @SuppressWarnings("deprecation")
     @SubscribeEvent
-    public void modelRegistry(final ModelEvent.RegisterAdditional event) {
-        ModelBakery.UNREFERENCED_TEXTURES.add(BlazeEnchanterRenderer.BOOK_MATERIAL);
+    public void modelRegistry(final TextureStitchEvent.Pre event) {
+        if (event.getAtlas().location().equals(InventoryMenu.BLOCK_ATLAS)) {
+            event.addSprite(BlazeEnchanterRenderer.BOOK_MATERIAL.texture());
+        }
     }
     
     @SubscribeEvent
