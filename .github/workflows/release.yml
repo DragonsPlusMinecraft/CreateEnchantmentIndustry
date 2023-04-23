@@ -30,7 +30,7 @@ jobs:
         run: chmod +x ./gradlew
 
       - name: Build
-        run: ./gradlew clean build
+        run: ./gradlew clean build --refresh-dependencies
 
       - name: Publish (CurseForge/Modrinth)
         uses: Kir-Antipov/mc-publish@v3.1
