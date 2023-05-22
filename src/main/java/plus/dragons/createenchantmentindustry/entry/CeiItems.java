@@ -19,17 +19,12 @@ import static plus.dragons.createenchantmentindustry.EnchantmentIndustry.REGISTR
 public class CeiItems {
     
     static {
-        // TODO
         Create.REGISTRATE.creativeModeTab(() -> AllCreativeModeTabs.BASE_CREATIVE_TAB);
     }
 
     public static final ItemEntry<EnchantingGuideItem> ENCHANTING_GUIDE = REGISTRATE.item("enchanting_guide", EnchantingGuideItem::new)
             .properties(prop -> prop.stacksTo(1))
             .register();
-
-    static {
-//        REGISTRATE.startSection(AllSections.MATERIALS);
-    }
 
     public static final ItemEntry<HyperExperienceBottleItem> HYPER_EXP_BOTTLE = REGISTRATE.item("hyper_experience_bottle", HyperExperienceBottleItem::new)
             .properties(prop -> prop.rarity(Rarity.RARE))
@@ -41,7 +36,6 @@ public class CeiItems {
             .register();
 
     public static void fillCreateItemGroup(FillCreateItemGroupEvent event) {
-        // TODO
         if (event.getItemGroup() == AllCreativeModeTabs.BASE_CREATIVE_TAB) {
             event.addInsertion(AllBlocks.ITEM_DRAIN.get(), CeiBlocks.DISENCHANTER.asStack());
             event.addInsertion(AllBlocks.SPOUT.get(), CeiBlocks.PRINTER.asStack());
