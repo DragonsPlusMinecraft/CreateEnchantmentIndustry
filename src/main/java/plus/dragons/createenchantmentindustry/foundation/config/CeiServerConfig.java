@@ -28,7 +28,7 @@ public class CeiServerConfig extends ConfigBase {
     public final ConfigBool enableHyperEnchant = b(true, "enableHyperEnchant");
     
     @Override
-    protected void registerAll(ForgeConfigSpec.Builder builder) {
+    public void registerAll(ForgeConfigSpec.Builder builder) {
         super.registerAll(builder);
     }
 

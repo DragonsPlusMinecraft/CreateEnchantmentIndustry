@@ -1,9 +1,9 @@
 package plus.dragons.createenchantmentindustry.foundation.mixin;
 
-import com.simibubi.create.content.contraptions.fluids.actors.ItemDrainBlock;
-import com.simibubi.create.content.contraptions.fluids.actors.ItemDrainTileEntity;
-import com.simibubi.create.content.contraptions.wrench.IWrenchable;
-import com.simibubi.create.foundation.block.ITE;
+import com.simibubi.create.content.equipment.wrench.IWrenchable;
+import com.simibubi.create.content.fluids.drain.ItemDrainBlock;
+import com.simibubi.create.content.fluids.drain.ItemDrainBlockEntity;
+import com.simibubi.create.foundation.block.IBE;
 import com.simibubi.create.foundation.utility.VecHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
@@ -17,7 +17,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import plus.dragons.createenchantmentindustry.content.contraptions.fluids.experience.ExperienceFluid;
 
 @Mixin(ItemDrainBlock.class)
-public abstract class ItemDrainBlockMixin extends Block implements ITE<ItemDrainTileEntity>, IWrenchable {
+public abstract class ItemDrainBlockMixin extends Block implements IBE<ItemDrainBlockEntity>, IWrenchable {
     public ItemDrainBlockMixin(Properties pProperties) {
         super(pProperties);
     }
@@ -27,8 +27,8 @@ public abstract class ItemDrainBlockMixin extends Block implements ITE<ItemDrain
     private void injected(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving, CallbackInfo ci) {
         if(!(level instanceof ServerLevel serverLevel))
             return;
-        withTileEntityDo(level, pos, te -> {
-            var fluidStack = ((ItemDrainTileEntityAccessor) te).getInternalTank().getPrimaryHandler().getFluid();
+        withBlockEntityDo(level, pos, te -> {
+            var fluidStack = ((ItemDrainBlockEntityAccessor) te).getInternalTank().getPrimaryHandler().getFluid();
             if(fluidStack.getFluid() instanceof ExperienceFluid expFluid) {
                 expFluid.drop(serverLevel, VecHelper.getCenterOf(pos), fluidStack.getAmount());
             }

@@ -6,8 +6,8 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.network.NetworkDirection;
-import net.minecraftforge.network.NetworkEvent;
 import net.minecraftforge.network.NetworkRegistry;
+import net.minecraftforge.network.NetworkEvent.Context;
 import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.network.simple.SimpleChannel;
 import plus.dragons.createenchantmentindustry.EnchantmentIndustry;
@@ -16,7 +16,6 @@ import plus.dragons.createenchantmentindustry.content.contraptions.enchanting.en
 
 import java.util.function.BiConsumer;
 import java.util.function.Function;
-import java.util.function.Supplier;
 
 import static net.minecraftforge.network.NetworkDirection.PLAY_TO_SERVER;
 
@@ -59,7 +58,7 @@ public enum CeiPackets {
 
         private BiConsumer<T, FriendlyByteBuf> encoder;
         private Function<FriendlyByteBuf, T> decoder;
-        private BiConsumer<T, Supplier<NetworkEvent.Context>> handler;
+        private BiConsumer<T, Context> handler;
         private Class<T> type;
         private NetworkDirection direction;
 
@@ -75,6 +74,7 @@ public enum CeiPackets {
             channel.messageBuilder(type, index++, direction)
                     .encoder(encoder)
                     .decoder(decoder)
+                    // TODO
                     .consumerNetworkThread(handler)
                     .add();
         }

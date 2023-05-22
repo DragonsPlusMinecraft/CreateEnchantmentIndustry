@@ -1,7 +1,7 @@
 package plus.dragons.createenchantmentindustry.content.contraptions.enchanting.enchanter;
 
 import com.google.common.collect.ImmutableList;
-import com.simibubi.create.foundation.gui.container.GhostItemContainer;
+import com.simibubi.create.foundation.gui.menu.GhostItemMenu;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.Tag;
@@ -23,7 +23,7 @@ import javax.annotation.Nullable;
 
 import static plus.dragons.createenchantmentindustry.EnchantmentIndustry.LANG;
 
-public class EnchantingGuideMenu extends GhostItemContainer<ItemStack> {
+public class EnchantingGuideMenu extends GhostItemMenu<ItemStack> {
     private static final Component NO_ENCHANTMENT = LANG.translate("gui.enchanting_guide.no_enchantment").component();
     ImmutableList<Component> enchantments = ImmutableList.of(NO_ENCHANTMENT);
     boolean directItemStackEdit;

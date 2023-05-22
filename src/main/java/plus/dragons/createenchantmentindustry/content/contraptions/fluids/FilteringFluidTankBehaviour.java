@@ -1,8 +1,8 @@
 package plus.dragons.createenchantmentindustry.content.contraptions.fluids;
 
-import com.simibubi.create.foundation.tileEntity.SmartTileEntity;
-import com.simibubi.create.foundation.tileEntity.behaviour.BehaviourType;
-import com.simibubi.create.foundation.tileEntity.behaviour.fluid.SmartFluidTankBehaviour;
+import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
+import com.simibubi.create.foundation.blockEntity.behaviour.BehaviourType;
+import com.simibubi.create.foundation.blockEntity.behaviour.fluid.SmartFluidTankBehaviour;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler;
@@ -16,10 +16,10 @@ public class FilteringFluidTankBehaviour extends SmartFluidTankBehaviour {
     
     public FilteringFluidTankBehaviour(BehaviourType<SmartFluidTankBehaviour> type,
                                        Predicate<FluidStack> filter,
-                                       SmartTileEntity te,
+                                       SmartBlockEntity be,
                                        int tanks, int tankCapacity,
                                        boolean enforceVariety) {
-        super(type, te, tanks, tankCapacity, enforceVariety);
+        super(type, be, tanks, tankCapacity, enforceVariety);
         this.filter = filter;
         IFluidHandler[] handlers = new IFluidHandler[tanks];
         for (int i = 0; i < tanks; i++) {
@@ -30,8 +30,8 @@ public class FilteringFluidTankBehaviour extends SmartFluidTankBehaviour {
         this.capability = LazyOptional.of(() -> new InternalFluidHandler(handlers, enforceVariety));
     }
     
-    public static FilteringFluidTankBehaviour single(Predicate<FluidStack> filter, SmartTileEntity te, int capacity) {
-        return new FilteringFluidTankBehaviour(TYPE, filter, te, 1, capacity, false);
+    public static FilteringFluidTankBehaviour single(Predicate<FluidStack> filter, SmartBlockEntity be, int capacity) {
+        return new FilteringFluidTankBehaviour(TYPE, filter, be, 1, capacity, false);
     }
     
     public class InternalFluidHandler extends SmartFluidTankBehaviour.InternalFluidHandler {

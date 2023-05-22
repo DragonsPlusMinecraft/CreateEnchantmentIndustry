@@ -1,7 +1,7 @@
 package plus.dragons.createenchantmentindustry.foundation.mixin;
 
 import com.simibubi.create.AllItems;
-import com.simibubi.create.content.contraptions.components.deployer.DeployerFakePlayer;
+import com.simibubi.create.content.kinetics.deployer.DeployerFakePlayer;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.event.entity.living.LivingExperienceDropEvent;

@@ -1,9 +1,9 @@
 package plus.dragons.createenchantmentindustry.entry;
 
 import com.google.common.collect.ImmutableMap;
+import com.simibubi.create.AllCreativeModeTabs;
 import com.simibubi.create.Create;
-import com.simibubi.create.content.AllSections;
-import com.simibubi.create.content.contraptions.components.AssemblyOperatorBlockItem;
+import com.simibubi.create.content.processing.AssemblyOperatorBlockItem;
 import com.simibubi.create.foundation.data.AssetLookup;
 import com.simibubi.create.foundation.data.SharedProperties;
 import com.simibubi.create.foundation.data.TagGen;
@@ -17,14 +17,15 @@ import plus.dragons.createenchantmentindustry.content.contraptions.enchanting.pr
 import plus.dragons.createenchantmentindustry.content.contraptions.enchanting.disenchanter.DisenchanterBlock;
 import plus.dragons.createenchantmentindustry.content.contraptions.enchanting.enchanter.BlazeEnchanterBlock;
 
-import static com.simibubi.create.content.logistics.block.display.AllDisplayBehaviours.assignDataBehaviour;
+import static com.simibubi.create.content.redstone.displayLink.AllDisplayBehaviours.assignDataBehaviour;
 import static plus.dragons.createenchantmentindustry.EnchantmentIndustry.REGISTRATE;
 
 
 public class CeiBlocks {
     
     static {
-        REGISTRATE.creativeModeTab(() -> Create.BASE_CREATIVE_TAB).startSection(AllSections.KINETICS);
+        // TODO
+        Create.REGISTRATE.creativeModeTab(() -> AllCreativeModeTabs.BASE_CREATIVE_TAB);
     }
 
     public static final BlockEntry<DisenchanterBlock> DISENCHANTER = REGISTRATE
