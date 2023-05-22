@@ -47,7 +47,6 @@ public class EnchantingGuideEditPacket extends SimplePacketBase {
                 });
         context.setPacketHandled(true);
 
-        // TODO
         return context.getPacketHandled();
     }
 }

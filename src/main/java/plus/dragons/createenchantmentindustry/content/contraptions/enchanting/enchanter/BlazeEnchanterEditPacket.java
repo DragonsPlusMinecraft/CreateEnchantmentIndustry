@@ -55,7 +55,6 @@ public class BlazeEnchanterEditPacket extends SimplePacketBase {
                 });
         context.setPacketHandled(true);
 
-        // TODO
         return context.getPacketHandled();
     }
 }

@@ -16,6 +16,7 @@ import plus.dragons.createenchantmentindustry.content.contraptions.enchanting.en
 
 import java.util.function.BiConsumer;
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 import static net.minecraftforge.network.NetworkDirection.PLAY_TO_SERVER;
 
@@ -58,14 +59,19 @@ public enum CeiPackets {
 
         private BiConsumer<T, FriendlyByteBuf> encoder;
         private Function<FriendlyByteBuf, T> decoder;
-        private BiConsumer<T, Context> handler;
+        private BiConsumer<T, Supplier<Context>> handler;
         private Class<T> type;
         private NetworkDirection direction;
 
         private LoadedPacket(Class<T> type, Function<FriendlyByteBuf, T> factory, NetworkDirection direction) {
             encoder = T::write;
             decoder = factory;
-            handler = T::handle;
+            handler = (packet, contextSupplier) -> {
+                Context context = contextSupplier.get();
+                if (packet.handle(context)) {
+                    context.setPacketHandled(true);
+                }
+            };
             this.type = type;
             this.direction = direction;
         }
@@ -74,7 +80,6 @@ public enum CeiPackets {
             channel.messageBuilder(type, index++, direction)
                     .encoder(encoder)
                     .decoder(decoder)
-                    // TODO
                     .consumerNetworkThread(handler)
                     .add();
         }
