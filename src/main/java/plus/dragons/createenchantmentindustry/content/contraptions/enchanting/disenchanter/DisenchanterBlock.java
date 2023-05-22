@@ -1,16 +1,13 @@
 package plus.dragons.createenchantmentindustry.content.contraptions.enchanting.disenchanter;
 
 import com.simibubi.create.AllShapes;
-import com.simibubi.create.content.contraptions.relays.belt.transport.TransportedItemStack;
-import com.simibubi.create.content.contraptions.wrench.IWrenchable;
+import com.simibubi.create.content.equipment.wrench.IWrenchable;
+import com.simibubi.create.content.kinetics.belt.transport.TransportedItemStack;
 import com.simibubi.create.foundation.advancement.AdvancementBehaviour;
-import com.simibubi.create.foundation.block.ITE;
-import com.simibubi.create.foundation.tileEntity.ComparatorUtil;
-import com.simibubi.create.foundation.utility.VecHelper;
+import com.simibubi.create.foundation.block.IBE;
+import com.simibubi.create.foundation.blockEntity.ComparatorUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
@@ -27,7 +24,6 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
-import plus.dragons.createenchantmentindustry.content.contraptions.fluids.experience.ExperienceFluid;
 import plus.dragons.createenchantmentindustry.entry.CeiBlockEntities;
 import plus.dragons.createenchantmentindustry.entry.CeiBlocks;
 
@@ -35,19 +31,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 @SuppressWarnings("deprecation")
-public class DisenchanterBlock extends Block implements IWrenchable, ITE<DisenchanterBlockEntity> {
+public class DisenchanterBlock extends Block implements IWrenchable, IBE<DisenchanterBlockEntity> {
 
     public DisenchanterBlock(Properties pProperties) {
         super(pProperties);
     }
 
     @Override
-    public Class<DisenchanterBlockEntity> getTileEntityClass() {
+    public Class<DisenchanterBlockEntity> getBlockEntityClass() {
         return DisenchanterBlockEntity.class;
     }
 
     @Override
-    public BlockEntityType<? extends DisenchanterBlockEntity> getTileEntityType() {
+    public BlockEntityType<? extends DisenchanterBlockEntity> getBlockEntityType() {
         return CeiBlockEntities.DISENCHANTER.get();
     }
 
@@ -55,27 +51,27 @@ public class DisenchanterBlock extends Block implements IWrenchable, ITE<Disench
     public InteractionResult use(BlockState state, Level worldIn, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hit) {
         ItemStack heldItem = player.getItemInHand(handIn);
         if (heldItem.isEmpty()){
-            return onTileEntityUse(worldIn, pos, te -> {
-                if (!te.getHeldItemStack().isEmpty()) {
+            return onBlockEntityUse(worldIn, pos, be -> {
+                if (!be.getHeldItemStack().isEmpty()) {
                     if (!worldIn.isClientSide) {
-                        player.setItemInHand(handIn, te.heldItem.stack);
-                        te.heldItem = null;
-                        te.notifyUpdate();
+                        player.setItemInHand(handIn, be.heldItem.stack);
+                        be.heldItem = null;
+                        be.notifyUpdate();
                     }
                     return InteractionResult.sidedSuccess(worldIn.isClientSide);
                 }
                 return InteractionResult.PASS;
             });
         }
-        return onTileEntityUse(worldIn, pos, te -> {
-            if (te.getHeldItemStack().isEmpty()) {
+        return onBlockEntityUse(worldIn, pos, be -> {
+            if (be.getHeldItemStack().isEmpty()) {
                 var insert = heldItem.copy();
                 insert.setCount(1);
                 var result = Disenchanting.disenchantResult(insert,worldIn);
                 if (result!=null) {
                     if(!worldIn.isClientSide()){
-                        te.heldItem = new TransportedItemStack(insert);
-                        te.notifyUpdate();
+                        be.heldItem = new TransportedItemStack(insert);
+                        be.notifyUpdate();
                         heldItem.shrink(1);
                     }
                 }
@@ -92,7 +88,7 @@ public class DisenchanterBlock extends Block implements IWrenchable, ITE<Disench
 
     @Override
     public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
-        ITE.onRemove(state,level,pos,newState);
+        IBE.onRemove(state,level,pos,newState);
     }
 
     @Override

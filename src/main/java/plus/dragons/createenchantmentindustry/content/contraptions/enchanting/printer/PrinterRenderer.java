@@ -2,10 +2,10 @@ package plus.dragons.createenchantmentindustry.content.contraptions.enchanting.p
 
 import com.jozufozu.flywheel.core.PartialModel;
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.simibubi.create.foundation.blockEntity.behaviour.fluid.SmartFluidTankBehaviour;
+import com.simibubi.create.foundation.blockEntity.renderer.SmartBlockEntityRenderer;
 import com.simibubi.create.foundation.fluid.FluidRenderer;
 import com.simibubi.create.foundation.render.CachedBufferer;
-import com.simibubi.create.foundation.tileEntity.behaviour.fluid.SmartFluidTankBehaviour;
-import com.simibubi.create.foundation.tileEntity.renderer.SmartTileEntityRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
@@ -14,7 +14,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.fluids.FluidStack;
 import plus.dragons.createenchantmentindustry.entry.CeiBlockPartials;
 
-public class PrinterRenderer extends SmartTileEntityRenderer<PrinterBlockEntity> {
+public class PrinterRenderer extends SmartBlockEntityRenderer<PrinterBlockEntity> {
     public PrinterRenderer(BlockEntityRendererProvider.Context context) {
         super(context);
     }

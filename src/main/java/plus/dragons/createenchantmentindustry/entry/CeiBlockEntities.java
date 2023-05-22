@@ -18,19 +18,19 @@ import static plus.dragons.createenchantmentindustry.EnchantmentIndustry.REGISTR
 public class CeiBlockEntities {
 
     public static final BlockEntityEntry<DisenchanterBlockEntity> DISENCHANTER = REGISTRATE
-            .tileEntity("disenchanter", DisenchanterBlockEntity::new)
+            .blockEntity("disenchanter", DisenchanterBlockEntity::new)
             .validBlocks(CeiBlocks.DISENCHANTER)
             .renderer(() -> DisenchanterRenderer::new)
             .register();
 
     public static final BlockEntityEntry<PrinterBlockEntity> PRINTER = REGISTRATE
-            .tileEntity("printer", PrinterBlockEntity::new)
+            .blockEntity("printer", PrinterBlockEntity::new)
             .validBlocks(CeiBlocks.PRINTER)
             .renderer(() -> PrinterRenderer::new)
             .register();
 
     public static final BlockEntityEntry<BlazeEnchanterBlockEntity> BLAZE_ENCHANTER = REGISTRATE
-            .tileEntity("blaze_enchanter", BlazeEnchanterBlockEntity::new)
+            .blockEntity("blaze_enchanter", BlazeEnchanterBlockEntity::new)
             .validBlocks(CeiBlocks.BLAZE_ENCHANTER)
             .renderer(() -> BlazeEnchanterRenderer::new)
             .register();

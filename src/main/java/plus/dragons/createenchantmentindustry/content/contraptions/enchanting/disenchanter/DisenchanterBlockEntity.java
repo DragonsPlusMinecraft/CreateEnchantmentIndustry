@@ -1,12 +1,12 @@
 package plus.dragons.createenchantmentindustry.content.contraptions.enchanting.disenchanter;
 
-import com.simibubi.create.content.contraptions.goggles.IHaveGoggleInformation;
-import com.simibubi.create.content.contraptions.relays.belt.transport.TransportedItemStack;
+import com.simibubi.create.content.equipment.goggles.IHaveGoggleInformation;
+import com.simibubi.create.content.kinetics.belt.behaviour.DirectBeltInputBehaviour;
+import com.simibubi.create.content.kinetics.belt.transport.TransportedItemStack;
 import com.simibubi.create.foundation.advancement.AdvancementBehaviour;
-import com.simibubi.create.foundation.tileEntity.SmartTileEntity;
-import com.simibubi.create.foundation.tileEntity.TileEntityBehaviour;
-import com.simibubi.create.foundation.tileEntity.behaviour.belt.DirectBeltInputBehaviour;
-import com.simibubi.create.foundation.tileEntity.behaviour.fluid.SmartFluidTankBehaviour;
+import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
+import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
+import com.simibubi.create.foundation.blockEntity.behaviour.fluid.SmartFluidTankBehaviour;
 import com.simibubi.create.foundation.utility.BlockHelper;
 import com.simibubi.create.foundation.utility.Iterate;
 import com.simibubi.create.foundation.utility.Pair;
@@ -49,7 +49,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class DisenchanterBlockEntity extends SmartTileEntity implements IHaveGoggleInformation {
+public class DisenchanterBlockEntity extends SmartBlockEntity implements IHaveGoggleInformation {
 
     public static final int DISENCHANTER_TIME = 10;
     private static final int ABSORB_AMOUNT = 100;
@@ -72,7 +72,7 @@ public class DisenchanterBlockEntity extends SmartTileEntity implements IHaveGog
     }
 
     @Override
-    public void addBehaviours(List<TileEntityBehaviour> behaviours) {
+    public void addBehaviours(List<BlockEntityBehaviour> behaviours) {
         behaviours.add(new DirectBeltInputBehaviour(this).allowingBeltFunnels()
                 .setInsertionHandler(this::tryInsertingFromSide));
         behaviours.add(internalTank = SmartFluidTankBehaviour.single(this, CeiConfigs.SERVER.disenchanterTankCapacity.get())
@@ -147,7 +147,7 @@ public class DisenchanterBlockEntity extends SmartTileEntity implements IHaveGog
 
             BlockPos nextPosition = worldPosition.relative(side);
             DirectBeltInputBehaviour directBeltInputBehaviour =
-                    TileEntityBehaviour.get(level, nextPosition, DirectBeltInputBehaviour.TYPE);
+                    BlockEntityBehaviour.get(level, nextPosition, DirectBeltInputBehaviour.TYPE);
             if (directBeltInputBehaviour == null) {
                 if (!BlockHelper.hasBlockSolidSide(level.getBlockState(nextPosition), level, nextPosition,
                         side.getOpposite())) {
