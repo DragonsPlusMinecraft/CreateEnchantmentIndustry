@@ -1,0 +1,129 @@
+{
+
+	"_": "->------------------------]  Game Elements  [------------------------<-",
+
+	"block.create_enchantment_industry.blaze_enchanter": "Blaze Verzauberer",
+	"block.create_enchantment_industry.disenchanter": "Entzauberer",
+	"block.create_enchantment_industry.ink": "Tinte",
+	"block.create_enchantment_industry.printer": "Drucker",
+
+	"entity.create_enchantment_industry.hyper_experience_bottle": "Geworfenes Fläschen Hypererfahrung",
+	"entity.create_enchantment_industry.hyper_experience_orb": "Hypererfahrungskugel",
+
+	"fluid.create_enchantment_industry.experience": "Flüssige Erfahrung",
+	"fluid.create_enchantment_industry.hyper_experience": "Flüssige Hypererfahrung",
+	"fluid.create_enchantment_industry.ink": "Tinte",
+
+	"item.create_enchantment_industry.enchanting_guide": "Verzauberungsleitfaden",
+	"item.create_enchantment_industry.experience_rotor": "Erfahrungsrotor",
+	"item.create_enchantment_industry.hyper_experience_bottle": "Fläschen Hypererfahrung",
+	"item.create_enchantment_industry.ink_bucket": "Farbeimer",
+
+
+	"_": "->------------------------]  Advancements  [------------------------<-",
+
+	"advancement.create_enchantment_industry.experienced_engineer": "Erfahrener Ingenieur",
+	"advancement.create_enchantment_industry.experienced_engineer.desc": "Erhalte Erfahrungsklumpen durch das Zerbröseln von Erzen oder Mobs töten mit einem Deployer.",
+	"advancement.create_enchantment_industry.black_as_ink": "Schwarz wie Tinte!",
+	"advancement.create_enchantment_industry.black_as_ink.desc": "Erhalte einen Eimer Tinte um als Autor durchstarten zu können!",
+	"advancement.create_enchantment_industry.copiable_masterpiece": "Kopierbares Meisterwerk",
+	"advancement.create_enchantment_industry.copiable_masterpiece.desc": "Kopiere ein beschriebenes Buch mittels Kopierer",
+	"advancement.create_enchantment_industry.copiable_mystery": "Kopierbares Mysterium",
+	"advancement.create_enchantment_industry.copiable_mystery.desc": "Kopiere ein verzaubertes Buch mittels Kopierer",
+	"advancement.create_enchantment_industry.relic_restoration": "Restaurator",
+	"advancement.create_enchantment_industry.relic_restoration.desc": "Erstelle eine komplett neue Kopie eines zerfetzten Buchs",
+	"advancement.create_enchantment_industry.great_publisher": "Großer Verleger",
+	"advancement.create_enchantment_industry.great_publisher.desc": "Kopiere 1000 Bücher mit einem Kopierer",
+	"advancement.create_enchantment_industry.experimental": "Experimentell",
+	"advancement.create_enchantment_industry.experimental.desc": "Erhalte flüßige Erfahrung für deine Zauberei!",
+	"advancement.create_enchantment_industry.gone_with_the_foil": "Weg ist es...",
+	"advancement.create_enchantment_industry.gone_with_the_foil.desc": "Sieh zu, wie ein Item mit dem Entzauberer entzaubert wird",
+	"advancement.create_enchantment_industry.spirit_taking": "Geistliche Absaugung",
+	"advancement.create_enchantment_industry.spirit_taking.desc": "Transferiere deine Erfahrung mit einem Entzauberer",
+	"advancement.create_enchantment_industry.a_shower_experience": "Eine lehrreiche Dusche",
+	"advancement.create_enchantment_industry.a_shower_experience.desc": "Zerstöre ein Rohr und dusche in der austretenden Erfahrung",
+	"advancement.create_enchantment_industry.experienced_recycler": "Erfahrender Wiederverwerter",
+	"advancement.create_enchantment_industry.experienced_recycler.desc": "Recycle 1.000.000 mB Erfahrung von dem Entzauberer",
+	"advancement.create_enchantment_industry.blazes_new_job": "Neuer Job für Blaze",
+	"advancement.create_enchantment_industry.blazes_new_job.desc": "Gib deinem Blaze Burner einen Verzauberungsleitfaden und verwandle ihn in einen Blaze Verzauberer",
+	"advancement.create_enchantment_industry.first_order": "Erste Bestellung",
+	"advancement.create_enchantment_industry.first_order.desc": "Verzaubere ein Item mit dem Blaze Verzauberer",
+	"advancement.create_enchantment_industry.additional_order": "Zusätzliche Bestellung",
+	"advancement.create_enchantment_industry.additional_order.desc": "Füge mit dem Blaze Verzauberer einem bereits verzauberten Item eine weitere Verzauberung hinzu",
+	"advancement.create_enchantment_industry.hypothetical_extension": "Hypthetische Erweiterung",
+	"advancement.create_enchantment_industry.hypothetical_extension.desc": "Verzaubere ein Item mit der Hyperverzauberung des Blaze Verzauberers",
+
+
+	"_": "->------------------------]  Ponder Content  [------------------------<-",
+
+	"create_enchantment_industry.ponder.tag.experience": "Bezogen auf Erfahrung",
+	"create_enchantment_industry.ponder.tag.experience.description": "Items und Erfahrung mit Bezug zur Erfahrung",
+
+	"create_enchantment_industry.ponder.absorb_experience_nugget.header": "Umwandlung von Erfahrungsklumpen in Flüßigkeit",
+	"create_enchantment_industry.ponder.absorb_experience_nugget.text_1": "Erfahrungsklumpen können von einem Entzauberer aufgenommen werden.",
+
+	"create_enchantment_industry.ponder.copy.header": "Drucker benutzen",
+	"create_enchantment_industry.ponder.copy.text_1": "Um verzauberte Bücher zu kopieren, wird flüßige Erfahrung benötigt.",
+	"create_enchantment_industry.ponder.copy.text_2": "Um beschriebene Bücher zu kopieren, wird flüßige Tinte benötigt.",
+
+	"create_enchantment_industry.ponder.disenchant.header": "Entzauberung",
+	"create_enchantment_industry.ponder.disenchant.text_1": "All received items will have their enchantments removed and the removed enchantments will be converted to liquid experience for storage.",
+	"create_enchantment_industry.ponder.disenchant.text_2": "Players standing on the disenchanter will be quickly washed away their experience level, and the washed away experience value will be converted into liquid experience for storage",
+
+	"create_enchantment_industry.ponder.drop_experience_nugget.header": "Maybe A Exp-farm?",
+	"create_enchantment_industry.ponder.drop_experience_nugget.text_1": "When mob is killed by deployer, experience nuggets are dropped.",
+
+	"create_enchantment_industry.ponder.enchant.header": "Enchanting",
+
+	"create_enchantment_industry.ponder.experience_bottle.header": "Dealing with Bottle o' Enchanting",
+	"create_enchantment_industry.ponder.experience_bottle.text_1": "Bottle o' Enchanting can be emptied at Item Drain.",
+	"create_enchantment_industry.ponder.experience_bottle.text_2": "Bottle o' Enchanting also can be manufactured by Spout as well.",
+
+	"create_enchantment_industry.ponder.hyper_enchant.header": "Hyper-enchanting",
+	"create_enchantment_industry.ponder.hyper_enchant.text_1": "This is liquid hyper experience",
+	"create_enchantment_industry.ponder.hyper_enchant.text_2": "Hyper experience can make the Blaze Enchanter into seething state, and the level of the enchantment produced in this state will be one level higher than the set enchantment.",
+	"create_enchantment_industry.ponder.hyper_enchant.text_3": "Enchantment with level cap of 1 level cannot be upgraded to level 2 in hyper-enchant.",
+
+	"create_enchantment_industry.ponder.leak.header": "Oh no! It's leaking!",
+	"create_enchantment_industry.ponder.leak.text_1": "I have a tank full of experience",
+	"create_enchantment_industry.ponder.leak.text_2": "I have an open-ended pipe",
+	"create_enchantment_industry.ponder.leak.text_3": "Ugh!",
+	"create_enchantment_industry.ponder.leak.text_4": "Don't worry, the leaked liquid experience will turn into experience orbs. Players can also stand at the opening of the pipe to absorb experience.",
+
+	"create_enchantment_industry.ponder.transform.header": "Using Enchanting Guide",
+	"create_enchantment_industry.ponder.transform.text_1": "Right-click the Blaze Burner with an Enchanting Guide in hand when sneaking to transform it to a Blaze Enchanter.",
+	"create_enchantment_industry.ponder.transform.text_2": "To make Blaze Enchanter work, Enchanting Guide must be configured first. Right-clicking Blaze Enchanter or right-clicking Enchanting Guide in hands can open configuration panel.",
+	"create_enchantment_industry.ponder.transform.text_3": "To retrieve the enchanting guide, right-click the Blaze Enchanter with wrench when sneaking.",
+
+
+	"_": "->------------------------]  Item Descriptions  [------------------------<-",
+
+	"item.create_enchantment_industry.enchanting_guide.tooltip": "ENCHANTING GUIDE TOOLTIPS",
+	"item.create_enchantment_industry.enchanting_guide.tooltip.current_enchantment": "Current Enchantment:",
+	"item.create_enchantment_industry.enchanting_guide.tooltip.not_configured": "Not Configured",
+
+	"item.create_enchantment_industry.experience_rotor.tooltip": "EXPERIENCE ROTOR",
+	"item.create_enchantment_industry.experience_rotor.tooltip.summary": "Used in _Mixing_ _Recipes_ to convert _Experience_ _Fluids_.",
+
+
+	"_": "->------------------------]  UI & Messages  [------------------------<-",
+
+	"create_enchantment_industry.gui.enchanting_guide.no_enchantment": "No Available Enchantment",
+	"create_enchantment_industry.gui.goggles.printer": "Object to be copied:",
+	"create_enchantment_industry.gui.goggles.printer.no_target": "None",
+	"create_enchantment_industry.gui.goggles.blaze_enchanter": "Active Enchantment:",
+	"create_enchantment_industry.gui.goggles.blaze_enchanter.invalid_target": "Invalid Target",
+	"create_enchantment_industry.gui.goggles.xp_consumption": "Consumes Experience: %s mB",
+	"create_enchantment_industry.gui.goggles.ink_consumption": "Consumes Ink: %s mB",
+	"create_enchantment_industry.gui.goggles.too_expensive": "Too Expensive!",
+
+	"create_enchantment_industry.generic.unit.page": "Page",
+	"create_enchantment_industry.generic.unit.pages": "Pages",
+
+	"recipe.create_enchantment_industry.disenchanting": "Disenchanting",
+
+	"create_enchantment_industry.display_source.blaze_enchanter_source_target_enchantment": "Target Enchantment",
+
+	"_": "Thank you for translating Create: Enchantment Industry!"
+
+}
