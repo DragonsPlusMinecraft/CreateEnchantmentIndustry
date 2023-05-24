@@ -37,8 +37,11 @@ public class EnchantingGuideScreen extends AbstractSimiContainerScreen<Enchantin
         blockPos = container.blockPos;
     }
 
-    public void updateScrollInput() {
-        index = 0;
+    public void updateScrollInput(boolean resetIndex) {
+        if (resetIndex) {
+            index = 0;
+        }
+
         scrollInput.forOptions(menu.enchantments);
         scrollInput.setState(index);
     }
@@ -63,7 +66,7 @@ public class EnchantingGuideScreen extends AbstractSimiContainerScreen<Enchantin
         scrollInput.calling(index -> this.index = index).writingTo(scrollInputLabel);
         addRenderableWidget(scrollInputLabel);
         addRenderableWidget(scrollInput);
-        updateScrollInput();
+        updateScrollInput(false);
     }
 
     @Override
