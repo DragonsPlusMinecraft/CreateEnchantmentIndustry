@@ -25,6 +25,7 @@ import static plus.dragons.createenchantmentindustry.EnchantmentIndustry.LANG;
 
 public class EnchantingGuideMenu extends GhostItemContainer<ItemStack> {
     private static final Component NO_ENCHANTMENT = LANG.translate("gui.enchanting_guide.no_enchantment").component();
+    private ImmutableList<Component> previousEnchantments;
     ImmutableList<Component> enchantments = ImmutableList.of(NO_ENCHANTMENT);
     boolean directItemStackEdit;
     @Nullable
@@ -59,9 +60,11 @@ public class EnchantingGuideMenu extends GhostItemContainer<ItemStack> {
                     .map(entry -> entry.getKey().getFullname(entry.getValue()))
                     .toArray(Component[]::new)
             );
+        boolean resetIndex = previousEnchantments == null || !previousEnchantments.toString().equals(enchantments.toString());
+        previousEnchantments = ImmutableList.copyOf(enchantments);
         DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> {
             if (Minecraft.getInstance().screen instanceof EnchantingGuideScreen screen) {
-                screen.updateScrollInput();
+                screen.updateScrollInput(resetIndex);
             }
         });
     }
