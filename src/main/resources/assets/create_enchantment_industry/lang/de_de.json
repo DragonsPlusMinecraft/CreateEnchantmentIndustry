@@ -1,0 +1,129 @@
+{
+
+	"_": "->------------------------]  Game Elements  [------------------------<-",
+
+	"block.create_enchantment_industry.blaze_enchanter": "Lohenverzauberer",
+	"block.create_enchantment_industry.disenchanter": "Entzauberer",
+	"block.create_enchantment_industry.ink": "Tinte",
+	"block.create_enchantment_industry.printer": "Drucker",
+
+	"entity.create_enchantment_industry.hyper_experience_bottle": "Geworfenes Hypererfahrungsfläschen",
+	"entity.create_enchantment_industry.hyper_experience_orb": "Hypererfahrungskugel",
+
+	"fluid.create_enchantment_industry.experience": "Flüssige Erfahrung",
+	"fluid.create_enchantment_industry.hyper_experience": "Flüssige Hypererfahrung",
+	"fluid.create_enchantment_industry.ink": "Tinte",
+
+	"item.create_enchantment_industry.enchanting_guide": "Verzauberungsleitfaden",
+	"item.create_enchantment_industry.experience_rotor": "Erfahrungsrotor",
+	"item.create_enchantment_industry.hyper_experience_bottle": "Hypererfahrungsfläschen",
+	"item.create_enchantment_industry.ink_bucket": "Tinteneimer",
+
+
+	"_": "->------------------------]  Advancements  [------------------------<-",
+
+	"advancement.create_enchantment_industry.experienced_engineer": "Erfahrener Ingenieur",
+	"advancement.create_enchantment_industry.experienced_engineer.desc": "Erhalte Erfahrungsklumpen durch das Zermahlen von Erzen oder Töten von Mobs mit einem Einsatzgerät.",
+	"advancement.create_enchantment_industry.black_as_ink": "Schwarz wie Tinte!",
+	"advancement.create_enchantment_industry.black_as_ink.desc": "Erhalte einen Eimer Tinte um als Autor durchstarten zu können!",
+	"advancement.create_enchantment_industry.copiable_masterpiece": "Kopierbares Meisterwerk",
+	"advancement.create_enchantment_industry.copiable_masterpiece.desc": "Kopiere ein beschriebenes Buch mittels Kopierer.",
+	"advancement.create_enchantment_industry.copiable_mystery": "Kopierbares Mysterium",
+	"advancement.create_enchantment_industry.copiable_mystery.desc": "Kopiere ein verzaubertes Buch mittels Kopierer.",
+	"advancement.create_enchantment_industry.relic_restoration": "Restaurator",
+	"advancement.create_enchantment_industry.relic_restoration.desc": "Erstelle eine komplett neue Kopie eines zerfetzten Buchs.",
+	"advancement.create_enchantment_industry.great_publisher": "Großer Verleger",
+	"advancement.create_enchantment_industry.great_publisher.desc": "Kopiere 1000 Bücher mit einem Kopierer.",
+	"advancement.create_enchantment_industry.experimental": "Experimentell",
+	"advancement.create_enchantment_industry.experimental.desc": "Erhalte flüßige Erfahrung für deine Zauberei!",
+	"advancement.create_enchantment_industry.gone_with_the_foil": "Weg ist es...",
+	"advancement.create_enchantment_industry.gone_with_the_foil.desc": "Sieh zu, wie ein Item mit dem Entzauberer entzaubert wird.",
+	"advancement.create_enchantment_industry.spirit_taking": "Geistliche Absaugung",
+	"advancement.create_enchantment_industry.spirit_taking.desc": "Transferiere deine Erfahrung mit einem Entzauberer.",
+	"advancement.create_enchantment_industry.a_shower_experience": "Eine lehrreiche Dusche",
+	"advancement.create_enchantment_industry.a_shower_experience.desc": "Zerstöre ein Rohr und dusche in der austretenden Erfahrung.",
+	"advancement.create_enchantment_industry.experienced_recycler": "Erfahrender Wiederverwerter",
+	"advancement.create_enchantment_industry.experienced_recycler.desc": "Recycle 1.000.000 mB Erfahrung mit dem Entzauberer.",
+	"advancement.create_enchantment_industry.blazes_new_job": "Ein loh(e)nenswerter Job",
+	"advancement.create_enchantment_industry.blazes_new_job.desc": "Gib deinem Lohenbrenner einen Verzauberungsleitfaden und verwandle ihn in einen Lohenverzauberer.",
+	"advancement.create_enchantment_industry.first_order": "Erste Bestellung",
+	"advancement.create_enchantment_industry.first_order.desc": "Verzaubere ein Item mit dem Lohenverzauberer.",
+	"advancement.create_enchantment_industry.additional_order": "Zusätzliche Bestellung",
+	"advancement.create_enchantment_industry.additional_order.desc": "Füge mit dem Lohenverzauberer einem bereits verzauberten Item eine weitere Verzauberung hinzu.",
+	"advancement.create_enchantment_industry.hypothetical_extension": "Hypthetische Erweiterung",
+	"advancement.create_enchantment_industry.hypothetical_extension.desc": "Verzaubere ein Item mit der Hyperverzauberung des Lohenverzauberers.",
+
+
+	"_": "->------------------------]  Ponder Content  [------------------------<-",
+
+	"create_enchantment_industry.ponder.tag.experience": "Bezug zur Erfahrung",
+	"create_enchantment_industry.ponder.tag.experience.description": "Items und Komponenten mit Bezug zur Erfahrung",
+
+	"create_enchantment_industry.ponder.absorb_experience_nugget.header": "Umwandlung von Erfahrungsklumpen in Flüßigkeit",
+	"create_enchantment_industry.ponder.absorb_experience_nugget.text_1": "Erfahrungsklumpen können von einem Entzauberer aufgenommen werden.",
+
+	"create_enchantment_industry.ponder.copy.header": "Drucker benutzen",
+	"create_enchantment_industry.ponder.copy.text_1": "Um verzauberte Bücher zu kopieren, wird flüßige Erfahrung benötigt.",
+	"create_enchantment_industry.ponder.copy.text_2": "Um beschriebene Bücher zu kopieren, wird flüßige Tinte benötigt.",
+
+	"create_enchantment_industry.ponder.disenchant.header": "Entzauberung",
+	"create_enchantment_industry.ponder.disenchant.text_1": "Bei allen aufgenommenen Gegenständen werden die Verzauberungen entfernt. Diese werden in flüssige Erfahrung umgewandelt.",
+	"create_enchantment_industry.ponder.disenchant.text_2": "Spieler, die auf dem Entzauberer stehen, verlieren ihre Erfahrungslevel. Die entfernte Erfahrung wird in flüssige Erfahrung umgewandelt.",
+
+	"create_enchantment_industry.ponder.drop_experience_nugget.header": "Vielleicht auch eine Mobfarm?",
+	"create_enchantment_industry.ponder.drop_experience_nugget.text_1": "Erfahrungsklumpen erscheinen, wenn ein Einsatzgerät einen Gegner tötet.",
+
+	"create_enchantment_industry.ponder.enchant.header": "Verzauberung",
+
+	"create_enchantment_industry.ponder.experience_bottle.header": "Umgang mit Verzauberungsfläschchen",
+	"create_enchantment_industry.ponder.experience_bottle.text_1": "Verzauberungsfläschchen können über einem Abfluss entleert werden.",
+	"create_enchantment_industry.ponder.experience_bottle.text_2": "Verzauberungsfläschchen können von einem Ausfluss befüllt werden.",
+
+	"create_enchantment_industry.ponder.hyper_enchant.header": "Hyperverzauberung",
+	"create_enchantment_industry.ponder.hyper_enchant.text_1": "Das ist flüssige Hypererfahrung.",
+	"create_enchantment_industry.ponder.hyper_enchant.text_2": "Die Hyper-Erfahrung kann den Lohenverzauberer in einen brodelnden Zustand versetzen. Die Stufe der in diesem Zustand erzeugten Verzauberung ist eine Stufe höher als die der eingestellten Verzauberung.",
+	"create_enchantment_industry.ponder.hyper_enchant.text_3": "Verzauberungen mit einer Maximalstufe von 1 können in der Hyperverzauberung nicht auf Stufe 2 aufgewertet werden.",
+
+	"create_enchantment_industry.ponder.leak.header": "Oh nein! Es ist undicht!",
+	"create_enchantment_industry.ponder.leak.text_1": "Ich habe einen Tank voller Erfahrung.",
+	"create_enchantment_industry.ponder.leak.text_2": "Ich habe ein Rohr mit offenem Ende.",
+	"create_enchantment_industry.ponder.leak.text_3": "Pfui!",
+	"create_enchantment_industry.ponder.leak.text_4": "Keine Sorge, die ausgelaufene flüssige Erfahrung verwandelt sich in Erfahrungskugeln. Die Spieler können auch an der Öffnung des Rohrs stehen, um Erfahrung zu sammeln.",
+
+	"create_enchantment_industry.ponder.transform.header": "Nutzung des Verzauberungsleitfadens",
+	"create_enchantment_industry.ponder.transform.text_1": "Rechtsklicke beim Schleichen mit einem Verzauberungsleitfaden in der Hand auf den Lohenbrenner, um ihn in einen Lohenverzauberer zu verwandeln. Ist im Verzauberungsleitfaden bereits eine Verzauberung eingestellt, wird diese für den Lohenverzauberer übernommen.",
+	"create_enchantment_industry.ponder.transform.text_2": "Damit der Lohenverzauberer funktioniert, muss eine Verzauberung eingestellt werden. Das Konfigurationsfenster öffnet man mit Schleichen und einem Rechtsklick auf den Lohenverzauberer. Hier legt man ein verzaubertes Buch ein und wählt eine der Verzauberungen aus.",
+	"create_enchantment_industry.ponder.transform.text_3": "Um den Verzauberungsleitfaden zurückzubekommen, klickt man beim Schleichen mit einem Schraubenschlüssel auf den Lohenverzauberer.",
+
+
+	"_": "->------------------------]  Item Descriptions  [------------------------<-",
+
+	"item.create_enchantment_industry.enchanting_guide.tooltip": "VERZAUBERUNGSLEITFADEN TOOLTIPS",
+	"item.create_enchantment_industry.enchanting_guide.tooltip.current_enchantment": "Aktuelle Verzauberung:",
+	"item.create_enchantment_industry.enchanting_guide.tooltip.not_configured": "Nicht konfiguriert",
+
+	"item.create_enchantment_industry.experience_rotor.tooltip": "ERFAHRUNGSROTOR",
+	"item.create_enchantment_industry.experience_rotor.tooltip.summary": "In _Mischrezepten_ verwendet um _Erfahrungsflüssigkeiten_ umzuwandeln.",
+
+
+	"_": "->------------------------]  UI & Messages  [------------------------<-",
+
+	"create_enchantment_industry.gui.enchanting_guide.no_enchantment": "Keine Verzauberung verfügbar",
+	"create_enchantment_industry.gui.goggles.printer": "Zu kopierende Objekte",
+	"create_enchantment_industry.gui.goggles.printer.no_target": "Keine",
+	"create_enchantment_industry.gui.goggles.blaze_enchanter": "Aktive Verzauberung:",
+	"create_enchantment_industry.gui.goggles.blaze_enchanter.invalid_target": "Unzulässiges Ziel",
+	"create_enchantment_industry.gui.goggles.xp_consumption": "Verbrauchte Erfahrung: %s mB",
+	"create_enchantment_industry.gui.goggles.ink_consumption": "Verbrauchte Tinte: %s mB",
+	"create_enchantment_industry.gui.goggles.too_expensive": "Zu teuer!",
+
+	"create_enchantment_industry.generic.unit.page": "Seite",
+	"create_enchantment_industry.generic.unit.pages": "Seiten",
+
+	"recipe.create_enchantment_industry.disenchanting": "Entzauberung",
+
+	"create_enchantment_industry.display_source.blaze_enchanter_source_target_enchantment": "Zielverzauberung",
+
+	"_": "Thank you for translating Create: Enchantment Industry!"
+
+}
