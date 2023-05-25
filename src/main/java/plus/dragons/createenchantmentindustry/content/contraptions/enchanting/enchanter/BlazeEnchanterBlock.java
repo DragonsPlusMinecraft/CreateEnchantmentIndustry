@@ -89,7 +89,14 @@ public class BlazeEnchanterBlock extends HorizontalDirectionalBlock implements I
 
     @Override
     public InteractionResult use(BlockState state, Level worldIn, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hit) {
-        ItemStack heldItem = player.getItemInHand(handIn);
+        ItemStack heldItem;
+
+        if (player.isCreative()) {
+            heldItem = player.getItemInHand(handIn).copy();
+        } else {
+            heldItem = player.getItemInHand(handIn);
+        }
+
         if (!heldItem.isEmpty()){
             return onTileEntityUse(worldIn, pos, te -> {
                 if(heldItem.is(CeiItems.ENCHANTING_GUIDE.get())){
