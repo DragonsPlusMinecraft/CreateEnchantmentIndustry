@@ -90,10 +90,10 @@
 	"create_enchantment_industry.ponder.leak.text_3": "Ugh!",
 	"create_enchantment_industry.ponder.leak.text_4": "Don't worry, the leaked liquid experience will turn into experience orbs. Players can also stand at the opening of the pipe to absorb experience.",
 
-	"create_enchantment_industry.ponder.transform.header": "Using Enchanting Guide",
-	"create_enchantment_industry.ponder.transform.text_1": "Right-click the Blaze Burner with an Enchanting Guide in hand when sneaking to transform it to a Blaze Enchanter.",
-	"create_enchantment_industry.ponder.transform.text_2": "To make Blaze Enchanter work, Enchanting Guide must be configured first. Right-clicking Blaze Enchanter or right-clicking Enchanting Guide in hands can open configuration panel.",
-	"create_enchantment_industry.ponder.transform.text_3": "To retrieve the enchanting guide, right-click the Blaze Enchanter with wrench when sneaking.",
+	"create_enchantment_industry.ponder.transform.header": "Nutzung des Verzauberungsleitfadens",
+	"create_enchantment_industry.ponder.transform.text_1": "Rechtsklicke beim Schleichen mit einem Verzauberungsleitfaden in der Hand auf den Lohenbrenner, um ihn in einen Lohenverzauberer zu verwandeln. Ist im Verzauberungsleitfaden bereits eine Verzauberung eingestellt, wird diese für den Lohenverzauberer übernommen.",
+	"create_enchantment_industry.ponder.transform.text_2": "Damit der Lohenverzauberer funktioniert, muss eine Verzauberung eingestellt werden. Das Konfigurationsfenster öffnet man mit Schleichen und einem Rechtsklick auf den Lohenverzauberer. Hier legt man ein verzaubertes Buch ein und wählt eine der Verzauberungen aus.",
+	"create_enchantment_industry.ponder.transform.text_3": "Um den Verzauberungsleitfaden zurückzubekommen, klickt man beim Schleichen mit einem Schraubenschlüssel auf den Lohenverzauberer.",
 
 
 	"_": "->------------------------]  Item Descriptions  [------------------------<-",
