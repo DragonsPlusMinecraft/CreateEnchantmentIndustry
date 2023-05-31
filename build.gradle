@@ -82,10 +82,6 @@ repositories {
         name 'Tterrag Maven'
         url 'https://maven.tterrag.com/'
     }
-//    maven {
-//        name 'Progwml6 Maven'
-//        url 'https://dvs1.progwml6.com/files/maven'
-//    }
     maven {
         name 'Blamejared Maven'
         url 'https://maven.blamejared.com'
@@ -96,7 +92,7 @@ repositories {
     }
     maven {
         name 'DragonsPlus Maven'
-        url "https://maven.dragons.plus/Releases"
+        url "https://maven.dragons.plus/releases"
     }
 }
 
