@@ -84,7 +84,12 @@ public class BlazeEnchanterBlock extends HorizontalDirectionalBlock implements I
 
     @Override
     public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
-        ITE.onRemove(state,level,pos,newState);
+        // This is only a temporary fix due to a strange bug:
+        // After Mechanical Piston picks up entityblock, level#getBlockEntity should return null,
+        // but for BlazeEnchanterBlock, level#getBlockEntity returns te of it.
+        // So BlazeEnchanterBlockEntity#destory will be called.
+        if(!isMoving) ITE.onRemove(state,level,pos,newState);
+        // ITE.onRemove(state,level,pos,newState);
     }
 
     @Override
