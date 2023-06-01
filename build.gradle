@@ -96,7 +96,7 @@ repositories {
     }
     maven {
         name 'DragonsPlus Maven'
-        url "https://maven.dragons.plus/Releases"
+        url "https://maven.dragons.plus/releases"
     }
 }
 
