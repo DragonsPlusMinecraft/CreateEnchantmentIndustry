@@ -48,6 +48,7 @@ public class CeiBlocks {
     public static final BlockEntry<BlazeEnchanterBlock> BLAZE_ENCHANTER = REGISTRATE
             .block("blaze_enchanter", BlazeEnchanterBlock::new)
             .initialProperties(SharedProperties::softMetal)
+            .properties(p -> p.lightLevel(BlazeEnchanterBlock::getLight))
             .onRegister(assignDataBehaviour(new TargetEnchantmentDisplaySource(), "target_enchantment"))
             .transform(TagGen.pickaxeOnly())
             .blockstate((ctx, pov) -> pov.simpleBlock(ctx.get(), AssetLookup.standardModel(ctx, pov)))
