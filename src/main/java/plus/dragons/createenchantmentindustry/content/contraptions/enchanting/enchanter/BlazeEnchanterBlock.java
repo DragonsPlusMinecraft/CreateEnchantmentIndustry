@@ -200,14 +200,13 @@ public class BlazeEnchanterBlock extends HorizontalDirectionalBlock implements I
         return false;
     }
 
-    @Override
-    public int getLightEmission(BlockState state, BlockGetter level, BlockPos pos) {
-        var te = level.getBlockEntity(pos);
-        if(te instanceof BlazeEnchanterBlockEntity blazeEnchanterBlockEntity){
-            if(blazeEnchanterBlockEntity.hyper()) return 15;
-            else if(blazeEnchanterBlockEntity.internalTank.isEmpty()) return 7;
-            else return 11;
-        } else return 0;
+    public static int getLight(BlockState state) {
+        HeatLevel level = state.getValue(HEAT_LEVEL);
+        return switch (level) {
+            case SEETHING -> 15;
+            case KINDLED -> 11;
+            case SMOULDERING -> 7;
+        };
     }
 
     public enum HeatLevel implements StringRepresentable {
