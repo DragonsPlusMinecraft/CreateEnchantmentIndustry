@@ -25,10 +25,11 @@ public class CeiPonderIndex {
                 .addStoryBoard("hyper_enchant", EnchantmentScenes::hyperEnchant, CeiPonderTag.EXPERIENCE);
 
         HELPER.forComponents(AllItems.EXP_NUGGET)
-                .addStoryBoard("experience_nugget_drop", EnchantmentScenes::dropExperienceNugget, CeiPonderTag.EXPERIENCE)
                 .addStoryBoard("collect_experience_nugget", EnchantmentScenes::handleExperienceNugget, CeiPonderTag.EXPERIENCE)
                 .addStoryBoard("experience_bottle", EnchantmentScenes::handleExperienceBottle, CeiPonderTag.EXPERIENCE)
-                .addStoryBoard("leak", EnchantmentScenes::leak);
+                .addStoryBoard("leak", EnchantmentScenes::leak)
+                .addStoryBoard("experience_nugget_drop", EnchantmentScenes::dropExperienceNugget, CeiPonderTag.EXPERIENCE)
+                .addStoryBoard("crushing_wheel_tweak", EnchantmentScenes::crushingWheelTweak, CeiPonderTag.EXPERIENCE);
     }
 
     public static void registerTags() {

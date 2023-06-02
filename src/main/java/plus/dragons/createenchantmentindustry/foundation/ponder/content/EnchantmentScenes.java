@@ -3,6 +3,7 @@ package plus.dragons.createenchantmentindustry.foundation.ponder.content;
 import com.google.common.collect.Lists;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.AllItems;
+import com.simibubi.create.content.contraptions.components.crusher.CrushingWheelTileEntity;
 import com.simibubi.create.content.contraptions.components.deployer.DeployerTileEntity;
 import com.simibubi.create.content.contraptions.fluids.actors.SpoutTileEntity;
 import com.simibubi.create.content.contraptions.fluids.tank.CreativeFluidTankTileEntity;
@@ -270,6 +271,7 @@ public class EnchantmentScenes {
     public static void dropExperienceNugget(SceneBuilder scene, SceneBuildingUtil util) {
         scene.title("drop_experience_nugget", "Maybe A Exp-farm?");
         scene.configureBasePlate(0, 0, 3);
+        scene.scaleSceneView(1.2f);
         scene.showBasePlate();
         scene.idle(5);
         scene.world.showSection(util.select.fromTo(0, 1, 0, 2, 1, 2), Direction.DOWN);
@@ -332,6 +334,57 @@ public class EnchantmentScenes {
                 .subtract(0, .45, 0), util.vector.of(-0.1, 0, 0), AllItems.EXP_NUGGET.asStack());
         scene.idle(40);
     }
+
+    public static void crushingWheelTweak(SceneBuilder scene, SceneBuildingUtil util) {
+        scene.title("crushing_wheel_tweak", "We call it inefficiency...");
+        scene.configureBasePlate(0, 0, 5);
+        scene.scaleSceneView(.75f);
+        scene.showBasePlate();
+        scene.idle(5);
+        scene.world.showSection(util.select.fromTo(0, 1, 0, 4, 3, 4), Direction.DOWN);
+        Selection crushWheelSelection = util.select.position(util.grid.at(4, 3, 3));
+        scene.world.setKineticSpeed(util.select.everywhere(), 128f);
+        scene.world.setKineticSpeed(crushWheelSelection, -128f);
+
+        scene.addKeyframe();
+        ElementLink<EntityElement> sheep = scene.world.createEntity(w -> {
+            Sheep entity = EntityType.SHEEP.create(w);
+            entity.setColor(DyeColor.PINK);
+            Vec3 p = util.vector.topOf(util.grid.at(4, 3, 2));
+            entity.setPos(p.x, p.y, p.z);
+            entity.xo = p.x;
+            entity.yo = p.y;
+            entity.zo = p.z;
+            entity.animationPosition = 0;
+            entity.yRotO = 210;
+            entity.setYRot(210);
+            entity.yHeadRotO = 210;
+            entity.yHeadRot = 210;
+            return entity;
+        });
+        scene.idle(10);
+        scene.world.modifyEntity(sheep, Entity::discard);
+        scene.effects.emitParticles(util.vector.topOf(util.grid.at(4, 3, 2))
+                        .add(0, -.25, 0),
+                EmitParticlesInstruction.Emitter.withinBlockSpace(new BlockParticleOption(ParticleTypes.BLOCK, Blocks.RED_CONCRETE.defaultBlockState()),
+                        util.vector.centerOf(0, 0, 0)),
+                25, 1);
+        ElementLink<EntityElement> itemEntity = scene.world.createItemEntity(util.vector.blockSurface(util.grid.at(4, 2, 2), Direction.DOWN, 0), util.vector.of(0, 0, 0), new ItemStack(Items.PINK_WOOL));
+        ElementLink<EntityElement> itemEntity2 = scene.world.createItemEntity(util.vector.blockSurface(util.grid.at(4, 2, 2), Direction.DOWN, 0), util.vector.of(0, 0, 0), new ItemStack(AllItems.EXP_NUGGET.get()));
+        scene.idle(13);
+        scene.world.modifyEntity(itemEntity, Entity::discard);
+        scene.world.createItemOnBelt(util.grid.at(4, 1, 2), Direction.DOWN, new ItemStack(Items.PINK_WOOL));
+        scene.idle(3);
+        scene.world.modifyEntity(itemEntity2, Entity::discard);
+        scene.world.createItemOnBelt(util.grid.at(4, 1, 2), Direction.DOWN, new ItemStack(AllItems.EXP_NUGGET.get()));
+        scene.idle(10);
+        scene.overlay.showText(60)
+                .text("The Crushing Wheel has a chance of dropping a very small amount of experience nugget when it kills a creature.")
+                .placeNearTarget()
+                .pointAt(util.vector.topOf(4, 3, 2));
+        scene.idle(60);
+    }
+
 
     public static void handleExperienceBottle(SceneBuilder scene, SceneBuildingUtil util) {
         scene.title("experience_bottle", "Dealing with Bottle o' Enchanting");

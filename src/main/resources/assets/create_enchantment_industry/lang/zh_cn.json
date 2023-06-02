@@ -74,6 +74,9 @@
 	"create_enchantment_industry.ponder.drop_experience_nugget.header": "...经验农场？",
 	"create_enchantment_industry.ponder.drop_experience_nugget.text_1": "机械手杀死生物时将掉落经验颗粒。",
 
+	"create_enchantment_industry.ponder.crushing_wheel_tweak.header": "我们称之为低效...",
+	"create_enchantment_industry.ponder.crushing_wheel_tweak.text_1": "粉碎轮击杀生物时，有概率掉落极少量经验颗粒。",
+
 	"create_enchantment_industry.ponder.enchant.header": "烈焰人附魔室使用",
 
 	"create_enchantment_industry.ponder.experience_bottle.header": "处理附魔之瓶",
