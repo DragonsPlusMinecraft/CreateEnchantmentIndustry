@@ -507,7 +507,7 @@ public class EnchantmentScenes {
         scene.world.createItemOnBelt(copierPos.below(2), Direction.UP, Items.WRITTEN_BOOK.getDefaultInstance());
 
         scene.overlay.showText(40)
-                .text("Name Tag and Train Schedule can also be copied.")
+                .text("")
                 .attachKeyFrame()
                 .placeNearTarget()
                 .pointAt(util.vector.topOf(2, 3, 2));

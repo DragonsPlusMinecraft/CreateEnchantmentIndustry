@@ -1,5 +1,5 @@
 {
-	"_": "Missing Localizations: 0",
+	"_": "Missing Localizations: 1",
 
 	"_": "->------------------------]  Game Elements  [------------------------<-",
 
@@ -71,6 +71,7 @@
 	"recipe.create_enchantment_industry.disenchanting": "Odklinanie",
 
 	"create_enchantment_industry.display_source.blaze_enchanter_source_target_enchantment": "UNLOCALIZED: Target Enchantment",
+	"create_enchantment_industry.display_source.printer_source_copy_content": "UNLOCALIZED: Copy Content",
 
 
 	"_": "->------------------------]  Item Descriptions  [------------------------<-",
@@ -97,10 +98,12 @@
 	"create_enchantment_industry.ponder.transform.text_1": "UNLOCALIZED: Right-click the Blaze Burner with an Enchanting Guide in hand when sneaking to transform it to a Blaze Enchanter.",
 	"create_enchantment_industry.ponder.transform.text_2": "UNLOCALIZED: To make Blaze Enchanter work, Enchanting Guide must be configured first. Right-clicking Blaze Enchanter or right-clicking Enchanting Guide in hands can open configuration panel.",
 	"create_enchantment_industry.ponder.transform.text_3": "UNLOCALIZED: To retrieve the enchanting guide, right-click the Blaze Enchanter with wrench when sneaking.",
+	"create_enchantment_industry.ponder.transform.text_4": "UNLOCALIZED: You can replace the Enchanting Guide by holding it directly in your hand and right-clicking on the Blaze Enchanter.",
 
 	"create_enchantment_industry.ponder.copy.header": "Używanie Kopiarki",
 	"create_enchantment_industry.ponder.copy.text_1": "UNLOCALIZED: Ink is required to duplicate written books.",
 	"create_enchantment_industry.ponder.copy.text_2": "UNLOCALIZED: Ink is required to duplicate written books.",
+	"create_enchantment_industry.ponder.copy.text_3": "UNLOCALIZED: Name Tag and Train Schedule can also be copied.",
 
 	"create_enchantment_industry.ponder.enchant.header": "Zaklinanie",
 
@@ -111,6 +114,9 @@
 
 	"create_enchantment_industry.ponder.drop_experience_nugget.header": "A może farma Expa?",
 	"create_enchantment_industry.ponder.drop_experience_nugget.text_1": "Kiedy mob zostanie pokonany za pomocą aplikatora, ma szansę upuścić zaklęte samorodki",
+
+	"create_enchantment_industry.ponder.crushing_wheel_tweak.header": "UNLOCALIZED: We call it inefficiency...",
+	"create_enchantment_industry.ponder.crushing_wheel_tweak.text_1": "UNLOCALIZED: The Crushing Wheel has a chance of dropping a very small amount of experience nugget when it kills a creature.",
 
 	"create_enchantment_industry.ponder.absorb_experience_nugget.header": "Zamienianie Bryłek Doświadczenia w Ciecz",
 	"create_enchantment_industry.ponder.absorb_experience_nugget.text_1": "Bryłki Doświadczenia mogą zostać zaabsorbowane przez Odklinacz",

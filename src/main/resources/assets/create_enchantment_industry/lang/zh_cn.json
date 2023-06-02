@@ -12,7 +12,6 @@
 
 	"fluid.create_enchantment_industry.experience": "液态经验",
 	"fluid.create_enchantment_industry.hyper_experience": "液态超经验",
-	"fluid.create_enchantment_industry.ink": "墨水",
 
 	"item.create_enchantment_industry.enchanting_guide": "附魔指南",
 	"item.create_enchantment_industry.experience_rotor": "经验转子",
@@ -54,63 +53,6 @@
 	"advancement.create_enchantment_industry.hypothetical_extension.desc": "使用烈焰人燃烧室为物品完成超越附魔",
 
 
-	"_": "->------------------------]  Ponder Content  [------------------------<-",
-
-	"create_enchantment_industry.ponder.tag.experience": "经验值相关",
-	"create_enchantment_industry.ponder.tag.experience.description": "与经验值相关的物品与组件",
-
-	"create_enchantment_industry.ponder.absorb_experience_nugget.header": "融化经验颗粒",
-	"create_enchantment_industry.ponder.absorb_experience_nugget.text_1": "经验颗粒可被祛魔池吸收。",
-
-	"create_enchantment_industry.ponder.copy.header": "复印机使用",
-	"create_enchantment_industry.ponder.copy.text_1": "复印附魔书需要液态经验。",
-	"create_enchantment_industry.ponder.copy.text_2": "复印成书需要墨水。",
-	"create_enchantment_industry.ponder.copy.text_3": "命名牌和列车时刻表同样可以被复印。",
-
-	"create_enchantment_industry.ponder.disenchant.header": "祛魔池使用",
-	"create_enchantment_industry.ponder.disenchant.text_1": "所有接收的物品都将被祛除附魔，被去除的附魔将被折算成液态经验存储。",
-	"create_enchantment_industry.ponder.disenchant.text_2": "站在祛魔池上方的玩家将被快速洗去经验等级，所洗去的经验值将被转换为液态经验存储。",
-
-	"create_enchantment_industry.ponder.drop_experience_nugget.header": "...经验农场？",
-	"create_enchantment_industry.ponder.drop_experience_nugget.text_1": "机械手杀死生物时将掉落经验颗粒。",
-
-	"create_enchantment_industry.ponder.crushing_wheel_tweak.header": "我们称之为低效...",
-	"create_enchantment_industry.ponder.crushing_wheel_tweak.text_1": "粉碎轮击杀生物时，有概率掉落极少量经验颗粒。",
-
-	"create_enchantment_industry.ponder.enchant.header": "烈焰人附魔室使用",
-
-	"create_enchantment_industry.ponder.experience_bottle.header": "处理附魔之瓶",
-	"create_enchantment_industry.ponder.experience_bottle.text_1": "附魔之瓶能在分液池处被排空。",
-	"create_enchantment_industry.ponder.experience_bottle.text_2": "附魔之瓶也能通过注液器制造。",
-
-	"create_enchantment_industry.ponder.hyper_enchant.header": "超越附魔",
-	"create_enchantment_industry.ponder.hyper_enchant.text_1": "这是一罐液态超经验。",
-	"create_enchantment_industry.ponder.hyper_enchant.text_2": "超经验可以让烈焰人附魔室进入超级燃烧状态，此状态下产出的附魔的等级将比设定附魔高出一个等级。",
-	"create_enchantment_industry.ponder.hyper_enchant.text_3": "最大附魔等级为1的附魔无法在超越附魔中被附魔为等级2。",
-
-	"create_enchantment_industry.ponder.leak.header": "噢不！漏出来了！",
-	"create_enchantment_industry.ponder.leak.text_1": "I have a tank full of experience",
-	"create_enchantment_industry.ponder.leak.text_2": "I have an open-ended pipe",
-	"create_enchantment_industry.ponder.leak.text_3": "Ugh!",
-	"create_enchantment_industry.ponder.leak.text_4": "不用担心，泄露的液态经验会变为经验球。玩家也可以站在管道开口处吸收经验。",
-
-	"create_enchantment_industry.ponder.transform.header": "使用附魔指南",
-	"create_enchantment_industry.ponder.transform.text_1": "手持附魔指南潜行右键烈焰人燃烧室将其转化为烈焰人附魔室。",
-	"create_enchantment_industry.ponder.transform.text_2": "要使烈焰人附魔室正常工作，应首先配置好附魔指南。右键附魔指南或右击烈焰人附魔室都可打开配置面板。",
-	"create_enchantment_industry.ponder.transform.text_3": "如需取回附魔指南，请持扳手潜行右键烈焰人附魔室。",
-	"create_enchantment_industry.ponder.transform.text_4": "你可以直接手持附魔指南右键烈焰人附魔室来进行附魔指南的替换。",
-
-
-	"_": "->------------------------]  Item Descriptions  [------------------------<-",
-
-	"item.create_enchantment_industry.enchanting_guide.tooltip": "ENCHANTING GUIDE TOOLTIPS",
-	"item.create_enchantment_industry.enchanting_guide.tooltip.current_enchantment": "当前附魔：",
-	"item.create_enchantment_industry.enchanting_guide.tooltip.not_configured": "未设定",
-
-	"item.create_enchantment_industry.experience_rotor.tooltip": "EXPERIENCE ROTOR",
-	"item.create_enchantment_industry.experience_rotor.tooltip.summary": "在_搅拌配方_中用于转换_经验流体_",
-
-
 	"_": "->------------------------]  UI & Messages  [------------------------<-",
 
 	"create_enchantment_industry.gui.enchanting_guide.no_enchantment": "无可用附魔",
@@ -129,6 +71,62 @@
 
 	"create_enchantment_industry.display_source.blaze_enchanter_source_target_enchantment": "目标附魔",
 	"create_enchantment_industry.display_source.printer_source_copy_content": "复印目标",
+
+
+	"_": "->------------------------]  Item Descriptions  [------------------------<-",
+
+	"item.create_enchantment_industry.enchanting_guide.tooltip": "ENCHANTING GUIDE TOOLTIPS",
+	"item.create_enchantment_industry.enchanting_guide.tooltip.current_enchantment": "当前附魔：",
+	"item.create_enchantment_industry.enchanting_guide.tooltip.not_configured": "未设定",
+
+	"item.create_enchantment_industry.experience_rotor.tooltip": "EXPERIENCE ROTOR",
+	"item.create_enchantment_industry.experience_rotor.tooltip.summary": "在_搅拌配方_中用于转换_经验流体_",
+
+
+	"_": "->------------------------]  Ponder Content  [------------------------<-",
+
+	"create_enchantment_industry.ponder.disenchant.header": "祛魔池使用",
+	"create_enchantment_industry.ponder.disenchant.text_1": "所有接收的物品都将被祛除附魔，被去除的附魔将被折算成液态经验存储。",
+	"create_enchantment_industry.ponder.disenchant.text_2": "站在祛魔池上方的玩家将被快速洗去经验等级，所洗去的经验值将被转换为液态经验存储。",
+
+	"create_enchantment_industry.ponder.experience_bottle.header": "处理附魔之瓶",
+	"create_enchantment_industry.ponder.experience_bottle.text_1": "附魔之瓶能在分液池处被排空。",
+	"create_enchantment_industry.ponder.experience_bottle.text_2": "附魔之瓶也能通过注液器制造。",
+
+	"create_enchantment_industry.ponder.transform.header": "使用附魔指南",
+	"create_enchantment_industry.ponder.transform.text_1": "手持附魔指南潜行右键烈焰人燃烧室将其转化为烈焰人附魔室。",
+	"create_enchantment_industry.ponder.transform.text_2": "要使烈焰人附魔室正常工作，应首先配置好附魔指南。右键附魔指南或右击烈焰人附魔室都可打开配置面板。",
+	"create_enchantment_industry.ponder.transform.text_3": "如需取回附魔指南，请持扳手潜行右键烈焰人附魔室。",
+	"create_enchantment_industry.ponder.transform.text_4": "你可以直接手持附魔指南右键烈焰人附魔室来进行附魔指南的替换。",
+
+	"create_enchantment_industry.ponder.copy.header": "复印机使用",
+	"create_enchantment_industry.ponder.copy.text_1": "复印附魔书需要液态经验。",
+	"create_enchantment_industry.ponder.copy.text_2": "复印成书需要墨水。",
+	"create_enchantment_industry.ponder.copy.text_3": "命名牌和列车时刻表同样可以被复印。",
+
+	"create_enchantment_industry.ponder.enchant.header": "烈焰人附魔室使用",
+
+	"create_enchantment_industry.ponder.hyper_enchant.header": "超越附魔",
+	"create_enchantment_industry.ponder.hyper_enchant.text_1": "这是一罐液态超经验。",
+	"create_enchantment_industry.ponder.hyper_enchant.text_2": "超经验可以让烈焰人附魔室进入超级燃烧状态，此状态下产出的附魔的等级将比设定附魔高出一个等级。",
+	"create_enchantment_industry.ponder.hyper_enchant.text_3": "最大附魔等级为1的附魔无法在超越附魔中被附魔为等级2。",
+
+	"create_enchantment_industry.ponder.drop_experience_nugget.header": "...经验农场？",
+	"create_enchantment_industry.ponder.drop_experience_nugget.text_1": "机械手杀死生物时将掉落经验颗粒。",
+
+	"create_enchantment_industry.ponder.crushing_wheel_tweak.header": "我们称之为低效...",
+	"create_enchantment_industry.ponder.crushing_wheel_tweak.text_1": "粉碎轮击杀生物时，有概率掉落极少量经验颗粒。",
+
+	"create_enchantment_industry.ponder.absorb_experience_nugget.header": "融化经验颗粒",
+	"create_enchantment_industry.ponder.absorb_experience_nugget.text_1": "经验颗粒可被祛魔池吸收。",
+
+	"create_enchantment_industry.ponder.leak.header": "噢不！漏出来了！",
+	"create_enchantment_industry.ponder.leak.text_1": "I have a tank full of experience",
+	"create_enchantment_industry.ponder.leak.text_2": "I have an open-ended pipe",
+	"create_enchantment_industry.ponder.leak.text_3": "Ugh!",
+	"create_enchantment_industry.ponder.leak.text_4": "不用担心，泄露的液态经验会变为经验球。玩家也可以站在管道开口处吸收经验。",
+	"create_enchantment_industry.ponder.tag.experience": "经验值相关",
+	"create_enchantment_industry.ponder.tag.experience.description": "与经验值相关的物品与组件",
 
 	"_": "Thank you for translating Create: Enchantment Industry!"
 
