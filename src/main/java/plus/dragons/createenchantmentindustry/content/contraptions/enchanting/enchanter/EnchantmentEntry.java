@@ -69,8 +69,8 @@ public class EnchantmentEntry extends Pair<Enchantment, Integer> {
 
             if (holder.is(HYPER_ENCHANTABLE_BLACKLIST)) {
                 return level <= maxLevel;
-            } else if (enchantment.getMaxLevel() == 1 && level > 1) {
-                return holder.is(HYPER_ENCHANTABLE);
+            } else if (maxLevel == 1 && level > 1) {
+                return holder.is(HYPER_ENCHANTABLE) && CeiConfigs.SERVER.enableHyperEnchant.get() && level <= maxLevel + CeiConfigs.SERVER.maxHyperEnchantingLevelExtension.get();
             }
         }
 
