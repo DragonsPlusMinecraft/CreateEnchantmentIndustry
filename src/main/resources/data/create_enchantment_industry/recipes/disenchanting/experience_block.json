@@ -1,0 +1,14 @@
+{
+  "type": "create_enchantment_industry:disenchanting",
+  "ingredients": [
+    {
+      "item": "create:experience_block"
+    }
+  ],
+  "results": [
+    {
+      "fluid": "create_enchantment_industry:experience",
+      "amount": 27
+    }
+  ]
+}
