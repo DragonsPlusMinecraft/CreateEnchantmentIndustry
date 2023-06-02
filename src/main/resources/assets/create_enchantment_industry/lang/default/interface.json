@@ -13,5 +13,6 @@
 
   "recipe.create_enchantment_industry.disenchanting": "Disenchanting",
 
-  "create_enchantment_industry.display_source.blaze_enchanter_source_target_enchantment": "Target Enchantment"
+  "create_enchantment_industry.display_source.blaze_enchanter_source_target_enchantment": "Target Enchantment",
+  "create_enchantment_industry.display_source.printer_source_copy_content": "Copy Content"
 }

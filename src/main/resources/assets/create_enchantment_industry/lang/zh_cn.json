@@ -124,6 +124,7 @@
 	"recipe.create_enchantment_industry.disenchanting": "祛魔",
 
 	"create_enchantment_industry.display_source.blaze_enchanter_source_target_enchantment": "目标附魔",
+	"create_enchantment_industry.display_source.printer_source_copy_content": "复印目标",
 
 	"_": "Thank you for translating Create: Enchantment Industry!"
 
