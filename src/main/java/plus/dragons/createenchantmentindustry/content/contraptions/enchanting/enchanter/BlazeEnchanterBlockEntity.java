@@ -1,13 +1,12 @@
 package plus.dragons.createenchantmentindustry.content.contraptions.enchanting.enchanter;
 
-import com.simibubi.create.AllBlocks;
-import com.simibubi.create.content.contraptions.goggles.IHaveGoggleInformation;
-import com.simibubi.create.content.contraptions.relays.belt.transport.TransportedItemStack;
-import com.simibubi.create.content.schematics.ItemRequirement;
-import com.simibubi.create.foundation.tileEntity.SmartTileEntity;
-import com.simibubi.create.foundation.tileEntity.TileEntityBehaviour;
-import com.simibubi.create.foundation.tileEntity.behaviour.belt.DirectBeltInputBehaviour;
-import com.simibubi.create.foundation.tileEntity.behaviour.fluid.SmartFluidTankBehaviour;
+import com.simibubi.create.content.equipment.goggles.IHaveGoggleInformation;
+import com.simibubi.create.content.kinetics.belt.behaviour.DirectBeltInputBehaviour;
+import com.simibubi.create.content.kinetics.belt.transport.TransportedItemStack;
+import com.simibubi.create.content.schematics.requirement.ItemRequirement;
+import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
+import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
+import com.simibubi.create.foundation.blockEntity.behaviour.fluid.SmartFluidTankBehaviour;
 import com.simibubi.create.foundation.utility.*;
 import com.simibubi.create.foundation.utility.animation.LerpedFloat;
 import net.minecraft.ChatFormatting;
@@ -56,7 +55,7 @@ import java.util.*;
 
 import static plus.dragons.createenchantmentindustry.EnchantmentIndustry.LANG;
 
-public class BlazeEnchanterBlockEntity extends SmartTileEntity implements IHaveGoggleInformation, MenuProvider {
+public class BlazeEnchanterBlockEntity extends SmartBlockEntity implements IHaveGoggleInformation, MenuProvider {
 
     public static final int ENCHANTING_TIME = 200;
     SmartFluidTankBehaviour internalTank;
@@ -92,7 +91,7 @@ public class BlazeEnchanterBlockEntity extends SmartTileEntity implements IHaveG
 
     @Override
     @SuppressWarnings("deprecation") //Fluid Tags are still useful for mod interaction
-    public void addBehaviours(List<TileEntityBehaviour> behaviours) {
+    public void addBehaviours(List<BlockEntityBehaviour> behaviours) {
         behaviours.add(new DirectBeltInputBehaviour(this).allowingBeltFunnels()
                 .setInsertionHandler(this::tryInsertingFromSide));
         behaviours.add(internalTank = FilteringFluidTankBehaviour
@@ -179,7 +178,7 @@ public class BlazeEnchanterBlockEntity extends SmartTileEntity implements IHaveG
 
             BlockPos nextPosition = worldPosition.relative(side);
             DirectBeltInputBehaviour directBeltInputBehaviour =
-                    TileEntityBehaviour.get(level, nextPosition, DirectBeltInputBehaviour.TYPE);
+                    BlockEntityBehaviour.get(level, nextPosition, DirectBeltInputBehaviour.TYPE);
             if (directBeltInputBehaviour == null) {
                 if (!BlockHelper.hasBlockSolidSide(level.getBlockState(nextPosition), level, nextPosition,
                         side.getOpposite())) {

@@ -10,11 +10,11 @@
     "FillingBySpoutMixin",
     "FluidTankBlockMixin",
     "ItemDrainBlockMixin",
-    "ItemDrainTileEntityAccessor",
+    "ItemDrainBlockEntityAccessor",
     "OpenEndedPipeInvoker",
     "OpenEndFluidHandlerMixin",
     "SpoutBlockMixin",
-    "SpoutTileEntityAccessor",
+    "SpoutBlockEntityAccessor",
     "TankSegmentAccessor"
   ],
   "client": [

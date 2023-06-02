@@ -1,7 +1,7 @@
 package plus.dragons.createenchantmentindustry;
 
 import com.simibubi.create.AllItems;
-import com.simibubi.create.content.contraptions.components.crusher.CrushingWheelTileEntity;
+import com.simibubi.create.content.kinetics.crusher.CrushingWheelBlockEntity;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
@@ -105,7 +105,7 @@ public class EnchantmentIndustry {
 
     @SuppressWarnings("all")
     public static void appendExpDropOnCrushingWheelKill(LivingDropsEvent event){
-        if (event.getSource() != CrushingWheelTileEntity.DAMAGE_SOURCE)
+        if (event.getSource() != CrushingWheelBlockEntity.DAMAGE_SOURCE)
             return;
         if(event.getDrops().isEmpty()) return;
         if(Math.random()<CeiConfigs.SERVER.crushingWheelDropExpRate.get()){

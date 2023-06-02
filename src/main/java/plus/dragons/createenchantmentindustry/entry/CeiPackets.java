@@ -6,8 +6,8 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.network.NetworkDirection;
-import net.minecraftforge.network.NetworkEvent;
 import net.minecraftforge.network.NetworkRegistry;
+import net.minecraftforge.network.NetworkEvent.Context;
 import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.network.simple.SimpleChannel;
 import plus.dragons.createenchantmentindustry.EnchantmentIndustry;
@@ -59,14 +59,19 @@ public enum CeiPackets {
 
         private BiConsumer<T, FriendlyByteBuf> encoder;
         private Function<FriendlyByteBuf, T> decoder;
-        private BiConsumer<T, Supplier<NetworkEvent.Context>> handler;
+        private BiConsumer<T, Supplier<Context>> handler;
         private Class<T> type;
         private NetworkDirection direction;
 
         private LoadedPacket(Class<T> type, Function<FriendlyByteBuf, T> factory, NetworkDirection direction) {
             encoder = T::write;
             decoder = factory;
-            handler = T::handle;
+            handler = (packet, contextSupplier) -> {
+                Context context = contextSupplier.get();
+                if (packet.handle(context)) {
+                    context.setPacketHandled(true);
+                }
+            };
             this.type = type;
             this.direction = direction;
         }

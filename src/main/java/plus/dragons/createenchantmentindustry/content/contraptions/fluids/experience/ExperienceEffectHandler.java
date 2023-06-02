@@ -1,6 +1,6 @@
 package plus.dragons.createenchantmentindustry.content.contraptions.fluids.experience;
 
-import com.simibubi.create.content.contraptions.fluids.OpenEndedPipe;
+import com.simibubi.create.content.fluids.OpenEndedPipe;
 import com.simibubi.create.foundation.utility.VecHelper;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;

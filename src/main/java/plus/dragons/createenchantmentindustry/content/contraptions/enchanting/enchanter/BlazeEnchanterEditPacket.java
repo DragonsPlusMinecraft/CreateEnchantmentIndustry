@@ -6,9 +6,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.network.NetworkEvent;
-
-import java.util.function.Supplier;
+import net.minecraftforge.network.NetworkEvent.Context;
 
 public class BlazeEnchanterEditPacket extends SimplePacketBase {
 
@@ -37,12 +35,10 @@ public class BlazeEnchanterEditPacket extends SimplePacketBase {
     }
 
     @Override
-    public void handle(Supplier<NetworkEvent.Context> context) {
-        context.get()
-                .enqueueWork(() -> {
+    public boolean handle(Context context) {
+        context.enqueueWork(() -> {
 
-                    ServerPlayer sender = context.get()
-                            .getSender();
+                    ServerPlayer sender = context.getSender();
                     if(!(sender.level.getBlockEntity(blockPos) instanceof BlazeEnchanterBlockEntity blazeEnchanter))
                         return;
 
@@ -57,7 +53,8 @@ public class BlazeEnchanterEditPacket extends SimplePacketBase {
 
                     blazeEnchanter.notifyUpdate();
                 });
-        context.get()
-                .setPacketHandled(true);
+        context.setPacketHandled(true);
+
+        return context.getPacketHandled();
     }
 }

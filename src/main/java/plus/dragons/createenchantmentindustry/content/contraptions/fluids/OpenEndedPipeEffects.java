@@ -1,6 +1,6 @@
 package plus.dragons.createenchantmentindustry.content.contraptions.fluids;
 
-import com.simibubi.create.content.contraptions.fluids.OpenEndedPipe;
+import com.simibubi.create.content.fluids.OpenEndedPipe;
 import plus.dragons.createenchantmentindustry.content.contraptions.fluids.experience.ExperienceEffectHandler;
 
 public class OpenEndedPipeEffects {

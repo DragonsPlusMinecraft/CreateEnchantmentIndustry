@@ -1,11 +1,7 @@
 package plus.dragons.createenchantmentindustry.entry;
 
 import com.google.common.collect.ImmutableMap;
-import com.simibubi.create.AllBlocks;
-import com.simibubi.create.AllFluids;
-import com.simibubi.create.AllItems;
-import com.simibubi.create.Create;
-import com.simibubi.create.content.AllSections;
+import com.simibubi.create.*;
 import com.tterrag.registrate.util.entry.ItemEntry;
 import com.tterrag.registrate.util.entry.ItemProviderEntry;
 import net.minecraft.resources.ResourceLocation;
@@ -23,16 +19,12 @@ import static plus.dragons.createenchantmentindustry.EnchantmentIndustry.REGISTR
 public class CeiItems {
     
     static {
-        REGISTRATE.creativeModeTab(() -> Create.BASE_CREATIVE_TAB).startSection(AllSections.KINETICS);
+        Create.REGISTRATE.creativeModeTab(() -> AllCreativeModeTabs.BASE_CREATIVE_TAB);
     }
 
     public static final ItemEntry<EnchantingGuideItem> ENCHANTING_GUIDE = REGISTRATE.item("enchanting_guide", EnchantingGuideItem::new)
             .properties(prop -> prop.stacksTo(1))
             .register();
-
-    static {
-        REGISTRATE.startSection(AllSections.MATERIALS);
-    }
 
     public static final ItemEntry<HyperExperienceBottleItem> HYPER_EXP_BOTTLE = REGISTRATE.item("hyper_experience_bottle", HyperExperienceBottleItem::new)
             .properties(prop -> prop.rarity(Rarity.RARE))
@@ -44,7 +36,7 @@ public class CeiItems {
             .register();
 
     public static void fillCreateItemGroup(FillCreateItemGroupEvent event) {
-        if (event.getItemGroup() == Create.BASE_CREATIVE_TAB) {
+        if (event.getItemGroup() == AllCreativeModeTabs.BASE_CREATIVE_TAB) {
             event.addInsertion(AllBlocks.ITEM_DRAIN.get(), CeiBlocks.DISENCHANTER.asStack());
             event.addInsertion(AllBlocks.SPOUT.get(), CeiBlocks.PRINTER.asStack());
             event.addInsertion(AllBlocks.BLAZE_BURNER.get(), ENCHANTING_GUIDE.asStack());

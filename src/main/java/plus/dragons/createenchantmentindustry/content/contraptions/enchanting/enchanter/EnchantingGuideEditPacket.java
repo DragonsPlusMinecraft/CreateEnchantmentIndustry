@@ -5,10 +5,8 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.network.NetworkEvent;
+import net.minecraftforge.network.NetworkEvent.Context;
 import plus.dragons.createenchantmentindustry.entry.CeiItems;
-
-import java.util.function.Supplier;
 
 public class EnchantingGuideEditPacket extends SimplePacketBase {
 
@@ -33,11 +31,9 @@ public class EnchantingGuideEditPacket extends SimplePacketBase {
     }
 
     @Override
-    public void handle(Supplier<NetworkEvent.Context> context) {
-        context.get()
-                .enqueueWork(() -> {
-                    ServerPlayer sender = context.get()
-                            .getSender();
+    public boolean handle(Context context) {
+        context.enqueueWork(() -> {
+                    ServerPlayer sender = context.getSender();
                     ItemStack mainHandItem = sender.getMainHandItem();
                     if (!CeiItems.ENCHANTING_GUIDE.isIn(mainHandItem))
                         return;
@@ -49,7 +45,8 @@ public class EnchantingGuideEditPacket extends SimplePacketBase {
                     sender.getCooldowns()
                             .addCooldown(mainHandItem.getItem(), 5);
                 });
-        context.get()
-                .setPacketHandled(true);
+        context.setPacketHandled(true);
+
+        return context.getPacketHandled();
     }
 }

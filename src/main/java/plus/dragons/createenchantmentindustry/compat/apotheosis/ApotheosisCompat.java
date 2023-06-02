@@ -1,10 +1,10 @@
 package plus.dragons.createenchantmentindustry.compat.apotheosis;
 
-import com.simibubi.create.content.contraptions.components.mixer.MixingRecipe;
-import com.simibubi.create.content.contraptions.fluids.potion.PotionFluidHandler;
-import com.simibubi.create.content.contraptions.fluids.recipe.PotionMixingRecipes;
-import com.simibubi.create.content.contraptions.processing.HeatCondition;
-import com.simibubi.create.content.contraptions.processing.ProcessingRecipeBuilder;
+import com.simibubi.create.content.fluids.potion.PotionFluidHandler;
+import com.simibubi.create.content.fluids.potion.PotionMixingRecipes;
+import com.simibubi.create.content.kinetics.mixer.MixingRecipe;
+import com.simibubi.create.content.processing.recipe.HeatCondition;
+import com.simibubi.create.content.processing.recipe.ProcessingRecipeBuilder;
 import com.simibubi.create.foundation.fluid.FluidIngredient;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;

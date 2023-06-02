@@ -1,14 +1,13 @@
 package plus.dragons.createenchantmentindustry.content.contraptions.enchanting.printer;
 
-import com.simibubi.create.content.contraptions.goggles.IHaveGoggleInformation;
-import com.simibubi.create.content.contraptions.relays.belt.transport.TransportedItemStack;
-import com.simibubi.create.content.schematics.ItemRequirement;
+import com.simibubi.create.content.equipment.goggles.IHaveGoggleInformation;
+import com.simibubi.create.content.kinetics.belt.behaviour.BeltProcessingBehaviour;
+import com.simibubi.create.content.kinetics.belt.behaviour.TransportedItemStackHandlerBehaviour;
+import com.simibubi.create.content.kinetics.belt.transport.TransportedItemStack;
 import com.simibubi.create.foundation.advancement.AdvancementBehaviour;
-import com.simibubi.create.foundation.tileEntity.SmartTileEntity;
-import com.simibubi.create.foundation.tileEntity.TileEntityBehaviour;
-import com.simibubi.create.foundation.tileEntity.behaviour.belt.BeltProcessingBehaviour;
-import com.simibubi.create.foundation.tileEntity.behaviour.belt.TransportedItemStackHandlerBehaviour;
-import com.simibubi.create.foundation.tileEntity.behaviour.fluid.SmartFluidTankBehaviour;
+import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
+import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
+import com.simibubi.create.foundation.blockEntity.behaviour.fluid.SmartFluidTankBehaviour;
 import com.simibubi.create.foundation.utility.VecHelper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
@@ -46,11 +45,11 @@ import plus.dragons.createenchantmentindustry.foundation.config.CeiConfigs;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.simibubi.create.foundation.tileEntity.behaviour.belt.BeltProcessingBehaviour.ProcessingResult.HOLD;
-import static com.simibubi.create.foundation.tileEntity.behaviour.belt.BeltProcessingBehaviour.ProcessingResult.PASS;
+import static com.simibubi.create.content.kinetics.belt.behaviour.BeltProcessingBehaviour.ProcessingResult.HOLD;
+import static com.simibubi.create.content.kinetics.belt.behaviour.BeltProcessingBehaviour.ProcessingResult.PASS;
 import static plus.dragons.createenchantmentindustry.EnchantmentIndustry.LANG;
 
-public class PrinterBlockEntity extends SmartTileEntity implements IHaveGoggleInformation {
+public class PrinterBlockEntity extends SmartBlockEntity implements IHaveGoggleInformation {
 
     public static final int COPYING_TIME = 100;
     protected BeltProcessingBehaviour beltProcessing;
@@ -71,7 +70,7 @@ public class PrinterBlockEntity extends SmartTileEntity implements IHaveGoggleIn
 
     @Override
     @SuppressWarnings("deprecation") //Fluid Tags are still useful for mod interaction
-    public void addBehaviours(List<TileEntityBehaviour> behaviours) {
+    public void addBehaviours(List<BlockEntityBehaviour> behaviours) {
         behaviours.add(tank = FilteringFluidTankBehaviour
             .single(fluidStack -> fluidStack.getFluid().is(CeiTags.FluidTag.PRINTER_INPUT.tag),
                 this, CeiConfigs.SERVER.copierTankCapacity.get()));
@@ -109,7 +108,7 @@ public class PrinterBlockEntity extends SmartTileEntity implements IHaveGoggleIn
 
     protected BeltProcessingBehaviour.ProcessingResult onItemReceived(TransportedItemStack transported,
                                                                       TransportedItemStackHandlerBehaviour handler) {
-        if (handler.tileEntity.isVirtual())
+        if (handler.blockEntity.isVirtual())
             return PASS;
         if (tooExpensive || copyTarget == null)
             return PASS;
