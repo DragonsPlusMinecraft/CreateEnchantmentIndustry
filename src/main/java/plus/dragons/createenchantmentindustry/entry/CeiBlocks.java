@@ -18,6 +18,7 @@ import plus.dragons.createenchantmentindustry.content.contraptions.enchanting.en
 import plus.dragons.createenchantmentindustry.content.contraptions.enchanting.printer.PrinterBlock;
 import plus.dragons.createenchantmentindustry.content.contraptions.enchanting.disenchanter.DisenchanterBlock;
 import plus.dragons.createenchantmentindustry.content.contraptions.enchanting.enchanter.BlazeEnchanterBlock;
+import plus.dragons.createenchantmentindustry.content.contraptions.enchanting.printer.PrinterDisplaySource;
 
 import static com.simibubi.create.content.logistics.block.display.AllDisplayBehaviours.assignDataBehaviour;
 
@@ -39,6 +40,7 @@ public class CeiBlocks {
     public static final BlockEntry<PrinterBlock> PRINTER = REGISTRATE
             .block("printer", PrinterBlock::new)
             .initialProperties(SharedProperties::copperMetal)
+            .onRegister(assignDataBehaviour(new PrinterDisplaySource(), "copy_content"))
             .addLayer(() -> RenderType::cutoutMipped)
             .transform(CeiTags.pickaxeOnly())
             .blockstate((ctx, pov) -> pov.simpleBlock(ctx.get(), AssetLookup.partialBaseModel(ctx, pov)))
