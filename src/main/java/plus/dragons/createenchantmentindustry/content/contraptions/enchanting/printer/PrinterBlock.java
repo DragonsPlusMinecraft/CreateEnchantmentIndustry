@@ -26,7 +26,6 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
-import plus.dragons.createenchantmentindustry.content.contraptions.fluids.experience.ExperienceFluid;
 import plus.dragons.createenchantmentindustry.entry.CeiBlockEntities;
 import plus.dragons.createenchantmentindustry.entry.CeiBlocks;
 import plus.dragons.createenchantmentindustry.foundation.config.CeiConfigs;
@@ -93,7 +92,7 @@ public class PrinterBlock extends Block implements IWrenchable, IBE<PrinterBlock
                 return InteractionResult.SUCCESS;
             });
         } else if (heldItem.is(Items.NAME_TAG) || heldItem.is(AllItems.SCHEDULE.get())) {
-            return onTileEntityUse(world, pos, be -> {
+            return onBlockEntityUse(world, pos, be -> {
                 var copy = heldItem.copy();
                 copy.setCount(1);
                 if (be.copyTarget == null) {

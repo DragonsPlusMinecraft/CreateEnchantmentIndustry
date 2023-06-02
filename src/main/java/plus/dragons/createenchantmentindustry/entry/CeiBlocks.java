@@ -25,7 +25,6 @@ import static plus.dragons.createenchantmentindustry.EnchantmentIndustry.REGISTR
 public class CeiBlocks {
     
     static {
-        // TODO
         Create.REGISTRATE.creativeModeTab(() -> AllCreativeModeTabs.BASE_CREATIVE_TAB);
     }
 
