@@ -45,21 +45,6 @@ public class CeiItems {
             event.addInsertion(AllFluids.CHOCOLATE.get().getBucket(), HYPER_EXP_BOTTLE.asStack());
         }
     }
-    
-    public static void remap(MissingMappingsEvent event) {
-        var mappings = event.getMappings(ForgeRegistries.Keys.ITEMS, EnchantmentIndustry.ID);
-        var remaps = ImmutableMap.<ResourceLocation, ItemProviderEntry<?>>builder()
-            .put(EnchantmentIndustry.genRL("copier"), CeiBlocks.PRINTER)
-            .build();
-        for (var mapping : mappings) {
-            var key = mapping.getKey();
-            var remap = remaps.get(key);
-            if (remap != null) {
-                mapping.remap(remap.get().asItem());
-                EnchantmentIndustry.LOGGER.warn("Remapping item [{}] to [{}]...", key, remap.getId());
-            }
-        }
-    }
 
     public static void register() {}
     

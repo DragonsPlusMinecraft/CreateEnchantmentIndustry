@@ -80,9 +80,6 @@ public class EnchantmentIndustry {
     }
 
     private void registerForgeEvents(IEventBus forgeEventBus) {
-        forgeEventBus.addListener(CeiBlockEntities::remap);
-        forgeEventBus.addListener(CeiBlocks::remap);
-        forgeEventBus.addListener(CeiItems::remap);
         forgeEventBus.addListener(CeiItems::fillCreateItemGroup);
         forgeEventBus.addListener(CeiFluids::handleInkEffect);
         forgeEventBus.addListener(EnchantmentIndustry::appendExpDropOnCrushingWheelKill);
