@@ -2,7 +2,6 @@ package plus.dragons.createenchantmentindustry.content.contraptions.enchanting.p
 
 import com.simibubi.create.content.contraptions.goggles.IHaveGoggleInformation;
 import com.simibubi.create.content.contraptions.relays.belt.transport.TransportedItemStack;
-import com.simibubi.create.content.schematics.ItemRequirement;
 import com.simibubi.create.foundation.advancement.AdvancementBehaviour;
 import com.simibubi.create.foundation.tileEntity.SmartTileEntity;
 import com.simibubi.create.foundation.tileEntity.TileEntityBehaviour;
@@ -18,6 +17,7 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -92,9 +92,9 @@ public class PrinterBlockEntity extends SmartTileEntity implements IHaveGoggleIn
             processingTicks--;
         }
     }
-    
+
     protected static int ENCHANT_PARTICLE_COUNT = 20;
-    
+
     protected void spawnParticles() {
         if (isVirtual())
             return;
@@ -115,7 +115,7 @@ public class PrinterBlockEntity extends SmartTileEntity implements IHaveGoggleIn
             return PASS;
         if (tooExpensive || copyTarget == null)
             return PASS;
-        if (!CopyingBook.valid(transported.stack))
+        if (!CopyingBook.valid(copyTarget,transported.stack))
             return PASS;
         if (tank.isEmpty() || CopyingBook.isCorrectInk(copyTarget, getCurrentFluidInTank()))
             return HOLD;
@@ -130,7 +130,7 @@ public class PrinterBlockEntity extends SmartTileEntity implements IHaveGoggleIn
             return HOLD;
         if (tooExpensive || copyTarget == null)
             return PASS;
-        if (!CopyingBook.valid(transported.stack))
+        if (!CopyingBook.valid(copyTarget,transported.stack))
             return PASS;
         if (tank.isEmpty() || !CopyingBook.isCorrectInk(copyTarget, getCurrentFluidInTank()))
             return HOLD;
@@ -259,7 +259,7 @@ public class PrinterBlockEntity extends SmartTileEntity implements IHaveGoggleIn
     @Override
     public boolean addToGoggleTooltip(List<Component> tooltip, boolean isPlayerSneaking) {
         CeiLang.translate("gui.goggles.printer").forGoggles(tooltip);
-        if (copyTarget == null || (!copyTarget.is(Items.WRITTEN_BOOK) && !copyTarget.is(Items.ENCHANTED_BOOK))) {
+        if (copyTarget == null) {
             CeiLang.translate("gui.goggles.printer.no_target")
                     .style(ChatFormatting.GRAY)
                     .forGoggles(tooltip, 1);
@@ -302,6 +302,36 @@ public class PrinterBlockEntity extends SmartTileEntity implements IHaveGoggleIn
                     Component name = e.getKey().getFullname(e.getValue());
                     tooltip.add(new TextComponent("     ").append(name).withStyle(name.getStyle()));
                 }
+            } else if (copyTarget.is(Items.NAME_TAG)) {
+                var b = CeiLang.builder()
+                        .add(new TranslatableComponent(copyTarget.getDescriptionId()).withStyle(ChatFormatting.LIGHT_PURPLE))
+                        .text(ChatFormatting.GREEN, " / ")
+                        .add(CeiLang.itemName(copyTarget)
+                                .style(ChatFormatting.GREEN));
+                b.forGoggles(tooltip, 1);
+                boolean tooExpensive = CopyingBook.isTooExpensive(copyTarget, CeiConfigs.SERVER.copierTankCapacity.get());
+                if (tooExpensive)
+                    tooltip.add(new TextComponent("     ").append(CeiLang.translate(
+                            "gui.goggles.too_expensive").component()
+                    ).withStyle(ChatFormatting.RED));
+                else
+                    tooltip.add(new TextComponent("     ").append(CeiLang.translate(
+                            "gui.goggles.xp_consumption",
+                            String.valueOf(CeiConfigs.SERVER.copyNameTagCost.get())).component()
+                    ).withStyle(ChatFormatting.GREEN));
+            } else {
+                var b = CeiLang.itemName(copyTarget).style(ChatFormatting.BLUE);
+                b.forGoggles(tooltip, 1);
+                boolean tooExpensive = CopyingBook.isTooExpensive(copyTarget, CeiConfigs.SERVER.copierTankCapacity.get());
+                if (tooExpensive)
+                    tooltip.add(new TextComponent("     ").append(CeiLang.translate(
+                            "gui.goggles.too_expensive").component()
+                    ).withStyle(ChatFormatting.RED));
+                else
+                    tooltip.add(new TextComponent("     ").append(CeiLang.translate(
+                            "gui.goggles.ink_consumption",
+                            String.valueOf(CeiConfigs.SERVER.copyTrainScheduleCost.get())).component()
+                    ).withStyle(ChatFormatting.DARK_GRAY));
             }
         }
         containedFluidTooltip(tooltip, isPlayerSneaking, getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY));

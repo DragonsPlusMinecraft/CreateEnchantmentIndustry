@@ -24,8 +24,14 @@ public class CeiServerConfig extends ConfigBase {
     public final ConfigFloat deployerXpDropChance = f(1, 0, 1,
         "deployerXpDropChance",
         Comments.deployerXpDropChance);
-
     public final ConfigBool enableHyperEnchant = b(true, "enableHyperEnchant");
+    public final ConfigInt copyNameTagCost = i(7, 1, 1000,
+            "copyNameTagCost",
+            Comments.copyNameTagCost);
+    public final ConfigInt copyTrainScheduleCost = i(10, 1, 1000,
+            "copyTrainScheduleCost",
+            Comments.copyTrainScheduleCost);
+
     
     @Override
     protected void registerAll(ForgeConfigSpec.Builder builder) {
@@ -49,6 +55,8 @@ public class CeiServerConfig extends ConfigBase {
             "The Maximum Extended Levels beyond Enchantment's Max Level that can be reached through Hyper-Enchanting";
         static String deployerXpDropChance =
             "The Chance of whether Deployer-killed entities will drop Nugget of Experience";
+        static String copyNameTagCost = "The amount of liquid experience needed to be consumed by Copying Name Tag.";
+        static String copyTrainScheduleCost = "The amount of ink needed to be consumed by Copying Train Schedule.";
         
     }
     

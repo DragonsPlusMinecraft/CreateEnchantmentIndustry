@@ -1,5 +1,6 @@
 package plus.dragons.createenchantmentindustry.content.contraptions.enchanting.printer;
 
+import com.simibubi.create.AllItems;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraftforge.items.IItemHandler;
@@ -56,6 +57,6 @@ public class PrinterTargetItemHandler implements IItemHandler {
 
     @Override
     public boolean isItemValid(int slot, @NotNull ItemStack stack) {
-        return (stack.is(Items.ENCHANTED_BOOK) || stack.is(Items.WRITTEN_BOOK)) && stack.getCount() == 1;
+        return (stack.is(Items.ENCHANTED_BOOK) || stack.is(Items.WRITTEN_BOOK) || stack.is(Items.NAME_TAG) || stack.is(AllItems.SCHEDULE.get())) && stack.getCount() == 1;
     }
 }
