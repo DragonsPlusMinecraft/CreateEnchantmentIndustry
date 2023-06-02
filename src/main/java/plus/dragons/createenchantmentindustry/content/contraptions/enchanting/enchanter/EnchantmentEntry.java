@@ -1,6 +1,7 @@
 package plus.dragons.createenchantmentindustry.content.contraptions.enchanting.enchanter;
 
 import com.simibubi.create.foundation.utility.Pair;
+import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.enchantment.Enchantment;
@@ -12,10 +13,13 @@ import plus.dragons.createenchantmentindustry.foundation.config.CeiConfigs;
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.lang.reflect.Method;
+import java.util.Optional;
 
 public class EnchantmentEntry extends Pair<Enchantment, Integer> {
     public static final TagKey<Enchantment> HYPER_ENCHANTABLE =
         TagKey.create(Registry.ENCHANTMENT_REGISTRY, EnchantmentIndustry.genRL("hyper_enchantable"));
+    public static final TagKey<Enchantment> HYPER_ENCHANTABLE_BLACKLIST =
+            TagKey.create(Registry.ENCHANTMENT_REGISTRY, EnchantmentIndustry.genRL("hyper_enchantable_blacklist"));
     private static final MethodHandle getMaxLevel;
     static {
         Method method;
@@ -50,22 +54,23 @@ public class EnchantmentEntry extends Pair<Enchantment, Integer> {
         var enchantment = getFirst();
         int level = getSecond();
         int maxLevel;
+
         try {
             maxLevel = (Integer) getMaxLevel.invoke(enchantment);
         } catch (Throwable throwable) {
             EnchantmentIndustry.LOGGER.warn("Failed to invoke getMaxLevel", throwable);
             maxLevel = enchantment.getMaxLevel();
         }
-        if (enchantment.getMaxLevel() == 1 && level > 1)
-            return ForgeRegistries.ENCHANTMENTS
-                .getHolder(enchantment)
-                .map(holder -> {
-                    if(holder.is(HYPER_ENCHANTABLE)){
-                        return CeiConfigs.SERVER.enableHyperEnchant.get() && level <= CeiConfigs.SERVER.maxHyperEnchantingLevelExtension.get() + 1;
-                    } return false;
-                })
-                .orElse(false);
+
+        Optional<Holder<Enchantment>> optional = ForgeRegistries.ENCHANTMENTS.getHolder(enchantment);
+        if (optional.isPresent()) {
+            Holder<Enchantment> holder = optional.get();
+            if (holder.is(HYPER_ENCHANTABLE_BLACKLIST)) {
+                return level <= maxLevel;
+            } else if (maxLevel == 1 && level > 1) {
+                return holder.is(HYPER_ENCHANTABLE) && CeiConfigs.SERVER.enableHyperEnchant.get() && level <= maxLevel + CeiConfigs.SERVER.maxHyperEnchantingLevelExtension.get();
+            }
+        }
         return level <= maxLevel + (CeiConfigs.SERVER.enableHyperEnchant.get() ? CeiConfigs.SERVER.maxHyperEnchantingLevelExtension.get() : 0);
     }
-
 }
