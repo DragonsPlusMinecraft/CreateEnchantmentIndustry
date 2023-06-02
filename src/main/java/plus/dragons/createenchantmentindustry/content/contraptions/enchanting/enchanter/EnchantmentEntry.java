@@ -59,7 +59,11 @@ public class EnchantmentEntry extends Pair<Enchantment, Integer> {
         if (enchantment.getMaxLevel() == 1 && level > 1)
             return ForgeRegistries.ENCHANTMENTS
                 .getHolder(enchantment)
-                .map(holder -> holder.is(HYPER_ENCHANTABLE))
+                .map(holder -> {
+                    if(holder.is(HYPER_ENCHANTABLE)){
+                        return CeiConfigs.SERVER.enableHyperEnchant.get() && level <= CeiConfigs.SERVER.maxHyperEnchantingLevelExtension.get() + 1;
+                    } return false;
+                })
                 .orElse(false);
         return level <= maxLevel + (CeiConfigs.SERVER.enableHyperEnchant.get() ? CeiConfigs.SERVER.maxHyperEnchantingLevelExtension.get() : 0);
     }
