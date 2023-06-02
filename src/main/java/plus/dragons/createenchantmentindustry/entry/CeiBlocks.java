@@ -1,7 +1,6 @@
 package plus.dragons.createenchantmentindustry.entry;
 
 import com.simibubi.create.AllCreativeModeTabs;
-import com.simibubi.create.Create;
 import com.simibubi.create.content.processing.AssemblyOperatorBlockItem;
 import com.simibubi.create.foundation.data.AssetLookup;
 import com.simibubi.create.foundation.data.SharedProperties;
@@ -20,7 +19,7 @@ import static plus.dragons.createenchantmentindustry.EnchantmentIndustry.REGISTR
 public class CeiBlocks {
     
     static {
-        Create.REGISTRATE.creativeModeTab(() -> AllCreativeModeTabs.BASE_CREATIVE_TAB);
+        REGISTRATE.creativeModeTab(() -> AllCreativeModeTabs.BASE_CREATIVE_TAB);
     }
 
     public static final BlockEntry<DisenchanterBlock> DISENCHANTER = REGISTRATE
