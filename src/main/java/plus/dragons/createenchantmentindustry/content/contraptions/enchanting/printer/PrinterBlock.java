@@ -1,6 +1,7 @@
 package plus.dragons.createenchantmentindustry.content.contraptions.enchanting.printer;
 
 import com.simibubi.create.AllBlocks;
+import com.simibubi.create.AllItems;
 import com.simibubi.create.AllShapes;
 import com.simibubi.create.content.contraptions.wrench.IWrenchable;
 import com.simibubi.create.foundation.advancement.AdvancementBehaviour;
@@ -90,6 +91,21 @@ public class PrinterBlock extends Block implements IWrenchable, ITE<PrinterBlock
                 }
                 be.tooExpensive = CopyingBook.isTooExpensive(heldItem, CeiConfigs.SERVER.copierTankCapacity.get());
                 be.copyTarget = heldItem;
+                be.processingTicks = -1;
+                be.notifyUpdate();
+                return InteractionResult.SUCCESS;
+            });
+        } else if (heldItem.is(Items.NAME_TAG) || heldItem.is(AllItems.SCHEDULE.get())) {
+            return onTileEntityUse(world, pos, be -> {
+                var copy = heldItem.copy();
+                copy.setCount(1);
+                if (be.copyTarget == null) {
+                    if (!player.getAbilities().instabuild) heldItem.shrink(1);
+                } else {
+                    if(player.addItem(be.copyTarget)) player.drop(be.copyTarget,false,true);
+                }
+                be.tooExpensive = CopyingBook.isTooExpensive(heldItem, CeiConfigs.SERVER.copierTankCapacity.get());
+                be.copyTarget = copy;
                 be.processingTicks = -1;
                 be.notifyUpdate();
                 return InteractionResult.SUCCESS;

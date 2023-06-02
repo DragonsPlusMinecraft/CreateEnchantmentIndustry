@@ -113,7 +113,7 @@ public class PrinterBlockEntity extends SmartTileEntity implements IHaveGoggleIn
             return PASS;
         if (tooExpensive || copyTarget == null)
             return PASS;
-        if (!CopyingBook.valid(transported.stack))
+        if (!CopyingBook.valid(copyTarget,transported.stack))
             return PASS;
         if (tank.isEmpty() || CopyingBook.isCorrectInk(copyTarget, getCurrentFluidInTank()))
             return HOLD;
@@ -128,7 +128,7 @@ public class PrinterBlockEntity extends SmartTileEntity implements IHaveGoggleIn
             return HOLD;
         if (tooExpensive || copyTarget == null)
             return PASS;
-        if (!CopyingBook.valid(transported.stack))
+        if (!CopyingBook.valid(copyTarget,transported.stack))
             return PASS;
         if (tank.isEmpty() || !CopyingBook.isCorrectInk(copyTarget, getCurrentFluidInTank()))
             return HOLD;
@@ -256,7 +256,7 @@ public class PrinterBlockEntity extends SmartTileEntity implements IHaveGoggleIn
     @Override
     public boolean addToGoggleTooltip(List<Component> tooltip, boolean isPlayerSneaking) {
         LANG.translate("gui.goggles.printer").forGoggles(tooltip);
-        if (copyTarget == null || (!copyTarget.is(Items.WRITTEN_BOOK) && !copyTarget.is(Items.ENCHANTED_BOOK))) {
+        if (copyTarget == null) {
             LANG.translate("gui.goggles.printer.no_target")
                     .style(ChatFormatting.GRAY)
                     .forGoggles(tooltip, 1);
@@ -299,6 +299,36 @@ public class PrinterBlockEntity extends SmartTileEntity implements IHaveGoggleIn
                     Component name = e.getKey().getFullname(e.getValue());
                     tooltip.add(Component.literal("     ").append(name).withStyle(name.getStyle()));
                 }
+            } else if (copyTarget.is(Items.NAME_TAG)) {
+                var b = LANG.builder()
+                        .add(Component.translatable(copyTarget.getDescriptionId()).withStyle(ChatFormatting.LIGHT_PURPLE))
+                        .text(ChatFormatting.GREEN, " / ")
+                        .add(LANG.itemName(copyTarget)
+                                .style(ChatFormatting.GREEN));
+                b.forGoggles(tooltip, 1);
+                boolean tooExpensive = CopyingBook.isTooExpensive(copyTarget, CeiConfigs.SERVER.copierTankCapacity.get());
+                if (tooExpensive)
+                    tooltip.add(Component.literal("     ").append(LANG.translate(
+                            "gui.goggles.too_expensive").component()
+                    ).withStyle(ChatFormatting.RED));
+                else
+                    tooltip.add(Component.literal("     ").append(LANG.translate(
+                            "gui.goggles.xp_consumption",
+                            String.valueOf(CeiConfigs.SERVER.copyNameTagCost.get())).component()
+                    ).withStyle(ChatFormatting.GREEN));
+            } else {
+                var b = LANG.itemName(copyTarget).style(ChatFormatting.BLUE);
+                b.forGoggles(tooltip, 1);
+                boolean tooExpensive = CopyingBook.isTooExpensive(copyTarget, CeiConfigs.SERVER.copierTankCapacity.get());
+                if (tooExpensive)
+                    tooltip.add(Component.literal("     ").append(LANG.translate(
+                            "gui.goggles.too_expensive").component()
+                    ).withStyle(ChatFormatting.RED));
+                else
+                    tooltip.add(Component.literal("     ").append(LANG.translate(
+                            "gui.goggles.ink_consumption",
+                            String.valueOf(CeiConfigs.SERVER.copyTrainScheduleCost.get())).component()
+                    ).withStyle(ChatFormatting.DARK_GRAY));
             }
         }
         containedFluidTooltip(tooltip, isPlayerSneaking, getCapability(ForgeCapabilities.FLUID_HANDLER));

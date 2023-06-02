@@ -444,6 +444,13 @@ public class EnchantmentScenes {
         scene.idle(95);
         scene.world.removeItemsFromBelt(copierPos.below(2));
         scene.world.createItemOnBelt(copierPos.below(2), Direction.UP, Items.WRITTEN_BOOK.getDefaultInstance());
+
+        scene.overlay.showText(40)
+                .text("Name Tag and Train Schedule can also be copied.")
+                .attachKeyFrame()
+                .placeNearTarget()
+                .pointAt(util.vector.topOf(2, 3, 2));
+        scene.idle(40);
     }
 
     public static void leak(SceneBuilder scene, SceneBuildingUtil util) {
