@@ -1,5 +1,4 @@
 {
-
 	"_": "->------------------------]  Game Elements  [------------------------<-",
 
 	"block.create_enchantment_industry.blaze_enchanter": "Полум'яний чарувальник",
@@ -65,6 +64,10 @@
 	"create_enchantment_industry.ponder.copy.header": "Використання принтера",
 	"create_enchantment_industry.ponder.copy.text_1": "UNLOCALIZED: Liquid Experience is required to duplicate enchanted books.",
 	"create_enchantment_industry.ponder.copy.text_2": "UNLOCALIZED: Ink is required to duplicate written books.",
+	"create_enchantment_industry.ponder.copy.text_3": "UNLOCALIZED: Name Tag and Train Schedule can also be copied.",
+
+	"create_enchantment_industry.ponder.crushing_wheel_tweak.header": "UNLOCALIZED: We call it inefficiency...",
+	"create_enchantment_industry.ponder.crushing_wheel_tweak.text_1": "UNLOCALIZED: The Crushing Wheel has a chance of dropping a very small amount of experience nugget when it kills a creature.",
 
 	"create_enchantment_industry.ponder.disenchant.header": "Розчаровування",
 	"create_enchantment_industry.ponder.disenchant.text_1": "З усіх отриманих предметів будуть зняті чари, а зняті чари будуть перетворені на рідкий досвід для зберігання.",
@@ -94,6 +97,7 @@
 	"create_enchantment_industry.ponder.transform.text_1": "Клацніть правою кнопкою миші на пальник пломеня з керівництвом по зачаруванню у руці присівши",
 	"create_enchantment_industry.ponder.transform.text_2": "Щоб отримати його назад клацніть правою кнопкою миші на полум'яного чарівника з гайковим ключем присівши",
 	"create_enchantment_industry.ponder.transform.text_3": "UNLOCALIZED: To retrieve the enchanting guide, right-click the Blaze Enchanter with wrench when sneaking.",
+	"create_enchantment_industry.ponder.transform.text_4": "UNLOCALIZED: You can replace the Enchanting Guide by holding it directly in your hand and right-clicking on the Blaze Enchanter.",
 
 
 	"_": "->------------------------]  Item Descriptions  [------------------------<-",
@@ -123,6 +127,7 @@
 	"recipe.create_enchantment_industry.disenchanting": "Розчаровування",
 
 	"create_enchantment_industry.display_source.blaze_enchanter_source_target_enchantment": "Цільове зачарування",
+	"create_enchantment_industry.display_source.printer_source_copy_content": "UNLOCALIZED: Copy Content",
 
 	"_": "Thank you for translating Create: Enchantment Industry!"
 

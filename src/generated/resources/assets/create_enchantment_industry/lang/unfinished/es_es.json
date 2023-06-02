@@ -1,5 +1,5 @@
 {
-	"_": "Missing Localizations: 0",
+	"_": "Missing Localizations: 5",
 
 	"_": "->------------------------]  Game Elements  [------------------------<-",
 
@@ -66,6 +66,10 @@
 	"create_enchantment_industry.ponder.copy.header": "Uso de la impresora",
 	"create_enchantment_industry.ponder.copy.text_1": "UNLOCALIZED: Liquid Experience is required to duplicate enchanted books.",
 	"create_enchantment_industry.ponder.copy.text_2": "UNLOCALIZED: Ink is required to duplicate written books.",
+	"create_enchantment_industry.ponder.copy.text_3": "UNLOCALIZED: Name Tag and Train Schedule can also be copied.",
+
+	"create_enchantment_industry.ponder.crushing_wheel_tweak.header": "UNLOCALIZED: We call it inefficiency...",
+	"create_enchantment_industry.ponder.crushing_wheel_tweak.text_1": "UNLOCALIZED: The Crushing Wheel has a chance of dropping a very small amount of experience nugget when it kills a creature.",
 
 	"create_enchantment_industry.ponder.disenchant.header": "Desencantar",
 	"create_enchantment_industry.ponder.disenchant.text_1": "Se eliminarán los encantamientos de todos los elementos recibidos y los encantamientos eliminados se convertirán en experiencia líquida para su almacenamiento.",
@@ -95,6 +99,7 @@
 	"create_enchantment_industry.ponder.transform.text_1": "UNLOCALIZED: Right-click the Blaze Burner with an Enchanting Guide in hand when sneaking to transform it to a Blaze Enchanter.",
 	"create_enchantment_industry.ponder.transform.text_2": "UNLOCALIZED: To make Blaze Enchanter work, Enchanting Guide must be configured first. Right-clicking Blaze Enchanter or right-clicking Enchanting Guide in hands can open configuration panel.",
 	"create_enchantment_industry.ponder.transform.text_3": "Para recuperar la guía de encantamiento, haz click con el botón derecho en el quemador de Blaze con la llave inglesa mientras te agachas.",
+	"create_enchantment_industry.ponder.transform.text_4": "UNLOCALIZED: You can replace the Enchanting Guide by holding it directly in your hand and right-clicking on the Blaze Enchanter.",
 
 
 	"_": "->------------------------]  Item Descriptions  [------------------------<-",
@@ -124,6 +129,7 @@
 	"recipe.create_enchantment_industry.disenchanting": "Desencantar",
 
 	"create_enchantment_industry.display_source.blaze_enchanter_source_target_enchantment": "Encantamiento objetivo",
+	"create_enchantment_industry.display_source.printer_source_copy_content": "UNLOCALIZED: Copy Content",
 
 	"_": "Thank you for translating Create: Enchantment Industry!"
 

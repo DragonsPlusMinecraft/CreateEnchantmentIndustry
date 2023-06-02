@@ -66,6 +66,10 @@
 	"create_enchantment_industry.ponder.copy.header": "复印机使用",
 	"create_enchantment_industry.ponder.copy.text_1": "复印附魔书需要液态经验。",
 	"create_enchantment_industry.ponder.copy.text_2": "复印成书需要墨水。",
+	"create_enchantment_industry.ponder.copy.text_3": "命名牌和列车时刻表同样可以被复印。",
+
+	"create_enchantment_industry.ponder.crushing_wheel_tweak.header": "我们称之为低效...",
+	"create_enchantment_industry.ponder.crushing_wheel_tweak.text_1": "粉碎轮击杀生物时，有概率掉落极少量经验颗粒。",
 
 	"create_enchantment_industry.ponder.disenchant.header": "祛魔池使用",
 	"create_enchantment_industry.ponder.disenchant.text_1": "所有接收的物品都将被祛除附魔，被去除的附魔将被折算成液态经验存储。",
@@ -95,6 +99,7 @@
 	"create_enchantment_industry.ponder.transform.text_1": "手持附魔指南潜行右键烈焰人燃烧室将其转化为烈焰人附魔室。",
 	"create_enchantment_industry.ponder.transform.text_2": "要使烈焰人附魔室正常工作，应首先配置好附魔指南。右键附魔指南或右击烈焰人附魔室都可打开配置面板。",
 	"create_enchantment_industry.ponder.transform.text_3": "如需取回附魔指南，请持扳手潜行右键烈焰人附魔室。",
+	"create_enchantment_industry.ponder.transform.text_4": "你可以直接手持附魔指南右键烈焰人附魔室来进行附魔指南的替换。",
 
 
 	"_": "->------------------------]  Item Descriptions  [------------------------<-",
@@ -124,6 +129,7 @@
 	"recipe.create_enchantment_industry.disenchanting": "祛魔",
 
 	"create_enchantment_industry.display_source.blaze_enchanter_source_target_enchantment": "目标附魔",
+	"create_enchantment_industry.display_source.printer_source_copy_content": "复印目标",
 
 	"_": "Thank you for translating Create: Enchantment Industry!"
 

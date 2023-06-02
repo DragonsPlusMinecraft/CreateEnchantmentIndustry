@@ -1,5 +1,5 @@
 {
-	"_": "Missing Localizations: 0",
+	"_": "Missing Localizations: 5",
 
 	"_": "->------------------------]  Game Elements  [------------------------<-",
 
@@ -16,7 +16,7 @@
 	"fluid.create_enchantment_industry.ink": "Чернила",
 
 	"item.create_enchantment_industry.enchanting_guide": "Зачаровательное задание",
-	"item.create_enchantment_industry.experience_rotor": "Ротор опыта",
+	"item.create_enchantment_industry.experience_rotor": "Мешалка опыта",
 	"item.create_enchantment_industry.hyper_experience_bottle": "Пузырёк гиперопыта",
 	"item.create_enchantment_industry.ink_bucket": "Ведро чернил",
 
@@ -24,33 +24,33 @@
 	"_": "->------------------------]  Advancements  [------------------------<-",
 
 	"advancement.create_enchantment_industry.experienced_engineer": "Опытный инженер",
-	"advancement.create_enchantment_industry.experienced_engineer.desc": "Получите Кусочки опыта с помощью дробления руд или убийства мобов Автономным активатором",
+	"advancement.create_enchantment_industry.experienced_engineer.desc": "Получите кусочки опыта с помощью дробления руд или убийства мобов автономным активатором",
 	"advancement.create_enchantment_industry.black_as_ink": "Чернильная тьма",
-	"advancement.create_enchantment_industry.black_as_ink.desc": "Раздобудьте Ведро чернил для своей типографии",
+	"advancement.create_enchantment_industry.black_as_ink.desc": "Раздобудьте ведро чернил для своей типографии",
 	"advancement.create_enchantment_industry.copiable_masterpiece": "Репродукция шедевра",
-	"advancement.create_enchantment_industry.copiable_masterpiece.desc": "Скопируйте написанную книгу на Печатном станке",
+	"advancement.create_enchantment_industry.copiable_masterpiece.desc": "Скопируйте написанную книгу на печатном станке",
 	"advancement.create_enchantment_industry.copiable_mystery": "Непонятное, но воспроизводимое",
-	"advancement.create_enchantment_industry.copiable_mystery.desc": "Скопируйте зачарованную книгу на Печатном станке",
+	"advancement.create_enchantment_industry.copiable_mystery.desc": "Скопируйте зачарованную книгу на печатном станке",
 	"advancement.create_enchantment_industry.relic_restoration": "Сохранение реликвии",
 	"advancement.create_enchantment_industry.relic_restoration.desc": "Получите свежую копию ветхой книги",
 	"advancement.create_enchantment_industry.great_publisher": "Первопечатник Фёдоров",
-	"advancement.create_enchantment_industry.great_publisher.desc": "Сделайте 1000 копий книг на Печатном станке",
+	"advancement.create_enchantment_industry.great_publisher.desc": "Сделайте 1000 копий книг на печатном станке",
 	"advancement.create_enchantment_industry.experimental": "Экспериментатор",
 	"advancement.create_enchantment_industry.experimental.desc": "Получите жидкий опыт для экспериментов с зачарованием",
 	"advancement.create_enchantment_industry.gone_with_the_foil": "Разоблачение",
-	"advancement.create_enchantment_industry.gone_with_the_foil.desc": "Наблюдайте за тем, как Чаросъёмник превращает зачарованный предмет в обычный",
+	"advancement.create_enchantment_industry.gone_with_the_foil.desc": "Наблюдайте за тем, как чаросъёмник превращает зачарованный предмет в обычный",
 	"advancement.create_enchantment_industry.spirit_taking": "Меньше знаешь...",
-	"advancement.create_enchantment_industry.spirit_taking.desc": "Освободитесь от своего опыта, сбросив его в Чаросъёмник",
+	"advancement.create_enchantment_industry.spirit_taking.desc": "Освободитесь от своего опыта, сбросив его в чаросъёмник",
 	"advancement.create_enchantment_industry.a_shower_experience": "Нахлынувшие воспоминания",
-	"advancement.create_enchantment_industry.a_shower_experience.desc": "Сломайте Жидкостную трубу и верните себе пролившийся опыт",
+	"advancement.create_enchantment_industry.a_shower_experience.desc": "Сломайте жидкостную трубу и верните себе пролившийся опыт",
 	"advancement.create_enchantment_industry.experienced_recycler": "Обмен опытом",
-	"advancement.create_enchantment_industry.experienced_recycler.desc": "Переработайте 1,000,000 мВ опыта с помощью Чаросъёмника",
+	"advancement.create_enchantment_industry.experienced_recycler.desc": "Переработайте 1,000,000 мВ опыта с помощью чаросъёмника",
 	"advancement.create_enchantment_industry.blazes_new_job": "Огненный маг",
-	"advancement.create_enchantment_industry.blazes_new_job.desc": "Выдайте всполоху в Горелке Зачаровательное задание, чтобы превратить его в Всполоха-чародея",
+	"advancement.create_enchantment_industry.blazes_new_job.desc": "Выдайте всполоху в горелке зачаровательное задание, чтобы превратить его в всполоха-чародея",
 	"advancement.create_enchantment_industry.first_order": "Первые шаги",
-	"advancement.create_enchantment_industry.first_order.desc": "Наложите чары на обычный предмет с помощью зачарователя всполоха",
+	"advancement.create_enchantment_industry.first_order.desc": "Наложите чары на обычный предмет с помощью всполоха-чародея",
 	"advancement.create_enchantment_industry.additional_order": "Второй слой",
-	"advancement.create_enchantment_industry.additional_order.desc": "Наложите чары на уже зачарованный предмет с помощью Всполоха-чародея",
+	"advancement.create_enchantment_industry.additional_order.desc": "Наложите чары на уже зачарованный предмет с помощью всполоха-чародея",
 	"advancement.create_enchantment_industry.hypothetical_extension": "Гипотетический гиперчародей",
 	"advancement.create_enchantment_industry.hypothetical_extension.desc": "Наложите чары на предмет с помощью гиперзачарования всполоха",
 
@@ -61,11 +61,15 @@
 	"create_enchantment_industry.ponder.tag.experience.description": "Предметы и компоненты для работы с опытом",
 
 	"create_enchantment_industry.ponder.absorb_experience_nugget.header": "Превращение Кусочков опыта в жидкость",
-	"create_enchantment_industry.ponder.absorb_experience_nugget.text_1": "Кусочки опыта могут быть превращены в жидкость с помощью Чаросъёмника.",
+	"create_enchantment_industry.ponder.absorb_experience_nugget.text_1": "Кусочки опыта могут быть превращены в жидкость с помощью Чаросъёмника",
 
 	"create_enchantment_industry.ponder.copy.header": "Использованием Печатного станка",
 	"create_enchantment_industry.ponder.copy.text_1": "Жидкий опыт нужен для копирования зачарованных книг",
 	"create_enchantment_industry.ponder.copy.text_2": "А чернила необходимы для копирования подписанных книг",
+	"create_enchantment_industry.ponder.copy.text_3": "UNLOCALIZED: Name Tag and Train Schedule can also be copied.",
+
+	"create_enchantment_industry.ponder.crushing_wheel_tweak.header": "UNLOCALIZED: We call it inefficiency...",
+	"create_enchantment_industry.ponder.crushing_wheel_tweak.text_1": "UNLOCALIZED: The Crushing Wheel has a chance of dropping a very small amount of experience nugget when it kills a creature.",
 
 	"create_enchantment_industry.ponder.disenchant.header": "Снятием чар",
 	"create_enchantment_industry.ponder.disenchant.text_1": "Зачарования с входящих предметов будут сняты и превращены в жидкий опыт, пригодный для хранения",
@@ -95,6 +99,7 @@
 	"create_enchantment_industry.ponder.transform.text_1": "Кликните ПКМ по Горелке Всполоха с Зачаровательным заданием в руке, для того чтобы превратить его в Всполоха-чародея",
 	"create_enchantment_industry.ponder.transform.text_2": "Чтобы Всполох-чародей мог работать, сначала необходимо настроить Зачаровательное задание. Кликнув ПКМ по Всполоху-чародею или Зачаровательному заданию в руке вы откроете интерфейс конфигурации",
 	"create_enchantment_industry.ponder.transform.text_3": "Для отзыва Зачаровательного задания от Всполоха-чародея кликните по нему ПКМ крадучись Гаечным ключом",
+	"create_enchantment_industry.ponder.transform.text_4": "UNLOCALIZED: You can replace the Enchanting Guide by holding it directly in your hand and right-clicking on the Blaze Enchanter.",
 
 
 	"_": "->------------------------]  Item Descriptions  [------------------------<-",
@@ -124,6 +129,7 @@
 	"recipe.create_enchantment_industry.disenchanting": "Снятие чар",
 
 	"create_enchantment_industry.display_source.blaze_enchanter_source_target_enchantment": "Желаемое зачарование",
+	"create_enchantment_industry.display_source.printer_source_copy_content": "UNLOCALIZED: Copy Content",
 
 	"_": "Thank you for translating Create: Enchantment Industry!"
 
