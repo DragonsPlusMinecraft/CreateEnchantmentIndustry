@@ -31,7 +31,9 @@ public class CeiServerConfig extends ConfigBase {
     public final ConfigInt copyTrainScheduleCost = i(10, 1, 1000,
             "copyTrainScheduleCost",
             Comments.copyTrainScheduleCost);
-
+    public final ConfigFloat crushingWheelDropExpRate = f(0.5f, 0, 1,
+            "crushingWheelDropExpRate",
+            Comments.crushingWheelDropExpRate);
     
     @Override
     protected void registerAll(ForgeConfigSpec.Builder builder) {
@@ -57,6 +59,7 @@ public class CeiServerConfig extends ConfigBase {
             "The Chance of whether Deployer-killed entities will drop Nugget of Experience";
         static String copyNameTagCost = "The amount of liquid experience needed to be consumed by Copying Name Tag.";
         static String copyTrainScheduleCost = "The amount of ink needed to be consumed by Copying Train Schedule.";
+        static String crushingWheelDropExpRate = "The probability of dropping Experience Nugget after killing a creature on the Crushing Wheel.";
         
     }
     

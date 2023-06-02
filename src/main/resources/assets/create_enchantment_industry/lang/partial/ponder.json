@@ -11,6 +11,7 @@
   "create_enchantment_industry.ponder.transform.text_1": "Right-click the Blaze Burner with an Enchanting Guide in hand when sneaking to transform it to a Blaze Enchanter.",
   "create_enchantment_industry.ponder.transform.text_2": "To make Blaze Enchanter work, Enchanting Guide must be configured first. Right-clicking Blaze Enchanter or right-clicking Enchanting Guide in hands can open configuration panel.",
   "create_enchantment_industry.ponder.transform.text_3": "To retrieve the enchanting guide, right-click the Blaze Enchanter with wrench when sneaking.",
+  "create_enchantment_industry.ponder.transform.text_4": "You can replace the Enchanting Guide by holding it directly in your hand and right-clicking on the Blaze Enchanter.",
 
   "create_enchantment_industry.ponder.copy.header": "Using Printer",
   "create_enchantment_industry.ponder.copy.text_1": "Liquid Experience is required to duplicate enchanted books.",
@@ -25,6 +26,9 @@
 
   "create_enchantment_industry.ponder.drop_experience_nugget.header": "Maybe A Exp-farm?",
   "create_enchantment_industry.ponder.drop_experience_nugget.text_1": "When mob is killed by deployer, experience nuggets are dropped.",
+
+  "create_enchantment_industry.ponder.crushing_wheel_tweak.header": "We call it inefficiency...",
+  "create_enchantment_industry.ponder.crushing_wheel_tweak.text_1": "The Crushing Wheel has a chance of dropping a very small amount of experience nugget when it kills a creature.",
 
   "create_enchantment_industry.ponder.absorb_experience_nugget.header": "Converting Experience Nugget to Liquid",
   "create_enchantment_industry.ponder.absorb_experience_nugget.text_1": "Experience nugget can be absorbed by disenchanter.",
