@@ -63,17 +63,14 @@ public class EnchantmentEntry extends Pair<Enchantment, Integer> {
         }
 
         Optional<Holder<Enchantment>> optional = ForgeRegistries.ENCHANTMENTS.getHolder(enchantment);
-
         if (optional.isPresent()) {
             Holder<Enchantment> holder = optional.get();
-
             if (holder.is(HYPER_ENCHANTABLE_BLACKLIST)) {
                 return level <= maxLevel;
             } else if (maxLevel == 1 && level > 1) {
                 return holder.is(HYPER_ENCHANTABLE) && CeiConfigs.SERVER.enableHyperEnchant.get() && level <= maxLevel + CeiConfigs.SERVER.maxHyperEnchantingLevelExtension.get();
             }
         }
-
         return level <= maxLevel + (CeiConfigs.SERVER.enableHyperEnchant.get() ? CeiConfigs.SERVER.maxHyperEnchantingLevelExtension.get() : 0);
     }
 }
