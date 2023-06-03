@@ -27,14 +27,11 @@ public class CrushingWheelControllerBlockEntityMixin {
 
     @Inject(method = "tick",
             at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/Entity;setPos(DDD)V", shift = At.Shift.AFTER),
-            slice = @Slice(
-                    from = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/Entity;isAlive()Z"),
-                    to = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/item/ItemEntity;setPickUpDelay(I)V")),
             remap = false)
     private void injected(CallbackInfo ci) {
-        if(processingEntity instanceof LivingEntity livingEntity){
-            int reward = livingEntity.getExperienceReward();
-            if(reward>=100 || Math.random()<CeiConfigs.SERVER.crushingWheelDropExpRate.get()){
+        if(!processingEntity.isAlive() && processingEntity instanceof LivingEntity livingEntity){
+            int reward = Math.max((int) Math.floor(livingEntity.getExperienceReward() * CeiConfigs.SERVER.deployerXpDropScale.get()),1);
+            if(reward>=1000 || Math.random()<CeiConfigs.SERVER.crushingWheelDropExpRate.get()){
                 int count = reward/3 + ((Math.random()<(reward%3/3f))? 1: 0);
                 if(count!=0){
                     var self = (CrushingWheelControllerBlockEntity)(Object)this;
