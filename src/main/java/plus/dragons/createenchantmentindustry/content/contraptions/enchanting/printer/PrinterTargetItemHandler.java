@@ -21,18 +21,15 @@ public class PrinterTargetItemHandler implements IItemHandler {
 
     @Override
     public @NotNull ItemStack getStackInSlot(int slot) {
-        return be.copyTarget==null?ItemStack.EMPTY:be.copyTarget.copy();
+        return be.getCopyTarget();
     }
 
     @Override
     public @NotNull ItemStack insertItem(int slot, @NotNull ItemStack stack, boolean simulate) {
-        if(be.copyTarget!=null) return stack;
+        if(!be.getCopyTarget().isEmpty()) return stack;
         else{
             if(!simulate){
-                be.tooExpensive = CopyingBook.isTooExpensive(stack, CeiConfigs.SERVER.copierTankCapacity.get());
-                be.copyTarget = stack;
-                be.processingTicks = -1;
-                be.notifyUpdate();
+                be.setCopyTarget(stack);
             }
         }
         return ItemStack.EMPTY;
@@ -40,12 +37,9 @@ public class PrinterTargetItemHandler implements IItemHandler {
 
     @Override
     public @NotNull ItemStack extractItem(int slot, int amount, boolean simulate) {
-        var ret = be.copyTarget==null?ItemStack.EMPTY:be.copyTarget.copy();
+        var ret = be.getCopyTarget().copy();
         if(!simulate){
-            be.tooExpensive = false;
-            be.copyTarget = null;
-            be.processingTicks = -1;
-            be.notifyUpdate();
+            be.setCopyTarget(ItemStack.EMPTY);
         }
         return ret;
     }

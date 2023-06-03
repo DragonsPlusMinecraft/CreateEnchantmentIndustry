@@ -16,6 +16,7 @@ import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -55,8 +56,9 @@ public class PrinterBlockEntity extends SmartBlockEntity implements IHaveGoggleI
     protected BeltProcessingBehaviour beltProcessing;
     public int processingTicks;
     SmartFluidTankBehaviour tank;
-    public ItemStack copyTarget;
+    private ItemStack copyTarget;
     public boolean tooExpensive;
+    public PrintEntry printEntry;
     boolean sendParticles;
 
     LazyOptional<PrinterTargetItemHandler> itemHandler = LazyOptional.of(()->new PrinterTargetItemHandler(this));
@@ -90,6 +92,36 @@ public class PrinterBlockEntity extends SmartBlockEntity implements IHaveGoggleI
         }
     }
 
+    public ItemStack getCopyTarget() {
+        if(copyTarget==null) return ItemStack.EMPTY;
+        return copyTarget;
+    }
+
+    public void setCopyTarget(@NotNull ItemStack copyTarget) {
+        if(copyTarget.isEmpty()) {
+            this.copyTarget = null;
+            tooExpensive = false;
+            printEntry = null;
+        }
+        else {
+            this.copyTarget = copyTarget;
+            matchPrintEntry(copyTarget);
+            tooExpensive = Printing.isTooExpensive(printEntry, copyTarget, CeiConfigs.SERVER.copierTankCapacity.get());
+        }
+        processingTicks = -1;
+        notifyUpdate();
+    }
+
+    private void matchPrintEntry(ItemStack copyTarget){
+        var entry = Printing.match(copyTarget);
+        if(entry==null){
+            // Happen when mod that contains a PrintEntry is removed.
+            this.copyTarget = null;
+            tooExpensive = false;
+        }
+        printEntry = entry;
+    }
+
     protected static int ENCHANT_PARTICLE_COUNT = 20;
 
     protected void spawnParticles() {
@@ -112,11 +144,11 @@ public class PrinterBlockEntity extends SmartBlockEntity implements IHaveGoggleI
             return PASS;
         if (tooExpensive || copyTarget == null)
             return PASS;
-        if (!CopyingBook.valid(copyTarget,transported.stack))
+        if (!Printing.valid(printEntry,copyTarget,transported.stack))
             return PASS;
-        if (tank.isEmpty() || CopyingBook.isCorrectInk(copyTarget, getCurrentFluidInTank()))
+        if (tank.isEmpty() || Printing.isCorrectInk(printEntry, getCurrentFluidInTank()))
             return HOLD;
-        if (CopyingBook.getRequiredAmountForItem(copyTarget) == -1)
+        if (Printing.getRequiredAmountForItem(printEntry,copyTarget) == -1)
             return PASS;
         return HOLD;
     }
@@ -127,12 +159,12 @@ public class PrinterBlockEntity extends SmartBlockEntity implements IHaveGoggleI
             return HOLD;
         if (tooExpensive || copyTarget == null)
             return PASS;
-        if (!CopyingBook.valid(copyTarget,transported.stack))
+        if (!Printing.valid(printEntry, copyTarget,transported.stack))
             return PASS;
-        if (tank.isEmpty() || !CopyingBook.isCorrectInk(copyTarget, getCurrentFluidInTank()))
+        if (tank.isEmpty() || !Printing.isCorrectInk(printEntry, getCurrentFluidInTank()))
             return HOLD;
         FluidStack fluid = getCurrentFluidInTank();
-        int requiredAmountForItem = CopyingBook.getRequiredAmountForItem(copyTarget);
+        int requiredAmountForItem = Printing.getRequiredAmountForItem(printEntry, copyTarget);
         if (requiredAmountForItem == -1)
             return PASS;
         if (requiredAmountForItem > fluid.getAmount())
@@ -162,7 +194,7 @@ public class PrinterBlockEntity extends SmartBlockEntity implements IHaveGoggleI
         }
 
         // Process finished
-        ItemStack copy = CopyingBook.print(copyTarget, requiredAmountForItem, transported.stack, fluid);
+        ItemStack copy = Printing.print(printEntry,copyTarget, requiredAmountForItem, transported.stack, fluid);
         List<TransportedItemStack> outList = new ArrayList<>();
         TransportedItemStack held = null;
         TransportedItemStack result = transported.copy();
@@ -222,12 +254,15 @@ public class PrinterBlockEntity extends SmartBlockEntity implements IHaveGoggleI
         copyTarget = null;
         processingTicks = compoundTag.getInt("ProcessingTicks");
         tooExpensive = compoundTag.getBoolean("tooExpensive");
-        if (compoundTag.contains("copyTarget"))
+        if (compoundTag.contains("copyTarget")){
             copyTarget = ItemStack.of(compoundTag.getCompound("copyTarget"));
+            matchPrintEntry(copyTarget);
+        }
         if (!clientPacket)
             return;
         if (compoundTag.contains("SpawnParticles"))
             spawnParticles();
+
     }
 
     @Override
@@ -260,75 +295,7 @@ public class PrinterBlockEntity extends SmartBlockEntity implements IHaveGoggleI
                     .style(ChatFormatting.GRAY)
                     .forGoggles(tooltip, 1);
         } else {
-            if (copyTarget.is(Items.WRITTEN_BOOK)) {
-                var page = WrittenBookItem.getPageCount(copyTarget);
-                var b = LANG.builder()
-                        .add(LANG.itemName(copyTarget)
-                                .style(ChatFormatting.BLUE))
-                        .text(ChatFormatting.GRAY, " / ")
-                        .add(LANG.number(page)
-                                .text(" ")
-                                .add(page == 1 ? LANG.translate("generic.unit.page") : LANG.translate("generic.unit.pages"))
-                                .style(ChatFormatting.DARK_GRAY));
-                b.forGoggles(tooltip, 1);
-                if (CopyingBook.isTooExpensive(copyTarget, CeiConfigs.SERVER.copierTankCapacity.get()))
-                    tooltip.add(Component.literal("     ").append(LANG.translate(
-                            "gui.goggles.too_expensive").component()
-                    ).withStyle(ChatFormatting.RED));
-                else
-                    tooltip.add(Component.literal("     ").append(LANG.translate(
-                            "gui.goggles.ink_consumption",
-                            String.valueOf(CopyingBook.getExperienceFromItem(copyTarget))).component()
-                    ).withStyle(ChatFormatting.DARK_GRAY));
-            } else if (copyTarget.is(Items.ENCHANTED_BOOK)) {
-                var b = LANG.itemName(copyTarget).style(ChatFormatting.LIGHT_PURPLE);
-                b.forGoggles(tooltip, 1);
-                boolean tooExpensive = CopyingBook.isTooExpensive(copyTarget, CeiConfigs.SERVER.copierTankCapacity.get());
-                if (tooExpensive)
-                    tooltip.add(Component.literal("     ").append(LANG.translate(
-                        "gui.goggles.too_expensive").component()
-                    ).withStyle(ChatFormatting.RED));
-                else
-                    tooltip.add(Component.literal("     ").append(LANG.translate(
-                            "gui.goggles.xp_consumption",
-                            String.valueOf(CopyingBook.getExperienceFromItem(copyTarget))).component()
-                    ).withStyle(ChatFormatting.GREEN));
-                var map = EnchantmentHelper.getEnchantments(copyTarget);
-                for (var e : map.entrySet()) {
-                    Component name = e.getKey().getFullname(e.getValue());
-                    tooltip.add(Component.literal("     ").append(name).withStyle(name.getStyle()));
-                }
-            } else if (copyTarget.is(Items.NAME_TAG)) {
-                var b = LANG.builder()
-                        .add(Component.translatable(copyTarget.getDescriptionId()).withStyle(ChatFormatting.LIGHT_PURPLE))
-                        .text(ChatFormatting.GREEN, " / ")
-                        .add(LANG.itemName(copyTarget)
-                                .style(ChatFormatting.GREEN));
-                b.forGoggles(tooltip, 1);
-                boolean tooExpensive = CopyingBook.isTooExpensive(copyTarget, CeiConfigs.SERVER.copierTankCapacity.get());
-                if (tooExpensive)
-                    tooltip.add(Component.literal("     ").append(LANG.translate(
-                            "gui.goggles.too_expensive").component()
-                    ).withStyle(ChatFormatting.RED));
-                else
-                    tooltip.add(Component.literal("     ").append(LANG.translate(
-                            "gui.goggles.xp_consumption",
-                            String.valueOf(CeiConfigs.SERVER.copyNameTagCost.get())).component()
-                    ).withStyle(ChatFormatting.GREEN));
-            } else {
-                var b = LANG.itemName(copyTarget).style(ChatFormatting.BLUE);
-                b.forGoggles(tooltip, 1);
-                boolean tooExpensive = CopyingBook.isTooExpensive(copyTarget, CeiConfigs.SERVER.copierTankCapacity.get());
-                if (tooExpensive)
-                    tooltip.add(Component.literal("     ").append(LANG.translate(
-                            "gui.goggles.too_expensive").component()
-                    ).withStyle(ChatFormatting.RED));
-                else
-                    tooltip.add(Component.literal("     ").append(LANG.translate(
-                            "gui.goggles.ink_consumption",
-                            String.valueOf(CeiConfigs.SERVER.copyTrainScheduleCost.get())).component()
-                    ).withStyle(ChatFormatting.DARK_GRAY));
-            }
+            printEntry.addToGoggleTooltip(tooltip,isPlayerSneaking,copyTarget);
         }
         containedFluidTooltip(tooltip, isPlayerSneaking, getCapability(ForgeCapabilities.FLUID_HANDLER));
         return true;
