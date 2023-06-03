@@ -10,9 +10,9 @@ import net.minecraftforge.network.NetworkEvent.Context;
 
 public class BlazeEnchanterEditPacket extends SimplePacketBase {
 
-    private int index;
-    private ItemStack itemStack;
-    private BlockPos blockPos;
+    private final int index;
+    private final ItemStack itemStack;
+    private final BlockPos blockPos;
 
 
     public BlazeEnchanterEditPacket(int index, ItemStack enchantedBook, BlockPos blockPos) {

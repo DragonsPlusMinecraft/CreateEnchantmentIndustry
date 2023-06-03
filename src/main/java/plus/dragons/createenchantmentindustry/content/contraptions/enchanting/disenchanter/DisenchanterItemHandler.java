@@ -8,8 +8,8 @@ import net.minecraftforge.items.ItemHandlerHelper;
 import org.jetbrains.annotations.NotNull;
 
 public class DisenchanterItemHandler implements IItemHandler {
-    private DisenchanterBlockEntity be;
-    private Direction side;
+    private final DisenchanterBlockEntity be;
+    private final Direction side;
 
     public DisenchanterItemHandler(DisenchanterBlockEntity be, Direction side) {
         this.be = be;

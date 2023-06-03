@@ -27,9 +27,9 @@ public class EnchantingGuideScreen extends AbstractSimiContainerScreen<Enchantin
     public int index;
     public SelectionScrollInput scrollInput;
     public Label scrollInputLabel;
-    private boolean directItemStackEdit;
+    private final boolean directItemStackEdit;
     @Nullable
-    private BlockPos blockPos;
+    private final BlockPos blockPos;
 
     public EnchantingGuideScreen(EnchantingGuideMenu container, Inventory inv, Component title) {
         super(container, inv, title);

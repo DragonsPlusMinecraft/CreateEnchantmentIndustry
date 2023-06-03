@@ -31,7 +31,7 @@ public enum CeiPackets {
     public static final String NETWORK_VERSION_STR = String.valueOf(NETWORK_VERSION);
     public static SimpleChannel channel;
 
-    private CeiPackets.LoadedPacket<?> packet;
+    private final CeiPackets.LoadedPacket<?> packet;
 
     <T extends SimplePacketBase> CeiPackets(Class<T> type, Function<FriendlyByteBuf, T> factory,
                                             NetworkDirection direction) {
@@ -57,11 +57,11 @@ public enum CeiPackets {
     private static class LoadedPacket<T extends SimplePacketBase> {
         private static int index = 0;
 
-        private BiConsumer<T, FriendlyByteBuf> encoder;
-        private Function<FriendlyByteBuf, T> decoder;
-        private BiConsumer<T, Supplier<Context>> handler;
-        private Class<T> type;
-        private NetworkDirection direction;
+        private final BiConsumer<T, FriendlyByteBuf> encoder;
+        private final Function<FriendlyByteBuf, T> decoder;
+        private final BiConsumer<T, Supplier<Context>> handler;
+        private final Class<T> type;
+        private final NetworkDirection direction;
 
         private LoadedPacket(Class<T> type, Function<FriendlyByteBuf, T> factory, NetworkDirection direction) {
             encoder = T::write;

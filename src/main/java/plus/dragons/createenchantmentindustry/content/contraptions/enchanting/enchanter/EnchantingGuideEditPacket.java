@@ -10,8 +10,8 @@ import plus.dragons.createenchantmentindustry.entry.CeiItems;
 
 public class EnchantingGuideEditPacket extends SimplePacketBase {
 
-    private int index;
-    private ItemStack itemStack;
+    private final int index;
+    private final ItemStack itemStack;
 
 
     public EnchantingGuideEditPacket(int index, ItemStack enchantedBook) {
