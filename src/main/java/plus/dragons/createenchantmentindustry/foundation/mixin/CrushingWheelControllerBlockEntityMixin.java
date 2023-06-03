@@ -17,7 +17,6 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.Slice;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import plus.dragons.createenchantmentindustry.foundation.config.CeiConfigs;
 
@@ -29,14 +28,12 @@ public class CrushingWheelControllerBlockEntityMixin {
 
     @Inject(method = "tick",
             at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/Entity;setPos(DDD)V", shift = At.Shift.AFTER),
-            slice = @Slice(
-                    from = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/Entity;isAlive()Z"),
-                    to = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/item/ItemEntity;setPickUpDelay(I)V")),
             remap = false)
     private void injected(CallbackInfo ci) {
-        if(processingEntity instanceof LivingEntity livingEntity){
-            int reward = ((LivingEntityInvoker) livingEntity).invoke(FakePlayerFactory.getMinecraft((ServerLevel) processingEntity.level));
-            if(reward>=100 || Math.random()<CeiConfigs.SERVER.crushingWheelDropExpRate.get()){
+        if(!processingEntity.isAlive() && processingEntity instanceof LivingEntity livingEntity){
+            int reward = Math.max((int) Math.floor(((LivingEntityInvoker) livingEntity).invoke(FakePlayerFactory.getMinecraft((ServerLevel) processingEntity.level))
+                    * CeiConfigs.SERVER.deployerXpDropScale.get()),1);
+            if(reward>=1000 || Math.random()<CeiConfigs.SERVER.crushingWheelDropExpRate.get()){
                 int count = reward/3 + ((Math.random()<(reward%3/3f))? 1: 0);
                 if(count!=0){
                     var self = (CrushingWheelControllerBlockEntity)(Object)this;
