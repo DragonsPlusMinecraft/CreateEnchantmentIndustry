@@ -35,7 +35,7 @@ public class CeiServerConfig extends ConfigBase {
     public final ConfigInt copyTrainScheduleCost = i(10, 1, 1000,
             "copyTrainScheduleCost",
             Comments.copyTrainScheduleCost);
-    public final ConfigFloat crushingWheelDropExpRate = f(0.5f, 0, 1,
+    public final ConfigFloat crushingWheelDropExpRate = f(0.3f, 0, 1,
             "crushingWheelDropExpRate",
             Comments.crushingWheelDropExpRate);
     
