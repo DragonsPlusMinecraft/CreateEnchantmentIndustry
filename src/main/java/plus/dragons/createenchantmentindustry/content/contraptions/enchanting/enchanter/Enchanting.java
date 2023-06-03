@@ -7,6 +7,8 @@ import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import org.jetbrains.annotations.Nullable;
 import plus.dragons.createenchantmentindustry.entry.CeiItems;
 
+import java.util.Map;
+
 public class Enchanting {
 
     @Nullable
@@ -30,14 +32,22 @@ public class Enchanting {
         if (entry == null || !entry.valid())
             return null;
         var enchantment = entry.getFirst();
-        if (!enchantment.canEnchant(itemStack))
+
+        ItemStack toCheck = itemStack.copy();
+        Map<Enchantment, Integer> modified = EnchantmentHelper.getEnchantments(toCheck);
+
+        if (modified.containsKey(enchantment) && modified.get(enchantment) >= entry.getSecond()) {
             return null;
-        int level = entry.getSecond();
-        var map = EnchantmentHelper.getEnchantments(itemStack);
-        for (var e : map.entrySet()) {
+        }
+
+        // If the item already has the enchantment remove it to pass the checks
+        modified.remove(enchantment);
+        EnchantmentHelper.setEnchantments(modified, toCheck);
+
+        if (!enchantment.canEnchant(toCheck))
+            return null;
+        for (var e : modified.entrySet()) {
             if (!e.getKey().isCompatibleWith(enchantment))
-                return null;
-            if (e.getKey() == enchantment && e.getValue() >= entry.getSecond() + level)
                 return null;
         }
         return entry;
