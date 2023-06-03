@@ -5,12 +5,13 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.EnchantedBookItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.Enchantment;
-import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -20,10 +21,10 @@ import plus.dragons.createenchantmentindustry.api.PrintEntryRegisterEvent;
 import plus.dragons.createenchantmentindustry.content.contraptions.enchanting.printer.PrintEntry;
 import plus.dragons.createenchantmentindustry.content.contraptions.enchanting.printer.Printing;
 import plus.dragons.createenchantmentindustry.foundation.config.CeiConfigs;
+import plus.dragons.createenchantmentindustry.foundation.utility.CeiLang;
 
 import java.util.List;
 
-import static plus.dragons.createenchantmentindustry.EnchantmentIndustry.LANG;
 
 public class QuarkCompat {
     public static void registerPrintEntry(){
@@ -64,28 +65,28 @@ public class QuarkCompat {
 
             @Override
             public void addToGoggleTooltip(@NotNull List<Component> tooltip, boolean isPlayerSneaking, @NotNull ItemStack target) {
-                var b = LANG.itemName(target).style(ChatFormatting.DARK_PURPLE);
+                var b = CeiLang.itemName(target).style(ChatFormatting.DARK_PURPLE);
                 b.forGoggles(tooltip, 1);
                 boolean tooExpensive = Printing.isTooExpensive(this, target, CeiConfigs.SERVER.copierTankCapacity.get());
                 if (tooExpensive)
-                    tooltip.add(Component.literal("     ").append(LANG.translate(
+                    tooltip.add(new TextComponent("     ").append(CeiLang.translate(
                             "gui.goggles.too_expensive").component()
                     ).withStyle(ChatFormatting.RED));
                 else
-                    tooltip.add(Component.literal("     ").append(LANG.translate(
+                    tooltip.add(new TextComponent("     ").append(CeiLang.translate(
                             "gui.goggles.xp_consumption",
                             String.valueOf(requiredInkAmount(target))).component()
                     ).withStyle(ChatFormatting.GREEN));
 
                 var e = getTomeEnchantment(target);
                 if(e!=null){
-                    tooltip.add(Component.literal("     ").append(getFullTooltipText(e)).withStyle(ChatFormatting.GRAY));
+                    tooltip.add(new TextComponent("     ").append(getFullTooltipText(e)).withStyle(ChatFormatting.GRAY));
                 }
             }
 
             @Override
             public @NotNull MutableComponent getDisplaySourceContent(@NotNull ItemStack target) {
-                var ret = LANG.itemName(target);
+                var ret = CeiLang.itemName(target);
                 var e = getTomeEnchantment(target);
                 if(e!=null){
                     ret.text( " / ");
@@ -108,7 +109,7 @@ public class QuarkCompat {
             }
 
             public static Component getFullTooltipText(Enchantment ench) {
-                return Component.translatable("quark.misc.ancient_tome_tooltip", Component.translatable(ench.getDescriptionId()), Component.translatable("enchantment.level." + (ench.getMaxLevel() + 1)));
+                return new TranslatableComponent("quark.misc.ancient_tome_tooltip", new TranslatableComponent(ench.getDescriptionId()), new TranslatableComponent("enchantment.level." + (ench.getMaxLevel() + 1)));
             }
         });
     }

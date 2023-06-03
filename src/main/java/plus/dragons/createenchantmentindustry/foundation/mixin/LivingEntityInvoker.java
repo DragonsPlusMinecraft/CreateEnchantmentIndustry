@@ -8,7 +8,5 @@ import org.spongepowered.asm.mixin.gen.Invoker;
 @Mixin(LivingEntity.class)
 public interface LivingEntityInvoker {
     @Invoker("getExperienceReward")
-    default int invoke(Player pPlayer) {
-        throw new AssertionError();
-    }
+    int invoke(Player pPlayer);
 }
