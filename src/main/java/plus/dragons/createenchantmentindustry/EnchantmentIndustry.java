@@ -24,6 +24,7 @@ import plus.dragons.createdragonlib.lang.Lang;
 import plus.dragons.createdragonlib.lang.LangFactory;
 import plus.dragons.createdragonlib.tag.TagGen;
 import plus.dragons.createenchantmentindustry.compat.apotheosis.ApotheosisCompat;
+import plus.dragons.createenchantmentindustry.compat.quark.QuarkCompat;
 import plus.dragons.createenchantmentindustry.content.contraptions.fluids.OpenEndedPipeEffects;
 import plus.dragons.createenchantmentindustry.entry.*;
 import plus.dragons.createenchantmentindustry.foundation.advancement.CeiAdvancements;
@@ -92,6 +93,7 @@ public class EnchantmentIndustry {
             CeiFluids.registerLavaReaction();
             OpenEndedPipeEffects.register();
             ApotheosisCompat.addPotionMixingRecipes();
+            QuarkCompat.registerPrintEntry();
         });
     }
 

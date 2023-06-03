@@ -26,8 +26,7 @@ public class CrushingWheelControllerBlockEntityMixin {
     public Entity processingEntity;
 
     @Inject(method = "tick",
-            at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/Entity;setPos(DDD)V", shift = At.Shift.AFTER),
-            remap = false)
+            at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/Entity;setPos(DDD)V", shift = At.Shift.AFTER))
     private void injected(CallbackInfo ci) {
         if(!processingEntity.isAlive() && processingEntity instanceof LivingEntity livingEntity){
             int reward = Math.max((int) Math.floor(livingEntity.getExperienceReward() * CeiConfigs.SERVER.deployerXpDropScale.get()),1);
