@@ -1,9 +1,10 @@
 package plus.dragons.createenchantmentindustry.foundation.mixin;
 
-import com.simibubi.create.content.contraptions.fluids.actors.SpoutBlock;
-import com.simibubi.create.content.contraptions.fluids.actors.SpoutTileEntity;
-import com.simibubi.create.content.contraptions.wrench.IWrenchable;
-import com.simibubi.create.foundation.block.ITE;
+
+import com.simibubi.create.content.equipment.wrench.IWrenchable;
+import com.simibubi.create.content.fluids.spout.SpoutBlock;
+import com.simibubi.create.content.fluids.spout.SpoutBlockEntity;
+import com.simibubi.create.foundation.block.IBE;
 import com.simibubi.create.foundation.utility.VecHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
@@ -17,7 +18,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 
 @ParametersAreNonnullByDefault
 @Mixin(value = SpoutBlock.class)
-public abstract class SpoutBlockMixin extends Block implements IWrenchable, ITE<SpoutTileEntity>{
+public abstract class SpoutBlockMixin extends Block implements IWrenchable, IBE<SpoutBlockEntity> {
     public SpoutBlockMixin(Properties pProperties) {
         super(pProperties);
     }
@@ -28,8 +29,8 @@ public abstract class SpoutBlockMixin extends Block implements IWrenchable, ITE<
         if (!state.hasBlockEntity() || state.getBlock() == newState.getBlock())
             return;
         if (level instanceof ServerLevel serverLevel) {
-            withTileEntityDo(level, pos, te -> {
-                var fluidStack = ((SpoutTileEntityAccessor) te).getTank().getPrimaryHandler().getFluid();
+            withBlockEntityDo(level, pos, te -> {
+                var fluidStack = ((SpoutBlockEntityAccessor) te).getTank().getPrimaryHandler().getFluid();
                 if(fluidStack.getFluid() instanceof ExperienceFluid expFluid) {
                     expFluid.drop(serverLevel, VecHelper.getCenterOf(pos), fluidStack.getAmount());
                 }

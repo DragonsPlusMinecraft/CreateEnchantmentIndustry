@@ -1,9 +1,8 @@
 package plus.dragons.createenchantmentindustry.entry;
 
 import com.google.common.collect.ImmutableMap;
-import com.simibubi.create.Create;
-import com.simibubi.create.content.AllSections;
-import com.simibubi.create.content.contraptions.components.AssemblyOperatorBlockItem;
+import com.simibubi.create.AllCreativeModeTabs;
+import com.simibubi.create.content.processing.AssemblyOperatorBlockItem;
 import com.simibubi.create.foundation.data.AssetLookup;
 import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.simibubi.create.foundation.data.SharedProperties;
@@ -20,13 +19,13 @@ import plus.dragons.createenchantmentindustry.content.contraptions.enchanting.di
 import plus.dragons.createenchantmentindustry.content.contraptions.enchanting.enchanter.BlazeEnchanterBlock;
 import plus.dragons.createenchantmentindustry.content.contraptions.enchanting.printer.PrinterDisplaySource;
 
-import static com.simibubi.create.content.logistics.block.display.AllDisplayBehaviours.assignDataBehaviour;
+import static com.simibubi.create.content.redstone.displayLink.AllDisplayBehaviours.assignDataBehaviour;
 
 
 public class CeiBlocks {
 
     private static final CreateRegistrate REGISTRATE = EnchantmentIndustry.registrate()
-            .creativeModeTab(() -> Create.BASE_CREATIVE_TAB).startSection(AllSections.KINETICS);
+            .creativeModeTab(() -> AllCreativeModeTabs.BASE_CREATIVE_TAB);
 
     public static final BlockEntry<DisenchanterBlock> DISENCHANTER = REGISTRATE
             .block("disenchanter", DisenchanterBlock::new)
@@ -59,20 +58,6 @@ public class CeiBlocks {
             .transform(CeiTags.pickaxeOnly())
             .blockstate((ctx, pov) -> pov.simpleBlock(ctx.get(), AssetLookup.standardModel(ctx, pov)))
             .register();
-    
-    public static void remap(RegistryEvent.MissingMappings<Block> event) {
-        var mappings = event.getMappings(EnchantmentIndustry.ID);
-        var remaps = ImmutableMap.<ResourceLocation, BlockEntry<?>>builder()
-            .put(EnchantmentIndustry.genRL("copier"), PRINTER)
-            .build();
-        for (var mapping : mappings) {
-            var remap = remaps.get(mapping.key);
-            if (remap != null) {
-                mapping.remap(remap.get());
-                EnchantmentIndustry.LOGGER.warn("Remapping block [{}] to [{}]...", mapping.key, remap.getId());
-            }
-        }
-    }
 
     public static void register() {}
     

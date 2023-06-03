@@ -1,8 +1,8 @@
 package plus.dragons.createenchantmentindustry.content.contraptions.enchanting.printer;
 
-import com.simibubi.create.content.logistics.block.display.DisplayLinkContext;
-import com.simibubi.create.content.logistics.block.display.source.SingleLineDisplaySource;
-import com.simibubi.create.content.logistics.block.display.target.DisplayTargetStats;
+import com.simibubi.create.content.redstone.displayLink.DisplayLinkContext;
+import com.simibubi.create.content.redstone.displayLink.source.SingleLineDisplaySource;
+import com.simibubi.create.content.redstone.displayLink.target.DisplayTargetStats;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.TranslatableComponent;
@@ -14,7 +14,7 @@ import plus.dragons.createenchantmentindustry.foundation.utility.CeiLang;
 public class PrinterDisplaySource extends SingleLineDisplaySource {
     @Override
     protected MutableComponent provideLine(DisplayLinkContext context, DisplayTargetStats stats) {
-        if (!(context.getSourceTE() instanceof PrinterBlockEntity printer))
+        if (!(context.getSourceBlockEntity() instanceof PrinterBlockEntity printer))
             return EMPTY_LINE;
         if(printer.copyTarget == null){
             return CeiLang.translate("gui.goggles.printer.no_target").component();

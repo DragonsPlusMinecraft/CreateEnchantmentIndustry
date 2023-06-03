@@ -3,14 +3,11 @@ package plus.dragons.createenchantmentindustry.content.contraptions.enchanting.p
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.AllItems;
 import com.simibubi.create.AllShapes;
-import com.simibubi.create.content.contraptions.wrench.IWrenchable;
+import com.simibubi.create.content.equipment.wrench.IWrenchable;
 import com.simibubi.create.foundation.advancement.AdvancementBehaviour;
-import com.simibubi.create.foundation.block.ITE;
-import com.simibubi.create.foundation.tileEntity.ComparatorUtil;
-import com.simibubi.create.foundation.utility.VecHelper;
+import com.simibubi.create.foundation.block.IBE;
+import com.simibubi.create.foundation.blockEntity.ComparatorUtil;
 import net.minecraft.core.BlockPos;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
@@ -29,7 +26,6 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
-import plus.dragons.createenchantmentindustry.content.contraptions.fluids.experience.ExperienceFluid;
 import plus.dragons.createenchantmentindustry.entry.CeiBlockEntities;
 import plus.dragons.createenchantmentindustry.entry.CeiBlocks;
 import plus.dragons.createenchantmentindustry.foundation.config.CeiConfigs;
@@ -38,7 +34,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @SuppressWarnings("deprecation")
-public class PrinterBlock extends Block implements IWrenchable, ITE<PrinterBlockEntity> {
+public class PrinterBlock extends Block implements IWrenchable, IBE<PrinterBlockEntity> {
     public PrinterBlock(Properties pProperties) {
         super(pProperties);
     }
@@ -72,7 +68,7 @@ public class PrinterBlock extends Block implements IWrenchable, ITE<PrinterBlock
         ItemStack heldItem = player.getItemInHand(hand);
 
         if (heldItem.isEmpty()) {
-            return onTileEntityUse(world, pos, be -> {
+            return onBlockEntityUse(world, pos, be -> {
                 if (be.copyTarget != null) {
                     player.setItemInHand(hand, be.copyTarget);
                     be.tooExpensive = false;
@@ -83,7 +79,7 @@ public class PrinterBlock extends Block implements IWrenchable, ITE<PrinterBlock
                 } else return InteractionResult.PASS;
             });
         } else if ((heldItem.is(Items.ENCHANTED_BOOK) || heldItem.is(Items.WRITTEN_BOOK)) && heldItem.getCount()==1) {
-            return onTileEntityUse(world, pos, be -> {
+            return onBlockEntityUse(world, pos, be -> {
                 if (be.copyTarget == null) {
                     if (!player.getAbilities().instabuild) player.setItemInHand(hand, ItemStack.EMPTY);
                 } else {
@@ -96,7 +92,7 @@ public class PrinterBlock extends Block implements IWrenchable, ITE<PrinterBlock
                 return InteractionResult.SUCCESS;
             });
         } else if (heldItem.is(Items.NAME_TAG) || heldItem.is(AllItems.SCHEDULE.get())) {
-            return onTileEntityUse(world, pos, be -> {
+            return onBlockEntityUse(world, pos, be -> {
                 var copy = heldItem.copy();
                 copy.setCount(1);
                 if (be.copyTarget == null) {
@@ -116,7 +112,7 @@ public class PrinterBlock extends Block implements IWrenchable, ITE<PrinterBlock
 
     @Override
     public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
-        ITE.onRemove(state,level,pos,newState);
+        IBE.onRemove(state,level,pos,newState);
     }
 
     @Override
@@ -135,12 +131,12 @@ public class PrinterBlock extends Block implements IWrenchable, ITE<PrinterBlock
     }
 
     @Override
-    public Class<PrinterBlockEntity> getTileEntityClass() {
+    public Class<PrinterBlockEntity> getBlockEntityClass() {
         return PrinterBlockEntity.class;
     }
 
     @Override
-    public BlockEntityType<? extends PrinterBlockEntity> getTileEntityType() {
+    public BlockEntityType<? extends PrinterBlockEntity> getBlockEntityType() {
         return CeiBlockEntities.PRINTER.get();
     }
 }

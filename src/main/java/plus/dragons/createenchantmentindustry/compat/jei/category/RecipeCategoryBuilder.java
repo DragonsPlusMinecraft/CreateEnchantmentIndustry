@@ -5,17 +5,16 @@ import com.simibubi.create.compat.jei.DoubleItemIcon;
 import com.simibubi.create.compat.jei.EmptyBackground;
 import com.simibubi.create.compat.jei.ItemIcon;
 import com.simibubi.create.compat.jei.category.CreateRecipeCategory;
-import com.simibubi.create.foundation.config.AllConfigs;
-import com.simibubi.create.foundation.config.CRecipes;
 import com.simibubi.create.foundation.config.ConfigBase;
-import com.simibubi.create.foundation.utility.recipe.IRecipeTypeInfo;
+import com.simibubi.create.foundation.recipe.IRecipeTypeInfo;
+import com.simibubi.create.infrastructure.config.AllConfigs;
+import com.simibubi.create.infrastructure.config.CRecipes;
 import mezz.jei.api.gui.drawable.IDrawable;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.ItemLike;
-import org.apache.http.util.LangUtils;
 import plus.dragons.createenchantmentindustry.foundation.utility.CeiLang;
 
 import java.util.ArrayList;
@@ -189,7 +188,7 @@ public class RecipeCategoryBuilder<T extends Recipe<?>> {
     
     public CreateRecipeCategory<T> build(String name, CreateRecipeCategory.Factory<T> factory) {
         Supplier<List<T>> recipesSupplier;
-        if (predicate.test(AllConfigs.SERVER.recipes)) {
+        if (predicate.test(AllConfigs.server().recipes)) {
             recipesSupplier = () -> {
                 List<T> recipes = new ArrayList<>();
                 for (Consumer<List<T>> consumer : recipeListConsumers)

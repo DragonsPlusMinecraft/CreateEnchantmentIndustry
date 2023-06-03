@@ -2,11 +2,11 @@ package plus.dragons.createenchantmentindustry.content.contraptions.enchanting.d
 
 import com.jozufozu.flywheel.util.transform.TransformStack;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.simibubi.create.content.contraptions.relays.belt.transport.TransportedItemStack;
+import com.simibubi.create.content.kinetics.belt.transport.TransportedItemStack;
+import com.simibubi.create.foundation.blockEntity.behaviour.fluid.SmartFluidTankBehaviour;
+import com.simibubi.create.foundation.blockEntity.renderer.SmartBlockEntityRenderer;
 import com.simibubi.create.foundation.fluid.FluidRenderer;
 import com.simibubi.create.foundation.render.ShadowRenderHelper;
-import com.simibubi.create.foundation.tileEntity.behaviour.fluid.SmartFluidTankBehaviour;
-import com.simibubi.create.foundation.tileEntity.renderer.SmartTileEntityRenderer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
@@ -21,7 +21,7 @@ import net.minecraftforge.fluids.FluidStack;
 
 import java.util.Random;
 
-public class DisenchanterRenderer extends SmartTileEntityRenderer<DisenchanterBlockEntity> {
+public class DisenchanterRenderer extends SmartBlockEntityRenderer<DisenchanterBlockEntity> {
     public DisenchanterRenderer(BlockEntityRendererProvider.Context context) {
         super(context);
     }

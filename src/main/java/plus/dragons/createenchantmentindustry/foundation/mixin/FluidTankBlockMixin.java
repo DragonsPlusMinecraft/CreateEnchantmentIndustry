@@ -1,12 +1,12 @@
 package plus.dragons.createenchantmentindustry.foundation.mixin;
 
 import com.simibubi.create.api.connectivity.ConnectivityHandler;
-import com.simibubi.create.content.contraptions.fluids.tank.CreativeFluidTankTileEntity;
-import com.simibubi.create.content.contraptions.fluids.tank.FluidTankBlock;
-import com.simibubi.create.content.contraptions.fluids.tank.FluidTankTileEntity;
-import com.simibubi.create.content.contraptions.processing.BasinTileEntity;
-import com.simibubi.create.content.contraptions.wrench.IWrenchable;
-import com.simibubi.create.foundation.block.ITE;
+import com.simibubi.create.content.equipment.wrench.IWrenchable;
+import com.simibubi.create.content.fluids.tank.CreativeFluidTankBlockEntity;
+import com.simibubi.create.content.fluids.tank.FluidTankBlock;
+import com.simibubi.create.content.fluids.tank.FluidTankBlockEntity;
+import com.simibubi.create.content.processing.basin.BasinBlockEntity;
+import com.simibubi.create.foundation.block.IBE;
 import com.simibubi.create.foundation.utility.VecHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
@@ -21,7 +21,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import plus.dragons.createenchantmentindustry.content.contraptions.fluids.experience.ExperienceFluid;
 
 @Mixin(FluidTankBlock.class)
-public abstract class FluidTankBlockMixin extends Block implements ITE<BasinTileEntity>, IWrenchable {
+public abstract class FluidTankBlockMixin extends Block implements IBE<FluidTankBlockEntity>, IWrenchable {
     public FluidTankBlockMixin(Properties pProperties) {
         super(pProperties);
     }
@@ -32,9 +32,9 @@ public abstract class FluidTankBlockMixin extends Block implements ITE<BasinTile
         if(!(level instanceof ServerLevel serverLevel))
             return;
         BlockEntity be = level.getBlockEntity(pos);
-        if (!(be instanceof FluidTankTileEntity tankBE) || be instanceof CreativeFluidTankTileEntity)
+        if (!(be instanceof FluidTankBlockEntity tankBE) || be instanceof CreativeFluidTankBlockEntity)
             return;
-        var controllerBE = tankBE.getControllerTE();
+        var controllerBE = tankBE.getControllerBE();
         var fluidStack = controllerBE.getFluid(0);
         var fluidStackBackup = fluidStack.copy();
         var maxSize = controllerBE.getTotalTankSize();
@@ -44,7 +44,7 @@ public abstract class FluidTankBlockMixin extends Block implements ITE<BasinTile
             if (maxSize == 1) {
                 expFluid.drop(serverLevel, VecHelper.getCenterOf(pos), fluidStackBackup.getAmount());
             } else {
-                var total = maxSize * (FluidTankTileEntity.getCapacityMultiplier() - 1);
+                var total = maxSize * (FluidTankBlockEntity.getCapacityMultiplier() - 1);
                 var leftover = fluidStackBackup.getAmount() - total;
                 if(leftover > 0) {
                     expFluid.drop(serverLevel, VecHelper.getCenterOf(pos), leftover);

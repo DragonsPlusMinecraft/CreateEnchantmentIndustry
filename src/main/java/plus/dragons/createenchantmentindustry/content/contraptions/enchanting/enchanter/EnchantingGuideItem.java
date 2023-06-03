@@ -1,7 +1,7 @@
 package plus.dragons.createenchantmentindustry.content.contraptions.enchanting.enchanter;
 
-import com.simibubi.create.content.contraptions.processing.burner.BlazeBurnerBlock;
-import com.simibubi.create.content.contraptions.processing.burner.BlazeBurnerTileEntity;
+import com.simibubi.create.content.processing.burner.BlazeBurnerBlock;
+import com.simibubi.create.content.processing.burner.BlazeBurnerBlockEntity;
 import com.simibubi.create.foundation.advancement.AdvancementBehaviour;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
@@ -52,7 +52,7 @@ public class EnchantingGuideItem extends Item implements MenuProvider {
                 var blockState = level.getBlockState(blockPos);
                 var blockEntity = level.getBlockEntity(blockPos);
                 if (blockState.getBlock() instanceof BlazeBurnerBlock &&
-                        blockEntity instanceof BlazeBurnerTileEntity) {
+                        blockEntity instanceof BlazeBurnerBlockEntity) {
                     if (!level.isClientSide()) {
                         level.setBlockAndUpdate(blockPos, CeiBlocks.BLAZE_ENCHANTER.getDefaultState()
                             .setValue(BlazeEnchanterBlock.FACING, level.getBlockState(blockPos).getValue(BlazeBurnerBlock.FACING))

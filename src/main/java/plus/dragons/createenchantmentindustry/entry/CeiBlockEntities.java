@@ -16,37 +16,23 @@ import plus.dragons.createenchantmentindustry.content.contraptions.enchanting.en
 public class CeiBlockEntities {
 
     public static final BlockEntityEntry<DisenchanterBlockEntity> DISENCHANTER = EnchantmentIndustry.registrate()
-            .tileEntity("disenchanter", DisenchanterBlockEntity::new)
+            .blockEntity("disenchanter", DisenchanterBlockEntity::new)
             .validBlocks(CeiBlocks.DISENCHANTER)
             .renderer(() -> DisenchanterRenderer::new)
             .register();
 
     public static final BlockEntityEntry<PrinterBlockEntity> PRINTER = EnchantmentIndustry.registrate()
-            .tileEntity("printer", PrinterBlockEntity::new)
+            .blockEntity("printer", PrinterBlockEntity::new)
             .validBlocks(CeiBlocks.PRINTER)
             .renderer(() -> PrinterRenderer::new)
             .register();
 
     public static final BlockEntityEntry<BlazeEnchanterBlockEntity> BLAZE_ENCHANTER = EnchantmentIndustry.registrate()
-            .tileEntity("blaze_enchanter", BlazeEnchanterBlockEntity::new)
+            .blockEntity("blaze_enchanter", BlazeEnchanterBlockEntity::new)
             .validBlocks(CeiBlocks.BLAZE_ENCHANTER)
             .renderer(() -> BlazeEnchanterRenderer::new)
             .register();
-    
-    public static void remap(RegistryEvent.MissingMappings<BlockEntityType<?>> event) {
-        var mappings = event.getMappings(EnchantmentIndustry.ID);
-        var remaps = ImmutableMap.<ResourceLocation, BlockEntityEntry<?>>builder()
-            .put(EnchantmentIndustry.genRL("copier_machine"), PRINTER)
-            .put(EnchantmentIndustry.genRL("blaze_enchanting_later"), BLAZE_ENCHANTER)
-            .build();
-        for (var mapping : mappings) {
-            var remap = remaps.get(mapping.key);
-            if (remap != null) {
-                mapping.remap(remap.get());
-                EnchantmentIndustry.LOGGER.warn("Remapping block entity [{}] to [{}]...", mapping.key, remap.getId());
-            }
-        }
-    }
+
 
     public static void register() {}
     

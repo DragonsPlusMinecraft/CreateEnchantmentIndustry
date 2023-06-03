@@ -81,10 +81,6 @@ repositories {
         url 'https://maven.tterrag.com/'
     }
     maven {
-        name 'Progwml6 Maven'
-        url 'https://dvs1.progwml6.com/files/maven'
-    }
-    maven {
         name 'Blamejared Maven'
         url 'https://maven.blamejared.com'
     }
@@ -104,9 +100,9 @@ repositories {
 dependencies {
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
 
-    implementation fg.deobf("com.simibubi.create:create-${create_minecraft_version}:${create_version}-${create_version_build}:all") { transitive = false }
+    implementation fg.deobf("com.simibubi.create:create-${create_minecraft_version}:${create_version}-${create_version_build}:slim") { transitive = false }
     implementation fg.deobf("com.jozufozu.flywheel:flywheel-forge-${flywheel_minecraft_version}:${flywheel_version}")
-    compileOnly fg.deobf("com.tterrag.registrate:Registrate:${registrate_version}")
+    implementation fg.deobf("com.tterrag.registrate:Registrate:${registrate_version}")
 
     compileOnly fg.deobf("mezz.jei:jei-${jei_minecraft_version}:${jei_version}:api")
     implementation fg.deobf("mezz.jei:jei-${jei_minecraft_version}:${jei_version}")

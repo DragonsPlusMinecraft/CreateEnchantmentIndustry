@@ -1,6 +1,6 @@
 package plus.dragons.createenchantmentindustry.api.event;
 
-import com.simibubi.create.foundation.item.CreateItemGroupBase;
+import com.simibubi.create.infrastructure.item.CreateCreativeModeTab;
 import net.minecraft.core.NonNullList;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -11,16 +11,16 @@ import org.jetbrains.annotations.ApiStatus;
 import java.util.*;
 
 public class FillCreateItemGroupEvent extends Event {
-    private final CreateItemGroupBase itemGroup;
+    private final CreateCreativeModeTab itemGroup;
     private final NonNullList<ItemStack> items;
     private final Map<Item, List<ItemStack>> insertions = new IdentityHashMap<>();
     
-    public FillCreateItemGroupEvent(CreateItemGroupBase itemGroup, NonNullList<ItemStack> items) {
+    public FillCreateItemGroupEvent(CreateCreativeModeTab itemGroup, NonNullList<ItemStack> items) {
         this.itemGroup = itemGroup;
         this.items = items;
     }
     
-    public CreateItemGroupBase getItemGroup() {
+    public CreateCreativeModeTab getItemGroup() {
         return itemGroup;
     }
     

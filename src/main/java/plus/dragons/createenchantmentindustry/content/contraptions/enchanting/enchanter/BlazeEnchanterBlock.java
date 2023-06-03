@@ -3,12 +3,12 @@ package plus.dragons.createenchantmentindustry.content.contraptions.enchanting.e
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.AllItems;
 import com.simibubi.create.AllShapes;
-import com.simibubi.create.content.contraptions.processing.burner.BlazeBurnerBlock;
-import com.simibubi.create.content.contraptions.relays.belt.transport.TransportedItemStack;
-import com.simibubi.create.content.contraptions.wrench.IWrenchable;
+import com.simibubi.create.content.equipment.wrench.IWrenchable;
+import com.simibubi.create.content.kinetics.belt.transport.TransportedItemStack;
+import com.simibubi.create.content.processing.burner.BlazeBurnerBlock;
 import com.simibubi.create.foundation.advancement.AdvancementBehaviour;
-import com.simibubi.create.foundation.block.ITE;
-import com.simibubi.create.foundation.tileEntity.ComparatorUtil;
+import com.simibubi.create.foundation.block.IBE;
+import com.simibubi.create.foundation.blockEntity.ComparatorUtil;
 import com.simibubi.create.foundation.utility.Lang;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
@@ -43,7 +43,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @SuppressWarnings("deprecation")
-public class BlazeEnchanterBlock extends HorizontalDirectionalBlock implements IWrenchable, ITE<BlazeEnchanterBlockEntity> {
+public class BlazeEnchanterBlock extends HorizontalDirectionalBlock implements IWrenchable, IBE<BlazeEnchanterBlockEntity> {
 
     public static final EnumProperty<HeatLevel> HEAT_LEVEL = EnumProperty.create("blaze", HeatLevel.class);
     public BlazeEnchanterBlock(Properties pProperties) {
@@ -52,12 +52,12 @@ public class BlazeEnchanterBlock extends HorizontalDirectionalBlock implements I
     }
 
     @Override
-    public Class<BlazeEnchanterBlockEntity> getTileEntityClass() {
+    public Class<BlazeEnchanterBlockEntity> getBlockEntityClass() {
         return BlazeEnchanterBlockEntity.class;
     }
 
     @Override
-    public BlockEntityType<? extends BlazeEnchanterBlockEntity> getTileEntityType() {
+    public BlockEntityType<? extends BlazeEnchanterBlockEntity> getBlockEntityType() {
         return CeiBlockEntities.BLAZE_ENCHANTER.get();
     }
     
@@ -79,14 +79,14 @@ public class BlazeEnchanterBlock extends HorizontalDirectionalBlock implements I
 
     @Override
     public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
-        ITE.onRemove(state,level,pos,newState);
+        IBE.onRemove(state,level,pos,newState);
     }
 
     @Override
     public InteractionResult use(BlockState state, Level worldIn, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hit) {
         ItemStack heldItem = player.getItemInHand(handIn);
         if (!heldItem.isEmpty()){
-            return onTileEntityUse(worldIn, pos, te -> {
+            return onBlockEntityUse(worldIn, pos, te -> {
                 if(heldItem.is(CeiItems.ENCHANTING_GUIDE.get())){
                     if (!worldIn.isClientSide) {
                         var target = te.targetItem.copy();
@@ -121,7 +121,7 @@ public class BlazeEnchanterBlock extends HorizontalDirectionalBlock implements I
             if(player.isShiftKeyDown()){
                 if(!player.level.isClientSide()){
                     if(player.level.getBlockEntity(pos) instanceof BlazeEnchanterBlockEntity blazeEnchanter){
-                        withTileEntityDo(player.level, pos,
+                        withBlockEntityDo(player.level, pos,
                                 toolbox -> NetworkHooks.openGui((ServerPlayer) player,
                                         blazeEnchanter, buf -> {
                                     buf.writeItem(blazeEnchanter.targetItem);
@@ -132,7 +132,7 @@ public class BlazeEnchanterBlock extends HorizontalDirectionalBlock implements I
                 }
                 return InteractionResult.SUCCESS;
             } else {
-                return onTileEntityUse(worldIn, pos, te -> {
+                return onBlockEntityUse(worldIn, pos, te -> {
                     ItemStack heldItemStack = te.getHeldItemStack();
                     if (!heldItemStack.isEmpty()) {
                         if (!worldIn.isClientSide) {

@@ -1,6 +1,6 @@
 package plus.dragons.createenchantmentindustry.content.contraptions.enchanting.disenchanter;
 
-import com.simibubi.create.content.contraptions.relays.belt.transport.TransportedItemStack;
+import com.simibubi.create.content.kinetics.belt.transport.TransportedItemStack;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.items.IItemHandler;

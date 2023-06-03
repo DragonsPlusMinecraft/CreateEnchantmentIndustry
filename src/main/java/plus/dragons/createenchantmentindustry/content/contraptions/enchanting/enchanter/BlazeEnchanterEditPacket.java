@@ -8,8 +8,6 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.network.NetworkEvent;
 
-import java.util.function.Supplier;
-
 public class BlazeEnchanterEditPacket extends SimplePacketBase {
 
     private int index;
@@ -37,26 +35,23 @@ public class BlazeEnchanterEditPacket extends SimplePacketBase {
     }
 
     @Override
-    public void handle(Supplier<NetworkEvent.Context> context) {
-        context.get()
-                .enqueueWork(() -> {
-                    // TODO
-                    ServerPlayer sender = context.get()
-                            .getSender();
-                    if(!(sender.level.getBlockEntity(blockPos) instanceof BlazeEnchanterBlockEntity blazeEnchanter))
-                        return;
+    public boolean handle(NetworkEvent.Context context) {
+        context.enqueueWork(() -> {
+            ServerPlayer sender = context.getSender();
+            if (!(sender.level.getBlockEntity(blockPos) instanceof BlazeEnchanterBlockEntity blazeEnchanter))
+                return;
 
-                    CompoundTag tag = blazeEnchanter.targetItem.getOrCreateTag();
-                    tag.putInt("index", index);
-                    tag.put("target", itemStack.serializeNBT());
+            CompoundTag tag = blazeEnchanter.targetItem.getOrCreateTag();
+            tag.putInt("index", index);
+            tag.put("target", itemStack.serializeNBT());
 
-                    if(blazeEnchanter.processingTicks>5){
-                        blazeEnchanter.processingTicks = BlazeEnchanterBlockEntity.ENCHANTING_TIME;
-                    }
+            if (blazeEnchanter.processingTicks > 5) {
+                blazeEnchanter.processingTicks = BlazeEnchanterBlockEntity.ENCHANTING_TIME;
+            }
 
-                    blazeEnchanter.notifyUpdate();
-                });
-        context.get()
-                .setPacketHandled(true);
+            blazeEnchanter.notifyUpdate();
+        });
+        context.setPacketHandled(true);
+        return context.getPacketHandled();
     }
 }

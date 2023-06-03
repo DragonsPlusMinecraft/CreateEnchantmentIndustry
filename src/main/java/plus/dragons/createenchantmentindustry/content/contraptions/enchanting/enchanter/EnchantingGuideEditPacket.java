@@ -33,23 +33,21 @@ public class EnchantingGuideEditPacket extends SimplePacketBase {
     }
 
     @Override
-    public void handle(Supplier<NetworkEvent.Context> context) {
-        context.get()
-                .enqueueWork(() -> {
-                    ServerPlayer sender = context.get()
-                            .getSender();
-                    ItemStack mainHandItem = sender.getMainHandItem();
-                    if (!CeiItems.ENCHANTING_GUIDE.isIn(mainHandItem))
-                        return;
+    public boolean handle(NetworkEvent.Context context) {
+        context.enqueueWork(() -> {
+            ServerPlayer sender = context.getSender();
+            ItemStack mainHandItem = sender.getMainHandItem();
+            if (!CeiItems.ENCHANTING_GUIDE.isIn(mainHandItem))
+                return;
 
-                    CompoundTag tag = mainHandItem.getOrCreateTag();
-                    tag.putInt("index", index);
-                    tag.put("target", itemStack.serializeNBT());
+            CompoundTag tag = mainHandItem.getOrCreateTag();
+            tag.putInt("index", index);
+            tag.put("target", itemStack.serializeNBT());
 
-                    sender.getCooldowns()
-                            .addCooldown(mainHandItem.getItem(), 5);
-                });
-        context.get()
-                .setPacketHandled(true);
+            sender.getCooldowns()
+                    .addCooldown(mainHandItem.getItem(), 5);
+        });
+        context.setPacketHandled(true);
+        return context.getPacketHandled();
     }
 }

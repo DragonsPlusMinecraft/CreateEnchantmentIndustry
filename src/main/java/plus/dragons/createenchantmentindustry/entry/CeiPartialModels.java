@@ -3,7 +3,7 @@ package plus.dragons.createenchantmentindustry.entry;
 import com.jozufozu.flywheel.core.PartialModel;
 import plus.dragons.createenchantmentindustry.EnchantmentIndustry;
 
-public class CeiBlockPartials {
+public class CeiPartialModels {
     
     public static final PartialModel
         PRINTER_TOP = block("printer/top"),

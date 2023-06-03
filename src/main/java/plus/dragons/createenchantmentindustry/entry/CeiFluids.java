@@ -1,7 +1,6 @@
 package plus.dragons.createenchantmentindustry.entry;
 
-import com.simibubi.create.Create;
-import com.simibubi.create.content.AllSections;
+import com.simibubi.create.AllCreativeModeTabs;
 import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.tterrag.registrate.util.entry.FluidEntry;
 import net.minecraft.core.BlockPos;
@@ -21,7 +20,7 @@ import plus.dragons.createenchantmentindustry.content.contraptions.fluids.experi
 public class CeiFluids {
     
     private static final CreateRegistrate REGISTRATE = EnchantmentIndustry.registrate()
-        .creativeModeTab(() -> Create.BASE_CREATIVE_TAB).startSection(AllSections.MATERIALS);
+            .creativeModeTab(() -> AllCreativeModeTabs.BASE_CREATIVE_TAB);
 
     public static final ResourceLocation EXPERIENCE_STILL_RL = EnchantmentIndustry.genRL("fluid/experience_still");
     public static final ResourceLocation EXPERIENCE_FLOW_RL = EnchantmentIndustry.genRL("fluid/experience_flow");

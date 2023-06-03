@@ -1,7 +1,6 @@
 package plus.dragons.createenchantmentindustry;
 
 import com.simibubi.create.AllItems;
-import com.simibubi.create.content.contraptions.components.crusher.CrushingWheelTileEntity;
 import com.simibubi.create.foundation.data.CreateRegistrate;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.resources.ResourceLocation;
@@ -65,12 +64,8 @@ public class EnchantmentIndustry {
     }
 
     private void registerForgeEvents(IEventBus forgeEventBus) {
-        forgeEventBus.addGenericListener(Block.class, CeiBlocks::remap);
-        forgeEventBus.addGenericListener(BlockEntityType.class, CeiBlockEntities::remap);
-        forgeEventBus.addGenericListener(Item.class, CeiItems::remap);
         forgeEventBus.addListener(CeiItems::fillCreateItemGroup);
         forgeEventBus.addListener(CeiFluids::handleInkEffect);
-        forgeEventBus.addListener(EnchantmentIndustry::appendExpDropOnCrushingWheelKill);
     }
 
     @SubscribeEvent
@@ -95,17 +90,6 @@ public class EnchantmentIndustry {
         return new ResourceLocation(ID, name);
     }
 
-    @SuppressWarnings("all")
-    public static void appendExpDropOnCrushingWheelKill(LivingDropsEvent event){
-        if (event.getSource() != CrushingWheelTileEntity.DAMAGE_SOURCE)
-            return;
-        if(event.getDrops().isEmpty()) return;
-        if(Math.random()<CeiConfigs.SERVER.crushingWheelDropExpRate.get()){
-            var sample = event.getDrops().stream().findAny().get();
-            event.getDrops().add(new ItemEntity(sample.level,sample.getX(),sample.getY(),sample.getZ(),
-                    new ItemStack(AllItems.EXP_NUGGET.get()),sample.getDeltaMovement().x,sample.getDeltaMovement().y,sample.getDeltaMovement().z));
-        }
-    }
 
     public static CreateRegistrate registrate() {
         return REGISTRATE;

@@ -11,7 +11,7 @@ import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import plus.dragons.createenchantmentindustry.content.contraptions.enchanting.enchanter.BlazeEnchanterRenderer;
 import plus.dragons.createenchantmentindustry.content.contraptions.fluids.ink.InkRenderingCamera;
-import plus.dragons.createenchantmentindustry.entry.CeiBlockPartials;
+import plus.dragons.createenchantmentindustry.entry.CeiPartialModels;
 import plus.dragons.createenchantmentindustry.foundation.config.CeiConfigs;
 import plus.dragons.createenchantmentindustry.foundation.ponder.content.CeiPonderIndex;
 
@@ -22,7 +22,7 @@ public class EnchantmentIndustryClient {
         IEventBus forgeEventBus = MinecraftForge.EVENT_BUS;
         //Have to do this here because flywheel lied about the init timing ;(
         //Things won't work if you try init PartialModels in FMLClientSetupEvent
-        CeiBlockPartials.register();
+        CeiPartialModels.register();
         modEventBus.register(this);
         registerForgeEvents(forgeEventBus);
     }

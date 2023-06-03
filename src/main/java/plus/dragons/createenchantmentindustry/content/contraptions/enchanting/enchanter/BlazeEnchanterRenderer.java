@@ -5,11 +5,11 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Quaternion;
 import com.mojang.math.Vector3f;
-import com.simibubi.create.AllBlockPartials;
-import com.simibubi.create.content.contraptions.relays.belt.transport.TransportedItemStack;
+import com.simibubi.create.AllPartialModels;
+import com.simibubi.create.content.kinetics.belt.transport.TransportedItemStack;
+import com.simibubi.create.foundation.blockEntity.renderer.SmartBlockEntityRenderer;
 import com.simibubi.create.foundation.render.CachedBufferer;
 import com.simibubi.create.foundation.render.SuperByteBuffer;
-import com.simibubi.create.foundation.tileEntity.renderer.SmartTileEntityRenderer;
 import com.simibubi.create.foundation.utility.AngleHelper;
 import com.simibubi.create.foundation.utility.AnimationTickHolder;
 import net.minecraft.client.Minecraft;
@@ -33,7 +33,7 @@ import plus.dragons.createenchantmentindustry.content.contraptions.enchanting.en
 
 import static plus.dragons.createenchantmentindustry.content.contraptions.enchanting.enchanter.BlazeEnchanterBlockEntity.ENCHANTING_TIME;
 
-public class BlazeEnchanterRenderer extends SmartTileEntityRenderer<BlazeEnchanterBlockEntity> {
+public class BlazeEnchanterRenderer extends SmartBlockEntityRenderer<BlazeEnchanterBlockEntity> {
     public static final Material BOOK_MATERIAL = ForgeHooksClient.getBlockMaterial(EnchantmentIndustry.genRL("block/blaze_enchanter_book"));
     private static final float PI = 3.14159265358979323846f;
     private final BookModel bookModel;
@@ -127,9 +127,9 @@ public class BlazeEnchanterRenderer extends SmartTileEntityRenderer<BlazeEnchant
         ps.translate(0, .125, 0);
         
         PartialModel blazeModel = switch(heatLevel) {
-            case SEETHING -> active ? AllBlockPartials.BLAZE_SUPER_ACTIVE : AllBlockPartials.BLAZE_SUPER;
-            case KINDLED -> active ? AllBlockPartials.BLAZE_ACTIVE : AllBlockPartials.BLAZE_IDLE;
-            default -> AllBlockPartials.BLAZE_INERT;
+            case SEETHING -> active ? AllPartialModels.BLAZE_SUPER_ACTIVE : AllPartialModels.BLAZE_SUPER;
+            case KINDLED -> active ? AllPartialModels.BLAZE_ACTIVE : AllPartialModels.BLAZE_IDLE;
+            default -> AllPartialModels.BLAZE_INERT;
         };
         
         SuperByteBuffer blazeBuffer = CachedBufferer.partial(blazeModel, blockState);
@@ -137,8 +137,8 @@ public class BlazeEnchanterRenderer extends SmartTileEntityRenderer<BlazeEnchant
         draw(blazeBuffer, horizontalAngle, ps, solid);
         
         if (be.goggles) {
-            PartialModel gogglesModel = blazeModel == AllBlockPartials.BLAZE_INERT
-                ? AllBlockPartials.BLAZE_GOGGLES_SMALL : AllBlockPartials.BLAZE_GOGGLES;
+            PartialModel gogglesModel = blazeModel == AllPartialModels.BLAZE_INERT
+                ? AllPartialModels.BLAZE_GOGGLES_SMALL : AllPartialModels.BLAZE_GOGGLES;
             
             SuperByteBuffer gogglesBuffer = CachedBufferer.partial(gogglesModel, blockState);
             gogglesBuffer.translate(0, headY + 8 / 16f, 0);
@@ -147,11 +147,11 @@ public class BlazeEnchanterRenderer extends SmartTileEntityRenderer<BlazeEnchant
         
         if (!smouldering) {
             PartialModel rodsModel = heatLevel == HeatLevel.SEETHING
-                ? AllBlockPartials.BLAZE_BURNER_SUPER_RODS
-                : AllBlockPartials.BLAZE_BURNER_RODS;
+                ? AllPartialModels.BLAZE_BURNER_SUPER_RODS
+                : AllPartialModels.BLAZE_BURNER_RODS;
             PartialModel rodsModel2 = heatLevel == HeatLevel.SEETHING
-                ? AllBlockPartials.BLAZE_BURNER_SUPER_RODS_2
-                : AllBlockPartials.BLAZE_BURNER_RODS_2;
+                ? AllPartialModels.BLAZE_BURNER_SUPER_RODS_2
+                : AllPartialModels.BLAZE_BURNER_RODS_2;
             SuperByteBuffer rodsBuffer = CachedBufferer.partial(rodsModel, blockState);
             rodsBuffer.translate(0, offset1 + animation + .125f, 0)
                 .light(LightTexture.FULL_BRIGHT)

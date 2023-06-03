@@ -2,24 +2,24 @@ package plus.dragons.createenchantmentindustry.content.contraptions.enchanting.p
 
 import com.jozufozu.flywheel.core.PartialModel;
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.simibubi.create.foundation.blockEntity.behaviour.fluid.SmartFluidTankBehaviour;
+import com.simibubi.create.foundation.blockEntity.renderer.SmartBlockEntityRenderer;
 import com.simibubi.create.foundation.fluid.FluidRenderer;
 import com.simibubi.create.foundation.render.CachedBufferer;
-import com.simibubi.create.foundation.tileEntity.behaviour.fluid.SmartFluidTankBehaviour;
-import com.simibubi.create.foundation.tileEntity.renderer.SmartTileEntityRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.fluids.FluidStack;
-import plus.dragons.createenchantmentindustry.entry.CeiBlockPartials;
+import plus.dragons.createenchantmentindustry.entry.CeiPartialModels;
 
-public class PrinterRenderer extends SmartTileEntityRenderer<PrinterBlockEntity> {
+public class PrinterRenderer extends SmartBlockEntityRenderer<PrinterBlockEntity> {
     public PrinterRenderer(BlockEntityRendererProvider.Context context) {
         super(context);
     }
     
-    private static final PartialModel[] TUBE = { CeiBlockPartials.PRINTER_TOP, CeiBlockPartials.PRINTER_MIDDLE};
+    private static final PartialModel[] TUBE = { CeiPartialModels.PRINTER_TOP, CeiPartialModels.PRINTER_MIDDLE};
     
     @Override
     protected void renderSafe(PrinterBlockEntity be, float partialTicks, PoseStack ms, MultiBufferSource buffer, int light, int overlay) {
@@ -71,7 +71,7 @@ public class PrinterRenderer extends SmartTileEntityRenderer<PrinterBlockEntity>
         
         BlockState blockState = be.getBlockState();
         CachedBufferer
-            .partial(CeiBlockPartials.PRINTER_BOTTOM, blockState)
+            .partial(CeiPartialModels.PRINTER_BOTTOM, blockState)
             .translate(0, squeeze / 2f, 0)
             .light(light)
             .renderInto(ms, buffer.getBuffer(RenderType.solid()));

@@ -10,7 +10,6 @@ import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
 import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
 import plus.dragons.createenchantmentindustry.content.contraptions.enchanting.disenchanter.DisenchantRecipe;
-import plus.dragons.createenchantmentindustry.entry.CeiFluids;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
