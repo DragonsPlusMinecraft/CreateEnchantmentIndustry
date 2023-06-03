@@ -12,6 +12,7 @@ import net.minecraft.world.item.EnchantedBookItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -20,6 +21,7 @@ import plus.dragons.createenchantmentindustry.EnchantmentIndustry;
 import plus.dragons.createenchantmentindustry.api.PrintEntryRegisterEvent;
 import plus.dragons.createenchantmentindustry.content.contraptions.enchanting.printer.PrintEntry;
 import plus.dragons.createenchantmentindustry.content.contraptions.enchanting.printer.Printing;
+import plus.dragons.createenchantmentindustry.entry.CeiFluids;
 import plus.dragons.createenchantmentindustry.foundation.config.CeiConfigs;
 import plus.dragons.createenchantmentindustry.foundation.utility.CeiLang;
 
@@ -55,12 +57,17 @@ public class QuarkCompat {
 
             @Override
             public int requiredInkAmount(@NotNull ItemStack target) {
-                return 160;
+                return 50;
+            }
+
+            @Override
+            public @NotNull Fluid requiredInkType() {
+                return CeiFluids.HYPER_EXPERIENCE.get();
             }
 
             @Override
             public boolean isTooExpensive(@NotNull ItemStack target, int limit) {
-                return limit<160;
+                return limit<50;
             }
 
             @Override
@@ -76,7 +83,7 @@ public class QuarkCompat {
                     tooltip.add(new TextComponent("     ").append(CeiLang.translate(
                             "gui.goggles.xp_consumption",
                             String.valueOf(requiredInkAmount(target))).component()
-                    ).withStyle(ChatFormatting.GREEN));
+                    ).withStyle(ChatFormatting.AQUA));
 
                 var e = getTomeEnchantment(target);
                 if(e!=null){
@@ -90,7 +97,7 @@ public class QuarkCompat {
                 var e = getTomeEnchantment(target);
                 if(e!=null){
                     ret.text( " / ");
-                    ret.add(getFullTooltipText(e).copy().withStyle(ChatFormatting.DARK_PURPLE));
+                    ret.add(getFullTooltipText(e).copy());
                 }
                 return ret.component();
             }
