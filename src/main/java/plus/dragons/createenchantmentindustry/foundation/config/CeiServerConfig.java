@@ -25,6 +25,10 @@ public class CeiServerConfig extends ConfigBase {
         "deployerXpDropChance",
         Comments.deployerXpDropChance);
     public final ConfigBool enableHyperEnchant = b(true, "enableHyperEnchant");
+
+    public final ConfigInt copyWrittenBookCostPerPage = i(5, 1, 100,
+            "copyWrittenBookCostPerPage",
+            Comments.copyWrittenBookCostPerPage);
     public final ConfigInt copyNameTagCost = i(7, 1, 1000,
             "copyNameTagCost",
             Comments.copyNameTagCost);
@@ -57,6 +61,7 @@ public class CeiServerConfig extends ConfigBase {
             "The Maximum Extended Levels beyond Enchantment's Max Level that can be reached through Hyper-Enchanting";
         static String deployerXpDropChance =
             "The Chance of whether Deployer-killed entities will drop Nugget of Experience";
+        static String copyWrittenBookCostPerPage = "The amount of ink needed to be consumed by Copying one page of Written Book.";
         static String copyNameTagCost = "The amount of liquid experience needed to be consumed by Copying Name Tag.";
         static String copyTrainScheduleCost = "The amount of ink needed to be consumed by Copying Train Schedule.";
         static String crushingWheelDropExpRate = "The probability of dropping Experience Nugget after killing a creature on the Crushing Wheel.";

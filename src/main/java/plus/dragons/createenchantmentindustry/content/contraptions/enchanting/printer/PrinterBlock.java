@@ -1,7 +1,6 @@
 package plus.dragons.createenchantmentindustry.content.contraptions.enchanting.printer;
 
 import com.simibubi.create.AllBlocks;
-import com.simibubi.create.AllItems;
 import com.simibubi.create.AllShapes;
 import com.simibubi.create.content.equipment.wrench.IWrenchable;
 import com.simibubi.create.foundation.advancement.AdvancementBehaviour;
@@ -13,7 +12,6 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
@@ -61,49 +59,30 @@ public class PrinterBlock extends Block implements IWrenchable, IBE<PrinterBlock
     public boolean canSurvive(BlockState state, LevelReader worldIn, BlockPos pos) {
         return !AllBlocks.BASIN.has(worldIn.getBlockState(pos.below()));
     }
-
+    
     @Override
     public InteractionResult use(BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand,
                                  BlockHitResult blockRayTraceResult) {
         ItemStack heldItem = player.getItemInHand(hand);
-
         if (heldItem.isEmpty()) {
             return onBlockEntityUse(world, pos, be -> {
-                if (be.copyTarget != null) {
-                    player.setItemInHand(hand, be.copyTarget);
-                    be.tooExpensive = false;
-                    be.copyTarget = null;
-                    be.processingTicks = -1;
-                    be.notifyUpdate();
+                if (!be.getCopyTarget().isEmpty()) {
+                    player.setItemInHand(hand, be.getCopyTarget());
+                    be.setCopyTarget(ItemStack.EMPTY);
                     return InteractionResult.SUCCESS;
                 } else return InteractionResult.PASS;
             });
-        } else if ((heldItem.is(Items.ENCHANTED_BOOK) || heldItem.is(Items.WRITTEN_BOOK)) && heldItem.getCount()==1) {
+        }
+        var copy = heldItem.copy();
+        copy.setCount(1);
+        if(Printing.match(copy)!=null){
             return onBlockEntityUse(world, pos, be -> {
-                if (be.copyTarget == null) {
-                    if (!player.getAbilities().instabuild) player.setItemInHand(hand, ItemStack.EMPTY);
-                } else {
-                    player.setItemInHand(hand, be.copyTarget);
-                }
-                be.tooExpensive = CopyingBook.isTooExpensive(heldItem, CeiConfigs.SERVER.copierTankCapacity.get());
-                be.copyTarget = heldItem;
-                be.processingTicks = -1;
-                be.notifyUpdate();
-                return InteractionResult.SUCCESS;
-            });
-        } else if (heldItem.is(Items.NAME_TAG) || heldItem.is(AllItems.SCHEDULE.get())) {
-            return onBlockEntityUse(world, pos, be -> {
-                var copy = heldItem.copy();
-                copy.setCount(1);
-                if (be.copyTarget == null) {
+                if (be.getCopyTarget().isEmpty()) {
                     if (!player.getAbilities().instabuild) heldItem.shrink(1);
                 } else {
-                    if(player.addItem(be.copyTarget)) player.drop(be.copyTarget,false,true);
+                    if(player.addItem(be.getCopyTarget())) player.drop(be.getCopyTarget(),false,true);
                 }
-                be.tooExpensive = CopyingBook.isTooExpensive(heldItem, CeiConfigs.SERVER.copierTankCapacity.get());
-                be.copyTarget = copy;
-                be.processingTicks = -1;
-                be.notifyUpdate();
+                be.setCopyTarget(copy);
                 return InteractionResult.SUCCESS;
             });
         }
