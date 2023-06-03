@@ -24,6 +24,7 @@ import net.minecraftforge.forge.event.lifecycle.GatherDataEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import plus.dragons.createenchantmentindustry.compat.apotheosis.ApotheosisCompat;
+import plus.dragons.createenchantmentindustry.compat.quark.QuarkCompat;
 import plus.dragons.createenchantmentindustry.content.contraptions.fluids.OpenEndedPipeEffects;
 import plus.dragons.createenchantmentindustry.entry.*;
 import plus.dragons.createenchantmentindustry.foundation.config.CeiConfigs;
@@ -76,6 +77,7 @@ public class EnchantmentIndustry {
             CeiTriggers.register();
             OpenEndedPipeEffects.register();
             ApotheosisCompat.addPotionMixingRecipes();
+            QuarkCompat.registerPrintEntry();
         });
     }
 
