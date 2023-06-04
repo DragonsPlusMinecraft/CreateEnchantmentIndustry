@@ -1,0 +1,30 @@
+{
+  "parent": "create_enchantment_industry:copiable_masterpiece",
+  "criteria": {
+    "builtin": {
+      "conditions": {},
+      "trigger": "create_enchantment_industry:builtin/emerging_brand"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "color": "#DBA213",
+      "translate": "advancement.create_enchantment_industry.emerging_brand.desc"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "minecraft:name_tag"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancement.create_enchantment_industry.emerging_brand"
+    }
+  },
+  "requirements": [
+    [
+      "builtin"
+    ]
+  ]
+}
