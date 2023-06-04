@@ -1,7 +1,6 @@
 package plus.dragons.createenchantmentindustry.content.contraptions.enchanting.printer;
 
 import com.simibubi.create.AllBlocks;
-import com.simibubi.create.AllItems;
 import com.simibubi.create.AllShapes;
 import com.simibubi.create.content.equipment.wrench.IWrenchable;
 import com.simibubi.create.foundation.advancement.AdvancementBehaviour;
@@ -13,7 +12,6 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
@@ -79,10 +77,12 @@ public class PrinterBlock extends Block implements IWrenchable, IBE<PrinterBlock
         copy.setCount(1);
         if(Printing.match(copy)!=null){
             return onBlockEntityUse(world, pos, be -> {
-                if (be.getCopyTarget().isEmpty()) {
-                    if (!player.getAbilities().instabuild) heldItem.shrink(1);
-                } else {
-                    if(player.addItem(be.getCopyTarget())) player.drop(be.getCopyTarget(),false,true);
+                if (!player.getAbilities().instabuild) heldItem.shrink(1);
+                if (!be.getCopyTarget().isEmpty()) {
+                    if(!player.getAbilities().instabuild){
+                        player.setItemInHand(hand, be.getCopyTarget());
+                    }
+                    else player.addItem(be.getCopyTarget());
                 }
                 be.setCopyTarget(copy);
                 return InteractionResult.SUCCESS;
