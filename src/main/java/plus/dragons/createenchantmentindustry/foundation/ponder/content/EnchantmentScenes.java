@@ -463,6 +463,18 @@ public class EnchantmentScenes {
                 .pointAt(util.vector.topOf(2, 3, 2));
         scene.idle(40);
 
+        scene.world.modifyBlockEntity(util.grid.at(2, 1, 5), CreativeFluidTankBlockEntity.class, be -> ((CreativeFluidTankBlockEntity.CreativeSmartFluidTank) be.getTankInventory())
+                .setContainedFluid(new FluidStack(CeiFluids.HYPER_EXPERIENCE.get().getSource(), 1000)));
+        scene.world.modifyBlockEntity(util.grid.at(2, 3, 2), PrinterBlockEntity.class, be ->
+                be.getCapability(ForgeCapabilities.FLUID_HANDLER).ifPresent(tank ->
+                        tank.fill(new FluidStack(CeiFluids.HYPER_EXPERIENCE.get().getSource(), 3000), IFluidHandler.FluidAction.EXECUTE)));
+        scene.overlay.showText(40)
+                .text("If the enchantment on the enchantment book you are copying has a level that exceeds its maximum level, then you will need Hyper Experience.")
+                .attachKeyFrame()
+                .placeNearTarget()
+                .pointAt(util.vector.topOf(2, 3, 2));
+        scene.idle(40);
+
         var item = Items.BOOK.getDefaultInstance();
         BlockPos beltStart = util.grid.at(6, 1, 2);
         ElementLink<BeltItemElement> beltItem = scene.world.createItemOnBelt(beltStart, Direction.DOWN, item);
@@ -493,6 +505,12 @@ public class EnchantmentScenes {
                 .pointAt(util.vector.topOf(2, 3, 2));
         scene.idle(40);
 
+        scene.world.modifyBlockEntity(util.grid.at(2, 1, 5), CreativeFluidTankBlockEntity.class, be -> ((CreativeFluidTankBlockEntity.CreativeSmartFluidTank) be.getTankInventory())
+                .setContainedFluid(new FluidStack(CeiFluids.EXPERIENCE.get().getSource(), 1000)));
+        scene.world.modifyBlockEntity(util.grid.at(2, 3, 2), PrinterBlockEntity.class, be ->
+                be.getCapability(ForgeCapabilities.FLUID_HANDLER).ifPresent(tank ->
+                        tank.fill(new FluidStack(CeiFluids.EXPERIENCE.get().getSource(), 3000), IFluidHandler.FluidAction.EXECUTE)));
+
         item = Items.BOOK.getDefaultInstance();
         beltStart = util.grid.at(6, 1, 2);
         beltItem = scene.world.createItemOnBelt(beltStart, Direction.DOWN, item);
@@ -507,6 +525,27 @@ public class EnchantmentScenes {
 
         scene.overlay.showText(40)
                 .text("Name Tag and Train Schedule can also be copied.")
+                .attachKeyFrame()
+                .placeNearTarget()
+                .pointAt(util.vector.topOf(2, 3, 2));
+        scene.idle(40);
+
+        scene.overlay.showControls(new InputWindowElement(util.vector.centerOf(2, 3, 2), Pointing.DOWN).rightClick()
+                .withItem(Items.NAME_TAG.getDefaultInstance()), 40);
+        item = Items.DIAMOND_SWORD.getDefaultInstance();
+        beltStart = util.grid.at(6, 1, 2);
+        beltItem = scene.world.createItemOnBelt(beltStart, Direction.DOWN, item);
+        copier = util.select.position(2, 3, 2);
+        copierPos = util.grid.at(2, 3, 2);
+        scene.idle(60);
+        scene.world.stallBeltItem(beltItem, true);
+        scene.world.modifyBlockEntityNBT(copier, PrinterBlockEntity.class, nbt -> nbt.putInt("ProcessingTicks", 100));
+        scene.idle(95);
+        scene.world.removeItemsFromBelt(copierPos.below(2));
+        scene.world.createItemOnBelt(copierPos.below(2), Direction.UP, Items.DIAMOND_SWORD.getDefaultInstance());
+
+        scene.overlay.showText(40)
+                .text("If you set the name tag as the print target, you can use the printer to name the item.")
                 .attachKeyFrame()
                 .placeNearTarget()
                 .pointAt(util.vector.topOf(2, 3, 2));

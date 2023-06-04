@@ -16,15 +16,12 @@ import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.Containers;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.WrittenBookItem;
-import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
@@ -81,7 +78,8 @@ public class PrinterBlockEntity extends SmartBlockEntity implements IHaveGoggleI
         registerAwardables(behaviours,
                 CeiAdvancements.COPIABLE_MASTERPIECE.asCreateAdvancement(),
                 CeiAdvancements.COPIABLE_MYSTERY.asCreateAdvancement(),
-                CeiAdvancements.RELIC_RESTORATION.asCreateAdvancement());
+                CeiAdvancements.RELIC_RESTORATION.asCreateAdvancement(),
+                CeiAdvancements.EMERGING_BRAND.asCreateAdvancement());
     }
 
     public void tick() {
@@ -146,7 +144,7 @@ public class PrinterBlockEntity extends SmartBlockEntity implements IHaveGoggleI
             return PASS;
         if (!Printing.valid(printEntry,copyTarget,transported.stack))
             return PASS;
-        if (tank.isEmpty() || Printing.isCorrectInk(printEntry, getCurrentFluidInTank()))
+        if (tank.isEmpty() || Printing.isCorrectInk(printEntry, getCurrentFluidInTank(), copyTarget))
             return HOLD;
         if (Printing.getRequiredAmountForItem(printEntry,copyTarget) == -1)
             return PASS;
@@ -161,7 +159,7 @@ public class PrinterBlockEntity extends SmartBlockEntity implements IHaveGoggleI
             return PASS;
         if (!Printing.valid(printEntry, copyTarget,transported.stack))
             return PASS;
-        if (tank.isEmpty() || !Printing.isCorrectInk(printEntry, getCurrentFluidInTank()))
+        if (tank.isEmpty() || !Printing.isCorrectInk(printEntry, getCurrentFluidInTank(), copyTarget))
             return HOLD;
         FluidStack fluid = getCurrentFluidInTank();
         int requiredAmountForItem = Printing.getRequiredAmountForItem(printEntry, copyTarget);
@@ -183,7 +181,10 @@ public class PrinterBlockEntity extends SmartBlockEntity implements IHaveGoggleI
                 award(CeiAdvancements.COPIABLE_MASTERPIECE.asCreateAdvancement());
                 if (item.getOrCreateTag().getInt("generation") == 3)
                     award(CeiAdvancements.RELIC_RESTORATION.asCreateAdvancement());
-            } else award(CeiAdvancements.COPIABLE_MYSTERY.asCreateAdvancement());
+            } else if(item.is(Items.ENCHANTED_BOOK))
+                award(CeiAdvancements.COPIABLE_MYSTERY.asCreateAdvancement());
+            else if(item.is(Items.NAME_TAG) && !transported.stack.is(Items.NAME_TAG))
+                award(CeiAdvancements.EMERGING_BRAND.asCreateAdvancement());
             var advancementBehaviour = getBehaviour(AdvancementBehaviour.TYPE);
             var playerId = ((AdvancementBehaviourAccessor) advancementBehaviour).getPlayerId();
             if (playerId != null) {

@@ -1,13 +1,8 @@
 package plus.dragons.createenchantmentindustry.content.contraptions.enchanting.printer;
 
-import com.simibubi.create.AllItems;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
-import net.minecraft.world.item.WrittenBookItem;
 import net.minecraftforge.fluids.FluidStack;
 import org.jetbrains.annotations.Nullable;
-import plus.dragons.createenchantmentindustry.foundation.config.CeiConfigs;
 
 
 public class Printing {
@@ -27,14 +22,16 @@ public class Printing {
     }
     
     @SuppressWarnings("deprecation") //Fluid Tags are still useful for mod interaction
-    public static boolean isCorrectInk(PrintEntry printEntry, FluidStack fluidStack) {
-        return fluidStack.getFluid().isSame(printEntry.requiredInkType());
+    public static boolean isCorrectInk(PrintEntry printEntry, FluidStack fluidStack, ItemStack target) {
+        return fluidStack.getFluid().isSame(printEntry.requiredInkType(target));
     }
 
     public static ItemStack print(PrintEntry printEntry, ItemStack target, int requiredAmount, ItemStack stack, FluidStack availableFluid) {
+        var copy = stack.copy();
+        copy.setCount(1);
         stack.shrink(1);
         availableFluid.shrink(requiredAmount);
-        return printEntry.print(target);
+        return printEntry.print(target,copy);
     }
 
     public static boolean isTooExpensive(PrintEntry printEntry, ItemStack target, int limit) {

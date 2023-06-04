@@ -13,6 +13,7 @@ import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.common.MinecraftForge;
 import plus.dragons.createenchantmentindustry.EnchantmentIndustry;
 import plus.dragons.createenchantmentindustry.api.PrintEntryRegisterEvent;
+import plus.dragons.createenchantmentindustry.content.contraptions.enchanting.EnchantmentLevelUtil;
 import plus.dragons.createenchantmentindustry.content.contraptions.enchanting.enchanter.Enchanting;
 import plus.dragons.createenchantmentindustry.entry.CeiFluids;
 import plus.dragons.createenchantmentindustry.foundation.config.CeiConfigs;
@@ -63,6 +64,15 @@ public class PrintEntries {
         }
 
         @Override
+        public Fluid requiredInkType(ItemStack target) {
+            return EnchantmentHelper.getEnchantments(target)
+                    .entrySet()
+                    .stream()
+                    .map(entry -> entry.getValue()>EnchantmentLevelUtil.getMaxLevel(entry.getKey()))
+                    .reduce(false, (a,b)->a||b) ? CeiFluids.HYPER_EXPERIENCE.get(): CeiFluids.EXPERIENCE.get();
+        }
+
+        @Override
         public boolean isTooExpensive(ItemStack target, int limit) {
             return getExperienceFromItem(target) > limit;
         }
@@ -76,11 +86,17 @@ public class PrintEntries {
                 tooltip.add(Component.literal("     ").append(LANG.translate(
                         "gui.goggles.too_expensive").component()
                 ).withStyle(ChatFormatting.RED));
-            else
+            else{
+                var hyper = EnchantmentHelper.getEnchantments(target)
+                        .entrySet()
+                        .stream()
+                        .map(entry -> entry.getValue()>EnchantmentLevelUtil.getMaxLevel(entry.getKey()))
+                        .reduce(false, (a,a2)->a||a2);
                 tooltip.add(Component.literal("     ").append(LANG.translate(
-                        "gui.goggles.xp_consumption",
+                        hyper ? "gui.goggles.hyper_xp_consumption": "gui.goggles.xp_consumption",
                         String.valueOf(getExperienceFromItem(target))).component()
-                ).withStyle(ChatFormatting.GREEN));
+                ).withStyle(hyper? ChatFormatting.AQUA: ChatFormatting.GREEN));
+            }
             var map = EnchantmentHelper.getEnchantments(target);
             for (var e : map.entrySet()) {
                 Component name = e.getKey().getFullname(e.getValue());
@@ -130,12 +146,12 @@ public class PrintEntries {
         }
 
         @Override
-        public Fluid requiredInkType() {
+        public Fluid requiredInkType(ItemStack target) {
             return CeiFluids.INK.get();
         }
 
         @Override
-        public ItemStack print(ItemStack target) {
+        public ItemStack print(ItemStack target, ItemStack material) {
             var ret = target.copy();
             target.getOrCreateTag().putInt("generation", 0);
             return ret;
@@ -195,12 +211,19 @@ public class PrintEntries {
 
         @Override
         public boolean valid(ItemStack target, ItemStack tested) {
-            return  tested.is(target.getItem()) && !ItemStack.tagMatches(target, tested);
+            return !target.getHoverName().equals(tested.getHoverName());
         }
 
         @Override
         public int requiredInkAmount(ItemStack target) {
             return CeiConfigs.SERVER.copyNameTagCost.get();
+        }
+
+        @Override
+        public ItemStack print(ItemStack target, ItemStack material) {
+            if(material.is(Items.NAME_TAG)) return target.copy();
+            material.setHoverName(target.getHoverName());
+            return material;
         }
 
         @Override
@@ -260,7 +283,7 @@ public class PrintEntries {
         }
 
         @Override
-        public Fluid requiredInkType() {
+        public Fluid requiredInkType(ItemStack target) {
             return CeiFluids.INK.get();
         }
 

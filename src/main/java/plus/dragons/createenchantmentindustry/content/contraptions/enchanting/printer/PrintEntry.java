@@ -19,11 +19,11 @@ public interface PrintEntry {
 
     int requiredInkAmount(ItemStack target);
 
-    default Fluid requiredInkType() {
+    default Fluid requiredInkType(ItemStack target) {
         return CeiFluids.EXPERIENCE.get();
     }
 
-    default ItemStack print(ItemStack target){
+    default ItemStack print(ItemStack target, ItemStack material){
         return target.copy();
     }
 

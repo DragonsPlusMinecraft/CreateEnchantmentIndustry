@@ -41,7 +41,7 @@ public class CeiFluids {
             HYPER_EXPERIENCE_STILL_RL, HYPER_EXPERIENCE_FLOW_RL, CreateRegistrate::defaultFluidType, HyperExperienceFluid::new)
             .lang("Liquid Hyper Experience")
             .properties(builder -> builder.lightLevel(15))
-            .tag(CeiTags.FluidTag.BLAZE_ENCHANTER_INPUT.tag)
+            .tag(CeiTags.FluidTag.BLAZE_ENCHANTER_INPUT.tag, CeiTags.FluidTag.PRINTER_INPUT.tag)
             .register();
 
     public static final ResourceLocation INK_STILL_RL = EnchantmentIndustry.genRL("fluid/ink_still");
