@@ -78,7 +78,8 @@ public class PrinterBlockEntity extends SmartBlockEntity implements IHaveGoggleI
         registerAwardables(behaviours,
                 CeiAdvancements.COPIABLE_MASTERPIECE.asCreateAdvancement(),
                 CeiAdvancements.COPIABLE_MYSTERY.asCreateAdvancement(),
-                CeiAdvancements.RELIC_RESTORATION.asCreateAdvancement());
+                CeiAdvancements.RELIC_RESTORATION.asCreateAdvancement(),
+                CeiAdvancements.EMERGING_BRAND.asCreateAdvancement());
     }
 
     public void tick() {
@@ -143,7 +144,7 @@ public class PrinterBlockEntity extends SmartBlockEntity implements IHaveGoggleI
             return PASS;
         if (!Printing.valid(printEntry,copyTarget,transported.stack))
             return PASS;
-        if (tank.isEmpty() || Printing.isCorrectInk(printEntry, getCurrentFluidInTank()))
+        if (tank.isEmpty() || Printing.isCorrectInk(printEntry, getCurrentFluidInTank(), copyTarget))
             return HOLD;
         if (Printing.getRequiredAmountForItem(printEntry,copyTarget) == -1)
             return PASS;
@@ -158,7 +159,7 @@ public class PrinterBlockEntity extends SmartBlockEntity implements IHaveGoggleI
             return PASS;
         if (!Printing.valid(printEntry, copyTarget,transported.stack))
             return PASS;
-        if (tank.isEmpty() || !Printing.isCorrectInk(printEntry, getCurrentFluidInTank()))
+        if (tank.isEmpty() || !Printing.isCorrectInk(printEntry, getCurrentFluidInTank(), copyTarget))
             return HOLD;
         FluidStack fluid = getCurrentFluidInTank();
         int requiredAmountForItem = Printing.getRequiredAmountForItem(printEntry, copyTarget);
@@ -180,7 +181,10 @@ public class PrinterBlockEntity extends SmartBlockEntity implements IHaveGoggleI
                 award(CeiAdvancements.COPIABLE_MASTERPIECE.asCreateAdvancement());
                 if (item.getOrCreateTag().getInt("generation") == 3)
                     award(CeiAdvancements.RELIC_RESTORATION.asCreateAdvancement());
-            } else award(CeiAdvancements.COPIABLE_MYSTERY.asCreateAdvancement());
+            } else if(item.is(Items.ENCHANTED_BOOK))
+                award(CeiAdvancements.COPIABLE_MYSTERY.asCreateAdvancement());
+            else if(item.is(Items.NAME_TAG) && !transported.stack.is(Items.NAME_TAG))
+                award(CeiAdvancements.EMERGING_BRAND.asCreateAdvancement());
             var advancementBehaviour = getBehaviour(AdvancementBehaviour.TYPE);
             var playerId = ((AdvancementBehaviourAccessor) advancementBehaviour).getPlayerId();
             if (playerId != null) {

@@ -80,6 +80,13 @@ public class CeiAdvancements implements DataProvider {
         .frame(FrameType.GOAL)
         .parent(COPIABLE_MYSTERY)
         .build(),
+    EMERGING_BRAND = builder("emerging_brand")
+            .title("Emerging Brand")
+            .description("Using the printer to name items")
+            .icon(Items.NAME_TAG)
+            .announce(true)
+            .parent(COPIABLE_MASTERPIECE)
+            .build(),
     GREAT_PUBLISHER = builder("great_publisher")
         .title("Great Publisher")
         .description("Copy 1000 books using Printer")

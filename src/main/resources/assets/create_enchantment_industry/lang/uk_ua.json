@@ -100,9 +100,9 @@
 	"create_enchantment_industry.ponder.transform.text_4": "UNLOCALIZED: You can replace the Enchanting Guide by holding it directly in your hand and right-clicking on the Blaze Enchanter.",
 
 	"create_enchantment_industry.ponder.copy.header": "Використання принтера",
-	"create_enchantment_industry.ponder.copy.text_1": "UNLOCALIZED: Ink is required to duplicate written books.",
-	"create_enchantment_industry.ponder.copy.text_2": "UNLOCALIZED: Ink is required to duplicate written books.",
-	"create_enchantment_industry.ponder.copy.text_3": "UNLOCALIZED: Name Tag and Train Schedule can also be copied.",
+	"create_enchantment_industry.ponder.copy.text_1": "UNLOCALIZED: Liquid Experience is required to duplicate enchanted books.",
+	"create_enchantment_industry.ponder.copy.text_3": "UNLOCALIZED: Ink is required to duplicate written books.",
+	"create_enchantment_industry.ponder.copy.text_4": "UNLOCALIZED: Name Tag and Train Schedule can also be copied.",
 
 	"create_enchantment_industry.ponder.enchant.header": "Зачарування",
 

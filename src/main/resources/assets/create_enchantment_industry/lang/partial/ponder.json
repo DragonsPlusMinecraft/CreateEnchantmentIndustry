@@ -15,8 +15,10 @@
 
   "create_enchantment_industry.ponder.copy.header": "Using Printer",
   "create_enchantment_industry.ponder.copy.text_1": "Liquid Experience is required to duplicate enchanted books.",
-  "create_enchantment_industry.ponder.copy.text_2": "Ink is required to duplicate written books.",
-  "create_enchantment_industry.ponder.copy.text_3": "Name Tag and Train Schedule can also be copied.",
+  "create_enchantment_industry.ponder.copy.text_2": "If the enchantment on the enchantment book you are copying has a level that exceeds its maximum level, then you will need Hyper Experience.",
+  "create_enchantment_industry.ponder.copy.text_3": "Ink is required to duplicate written books.",
+  "create_enchantment_industry.ponder.copy.text_4": "Name Tag and Train Schedule can also be copied.",
+  "create_enchantment_industry.ponder.copy.text_5": "If you set the name tag as the print target, you can use the printer to name the item.",
 
   "create_enchantment_industry.ponder.enchant.header": "Enchanting",
 

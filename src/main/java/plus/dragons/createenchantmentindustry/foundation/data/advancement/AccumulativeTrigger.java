@@ -3,9 +3,10 @@ package plus.dragons.createenchantmentindustry.foundation.data.advancement;
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
 import com.google.gson.*;
-import com.google.gson.reflect.TypeToken;
+import com.simibubi.create.foundation.utility.NBTHelper;
 import net.minecraft.advancements.critereon.*;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -15,8 +16,6 @@ import net.minecraft.world.level.saveddata.SavedData;
 import net.minecraft.world.level.storage.DimensionDataStorage;
 import org.jetbrains.annotations.NotNull;
 
-import java.lang.reflect.Type;
-import java.util.Map;
 import java.util.UUID;
 
 public class AccumulativeTrigger extends SimpleCriterionTrigger<AccumulativeTrigger.TriggerInstance>{
@@ -45,9 +44,6 @@ public class AccumulativeTrigger extends SimpleCriterionTrigger<AccumulativeTrig
     }
 
     private static class AccumulativeData extends SavedData {
-        private final Gson gson;
-        private final Type type;
-
         public Table<ResourceLocation,UUID,Integer> data;
 
         public void change(ResourceLocation resourceLocation ,UUID playerId, int i){
@@ -64,29 +60,40 @@ public class AccumulativeTrigger extends SimpleCriterionTrigger<AccumulativeTrig
         }
 
         public AccumulativeData() {
-            gson = new Gson();
-            type = new TypeToken<Map<ResourceLocation,Map<UUID,Integer>>>() {}.getType();
             data = HashBasedTable.create();
         }
 
-        @SuppressWarnings("unchecked")
+        @SuppressWarnings("all")
         public static AccumulativeData load(CompoundTag compoundNBT){
             AccumulativeData ret = new AccumulativeData();
-            if(compoundNBT.contains("accumulative_data")){
-                var rowMap = (Map<ResourceLocation,Map<UUID,Integer>>) ret.gson.fromJson(compoundNBT.getString("accumulative_data"),ret.type);
-                for(var rl:rowMap.keySet()){
-                    for(var entry:rowMap.get(rl).entrySet())
-                        ret.data.put(rl,entry.getKey(),entry.getValue());
-                }
-            }
+
+            if(!compoundNBT.contains("AccumulativeData"))
+                return ret;
+
+            var list = NBTHelper.readCompoundList((ListTag) compoundNBT.get("AccumulativeData"), c -> new TriCell(
+                    NBTHelper.readResourceLocation(c,"TriggerId"),
+                    c.getUUID("PlayerId"),
+                    c.getInt("Count")
+            ));
+
+            list.forEach(triCell -> ret.data.put(triCell.rl,triCell.id,triCell.i));
             return ret;
         }
 
         @Override
         public CompoundTag save(CompoundTag pCompoundTag) {
-            pCompoundTag.putString("accumulative_data",gson.toJson(data.rowMap(),type));
+            var dataListTag = NBTHelper.writeCompoundList(data.cellSet().stream().toList(), cell -> {
+                var ret = new CompoundTag();
+                NBTHelper.writeResourceLocation(ret,"TriggerId",cell.getRowKey());
+                ret.putUUID("PlayerId",cell.getColumnKey());
+                ret.putInt("Count",cell.getValue());
+                return ret;
+            });
+            pCompoundTag.put("AccumulativeData",dataListTag);
             return pCompoundTag;
         }
+
+        private record TriCell(ResourceLocation rl, UUID id, int i){}
     }
 
     private static AccumulativeData get(Level level){

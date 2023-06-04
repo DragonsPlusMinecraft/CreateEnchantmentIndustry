@@ -19,6 +19,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
 import plus.dragons.createenchantmentindustry.EnchantmentIndustry;
 import plus.dragons.createenchantmentindustry.api.PrintEntryRegisterEvent;
+import plus.dragons.createenchantmentindustry.content.contraptions.enchanting.enchanter.Enchanting;
 import plus.dragons.createenchantmentindustry.content.contraptions.enchanting.printer.PrintEntry;
 import plus.dragons.createenchantmentindustry.content.contraptions.enchanting.printer.Printing;
 import plus.dragons.createenchantmentindustry.entry.CeiFluids;
@@ -55,19 +56,21 @@ public class QuarkCompat {
                 return tested.is(Items.ENCHANTED_BOOK);
             }
 
+            @SuppressWarnings("all")
             @Override
             public int requiredInkAmount(@NotNull ItemStack target) {
-                return 50;
+                var enchantment = getTomeEnchantment(target);
+                return enchantment.getMinCost(1) + Enchanting.rarityLevel(enchantment.getRarity());
             }
 
             @Override
-            public @NotNull Fluid requiredInkType() {
+            public @NotNull Fluid requiredInkType(@NotNull ItemStack target) {
                 return CeiFluids.HYPER_EXPERIENCE.get();
             }
 
             @Override
             public boolean isTooExpensive(@NotNull ItemStack target, int limit) {
-                return limit<50;
+                return limit<requiredInkAmount(target);
             }
 
             @Override

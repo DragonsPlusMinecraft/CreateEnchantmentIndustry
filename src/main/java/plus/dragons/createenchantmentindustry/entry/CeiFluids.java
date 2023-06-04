@@ -36,15 +36,15 @@ public class CeiFluids {
     public static final ResourceLocation HYPER_EXPERIENCE_FLOW_RL = EnchantmentIndustry.genRL("fluid/hyper_experience_flow");
 
     public static final FluidEntry<HyperExperienceFluid> HYPER_EXPERIENCE = REGISTRATE.virtualFluid("hyper_experience",
-                    HYPER_EXPERIENCE_STILL_RL, HYPER_EXPERIENCE_FLOW_RL, null, HyperExperienceFluid::new)
-                .lang("Liquid Hyper Experience")
-                .attributes(builder -> builder.luminosity(15))
-                .tag(CeiTags.FluidTag.BLAZE_ENCHANTER_INPUT.tag)
-                .register();
-    
+            HYPER_EXPERIENCE_STILL_RL, HYPER_EXPERIENCE_FLOW_RL, null, HyperExperienceFluid::new)
+            .lang("Liquid Hyper Experience")
+            .attributes(builder -> builder.luminosity(15))
+            .tag(CeiTags.FluidTag.BLAZE_ENCHANTER_INPUT.tag, CeiTags.FluidTag.PRINTER_INPUT.tag)
+            .register();
+
     public static final ResourceLocation INK_STILL_RL = EnchantmentIndustry.genRL("fluid/ink_still");
     public static final ResourceLocation INK_FLOW_RL = EnchantmentIndustry.genRL("fluid/ink_flow");
-    
+
     public static final FluidEntry<ForgeFlowingFluid.Flowing> INK =
             REGISTRATE.fluid("ink", INK_STILL_RL, INK_FLOW_RL, CeiFluids.NoColorFluidAttributes::new)
                     .attributes(b -> b.viscosity(1000)
@@ -61,7 +61,7 @@ public class CeiFluids {
 
     public static void register() {
     }
-    
+
     public static void handleInkEffect(LivingEvent.LivingUpdateEvent event) {
         LivingEntity entity = event.getEntityLiving();
         if (entity.tickCount % 20 != 0) return;
@@ -69,7 +69,7 @@ public class CeiFluids {
             entity.addEffect(new MobEffectInstance(MobEffects.BLINDNESS, 100, 0, true, false, false));
         }
     }
-    
+
     /**
      * Removing alpha from tint prevents optifine from forcibly applying biome
      * colors to modded fluids (Makes translucent fluids disappear)
