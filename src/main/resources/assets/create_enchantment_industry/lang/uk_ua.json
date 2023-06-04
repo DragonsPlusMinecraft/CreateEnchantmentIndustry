@@ -1,5 +1,4 @@
 {
-
 	"_": "->------------------------]  Game Elements  [------------------------<-",
 
 	"block.create_enchantment_industry.blaze_enchanter": "Полум'яний чарувальник",
@@ -31,6 +30,8 @@
 	"advancement.create_enchantment_industry.copiable_mystery.desc": "Скопіюйте Зачаровану книгу за допомогою принтера",
 	"advancement.create_enchantment_industry.relic_restoration": "Реставрація реліквій",
 	"advancement.create_enchantment_industry.relic_restoration.desc": "Зробіть нову копію з пошарпаної книги",
+	"advancement.create_enchantment_industry.emerging_brand": "UNLOCALIZED: Emerging Brand",
+	"advancement.create_enchantment_industry.emerging_brand.desc": "UNLOCALIZED: Using the printer to name items",
 	"advancement.create_enchantment_industry.great_publisher": "Чудовий видавець",
 	"advancement.create_enchantment_industry.great_publisher.desc": "Скопіюйте 1000 книг за допомогою принтера",
 	"advancement.create_enchantment_industry.experimental": "Досвіджений",
@@ -61,6 +62,7 @@
 	"create_enchantment_industry.gui.goggles.blaze_enchanter": "Активні зачарування:",
 	"create_enchantment_industry.gui.goggles.blaze_enchanter.invalid_target": "Невірна ціль",
 	"create_enchantment_industry.gui.goggles.xp_consumption": "Потребує досвіду: %s mB",
+	"create_enchantment_industry.gui.goggles.hyper_xp_consumption": "UNLOCALIZED: Consumes Hyper Experience: %s mB",
 	"create_enchantment_industry.gui.goggles.ink_consumption": "Потребує чорнил: %s mB",
 	"create_enchantment_industry.gui.goggles.too_expensive": "Занадто дорого!",
 
@@ -101,10 +103,16 @@
 
 	"create_enchantment_industry.ponder.copy.header": "Використання принтера",
 	"create_enchantment_industry.ponder.copy.text_1": "UNLOCALIZED: Liquid Experience is required to duplicate enchanted books.",
+	"create_enchantment_industry.ponder.copy.text_2": "UNLOCALIZED: If the enchantment on the enchantment book you are copying has a level that exceeds its maximum level, then you will need Hyper Experience.",
 	"create_enchantment_industry.ponder.copy.text_3": "UNLOCALIZED: Ink is required to duplicate written books.",
 	"create_enchantment_industry.ponder.copy.text_4": "UNLOCALIZED: Name Tag and Train Schedule can also be copied.",
+	"create_enchantment_industry.ponder.copy.text_5": "UNLOCALIZED: If you set the name tag as the print target, you can use the printer to name the item.",
 
 	"create_enchantment_industry.ponder.enchant.header": "Зачарування",
+	"create_enchantment_industry.ponder.enchant.text_1": "UNLOCALIZED: Blaze Enchanter can enchant your items.",
+	"create_enchantment_industry.ponder.enchant.text_2": "UNLOCALIZED: However, it cannot work on books...",
+	"create_enchantment_industry.ponder.enchant.text_3": "UNLOCALIZED: ... nor can it add incompatible enchantments to your items.",
+	"create_enchantment_industry.ponder.enchant.text_4": "UNLOCALIZED: Blaze Enchanter can upgrade an existing enchantment to a higher level if feasible.",
 
 	"create_enchantment_industry.ponder.hyper_enchant.header": "Неперевершене зачарування",
 	"create_enchantment_industry.ponder.hyper_enchant.text_1": "Це рідкий неперевершений досвід",

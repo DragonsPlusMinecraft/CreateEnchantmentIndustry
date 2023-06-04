@@ -32,6 +32,8 @@
 	"advancement.create_enchantment_industry.copiable_mystery.desc": "用打印机复印一本附魔书",
 	"advancement.create_enchantment_industry.relic_restoration": "文物修复",
 	"advancement.create_enchantment_industry.relic_restoration.desc": "复印一本破烂不堪的成书",
+	"advancement.create_enchantment_industry.emerging_brand": "新兴品牌",
+	"advancement.create_enchantment_industry.emerging_brand.desc": "使用打印机为物品命名",
 	"advancement.create_enchantment_industry.great_publisher": "大出版商",
 	"advancement.create_enchantment_industry.great_publisher.desc": "用打印机复印 1000 本书",
 	"advancement.create_enchantment_industry.experimental": "实践经验",
@@ -62,6 +64,7 @@
 	"create_enchantment_industry.gui.goggles.blaze_enchanter": "当前附魔：",
 	"create_enchantment_industry.gui.goggles.blaze_enchanter.invalid_target": "无效目标",
 	"create_enchantment_industry.gui.goggles.xp_consumption": "消耗经验：%s mB",
+	"create_enchantment_industry.gui.goggles.hyper_xp_consumption": "UNLOCALIZED: Consumes Hyper Experience: %s mB",
 	"create_enchantment_industry.gui.goggles.ink_consumption": "消耗墨水：%s mB",
 	"create_enchantment_industry.gui.goggles.too_expensive": "过于昂贵！",
 
@@ -102,10 +105,16 @@
 
 	"create_enchantment_industry.ponder.copy.header": "复印机使用",
 	"create_enchantment_industry.ponder.copy.text_1": "复印附魔书需要液态经验。",
-	"create_enchantment_industry.ponder.copy.text_2": "复印成书需要墨水。",
-	"create_enchantment_industry.ponder.copy.text_3": "UNLOCALIZED: Name Tag and Train Schedule can also be copied.",
+	"create_enchantment_industry.ponder.copy.text_2": "如果你要复制的附魔书上的附魔的等级超过了其最高等级，那么你需要液态超经验。",
+	"create_enchantment_industry.ponder.copy.text_3": "复印成书需要墨水。",
+	"create_enchantment_industry.ponder.copy.text_4": "命名牌和列车时刻表同样可以被复印。",
+	"create_enchantment_industry.ponder.copy.text_5": "如果将命名牌设置为打印目标，你可以用打印机为物品命名。",
 
 	"create_enchantment_industry.ponder.enchant.header": "烈焰人附魔室使用",
+	"create_enchantment_industry.ponder.enchant.text_1": "烈焰人附魔室能为你的物品附魔。",
+	"create_enchantment_industry.ponder.enchant.text_2": "但它既不能附魔书...",
+	"create_enchantment_industry.ponder.enchant.text_3": "...也不能为你的物品附上不兼容的附魔。",
+	"create_enchantment_industry.ponder.enchant.text_4": "如果可行的话，烈焰人附魔室可以将现有的附魔提升到更高等级。",
 
 	"create_enchantment_industry.ponder.hyper_enchant.header": "超越附魔",
 	"create_enchantment_industry.ponder.hyper_enchant.text_1": "这是一罐液态超经验。",

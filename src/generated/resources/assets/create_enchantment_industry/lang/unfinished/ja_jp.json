@@ -1,5 +1,5 @@
 {
-	"_": "Missing Localizations: 1",
+	"_": "Missing Localizations: 9",
 
 	"_": "->------------------------]  Game Elements  [------------------------<-",
 
@@ -32,6 +32,8 @@
 	"advancement.create_enchantment_industry.copiable_mystery.desc": "印刷機でエンチャントの本をコピーする",
 	"advancement.create_enchantment_industry.relic_restoration": "遺物の修復",
 	"advancement.create_enchantment_industry.relic_restoration.desc": "ボロボロの本をコピーする",
+	"advancement.create_enchantment_industry.emerging_brand": "UNLOCALIZED: Emerging Brand",
+	"advancement.create_enchantment_industry.emerging_brand.desc": "UNLOCALIZED: Using the printer to name items",
 	"advancement.create_enchantment_industry.great_publisher": "立派な出版社",
 	"advancement.create_enchantment_industry.great_publisher.desc": "印刷機で本を1000回コピーする",
 	"advancement.create_enchantment_industry.experimental": "経験で実験",
@@ -62,6 +64,7 @@
 	"create_enchantment_industry.gui.goggles.blaze_enchanter": "設定中のエンチャント:",
 	"create_enchantment_industry.gui.goggles.blaze_enchanter.invalid_target": "無効なターゲット",
 	"create_enchantment_industry.gui.goggles.xp_consumption": "必要経験値: %s mB",
+	"create_enchantment_industry.gui.goggles.hyper_xp_consumption": "UNLOCALIZED: Consumes Hyper Experience: %s mB",
 	"create_enchantment_industry.gui.goggles.ink_consumption": "必要インク: %s mB",
 	"create_enchantment_industry.gui.goggles.too_expensive": "コストが高すぎます!",
 
@@ -102,10 +105,16 @@
 
 	"create_enchantment_industry.ponder.copy.header": "印刷機の使用",
 	"create_enchantment_industry.ponder.copy.text_1": "UNLOCALIZED: Ink is required to duplicate written books.",
-	"create_enchantment_industry.ponder.copy.text_2": "UNLOCALIZED: Ink is required to duplicate written books.",
-	"create_enchantment_industry.ponder.copy.text_3": "UNLOCALIZED: Name Tag and Train Schedule can also be copied.",
+	"create_enchantment_industry.ponder.copy.text_2": "UNLOCALIZED: If the enchantment on the enchantment book you are copying has a level that exceeds its maximum level, then you will need Hyper Experience.",
+	"create_enchantment_industry.ponder.copy.text_3": "UNLOCALIZED: Ink is required to duplicate written books.",
+	"create_enchantment_industry.ponder.copy.text_4": "UNLOCALIZED: Name Tag and Train Schedule can also be copied.",
+	"create_enchantment_industry.ponder.copy.text_5": "UNLOCALIZED: If you set the name tag as the print target, you can use the printer to name the item.",
 
 	"create_enchantment_industry.ponder.enchant.header": "エンチャント",
+	"create_enchantment_industry.ponder.enchant.text_1": "UNLOCALIZED: Blaze Enchanter can enchant your items.",
+	"create_enchantment_industry.ponder.enchant.text_2": "UNLOCALIZED: However, it cannot work on books...",
+	"create_enchantment_industry.ponder.enchant.text_3": "UNLOCALIZED: ... nor can it add incompatible enchantments to your items.",
+	"create_enchantment_industry.ponder.enchant.text_4": "UNLOCALIZED: Blaze Enchanter can upgrade an existing enchantment to a higher level if feasible.",
 
 	"create_enchantment_industry.ponder.hyper_enchant.header": "ハイパーエンチャント",
 	"create_enchantment_industry.ponder.hyper_enchant.text_1": "これは液化ハイパー経験値です。",

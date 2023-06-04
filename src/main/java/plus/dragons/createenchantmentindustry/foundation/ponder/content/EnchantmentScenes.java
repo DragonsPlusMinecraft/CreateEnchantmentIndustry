@@ -182,8 +182,8 @@ public class EnchantmentScenes {
         scene.world.showSection(util.select.fromTo(0, 1, 0, 7, 4, 7), Direction.DOWN);
 
         scene.idle(5);
-        List<ItemStack> items = Stream.of(Items.NETHERITE_CHESTPLATE,Items.DIAMOND_CHESTPLATE, Items.IRON_CHESTPLATE, Items.CHAINMAIL_CHESTPLATE, Items.GOLDEN_CHESTPLATE, Items.LEATHER_CHESTPLATE).map(Item::getDefaultInstance).toList();
-        for(var item:items){
+        List<ItemStack> items = Stream.of(Items.NETHERITE_CHESTPLATE, Items.BOOK, Items.ENCHANTED_BOOK, Items.DIAMOND_SWORD, Items.DIAMOND_SWORD, Items.LEATHER_CHESTPLATE).map(Item::getDefaultInstance).toList();
+        for (var item : items) {
             BlockPos beltStart = util.grid.at(7, 2, 0);
             ElementLink<EntityElement> itemEntity = scene.world.createItemEntity(util.vector.centerOf(7, 5, 0), util.vector.of(0, 0, 0), item);
             scene.idle(13);
@@ -192,7 +192,35 @@ public class EnchantmentScenes {
             scene.idle(10);
         }
 
-        scene.idle(400);
+        scene.overlay.showText(60)
+                .text("")
+                .attachKeyFrame()
+                .placeNearTarget()
+                .pointAt(util.vector.topOf(1, 2, 0));
+        scene.idle(70);
+
+        scene.overlay.showText(60)
+                .text("")
+                .attachKeyFrame()
+                .placeNearTarget()
+                .pointAt(util.vector.topOf(1, 2, 0));
+        scene.idle(70);
+
+        scene.overlay.showText(60)
+                .text("")
+                .attachKeyFrame()
+                .placeNearTarget()
+                .pointAt(util.vector.topOf(1, 2, 0));
+        scene.idle(70);
+
+        scene.overlay.showText(60)
+                .text("")
+                .attachKeyFrame()
+                .placeNearTarget()
+                .pointAt(util.vector.topOf(0, 2, 6));
+        scene.idle(70);
+
+        scene.idle(100);
     }
 
     public static void hyperEnchant(SceneBuilder scene, SceneBuildingUtil util){

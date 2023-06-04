@@ -1,5 +1,4 @@
 {
-
 	"_": "->------------------------]  Game Elements  [------------------------<-",
 
 	"block.create_enchantment_industry.blaze_enchanter": "Lohenverzauberer",
@@ -31,6 +30,8 @@
 	"advancement.create_enchantment_industry.copiable_mystery.desc": "Kopiere ein verzaubertes Buch mittels Kopierer.",
 	"advancement.create_enchantment_industry.relic_restoration": "Restaurator",
 	"advancement.create_enchantment_industry.relic_restoration.desc": "Erstelle eine komplett neue Kopie eines zerfetzten Buchs.",
+	"advancement.create_enchantment_industry.emerging_brand": "UNLOCALIZED: Emerging Brand",
+	"advancement.create_enchantment_industry.emerging_brand.desc": "UNLOCALIZED: Using the printer to name items",
 	"advancement.create_enchantment_industry.great_publisher": "Großer Verleger",
 	"advancement.create_enchantment_industry.great_publisher.desc": "Kopiere 1000 Bücher mit einem Kopierer.",
 	"advancement.create_enchantment_industry.experimental": "Experimentell",
@@ -61,6 +62,7 @@
 	"create_enchantment_industry.gui.goggles.blaze_enchanter": "Aktive Verzauberung:",
 	"create_enchantment_industry.gui.goggles.blaze_enchanter.invalid_target": "Unzulässiges Ziel",
 	"create_enchantment_industry.gui.goggles.xp_consumption": "Verbrauchte Erfahrung: %s mB",
+	"create_enchantment_industry.gui.goggles.hyper_xp_consumption": "UNLOCALIZED: Consumes Hyper Experience: %s mB",
 	"create_enchantment_industry.gui.goggles.ink_consumption": "Verbrauchte Tinte: %s mB",
 	"create_enchantment_industry.gui.goggles.too_expensive": "Zu teuer!",
 
@@ -101,10 +103,16 @@
 
 	"create_enchantment_industry.ponder.copy.header": "Drucker benutzen",
 	"create_enchantment_industry.ponder.copy.text_1": "Um verzauberte Bücher zu kopieren, wird flüßige Erfahrung benötigt.",
+	"create_enchantment_industry.ponder.copy.text_2": "UNLOCALIZED: If the enchantment on the enchantment book you are copying has a level that exceeds its maximum level, then you will need Hyper Experience.",
 	"create_enchantment_industry.ponder.copy.text_3": "Um beschriebene Bücher zu kopieren, wird flüßige Tinte benötigt.",
 	"create_enchantment_industry.ponder.copy.text_4": "UNLOCALIZED: Name Tag and Train Schedule can also be copied.",
+	"create_enchantment_industry.ponder.copy.text_5": "UNLOCALIZED: If you set the name tag as the print target, you can use the printer to name the item.",
 
 	"create_enchantment_industry.ponder.enchant.header": "Verzauberung",
+	"create_enchantment_industry.ponder.enchant.text_1": "UNLOCALIZED: Blaze Enchanter can enchant your items.",
+	"create_enchantment_industry.ponder.enchant.text_2": "UNLOCALIZED: However, it cannot work on books...",
+	"create_enchantment_industry.ponder.enchant.text_3": "UNLOCALIZED: ... nor can it add incompatible enchantments to your items.",
+	"create_enchantment_industry.ponder.enchant.text_4": "UNLOCALIZED: Blaze Enchanter can upgrade an existing enchantment to a higher level if feasible.",
 
 	"create_enchantment_industry.ponder.hyper_enchant.header": "Hyperverzauberung",
 	"create_enchantment_industry.ponder.hyper_enchant.text_1": "Das ist flüssige Hypererfahrung.",

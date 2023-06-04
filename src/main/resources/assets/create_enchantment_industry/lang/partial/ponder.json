@@ -21,6 +21,10 @@
   "create_enchantment_industry.ponder.copy.text_5": "If you set the name tag as the print target, you can use the printer to name the item.",
 
   "create_enchantment_industry.ponder.enchant.header": "Enchanting",
+  "create_enchantment_industry.ponder.enchant.text_1": "Blaze Enchanter can enchant your items.",
+  "create_enchantment_industry.ponder.enchant.text_2": "However, it cannot work on books...",
+  "create_enchantment_industry.ponder.enchant.text_3": "... nor can it add incompatible enchantments to your items.",
+  "create_enchantment_industry.ponder.enchant.text_4": "Blaze Enchanter can upgrade an existing enchantment to a higher level if feasible.",
 
   "create_enchantment_industry.ponder.hyper_enchant.header": "Hyper-enchanting",
   "create_enchantment_industry.ponder.hyper_enchant.text_1": "This is liquid hyper experience",
