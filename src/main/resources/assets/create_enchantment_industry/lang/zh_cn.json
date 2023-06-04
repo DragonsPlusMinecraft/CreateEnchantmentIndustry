@@ -81,6 +81,10 @@
 	"create_enchantment_industry.ponder.drop_experience_nugget.text_1": "机械手杀死生物时将掉落经验颗粒。",
 
 	"create_enchantment_industry.ponder.enchant.header": "烈焰人附魔室使用",
+	"create_enchantment_industry.ponder.enchant.text_1": "烈焰人附魔室能为你的物品附魔。",
+	"create_enchantment_industry.ponder.enchant.text_2": "但它既不能附魔书...",
+	"create_enchantment_industry.ponder.enchant.text_3": "...也不能为你的物品附上不兼容的附魔。",
+	"create_enchantment_industry.ponder.enchant.text_4": "如果可行的话，烈焰人附魔室可以将现有的附魔提升到更高等级。",
 
 	"create_enchantment_industry.ponder.experience_bottle.header": "处理附魔之瓶",
 	"create_enchantment_industry.ponder.experience_bottle.text_1": "附魔之瓶能在分液池处被排空。",

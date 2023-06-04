@@ -153,22 +153,22 @@ public class EnchantmentScenes {
         scene.world.setBlock(util.grid.at(7,2,1),CeiBlocks.BLAZE_ENCHANTER.getDefaultState().setValue(BlazeEnchanterBlock.HEAT_LEVEL,
                 BlazeEnchanterBlock.HeatLevel.KINDLED),false);
         scene.world.modifyBlockEntity(util.grid.at(1, 2, 0), BlazeEnchanterBlockEntity.class, be -> {
-            be.setTargetItem(enchantingGuide(Enchantments.MENDING, 1));
-            be.getCapability(ForgeCapabilities.FLUID_HANDLER).ifPresent(tank ->
-                    tank.fill(new FluidStack(CeiFluids.EXPERIENCE.get().getSource(), 1000), IFluidHandler.FluidAction.EXECUTE));
-        });
-        scene.world.modifyBlockEntity(util.grid.at(0, 2, 6), BlazeEnchanterBlockEntity.class, be -> {
-            be.setTargetItem(enchantingGuide(Enchantments.UNBREAKING, 3));
-            be.getCapability(ForgeCapabilities.FLUID_HANDLER).ifPresent(tank ->
-                    tank.fill(new FluidStack(CeiFluids.EXPERIENCE.get().getSource(), 1000), IFluidHandler.FluidAction.EXECUTE));
-        });
-        scene.world.modifyBlockEntity(util.grid.at(6, 2, 7), BlazeEnchanterBlockEntity.class, be -> {
             be.setTargetItem(enchantingGuide(Enchantments.THORNS, 1));
             be.getCapability(ForgeCapabilities.FLUID_HANDLER).ifPresent(tank ->
                     tank.fill(new FluidStack(CeiFluids.EXPERIENCE.get().getSource(), 1000), IFluidHandler.FluidAction.EXECUTE));
         });
+        scene.world.modifyBlockEntity(util.grid.at(0, 2, 6), BlazeEnchanterBlockEntity.class, be -> {
+            be.setTargetItem(enchantingGuide(Enchantments.THORNS, 2));
+            be.getCapability(ForgeCapabilities.FLUID_HANDLER).ifPresent(tank ->
+                    tank.fill(new FluidStack(CeiFluids.EXPERIENCE.get().getSource(), 1000), IFluidHandler.FluidAction.EXECUTE));
+        });
+        scene.world.modifyBlockEntity(util.grid.at(6, 2, 7), BlazeEnchanterBlockEntity.class, be -> {
+            be.setTargetItem(enchantingGuide(Enchantments.MENDING, 1));
+            be.getCapability(ForgeCapabilities.FLUID_HANDLER).ifPresent(tank ->
+                    tank.fill(new FluidStack(CeiFluids.EXPERIENCE.get().getSource(), 1000), IFluidHandler.FluidAction.EXECUTE));
+        });
         scene.world.modifyBlockEntity(util.grid.at(7, 2, 1), BlazeEnchanterBlockEntity.class, be -> {
-            be.setTargetItem(enchantingGuide(Enchantments.ALL_DAMAGE_PROTECTION, 3));
+            be.setTargetItem(enchantingGuide(Enchantments.UNBREAKING, 1));
             be.getCapability(ForgeCapabilities.FLUID_HANDLER).ifPresent(tank ->
                     tank.fill(new FluidStack(CeiFluids.EXPERIENCE.get().getSource(), 1000), IFluidHandler.FluidAction.EXECUTE));
         });
@@ -182,7 +182,7 @@ public class EnchantmentScenes {
         scene.world.showSection(util.select.fromTo(0, 1, 0, 7, 4, 7), Direction.DOWN);
 
         scene.idle(5);
-        List<ItemStack> items = Stream.of(Items.NETHERITE_CHESTPLATE, Items.DIAMOND_CHESTPLATE, Items.IRON_CHESTPLATE, Items.CHAINMAIL_CHESTPLATE, Items.GOLDEN_CHESTPLATE, Items.LEATHER_CHESTPLATE).map(Item::getDefaultInstance).toList();
+        List<ItemStack> items = Stream.of(Items.NETHERITE_CHESTPLATE, Items.BOOK, Items.ENCHANTED_BOOK, Items.DIAMOND_SWORD, Items.DIAMOND_SWORD, Items.LEATHER_CHESTPLATE).map(Item::getDefaultInstance).toList();
         for (var item : items) {
             BlockPos beltStart = util.grid.at(7, 2, 0);
             ElementLink<EntityElement> itemEntity = scene.world.createItemEntity(util.vector.centerOf(7, 5, 0), util.vector.of(0, 0, 0), item);
@@ -192,7 +192,35 @@ public class EnchantmentScenes {
             scene.idle(10);
         }
 
-        scene.idle(400);
+        scene.overlay.showText(60)
+                .text("Blaze Enchanter can enchant your items.")
+                .attachKeyFrame()
+                .placeNearTarget()
+                .pointAt(util.vector.topOf(1, 2, 0));
+        scene.idle(70);
+
+        scene.overlay.showText(60)
+                .text("However, it cannot work on books...")
+                .attachKeyFrame()
+                .placeNearTarget()
+                .pointAt(util.vector.topOf(1, 2, 0));
+        scene.idle(70);
+
+        scene.overlay.showText(60)
+                .text("... nor can it add incompatible enchantments to your items.")
+                .attachKeyFrame()
+                .placeNearTarget()
+                .pointAt(util.vector.topOf(1, 2, 0));
+        scene.idle(70);
+
+        scene.overlay.showText(60)
+                .text("Blaze Enchanter can upgrade an existing enchantment to a higher level if feasible")
+                .attachKeyFrame()
+                .placeNearTarget()
+                .pointAt(util.vector.topOf(0, 2, 6));
+        scene.idle(70);
+
+        scene.idle(100);
     }
 
     public static void hyperEnchant(SceneBuilder scene, SceneBuildingUtil util) {
