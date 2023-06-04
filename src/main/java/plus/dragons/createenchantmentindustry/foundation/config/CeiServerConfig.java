@@ -42,6 +42,9 @@ public class CeiServerConfig extends ConfigBase {
     public final ConfigFloat crushingWheelDropExpRate = f(0.3f, 0, 1,
             "crushingWheelDropExpRate",
             Comments.crushingWheelDropExpRate);
+    public final ConfigBool copyingWrittenBookAlwaysGetOriginalVersion = b(true,
+            "copyingWrittenBookAlwaysGetOriginalVersion",
+            Comments.copyingWrittenBookAlwaysGetOriginalVersion);
     
     @Override
     public void registerAll(ForgeConfigSpec.Builder builder) {
@@ -71,6 +74,8 @@ public class CeiServerConfig extends ConfigBase {
         static String copyNameTagCost = "The amount of liquid experience needed to be consumed by Copying Name Tag";
         static String copyTrainScheduleCost = "The amount of ink needed to be consumed by Copying Train Schedule";
         static String crushingWheelDropExpRate = "The probability of dropping Experience Nugget after killing a creature on the Crushing Wheel";
+        static String copyingWrittenBookAlwaysGetOriginalVersion =
+                "Whether or not copying a written book always get original version. Setting it to false let you always get copy version of the book.";
         
     }
 
