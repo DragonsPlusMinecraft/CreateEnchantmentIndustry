@@ -31,6 +31,8 @@
 	"advancement.create_enchantment_industry.copiable_mystery.desc": "인쇄기로 마법이 부여된 책을 인쇄하세요",
 	"advancement.create_enchantment_industry.relic_restoration": "유물 복원",
 	"advancement.create_enchantment_industry.relic_restoration.desc": "낡은 책의 새로운 복사본을 만드세요",
+	"advancement.create_enchantment_industry.emerging_brand": "UNLOCALIZED: Emerging Brand",
+	"advancement.create_enchantment_industry.emerging_brand.desc": "UNLOCALIZED: Using the printer to name items",
 	"advancement.create_enchantment_industry.great_publisher": "베스트셀러",
 	"advancement.create_enchantment_industry.great_publisher.desc": "인쇄기로 1000권을 인쇄하세요",
 	"advancement.create_enchantment_industry.experimental": "경험 실험",
@@ -63,8 +65,10 @@
 
 	"create_enchantment_industry.ponder.copy.header": "인쇄기 사용하기",
 	"create_enchantment_industry.ponder.copy.text_1": "UNLOCALIZED: Liquid Experience is required to duplicate enchanted books.",
+	"create_enchantment_industry.ponder.copy.text_2": "UNLOCALIZED: If the enchantment on the enchantment book you are copying has a level that exceeds its maximum level, then you will need Hyper Experience.",
 	"create_enchantment_industry.ponder.copy.text_3": "UNLOCALIZED: Ink is required to duplicate written books.",
 	"create_enchantment_industry.ponder.copy.text_4": "UNLOCALIZED: Name Tag and Train Schedule can also be copied.",
+	"create_enchantment_industry.ponder.copy.text_5": "UNLOCALIZED: If you set the name tag as the print target, you can use the printer to name the item.",
 
 	"create_enchantment_industry.ponder.crushing_wheel_tweak.header": "UNLOCALIZED: We call it inefficiency...",
 	"create_enchantment_industry.ponder.crushing_wheel_tweak.text_1": "UNLOCALIZED: The Crushing Wheel has a chance of dropping a very small amount of experience nugget when it kills a creature.",
@@ -77,6 +81,10 @@
 	"create_enchantment_industry.ponder.drop_experience_nugget.text_1": "몬스터가 기계 손에게 죽으면, 경험의 조각을 떨어뜨립니다.",
 
 	"create_enchantment_industry.ponder.enchant.header": "마법 부여",
+	"create_enchantment_industry.ponder.enchant.text_1": "UNLOCALIZED: Blaze Enchanter can enchant your items.",
+	"create_enchantment_industry.ponder.enchant.text_2": "UNLOCALIZED: However, it cannot work on books...",
+	"create_enchantment_industry.ponder.enchant.text_3": "UNLOCALIZED: ... nor can it add incompatible enchantments to your items.",
+	"create_enchantment_industry.ponder.enchant.text_4": "UNLOCALIZED: Blaze Enchanter can upgrade an existing enchantment to a higher level if feasible",
 
 	"create_enchantment_industry.ponder.experience_bottle.header": "경험치 병 사용하기",
 	"create_enchantment_industry.ponder.experience_bottle.text_1": "경험치 병은 아이템 배수구로 비울 수 있습니다.",
@@ -118,6 +126,7 @@
 	"create_enchantment_industry.gui.goggles.blaze_enchanter": "현재 마법:",
 	"create_enchantment_industry.gui.goggles.blaze_enchanter.invalid_target": "대상 없음",
 	"create_enchantment_industry.gui.goggles.xp_consumption": "경험치 사용량 %s mB",
+	"create_enchantment_industry.gui.goggles.hyper_xp_consumption": "UNLOCALIZED: Consumes Hyper Experience: %s mB",
 	"create_enchantment_industry.gui.goggles.ink_consumption": "잉크 사용량: %s mB",
 	"create_enchantment_industry.gui.goggles.too_expensive": "너무 비쌉니다!",
 

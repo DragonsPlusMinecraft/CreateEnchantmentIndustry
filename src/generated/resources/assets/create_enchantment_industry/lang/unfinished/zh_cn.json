@@ -33,6 +33,8 @@
 	"advancement.create_enchantment_industry.copiable_mystery.desc": "用打印机复印一本附魔书",
 	"advancement.create_enchantment_industry.relic_restoration": "文物修复",
 	"advancement.create_enchantment_industry.relic_restoration.desc": "复印一本破烂不堪的成书",
+	"advancement.create_enchantment_industry.emerging_brand": "新兴品牌",
+	"advancement.create_enchantment_industry.emerging_brand.desc": "使用打印机为物品命名",
 	"advancement.create_enchantment_industry.great_publisher": "大出版商",
 	"advancement.create_enchantment_industry.great_publisher.desc": "用打印机复印 1000 本书",
 	"advancement.create_enchantment_industry.experimental": "实践经验",
@@ -65,8 +67,10 @@
 
 	"create_enchantment_industry.ponder.copy.header": "复印机使用",
 	"create_enchantment_industry.ponder.copy.text_1": "复印附魔书需要液态经验。",
-	"create_enchantment_industry.ponder.copy.text_2": "复印成书需要墨水。",
-	"create_enchantment_industry.ponder.copy.text_3": "命名牌和列车时刻表同样可以被复印。",
+	"create_enchantment_industry.ponder.copy.text_2": "如果你要复制的附魔书上的附魔的等级超过了其最高等级，那么你需要液态超经验。",
+	"create_enchantment_industry.ponder.copy.text_3": "复印成书需要墨水。",
+	"create_enchantment_industry.ponder.copy.text_4": "命名牌和列车时刻表同样可以被复印。",
+	"create_enchantment_industry.ponder.copy.text_5": "如果将命名牌设置为打印目标，你可以用打印机为物品命名。",
 
 	"create_enchantment_industry.ponder.crushing_wheel_tweak.header": "我们称之为低效...",
 	"create_enchantment_industry.ponder.crushing_wheel_tweak.text_1": "粉碎轮击杀生物时，有概率掉落极少量经验颗粒。",
@@ -79,6 +83,10 @@
 	"create_enchantment_industry.ponder.drop_experience_nugget.text_1": "机械手杀死生物时将掉落经验颗粒。",
 
 	"create_enchantment_industry.ponder.enchant.header": "烈焰人附魔室使用",
+	"create_enchantment_industry.ponder.enchant.text_1": "烈焰人附魔室能为你的物品附魔。",
+	"create_enchantment_industry.ponder.enchant.text_2": "但它既不能附魔书...",
+	"create_enchantment_industry.ponder.enchant.text_3": "...也不能为你的物品附上不兼容的附魔。",
+	"create_enchantment_industry.ponder.enchant.text_4": "如果可行的话，烈焰人附魔室可以将现有的附魔提升到更高等级。",
 
 	"create_enchantment_industry.ponder.experience_bottle.header": "处理附魔之瓶",
 	"create_enchantment_industry.ponder.experience_bottle.text_1": "附魔之瓶能在分液池处被排空。",
@@ -120,6 +128,7 @@
 	"create_enchantment_industry.gui.goggles.blaze_enchanter": "当前附魔：",
 	"create_enchantment_industry.gui.goggles.blaze_enchanter.invalid_target": "无效目标",
 	"create_enchantment_industry.gui.goggles.xp_consumption": "消耗经验：%s mB",
+	"create_enchantment_industry.gui.goggles.hyper_xp_consumption": "消耗超经验： %s mB",
 	"create_enchantment_industry.gui.goggles.ink_consumption": "消耗墨水：%s mB",
 	"create_enchantment_industry.gui.goggles.too_expensive": "过于昂贵！",
 

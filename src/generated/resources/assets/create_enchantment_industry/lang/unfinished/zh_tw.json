@@ -1,5 +1,5 @@
 {
-	"_": "Missing Localizations: 5",
+	"_": "Missing Localizations: 9",
 
 	"_": "->------------------------]  Game Elements  [------------------------<-",
 
@@ -33,6 +33,8 @@
 	"advancement.create_enchantment_industry.copiable_mystery.desc": "用印表機影印一本附魔書",
 	"advancement.create_enchantment_industry.relic_restoration": "文物修復",
 	"advancement.create_enchantment_industry.relic_restoration.desc": "影印一本破爛不堪的成書",
+	"advancement.create_enchantment_industry.emerging_brand": "UNLOCALIZED: Emerging Brand",
+	"advancement.create_enchantment_industry.emerging_brand.desc": "UNLOCALIZED: Using the printer to name items",
 	"advancement.create_enchantment_industry.great_publisher": "大出版商",
 	"advancement.create_enchantment_industry.great_publisher.desc": "用印表機影印 1000 本書",
 	"advancement.create_enchantment_industry.experimental": "實踐經驗",
@@ -65,8 +67,10 @@
 
 	"create_enchantment_industry.ponder.copy.header": "影印機使用",
 	"create_enchantment_industry.ponder.copy.text_1": "影印附魔書需要液態經驗。",
-	"create_enchantment_industry.ponder.copy.text_2": "影印成書需要墨水。",
-	"create_enchantment_industry.ponder.copy.text_3": "UNLOCALIZED: Name Tag and Train Schedule can also be copied.",
+	"create_enchantment_industry.ponder.copy.text_2": "UNLOCALIZED: If the enchantment on the enchantment book you are copying has a level that exceeds its maximum level, then you will need Hyper Experience.",
+	"create_enchantment_industry.ponder.copy.text_3": "影印成書需要墨水。",
+	"create_enchantment_industry.ponder.copy.text_4": "UNLOCALIZED: Name Tag and Train Schedule can also be copied.",
+	"create_enchantment_industry.ponder.copy.text_5": "UNLOCALIZED: If you set the name tag as the print target, you can use the printer to name the item.",
 
 	"create_enchantment_industry.ponder.crushing_wheel_tweak.header": "UNLOCALIZED: We call it inefficiency...",
 	"create_enchantment_industry.ponder.crushing_wheel_tweak.text_1": "UNLOCALIZED: The Crushing Wheel has a chance of dropping a very small amount of experience nugget when it kills a creature.",
@@ -79,6 +83,10 @@
 	"create_enchantment_industry.ponder.drop_experience_nugget.text_1": "機械手殺死生物時將掉落經驗顆粒。",
 
 	"create_enchantment_industry.ponder.enchant.header": "烈焰人附魔室使用",
+	"create_enchantment_industry.ponder.enchant.text_1": "UNLOCALIZED: Blaze Enchanter can enchant your items.",
+	"create_enchantment_industry.ponder.enchant.text_2": "UNLOCALIZED: However, it cannot work on books...",
+	"create_enchantment_industry.ponder.enchant.text_3": "UNLOCALIZED: ... nor can it add incompatible enchantments to your items.",
+	"create_enchantment_industry.ponder.enchant.text_4": "UNLOCALIZED: Blaze Enchanter can upgrade an existing enchantment to a higher level if feasible",
 
 	"create_enchantment_industry.ponder.experience_bottle.header": "處理附魔之瓶",
 	"create_enchantment_industry.ponder.experience_bottle.text_1": "附魔之瓶能在分液池處被排空。",
@@ -120,6 +128,7 @@
 	"create_enchantment_industry.gui.goggles.blaze_enchanter": "當前附魔：",
 	"create_enchantment_industry.gui.goggles.blaze_enchanter.invalid_target": "無效目標",
 	"create_enchantment_industry.gui.goggles.xp_consumption": "消耗經驗：%s mB",
+	"create_enchantment_industry.gui.goggles.hyper_xp_consumption": "UNLOCALIZED: Consumes Hyper Experience: %s mB",
 	"create_enchantment_industry.gui.goggles.ink_consumption": "消耗墨水：%s mB",
 	"create_enchantment_industry.gui.goggles.too_expensive": "過於昂貴！",
 

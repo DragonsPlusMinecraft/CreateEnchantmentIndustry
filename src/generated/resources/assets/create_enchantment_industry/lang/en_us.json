@@ -32,6 +32,8 @@
 	"advancement.create_enchantment_industry.copiable_mystery.desc": "Copy a Enchanted Book using Printer",
 	"advancement.create_enchantment_industry.relic_restoration": "Relic Restoration",
 	"advancement.create_enchantment_industry.relic_restoration.desc": "Make brand new copy from a tattered book",
+	"advancement.create_enchantment_industry.emerging_brand": "Emerging Brand",
+	"advancement.create_enchantment_industry.emerging_brand.desc": "Using the printer to name items",
 	"advancement.create_enchantment_industry.great_publisher": "Great Publisher",
 	"advancement.create_enchantment_industry.great_publisher.desc": "Copy 1000 books using Printer",
 	"advancement.create_enchantment_industry.experimental": "Experimental",
@@ -64,8 +66,10 @@
 
 	"create_enchantment_industry.ponder.copy.header": "Using Printer",
 	"create_enchantment_industry.ponder.copy.text_1": "Liquid Experience is required to duplicate enchanted books.",
-	"create_enchantment_industry.ponder.copy.text_2": "Ink is required to duplicate written books.",
-	"create_enchantment_industry.ponder.copy.text_3": "Name Tag and Train Schedule can also be copied.",
+	"create_enchantment_industry.ponder.copy.text_2": "If the enchantment on the enchantment book you are copying has a level that exceeds its maximum level, then you will need Hyper Experience.",
+	"create_enchantment_industry.ponder.copy.text_3": "Ink is required to duplicate written books.",
+	"create_enchantment_industry.ponder.copy.text_4": "Name Tag and Train Schedule can also be copied.",
+	"create_enchantment_industry.ponder.copy.text_5": "If you set the name tag as the print target, you can use the printer to name the item.",
 
 	"create_enchantment_industry.ponder.crushing_wheel_tweak.header": "We call it inefficiency...",
 	"create_enchantment_industry.ponder.crushing_wheel_tweak.text_1": "The Crushing Wheel has a chance of dropping a very small amount of experience nugget when it kills a creature.",
@@ -78,6 +82,10 @@
 	"create_enchantment_industry.ponder.drop_experience_nugget.text_1": "When mob is killed by deployer, experience nuggets are dropped.",
 
 	"create_enchantment_industry.ponder.enchant.header": "Enchanting",
+	"create_enchantment_industry.ponder.enchant.text_1": "Blaze Enchanter can enchant your items.",
+	"create_enchantment_industry.ponder.enchant.text_2": "However, it cannot work on books...",
+	"create_enchantment_industry.ponder.enchant.text_3": "... nor can it add incompatible enchantments to your items.",
+	"create_enchantment_industry.ponder.enchant.text_4": "Blaze Enchanter can upgrade an existing enchantment to a higher level if feasible",
 
 	"create_enchantment_industry.ponder.experience_bottle.header": "Dealing with Bottle o' Enchanting",
 	"create_enchantment_industry.ponder.experience_bottle.text_1": "Bottle o' Enchanting can be emptied at Item Drain.",
@@ -119,6 +127,7 @@
 	"create_enchantment_industry.gui.goggles.blaze_enchanter": "Active Enchantment:",
 	"create_enchantment_industry.gui.goggles.blaze_enchanter.invalid_target": "Invalid Target",
 	"create_enchantment_industry.gui.goggles.xp_consumption": "Consumes Experience: %s mB",
+	"create_enchantment_industry.gui.goggles.hyper_xp_consumption": "Consumes Hyper Experience: %s mB",
 	"create_enchantment_industry.gui.goggles.ink_consumption": "Consumes Ink: %s mB",
 	"create_enchantment_industry.gui.goggles.too_expensive": "Too Expensive!",
 

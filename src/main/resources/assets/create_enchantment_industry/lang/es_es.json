@@ -31,6 +31,8 @@
 	"advancement.create_enchantment_industry.copiable_mystery.desc": "Copiar un libro encantado usando la impresora",
 	"advancement.create_enchantment_industry.relic_restoration": "Restauración de reliquias",
 	"advancement.create_enchantment_industry.relic_restoration.desc": "Hacer una copia nueva de un libro hecho jirones",
+	"advancement.create_enchantment_industry.emerging_brand": "UNLOCALIZED: Emerging Brand",
+	"advancement.create_enchantment_industry.emerging_brand.desc": "UNLOCALIZED: Using the printer to name items",
 	"advancement.create_enchantment_industry.great_publisher": "Gran editor",
 	"advancement.create_enchantment_industry.great_publisher.desc": "Copiar 1000 libros usando la impresora",
 	"advancement.create_enchantment_industry.experimental": "Experimental",
@@ -63,8 +65,10 @@
 
 	"create_enchantment_industry.ponder.copy.header": "Uso de la impresora",
 	"create_enchantment_industry.ponder.copy.text_1": "UNLOCALIZED: Liquid Experience is required to duplicate enchanted books.",
+	"create_enchantment_industry.ponder.copy.text_2": "UNLOCALIZED: If the enchantment on the enchantment book you are copying has a level that exceeds its maximum level, then you will need Hyper Experience.",
 	"create_enchantment_industry.ponder.copy.text_3": "UNLOCALIZED: Ink is required to duplicate written books.",
 	"create_enchantment_industry.ponder.copy.text_4": "UNLOCALIZED: Name Tag and Train Schedule can also be copied.",
+	"create_enchantment_industry.ponder.copy.text_5": "UNLOCALIZED: If you set the name tag as the print target, you can use the printer to name the item.",
 
 	"create_enchantment_industry.ponder.crushing_wheel_tweak.header": "UNLOCALIZED: We call it inefficiency...",
 	"create_enchantment_industry.ponder.crushing_wheel_tweak.text_1": "UNLOCALIZED: The Crushing Wheel has a chance of dropping a very small amount of experience nugget when it kills a creature.",
@@ -77,6 +81,10 @@
 	"create_enchantment_industry.ponder.drop_experience_nugget.text_1": "Cuando el desplegador mata un mob, se obtienen pepitas de experiencia.",
 
 	"create_enchantment_industry.ponder.enchant.header": "Encantamiento",
+	"create_enchantment_industry.ponder.enchant.text_1": "UNLOCALIZED: Blaze Enchanter can enchant your items.",
+	"create_enchantment_industry.ponder.enchant.text_2": "UNLOCALIZED: However, it cannot work on books...",
+	"create_enchantment_industry.ponder.enchant.text_3": "UNLOCALIZED: ... nor can it add incompatible enchantments to your items.",
+	"create_enchantment_industry.ponder.enchant.text_4": "UNLOCALIZED: Blaze Enchanter can upgrade an existing enchantment to a higher level if feasible",
 
 	"create_enchantment_industry.ponder.experience_bottle.header": "Lidiando con botellas de experiencias",
 	"create_enchantment_industry.ponder.experience_bottle.text_1": "Las botellas de experiencia se pueden vaciar con el drenador.",
@@ -118,6 +126,7 @@
 	"create_enchantment_industry.gui.goggles.blaze_enchanter": "Encantamiento activo:",
 	"create_enchantment_industry.gui.goggles.blaze_enchanter.invalid_target": "Objetivo no válido",
 	"create_enchantment_industry.gui.goggles.xp_consumption": "UNLOCALIZED: Consumes Experience: %s mB",
+	"create_enchantment_industry.gui.goggles.hyper_xp_consumption": "UNLOCALIZED: Consumes Hyper Experience: %s mB",
 	"create_enchantment_industry.gui.goggles.ink_consumption": "UNLOCALIZED: Consumes Ink: %s mB",
 	"create_enchantment_industry.gui.goggles.too_expensive": "¡Demasiado caro!",
 
