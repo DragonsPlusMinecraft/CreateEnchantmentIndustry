@@ -1,4 +1,6 @@
 {
+	"_": "Missing Localizations: 0",
+
 	"_": "->------------------------]  Game Elements  [------------------------<-",
 
 	"block.create_enchantment_industry.blaze_enchanter": "Lohenverzauberer",
@@ -65,7 +67,7 @@
 
 	"create_enchantment_industry.ponder.copy.header": "Drucker benutzen",
 	"create_enchantment_industry.ponder.copy.text_1": "Um verzauberte Bücher zu kopieren, wird flüßige Erfahrung benötigt.",
-	"create_enchantment_industry.ponder.copy.text_2": "Wenn die Verzauberung auf dem Zauberbuch, das du kopierst, eine Stufe hat, die seine Höchststufe übersteigt, dann braucht man Hypererfahrung.",
+	"create_enchantment_industry.ponder.copy.text_2": "Möchte man ein verzaubertes Buch kopieren, das eine höhere Verzauberungsstufe hat als Minecraft normalerweise erlaubt, dann braucht man Hypererfahrung.",
 	"create_enchantment_industry.ponder.copy.text_3": "Um beschriebene Bücher zu kopieren, wird flüßige Tinte benötigt.",
 	"create_enchantment_industry.ponder.copy.text_4": "Es können auch Namensschilder und Zugfahrpläne kopiert werden.",
 	"create_enchantment_industry.ponder.copy.text_5": "Wenn man das Namensschild als Druckziel festlegen, kann man den Drucker verwenden, um das Item zu benennen.",
@@ -105,7 +107,7 @@
 	"create_enchantment_industry.ponder.transform.text_1": "Rechtsklicke beim Schleichen mit einem Verzauberungsleitfaden in der Hand auf den Lohenbrenner, um ihn in einen Lohenverzauberer zu verwandeln. Ist im Verzauberungsleitfaden bereits eine Verzauberung eingestellt, wird diese für den Lohenverzauberer übernommen.",
 	"create_enchantment_industry.ponder.transform.text_2": "Damit der Lohenverzauberer funktioniert, muss eine Verzauberung eingestellt werden. Das Konfigurationsfenster öffnet man mit Schleichen und einem Rechtsklick auf den Lohenverzauberer. Hier legt man ein verzaubertes Buch ein und wählt eine der Verzauberungen aus.",
 	"create_enchantment_industry.ponder.transform.text_3": "Um den Verzauberungsleitfaden zurückzubekommen, klickt man beim Schleichen mit einem Schraubenschlüssel auf den Lohenverzauberer.",
-	"create_enchantment_industry.ponder.transform.text_4": "Man kann den Verzauberungsleitfaden ersetzen, indem er in der Hand gehalten wird und mit der rechten Maustaste auf den Lohenverzauberer klickt.",
+	"create_enchantment_industry.ponder.transform.text_4": "Man kann den Verzauberungsleitfaden eines Lohenverzauberers ersetzen, indem man ihn mit dem neuen Verzauberungsleitfaden rechts-klickt.",
 
 
 	"_": "->------------------------]  Item Descriptions  [------------------------<-",

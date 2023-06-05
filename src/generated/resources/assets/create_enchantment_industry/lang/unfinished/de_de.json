@@ -1,5 +1,5 @@
 {
-	"_": "Missing Localizations: 14",
+	"_": "Missing Localizations: 0",
 
 	"_": "->------------------------]  Game Elements  [------------------------<-",
 
@@ -33,8 +33,8 @@
 	"advancement.create_enchantment_industry.copiable_mystery.desc": "Kopiere ein verzaubertes Buch mittels Kopierer.",
 	"advancement.create_enchantment_industry.relic_restoration": "Restaurator",
 	"advancement.create_enchantment_industry.relic_restoration.desc": "Erstelle eine komplett neue Kopie eines zerfetzten Buchs.",
-	"advancement.create_enchantment_industry.emerging_brand": "UNLOCALIZED: Emerging Brand",
-	"advancement.create_enchantment_industry.emerging_brand.desc": "UNLOCALIZED: Using the printer to name items",
+	"advancement.create_enchantment_industry.emerging_brand": "Aufstrebende Marke",
+	"advancement.create_enchantment_industry.emerging_brand.desc": "Nutze den Drucker um Items zu benennen.",
 	"advancement.create_enchantment_industry.great_publisher": "Großer Verleger",
 	"advancement.create_enchantment_industry.great_publisher.desc": "Kopiere 1000 Bücher mit einem Kopierer.",
 	"advancement.create_enchantment_industry.experimental": "Experimentell",
@@ -67,13 +67,13 @@
 
 	"create_enchantment_industry.ponder.copy.header": "Drucker benutzen",
 	"create_enchantment_industry.ponder.copy.text_1": "Um verzauberte Bücher zu kopieren, wird flüßige Erfahrung benötigt.",
-	"create_enchantment_industry.ponder.copy.text_2": "UNLOCALIZED: If the enchantment on the enchantment book you are copying has a level that exceeds its maximum level, then you will need Hyper Experience.",
+	"create_enchantment_industry.ponder.copy.text_2": "Möchte man ein verzaubertes Buch kopieren, das eine höhere Verzauberungsstufe hat als Minecraft normalerweise erlaubt, dann braucht man Hypererfahrung.",
 	"create_enchantment_industry.ponder.copy.text_3": "Um beschriebene Bücher zu kopieren, wird flüßige Tinte benötigt.",
-	"create_enchantment_industry.ponder.copy.text_4": "UNLOCALIZED: Name Tag and Train Schedule can also be copied.",
-	"create_enchantment_industry.ponder.copy.text_5": "UNLOCALIZED: If you set the name tag as the print target, you can use the printer to name the item.",
+	"create_enchantment_industry.ponder.copy.text_4": "Es können auch Namensschilder und Zugfahrpläne kopiert werden.",
+	"create_enchantment_industry.ponder.copy.text_5": "Wenn man das Namensschild als Druckziel festlegen, kann man den Drucker verwenden, um das Item zu benennen.",
 
-	"create_enchantment_industry.ponder.crushing_wheel_tweak.header": "UNLOCALIZED: We call it inefficiency...",
-	"create_enchantment_industry.ponder.crushing_wheel_tweak.text_1": "UNLOCALIZED: The Crushing Wheel has a chance of dropping a very small amount of experience nugget when it kills a creature.",
+	"create_enchantment_industry.ponder.crushing_wheel_tweak.header": "Wir nennen es Ineffizienz...",
+	"create_enchantment_industry.ponder.crushing_wheel_tweak.text_1": "Das Mahlwerksrad kann geringe Mengen Erfahrungsklumpen erzeugen, wenn es eine Kreatur tötet.",
 
 	"create_enchantment_industry.ponder.disenchant.header": "Entzauberung",
 	"create_enchantment_industry.ponder.disenchant.text_1": "Bei allen aufgenommenen Gegenständen werden die Verzauberungen entfernt. Diese werden in flüssige Erfahrung umgewandelt.",
@@ -83,10 +83,10 @@
 	"create_enchantment_industry.ponder.drop_experience_nugget.text_1": "Erfahrungsklumpen erscheinen, wenn ein Einsatzgerät einen Gegner tötet.",
 
 	"create_enchantment_industry.ponder.enchant.header": "Verzauberung",
-	"create_enchantment_industry.ponder.enchant.text_1": "UNLOCALIZED: Blaze Enchanter can enchant your items.",
-	"create_enchantment_industry.ponder.enchant.text_2": "UNLOCALIZED: However, it cannot work on books...",
-	"create_enchantment_industry.ponder.enchant.text_3": "UNLOCALIZED: ... nor can it add incompatible enchantments to your items.",
-	"create_enchantment_industry.ponder.enchant.text_4": "UNLOCALIZED: Blaze Enchanter can upgrade an existing enchantment to a higher level if feasible",
+	"create_enchantment_industry.ponder.enchant.text_1": "Der Lohenverzauberer kann Items verzaubern.",
+	"create_enchantment_industry.ponder.enchant.text_2": "Jedoch funktioniert es weder mit Büchern...",
+	"create_enchantment_industry.ponder.enchant.text_3": "...noch kann es inkompatible Verzauberungen zu Gegenständen hinzufügen.",
+	"create_enchantment_industry.ponder.enchant.text_4": "Der Lohenverzauberer kann bestehende Verzauberungen verbessern, sofern das möglich ist.",
 
 	"create_enchantment_industry.ponder.experience_bottle.header": "Umgang mit Verzauberungsfläschchen",
 	"create_enchantment_industry.ponder.experience_bottle.text_1": "Verzauberungsfläschchen können über einem Abfluss entleert werden.",
@@ -107,7 +107,7 @@
 	"create_enchantment_industry.ponder.transform.text_1": "Rechtsklicke beim Schleichen mit einem Verzauberungsleitfaden in der Hand auf den Lohenbrenner, um ihn in einen Lohenverzauberer zu verwandeln. Ist im Verzauberungsleitfaden bereits eine Verzauberung eingestellt, wird diese für den Lohenverzauberer übernommen.",
 	"create_enchantment_industry.ponder.transform.text_2": "Damit der Lohenverzauberer funktioniert, muss eine Verzauberung eingestellt werden. Das Konfigurationsfenster öffnet man mit Schleichen und einem Rechtsklick auf den Lohenverzauberer. Hier legt man ein verzaubertes Buch ein und wählt eine der Verzauberungen aus.",
 	"create_enchantment_industry.ponder.transform.text_3": "Um den Verzauberungsleitfaden zurückzubekommen, klickt man beim Schleichen mit einem Schraubenschlüssel auf den Lohenverzauberer.",
-	"create_enchantment_industry.ponder.transform.text_4": "UNLOCALIZED: You can replace the Enchanting Guide by holding it directly in your hand and right-clicking on the Blaze Enchanter.",
+	"create_enchantment_industry.ponder.transform.text_4": "Man kann den Verzauberungsleitfaden eines Lohenverzauberers ersetzen, indem man ihn mit dem neuen Verzauberungsleitfaden rechts-klickt.",
 
 
 	"_": "->------------------------]  Item Descriptions  [------------------------<-",
@@ -128,7 +128,7 @@
 	"create_enchantment_industry.gui.goggles.blaze_enchanter": "Aktive Verzauberung:",
 	"create_enchantment_industry.gui.goggles.blaze_enchanter.invalid_target": "Unzulässiges Ziel",
 	"create_enchantment_industry.gui.goggles.xp_consumption": "Verbrauchte Erfahrung: %s mB",
-	"create_enchantment_industry.gui.goggles.hyper_xp_consumption": "UNLOCALIZED: Consumes Hyper Experience: %s mB",
+	"create_enchantment_industry.gui.goggles.hyper_xp_consumption": "Verbrauchte Hypererfahrung: %s mB",
 	"create_enchantment_industry.gui.goggles.ink_consumption": "Verbrauchte Tinte: %s mB",
 	"create_enchantment_industry.gui.goggles.too_expensive": "Zu teuer!",
 
@@ -138,7 +138,7 @@
 	"recipe.create_enchantment_industry.disenchanting": "Entzauberung",
 
 	"create_enchantment_industry.display_source.blaze_enchanter_source_target_enchantment": "Zielverzauberung",
-	"create_enchantment_industry.display_source.printer_source_copy_content": "UNLOCALIZED: Copy Content",
+	"create_enchantment_industry.display_source.printer_source_copy_content": "Inhalt kopieren",
 
 	"_": "Thank you for translating Create: Enchantment Industry!"
 
