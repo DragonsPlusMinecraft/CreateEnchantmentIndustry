@@ -60,6 +60,7 @@ public class LangMerger implements DataProvider {
 	private Map<String, List<Object>> populatedLangData;
 	private Map<String, Map<String, String>> allLocalizedEntries;
 	private Map<String, MutableInt> missingTranslationTally;
+	private Map<String, MutableInt> existingButActuallyMissingTranslationTally;
 
 	private List<String> langIgnore;
 
@@ -70,6 +71,7 @@ public class LangMerger implements DataProvider {
 		this.allLocalizedEntries = new HashMap<>();
 		this.populatedLangData = new HashMap<>();
 		this.missingTranslationTally = new HashMap<>();
+		this.existingButActuallyMissingTranslationTally = new HashMap<>();
 	}
 
 	private void populateLangIgnore() {
@@ -94,23 +96,27 @@ public class LangMerger implements DataProvider {
 			.resolve("assets/" + EnchantmentIndustry.ID + "/lang/" + "en_us.json");
 
 		for (Pair<String, JsonElement> pair : getAllLocalizationFiles()) {
+			String key = pair.getKey();
 			if (!pair.getRight()
 				.isJsonObject())
 				continue;
 			Map<String, String> localizedEntries = new HashMap<>();
 			JsonObject jsonobject = pair.getRight()
 				.getAsJsonObject();
+			existingButActuallyMissingTranslationTally.put(key, new MutableInt(0));
 			jsonobject.entrySet()
 				.stream()
 				.forEachOrdered(entry -> {
-					String key = entry.getKey();
-					if (key.startsWith("_"))
+					String key2 = entry.getKey();
+					if (key2.startsWith("_"))
 						return;
 					String value = entry.getValue()
 						.getAsString();
-					localizedEntries.put(key, value);
+					if(value.startsWith("UNLOCALIZED: "))
+						existingButActuallyMissingTranslationTally.get(key).increment();
+					localizedEntries.put(key2, value);
 				});
-			String key = pair.getKey();
+
 			allLocalizedEntries.put(key, localizedEntries);
 			populatedLangData.put(key, new ArrayList<>());
 			missingTranslationTally.put(key, new MutableInt(0));
@@ -126,8 +132,8 @@ public class LangMerger implements DataProvider {
 			String key = localization.getKey();
 			Path populatedLangPath = this.gen.getOutputFolder()
 				.resolve("assets/" + EnchantmentIndustry.ID + "/lang/unfinished/" + key);
-			save(cache, localization.getValue(), missingTranslationTally.get(key)
-				.intValue(), populatedLangPath, "Populating " + key + " with missing entries...");
+			save(cache, localization.getValue(), missingTranslationTally.get(key).intValue() + existingButActuallyMissingTranslationTally.get(key).intValue(),
+					populatedLangPath, "Populating " + key + " with missing entries...");
 		}
 	}
 
@@ -140,7 +146,6 @@ public class LangMerger implements DataProvider {
 		try (BufferedReader reader = Files.newBufferedReader(path)) {
 			JsonObject jsonobject = GsonHelper.fromJson(GSON, reader, JsonObject.class);
 			addAll("Game Elements", jsonobject);
-			reader.close();
 		}
 	}
 
@@ -240,8 +245,6 @@ public class LangMerger implements DataProvider {
 	private void save(HashCache cache, List<Object> dataIn, int missingKeys, Path target, String message)
 		throws IOException {
 		String data = createString(dataIn, missingKeys);
-//		data = JavaUnicodeEscaper.outsideOf(0, 0x7f)
-//			.translate(data);
 		String hash = DataProvider.SHA1.hashUnencodedChars(data)
 			.toString();
 		if (!Objects.equals(cache.getHash(target), hash) || !Files.exists(target)) {
