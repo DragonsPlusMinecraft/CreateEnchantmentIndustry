@@ -37,7 +37,6 @@ public class BlazeEnchanterEditPacket extends SimplePacketBase {
     @Override
     public boolean handle(Context context) {
         context.enqueueWork(() -> {
-
                     ServerPlayer sender = context.getSender();
                     if(!(sender.level.getBlockEntity(blockPos) instanceof BlazeEnchanterBlockEntity blazeEnchanter))
                         return;
@@ -53,8 +52,6 @@ public class BlazeEnchanterEditPacket extends SimplePacketBase {
 
                     blazeEnchanter.notifyUpdate();
                 });
-        context.setPacketHandled(true);
-
-        return context.getPacketHandled();
+        return true;
     }
 }

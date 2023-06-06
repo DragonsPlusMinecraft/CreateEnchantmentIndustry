@@ -45,8 +45,6 @@ public class EnchantingGuideEditPacket extends SimplePacketBase {
                     sender.getCooldowns()
                             .addCooldown(mainHandItem.getItem(), 5);
                 });
-        context.setPacketHandled(true);
-
-        return context.getPacketHandled();
+        return true;
     }
 }
