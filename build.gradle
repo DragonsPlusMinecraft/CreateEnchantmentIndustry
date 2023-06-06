@@ -142,9 +142,16 @@ void addLicense(jarTask) {
     jarTask.from('LICENSE')
 }
 
+void removeRedundant(jarTask){
+    jarTask.exclude(".cache")
+    jarTask.exclude("assets/create_enchantment_industry/lang/unfinished")
+    jarTask.exclude("assets/create_enchantment_industry/lang/default")
+}
+
 jar.finalizedBy('reobfJar')
 
 addLicense(jar)
+removeRedundant(jar)
 
 publishing {
     publications {
