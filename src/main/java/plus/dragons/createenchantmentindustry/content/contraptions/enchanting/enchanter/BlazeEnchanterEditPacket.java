@@ -14,7 +14,6 @@ public class BlazeEnchanterEditPacket extends SimplePacketBase {
     private ItemStack itemStack;
     private BlockPos blockPos;
 
-
     public BlazeEnchanterEditPacket(int index, ItemStack enchantedBook, BlockPos blockPos) {
         this.index = index;
         itemStack = enchantedBook;
@@ -51,7 +50,6 @@ public class BlazeEnchanterEditPacket extends SimplePacketBase {
 
             blazeEnchanter.notifyUpdate();
         });
-        context.setPacketHandled(true);
-        return context.getPacketHandled();
+        return true;
     }
 }

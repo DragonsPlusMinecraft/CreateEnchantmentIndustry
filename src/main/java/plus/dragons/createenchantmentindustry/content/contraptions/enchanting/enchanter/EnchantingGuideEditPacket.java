@@ -15,7 +15,6 @@ public class EnchantingGuideEditPacket extends SimplePacketBase {
     private int index;
     private ItemStack itemStack;
 
-
     public EnchantingGuideEditPacket(int index, ItemStack enchantedBook) {
         this.index = index;
         itemStack = enchantedBook;
@@ -47,7 +46,6 @@ public class EnchantingGuideEditPacket extends SimplePacketBase {
             sender.getCooldowns()
                     .addCooldown(mainHandItem.getItem(), 5);
         });
-        context.setPacketHandled(true);
-        return context.getPacketHandled();
+        return true;
     }
 }
