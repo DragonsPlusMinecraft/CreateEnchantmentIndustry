@@ -13,7 +13,6 @@
 
 	"fluid.create_enchantment_industry.experience": "Flüssige Erfahrung",
 	"fluid.create_enchantment_industry.hyper_experience": "Flüssige Hypererfahrung",
-	"fluid.create_enchantment_industry.ink": "Tinte",
 
 	"item.create_enchantment_industry.enchanting_guide": "Verzauberungsleitfaden",
 	"item.create_enchantment_industry.experience_rotor": "Erfahrungsrotor",
@@ -57,69 +56,6 @@
 	"advancement.create_enchantment_industry.hypothetical_extension.desc": "Verzaubere ein Item mit der Hyperverzauberung des Lohenverzauberers.",
 
 
-	"_": "->------------------------]  Ponder Content  [------------------------<-",
-
-	"create_enchantment_industry.ponder.tag.experience": "Bezug zur Erfahrung",
-	"create_enchantment_industry.ponder.tag.experience.description": "Items und Komponenten mit Bezug zur Erfahrung",
-
-	"create_enchantment_industry.ponder.absorb_experience_nugget.header": "Umwandlung von Erfahrungsklumpen in Flüßigkeit",
-	"create_enchantment_industry.ponder.absorb_experience_nugget.text_1": "Erfahrungsklumpen können von einem Entzauberer aufgenommen werden.",
-
-	"create_enchantment_industry.ponder.copy.header": "Drucker benutzen",
-	"create_enchantment_industry.ponder.copy.text_1": "Um verzauberte Bücher zu kopieren, wird flüßige Erfahrung benötigt.",
-	"create_enchantment_industry.ponder.copy.text_2": "Möchte man ein verzaubertes Buch kopieren, das eine höhere Verzauberungsstufe hat als Minecraft normalerweise erlaubt, dann braucht man Hypererfahrung.",
-	"create_enchantment_industry.ponder.copy.text_3": "Um beschriebene Bücher zu kopieren, wird flüßige Tinte benötigt.",
-	"create_enchantment_industry.ponder.copy.text_4": "Es können auch Namensschilder und Zugfahrpläne kopiert werden.",
-	"create_enchantment_industry.ponder.copy.text_5": "Wenn man das Namensschild als Druckziel festlegen, kann man den Drucker verwenden, um das Item zu benennen.",
-
-	"create_enchantment_industry.ponder.crushing_wheel_tweak.header": "Wir nennen es Ineffizienz...",
-	"create_enchantment_industry.ponder.crushing_wheel_tweak.text_1": "Das Mahlwerksrad kann geringe Mengen Erfahrungsklumpen erzeugen, wenn es eine Kreatur tötet.",
-
-	"create_enchantment_industry.ponder.disenchant.header": "Entzauberung",
-	"create_enchantment_industry.ponder.disenchant.text_1": "Bei allen aufgenommenen Gegenständen werden die Verzauberungen entfernt. Diese werden in flüssige Erfahrung umgewandelt.",
-	"create_enchantment_industry.ponder.disenchant.text_2": "Spieler, die auf dem Entzauberer stehen, verlieren ihre Erfahrungslevel. Die entfernte Erfahrung wird in flüssige Erfahrung umgewandelt.",
-
-	"create_enchantment_industry.ponder.drop_experience_nugget.header": "Vielleicht auch eine Mobfarm?",
-	"create_enchantment_industry.ponder.drop_experience_nugget.text_1": "Erfahrungsklumpen erscheinen, wenn ein Einsatzgerät einen Gegner tötet.",
-
-	"create_enchantment_industry.ponder.enchant.header": "Verzauberung",
-	"create_enchantment_industry.ponder.enchant.text_1": "Der Lohenverzauberer kann Items verzaubern.",
-	"create_enchantment_industry.ponder.enchant.text_2": "Jedoch funktioniert es weder mit Büchern...",
-	"create_enchantment_industry.ponder.enchant.text_3": "...noch kann es inkompatible Verzauberungen zu Gegenständen hinzufügen.",
-	"create_enchantment_industry.ponder.enchant.text_4": "Der Lohenverzauberer kann bestehende Verzauberungen verbessern, sofern das möglich ist.",
-
-	"create_enchantment_industry.ponder.experience_bottle.header": "Umgang mit Verzauberungsfläschchen",
-	"create_enchantment_industry.ponder.experience_bottle.text_1": "Verzauberungsfläschchen können über einem Abfluss entleert werden.",
-	"create_enchantment_industry.ponder.experience_bottle.text_2": "Verzauberungsfläschchen können von einem Ausfluss befüllt werden.",
-
-	"create_enchantment_industry.ponder.hyper_enchant.header": "Hyperverzauberung",
-	"create_enchantment_industry.ponder.hyper_enchant.text_1": "Das ist flüssige Hypererfahrung.",
-	"create_enchantment_industry.ponder.hyper_enchant.text_2": "Die Hyper-Erfahrung kann den Lohenverzauberer in einen brodelnden Zustand versetzen. Die Stufe der in diesem Zustand erzeugten Verzauberung ist eine Stufe höher als die der eingestellten Verzauberung.",
-	"create_enchantment_industry.ponder.hyper_enchant.text_3": "Verzauberungen mit einer Maximalstufe von 1 können in der Hyperverzauberung nicht auf Stufe 2 aufgewertet werden.",
-
-	"create_enchantment_industry.ponder.leak.header": "Oh nein! Es ist undicht!",
-	"create_enchantment_industry.ponder.leak.text_1": "Ich habe einen Tank voller Erfahrung.",
-	"create_enchantment_industry.ponder.leak.text_2": "Ich habe ein Rohr mit offenem Ende.",
-	"create_enchantment_industry.ponder.leak.text_3": "Pfui!",
-	"create_enchantment_industry.ponder.leak.text_4": "Keine Sorge, die ausgelaufene flüssige Erfahrung verwandelt sich in Erfahrungskugeln. Die Spieler können auch an der Öffnung des Rohrs stehen, um Erfahrung zu sammeln.",
-
-	"create_enchantment_industry.ponder.transform.header": "Nutzung des Verzauberungsleitfadens",
-	"create_enchantment_industry.ponder.transform.text_1": "Rechtsklicke beim Schleichen mit einem Verzauberungsleitfaden in der Hand auf den Lohenbrenner, um ihn in einen Lohenverzauberer zu verwandeln. Ist im Verzauberungsleitfaden bereits eine Verzauberung eingestellt, wird diese für den Lohenverzauberer übernommen.",
-	"create_enchantment_industry.ponder.transform.text_2": "Damit der Lohenverzauberer funktioniert, muss eine Verzauberung eingestellt werden. Das Konfigurationsfenster öffnet man mit Schleichen und einem Rechtsklick auf den Lohenverzauberer. Hier legt man ein verzaubertes Buch ein und wählt eine der Verzauberungen aus.",
-	"create_enchantment_industry.ponder.transform.text_3": "Um den Verzauberungsleitfaden zurückzubekommen, klickt man beim Schleichen mit einem Schraubenschlüssel auf den Lohenverzauberer.",
-	"create_enchantment_industry.ponder.transform.text_4": "Man kann den Verzauberungsleitfaden eines Lohenverzauberers ersetzen, indem man ihn mit dem neuen Verzauberungsleitfaden rechts-klickt.",
-
-
-	"_": "->------------------------]  Item Descriptions  [------------------------<-",
-
-	"item.create_enchantment_industry.enchanting_guide.tooltip": "VERZAUBERUNGSLEITFADEN TOOLTIPS",
-	"item.create_enchantment_industry.enchanting_guide.tooltip.current_enchantment": "Aktuelle Verzauberung:",
-	"item.create_enchantment_industry.enchanting_guide.tooltip.not_configured": "Nicht konfiguriert",
-
-	"item.create_enchantment_industry.experience_rotor.tooltip": "ERFAHRUNGSROTOR",
-	"item.create_enchantment_industry.experience_rotor.tooltip.summary": "In _Mischrezepten_ verwendet um _Erfahrungsflüssigkeiten_ umzuwandeln.",
-
-
 	"_": "->------------------------]  UI & Messages  [------------------------<-",
 
 	"create_enchantment_industry.gui.enchanting_guide.no_enchantment": "Keine Verzauberung verfügbar",
@@ -139,6 +75,68 @@
 
 	"create_enchantment_industry.display_source.blaze_enchanter_source_target_enchantment": "Zielverzauberung",
 	"create_enchantment_industry.display_source.printer_source_copy_content": "Inhalt kopieren",
+
+
+	"_": "->------------------------]  Item Descriptions  [------------------------<-",
+
+	"item.create_enchantment_industry.enchanting_guide.tooltip": "VERZAUBERUNGSLEITFADEN TOOLTIPS",
+	"item.create_enchantment_industry.enchanting_guide.tooltip.current_enchantment": "Aktuelle Verzauberung:",
+	"item.create_enchantment_industry.enchanting_guide.tooltip.not_configured": "Nicht konfiguriert",
+
+	"item.create_enchantment_industry.experience_rotor.tooltip": "ERFAHRUNGSROTOR",
+	"item.create_enchantment_industry.experience_rotor.tooltip.summary": "In _Mischrezepten_ verwendet um _Erfahrungsflüssigkeiten_ umzuwandeln.",
+
+
+	"_": "->------------------------]  Ponder Content  [------------------------<-",
+
+	"create_enchantment_industry.ponder.disenchant.header": "Entzauberung",
+	"create_enchantment_industry.ponder.disenchant.text_1": "Bei allen aufgenommenen Gegenständen werden die Verzauberungen entfernt. Diese werden in flüssige Erfahrung umgewandelt.",
+	"create_enchantment_industry.ponder.disenchant.text_2": "Spieler, die auf dem Entzauberer stehen, verlieren ihre Erfahrungslevel. Die entfernte Erfahrung wird in flüssige Erfahrung umgewandelt.",
+
+	"create_enchantment_industry.ponder.experience_bottle.header": "Umgang mit Verzauberungsfläschchen",
+	"create_enchantment_industry.ponder.experience_bottle.text_1": "Verzauberungsfläschchen können über einem Abfluss entleert werden.",
+	"create_enchantment_industry.ponder.experience_bottle.text_2": "Verzauberungsfläschchen können von einem Ausfluss befüllt werden.",
+
+	"create_enchantment_industry.ponder.transform.header": "Nutzung des Verzauberungsleitfadens",
+	"create_enchantment_industry.ponder.transform.text_1": "Rechtsklicke beim Schleichen mit einem Verzauberungsleitfaden in der Hand auf den Lohenbrenner, um ihn in einen Lohenverzauberer zu verwandeln. Ist im Verzauberungsleitfaden bereits eine Verzauberung eingestellt, wird diese für den Lohenverzauberer übernommen.",
+	"create_enchantment_industry.ponder.transform.text_2": "Damit der Lohenverzauberer funktioniert, muss eine Verzauberung eingestellt werden. Das Konfigurationsfenster öffnet man mit Schleichen und einem Rechtsklick auf den Lohenverzauberer. Hier legt man ein verzaubertes Buch ein und wählt eine der Verzauberungen aus.",
+	"create_enchantment_industry.ponder.transform.text_3": "Um den Verzauberungsleitfaden zurückzubekommen, klickt man beim Schleichen mit einem Schraubenschlüssel auf den Lohenverzauberer.",
+	"create_enchantment_industry.ponder.transform.text_4": "Man kann den Verzauberungsleitfaden eines Lohenverzauberers ersetzen, indem man ihn mit dem neuen Verzauberungsleitfaden rechts-klickt.",
+
+	"create_enchantment_industry.ponder.copy.header": "Drucker benutzen",
+	"create_enchantment_industry.ponder.copy.text_1": "Um verzauberte Bücher zu kopieren, wird flüßige Erfahrung benötigt.",
+	"create_enchantment_industry.ponder.copy.text_2": "Möchte man ein verzaubertes Buch kopieren, das eine höhere Verzauberungsstufe hat als Minecraft normalerweise erlaubt, dann braucht man Hypererfahrung.",
+	"create_enchantment_industry.ponder.copy.text_3": "Um beschriebene Bücher zu kopieren, wird flüßige Tinte benötigt.",
+	"create_enchantment_industry.ponder.copy.text_4": "Es können auch Namensschilder und Zugfahrpläne kopiert werden.",
+	"create_enchantment_industry.ponder.copy.text_5": "Wenn man das Namensschild als Druckziel festlegen, kann man den Drucker verwenden, um das Item zu benennen.",
+
+	"create_enchantment_industry.ponder.enchant.header": "Verzauberung",
+	"create_enchantment_industry.ponder.enchant.text_1": "Der Lohenverzauberer kann Items verzaubern.",
+	"create_enchantment_industry.ponder.enchant.text_2": "Jedoch funktioniert es weder mit Büchern...",
+	"create_enchantment_industry.ponder.enchant.text_3": "...noch kann es inkompatible Verzauberungen zu Gegenständen hinzufügen.",
+	"create_enchantment_industry.ponder.enchant.text_4": "Der Lohenverzauberer kann bestehende Verzauberungen verbessern, sofern das möglich ist.",
+
+	"create_enchantment_industry.ponder.hyper_enchant.header": "Hyperverzauberung",
+	"create_enchantment_industry.ponder.hyper_enchant.text_1": "Das ist flüssige Hypererfahrung.",
+	"create_enchantment_industry.ponder.hyper_enchant.text_2": "Die Hyper-Erfahrung kann den Lohenverzauberer in einen brodelnden Zustand versetzen. Die Stufe der in diesem Zustand erzeugten Verzauberung ist eine Stufe höher als die der eingestellten Verzauberung.",
+	"create_enchantment_industry.ponder.hyper_enchant.text_3": "Verzauberungen mit einer Maximalstufe von 1 können in der Hyperverzauberung nicht auf Stufe 2 aufgewertet werden.",
+
+	"create_enchantment_industry.ponder.drop_experience_nugget.header": "Vielleicht auch eine Mobfarm?",
+	"create_enchantment_industry.ponder.drop_experience_nugget.text_1": "Erfahrungsklumpen erscheinen, wenn ein Einsatzgerät einen Gegner tötet.",
+
+	"create_enchantment_industry.ponder.crushing_wheel_tweak.header": "Wir nennen es Ineffizienz...",
+	"create_enchantment_industry.ponder.crushing_wheel_tweak.text_1": "Das Mahlwerksrad kann geringe Mengen Erfahrungsklumpen erzeugen, wenn es eine Kreatur tötet.",
+
+	"create_enchantment_industry.ponder.absorb_experience_nugget.header": "Umwandlung von Erfahrungsklumpen in Flüßigkeit",
+	"create_enchantment_industry.ponder.absorb_experience_nugget.text_1": "Erfahrungsklumpen können von einem Entzauberer aufgenommen werden.",
+
+	"create_enchantment_industry.ponder.leak.header": "Oh nein! Es ist undicht!",
+	"create_enchantment_industry.ponder.leak.text_1": "Ich habe einen Tank voller Erfahrung.",
+	"create_enchantment_industry.ponder.leak.text_2": "Ich habe ein Rohr mit offenem Ende.",
+	"create_enchantment_industry.ponder.leak.text_3": "Pfui!",
+	"create_enchantment_industry.ponder.leak.text_4": "Keine Sorge, die ausgelaufene flüssige Erfahrung verwandelt sich in Erfahrungskugeln. Die Spieler können auch an der Öffnung des Rohrs stehen, um Erfahrung zu sammeln.",
+	"create_enchantment_industry.ponder.tag.experience": "Bezug zur Erfahrung",
+	"create_enchantment_industry.ponder.tag.experience.description": "Items und Komponenten mit Bezug zur Erfahrung",
 
 	"_": "Thank you for translating Create: Enchantment Industry!"
 
