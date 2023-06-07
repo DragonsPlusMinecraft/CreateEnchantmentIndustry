@@ -145,7 +145,7 @@ void addLicense(jarTask) {
 void removeRedundant(jarTask){
     jarTask.exclude(".cache")
     jarTask.exclude("assets/create_enchantment_industry/lang/unfinished")
-    jarTask.exclude("assets/create_enchantment_industry/lang/default")
+    jarTask.exclude("assets/create_enchantment_industry/lang/partial")
 }
 
 jar.finalizedBy('reobfJar')
