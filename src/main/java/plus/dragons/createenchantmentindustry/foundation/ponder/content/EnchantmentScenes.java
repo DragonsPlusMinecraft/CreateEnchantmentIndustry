@@ -94,43 +94,46 @@ public class EnchantmentScenes {
         scene.idle(5);
         scene.world.showSection(util.select.fromTo(0, 1, 0, 2, 1, 2), Direction.DOWN);
 
-        scene.overlay.showText(40)
+        scene.overlay.showControls(new InputWindowElement(util.vector.topOf(1, 1, 1), Pointing.DOWN).whileSneaking().rightClick()
+                .withItem(CeiItems.ENCHANTING_GUIDE.asStack()), 30);
+        scene.overlay.showText(50)
                 .text("Right-click the Blaze Burner with an Enchanting Guide in hand when sneaking to transform it to a Blaze Enchanter.")
                 .attachKeyFrame()
                 .placeNearTarget()
                 .pointAt(util.vector.topOf(1, 1, 1));
-        scene.idle(40);
-
+        scene.idle(30);
         scene.world.setBlock(util.grid.at(1, 1, 1), CeiBlocks.BLAZE_ENCHANTER.getDefaultState(), false);
         scene.world.modifyBlockEntity(util.grid.at(1, 1, 1), BlazeEnchanterBlockEntity.class, be -> be.setTargetItem(enchantingGuide(Enchantments.MENDING, 1)));
+        scene.idle(25);
 
-        scene.overlay.showText(140)
+        scene.overlay.showText(100)
                 .text("To make Blaze Enchanter work, Enchanting Guide must be configured first. " +
                         "Right-clicking Blaze Enchanter or right-clicking Enchanting Guide in hands can open configuration panel.")
                 .attachKeyFrame()
                 .placeNearTarget()
-                .pointAt(util.vector.topOf(1, 1, 1));
-        scene.idle(140);
-        scene.overlay.showControls(new InputWindowElement(util.vector.centerOf(1, 1, 1), Pointing.DOWN).whileSneaking().rightClick()
-                .withItem(CeiItems.ENCHANTING_GUIDE.asStack()), 40);
-        scene.idle(50);
+                .pointAt(util.vector.centerOf(1, 1, 1));
+        scene.idle(105);
 
-        scene.overlay.showText(40)
+        scene.overlay.showControls(new InputWindowElement(util.vector.topOf(1, 1, 1), Pointing.DOWN).whileSneaking().rightClick().withWrench(), 30);
+        scene.overlay.showText(50)
                 .text("To retrieve the enchanting guide, right-click the Blaze Enchanter with wrench when sneaking.")
                 .attachKeyFrame()
                 .placeNearTarget()
-                .pointAt(util.vector.topOf(1, 1, 1));
-        scene.idle(40);
+                .pointAt(util.vector.centerOf(1, 1, 1));
+        scene.idle(30);
         scene.world.setBlock(util.grid.at(1, 1, 1), AllBlocks.BLAZE_BURNER.getDefaultState().setValue(BlazeBurnerBlock.HEAT_LEVEL, BlazeBurnerBlock.HeatLevel.SMOULDERING), false);
-        scene.overlay.showControls(new InputWindowElement(util.vector.centerOf(1, 1, 1), Pointing.DOWN).whileSneaking().rightClick().withWrench(), 40);
-        scene.idle(40);
+        scene.idle(25);
+
+        scene.world.setBlock(util.grid.at(1, 1, 1), CeiBlocks.BLAZE_ENCHANTER.getDefaultState(), false);
+        scene.world.modifyBlockEntity(util.grid.at(1, 1, 1), BlazeEnchanterBlockEntity.class, be -> be.setTargetItem(enchantingGuide(Enchantments.MENDING, 1)));
+        scene.idle(10);
 
         scene.world.setBlock(util.grid.at(1, 1, 1), AllBlocks.BLAZE_BURNER.getDefaultState().setValue(BlazeBurnerBlock.HEAT_LEVEL, BlazeBurnerBlock.HeatLevel.KINDLED), false);
         scene.overlay.showText(60)
                 .text("You can replace the Enchanting Guide by holding it directly in your hand and right-clicking on the Blaze Enchanter.")
                 .attachKeyFrame()
                 .placeNearTarget()
-                .pointAt(util.vector.topOf(1, 1, 1));
+                .pointAt(util.vector.centerOf(1, 1, 1));
         scene.idle(60);
     }
 
@@ -229,10 +232,7 @@ public class EnchantmentScenes {
         scene.scaleSceneView(.68f);
         scene.showBasePlate();
         scene.idle(5);
-        scene.world.setBlock(util.grid.at(1,2,1),CeiBlocks.BLAZE_ENCHANTER.getDefaultState().setValue(BlazeEnchanterBlock.HEAT_LEVEL,
-                BlazeEnchanterBlock.HeatLevel.KINDLED),false);
-        scene.world.setBlock(util.grid.at(1,2,3),CeiBlocks.BLAZE_ENCHANTER.getDefaultState().setValue(BlazeEnchanterBlock.HEAT_LEVEL,
-                BlazeEnchanterBlock.HeatLevel.SEETHING),false);
+
         scene.world.modifyBlockEntity(util.grid.at(3, 1, 1), CreativeFluidTankBlockEntity.class, be -> ((CreativeFluidTankBlockEntity.CreativeSmartFluidTank) be.getTankInventory())
                 .setContainedFluid(new FluidStack(CeiFluids.EXPERIENCE.get().getSource(), 1000)));
         scene.world.modifyBlockEntity(util.grid.at(3, 1, 3), CreativeFluidTankBlockEntity.class, be -> ((CreativeFluidTankBlockEntity.CreativeSmartFluidTank) be.getTankInventory())
@@ -250,21 +250,28 @@ public class EnchantmentScenes {
         scene.idle(90);
 
         scene.world.setKineticSpeed(util.select.everywhere(), 128F);
-        scene.idle(40);
+        scene.idle(25);
 
+        scene.world.setBlock(util.grid.at(1,2,1),CeiBlocks.BLAZE_ENCHANTER.getDefaultState().setValue(BlazeEnchanterBlock.HEAT_LEVEL,
+                BlazeEnchanterBlock.HeatLevel.KINDLED),false);
+        scene.world.setBlock(util.grid.at(1,2,3),CeiBlocks.BLAZE_ENCHANTER.getDefaultState().setValue(BlazeEnchanterBlock.HEAT_LEVEL,
+                BlazeEnchanterBlock.HeatLevel.SEETHING),false);
+        scene.idle(15);
+
+        scene.overlay.showOutline(PonderPalette.BLUE, new Object(), util.select.position(1, 2, 3), 80);
         scene.overlay.showText(80)
                 .text("Hyper experience can make the Blaze Enchanter into seething state, and the level of the enchantment produced in this state will be one level higher than the set enchantment.")
                 .attachKeyFrame()
                 .placeNearTarget()
-                .pointAt(util.vector.topOf(1, 2, 3));
+                .pointAt(util.vector.centerOf(1, 2, 3));
         scene.idle(90);
 
         scene.overlay.showText(60)
                 .text("Enchantment with level cap of 1 level cannot be upgraded to level 2 in hyper-enchant.")
                 .attachKeyFrame()
                 .placeNearTarget()
-                .pointAt(util.vector.topOf(1, 2, 3));
-        scene.idle(70);
+                .pointAt(util.vector.centerOf(1, 2, 3));
+        scene.idle(60);
     }
 
     public static void handleExperienceNugget(SceneBuilder scene, SceneBuildingUtil util) {
@@ -344,7 +351,8 @@ public class EnchantmentScenes {
         scene.overlay.showText(60)
                 .text("When mob is killed by deployer, experience nuggets are dropped.")
                 .placeNearTarget()
-                .pointAt(util.vector.topOf(2, 1, 2));
+                .pointAt(util.vector.centerOf(1, 1, 2));
+        scene.overlay.showOutline(PonderPalette.BLUE, new Object(), util.select.position(1, 1, 2), 50);
 
         scene.world.flapFunnel(deployerPos.north(), true);
         scene.world.createItemEntity(util.vector.centerOf(deployerPos.west())
@@ -408,7 +416,7 @@ public class EnchantmentScenes {
         scene.overlay.showText(60)
                 .text("The Crushing Wheel has a chance of dropping a very small amount of experience nugget when it kills a creature.")
                 .placeNearTarget()
-                .pointAt(util.vector.topOf(4, 3, 2));
+                .pointAt(util.vector.centerOf(4, 3, 2));
         scene.idle(60);
     }
 
@@ -488,19 +496,21 @@ public class EnchantmentScenes {
                 .text("Liquid Experience is required to duplicate enchanted books.")
                 .attachKeyFrame()
                 .placeNearTarget()
-                .pointAt(util.vector.topOf(2, 3, 2));
+                .pointAt(util.vector.centerOf(2, 3, 2));
         scene.idle(40);
 
         scene.world.modifyBlockEntity(util.grid.at(2, 1, 5), CreativeFluidTankBlockEntity.class, be -> ((CreativeFluidTankBlockEntity.CreativeSmartFluidTank) be.getTankInventory())
                 .setContainedFluid(new FluidStack(CeiFluids.HYPER_EXPERIENCE.get().getSource(), 1000)));
         scene.world.modifyBlockEntity(util.grid.at(2, 3, 2), PrinterBlockEntity.class, be ->
-                be.getCapability(ForgeCapabilities.FLUID_HANDLER).ifPresent(tank ->
-                        tank.fill(new FluidStack(CeiFluids.HYPER_EXPERIENCE.get().getSource(), 3000), IFluidHandler.FluidAction.EXECUTE)));
+                be.getCapability(ForgeCapabilities.FLUID_HANDLER).ifPresent(tank -> {
+                        tank.drain(3000, IFluidHandler.FluidAction.EXECUTE);
+                        tank.fill(new FluidStack(CeiFluids.HYPER_EXPERIENCE.get().getSource(), 3000), IFluidHandler.FluidAction.EXECUTE);
+                }));
         scene.overlay.showText(40)
                 .text("If the enchantment on the enchantment book you are copying has a level that exceeds its maximum level, then you will need Hyper Experience.")
                 .attachKeyFrame()
                 .placeNearTarget()
-                .pointAt(util.vector.topOf(2, 3, 2));
+                .pointAt(util.vector.centerOf(2, 3, 2));
         scene.idle(40);
 
         var item = Items.BOOK.getDefaultInstance();
@@ -530,14 +540,8 @@ public class EnchantmentScenes {
                 .text("Ink is required to duplicate written books.")
                 .attachKeyFrame()
                 .placeNearTarget()
-                .pointAt(util.vector.topOf(2, 3, 2));
+                .pointAt(util.vector.centerOf(2, 3, 2));
         scene.idle(40);
-
-        scene.world.modifyBlockEntity(util.grid.at(2, 1, 5), CreativeFluidTankBlockEntity.class, be -> ((CreativeFluidTankBlockEntity.CreativeSmartFluidTank) be.getTankInventory())
-                .setContainedFluid(new FluidStack(CeiFluids.EXPERIENCE.get().getSource(), 1000)));
-        scene.world.modifyBlockEntity(util.grid.at(2, 3, 2), PrinterBlockEntity.class, be ->
-                be.getCapability(ForgeCapabilities.FLUID_HANDLER).ifPresent(tank ->
-                        tank.fill(new FluidStack(CeiFluids.EXPERIENCE.get().getSource(), 3000), IFluidHandler.FluidAction.EXECUTE)));
 
         item = Items.BOOK.getDefaultInstance();
         beltStart = util.grid.at(6, 1, 2);
@@ -550,16 +554,24 @@ public class EnchantmentScenes {
         scene.idle(95);
         scene.world.removeItemsFromBelt(copierPos.below(2));
         scene.world.createItemOnBelt(copierPos.below(2), Direction.UP, Items.WRITTEN_BOOK.getDefaultInstance());
+        scene.idle(50);
 
+        scene.world.modifyBlockEntity(util.grid.at(2, 1, 5), CreativeFluidTankBlockEntity.class, be -> ((CreativeFluidTankBlockEntity.CreativeSmartFluidTank) be.getTankInventory())
+                .setContainedFluid(new FluidStack(CeiFluids.EXPERIENCE.get().getSource(), 1000)));
+        scene.world.modifyBlockEntity(util.grid.at(2, 3, 2), PrinterBlockEntity.class, be ->
+                be.getCapability(ForgeCapabilities.FLUID_HANDLER).ifPresent(tank ->{
+                            tank.drain(3000, IFluidHandler.FluidAction.EXECUTE);
+                            tank.fill(new FluidStack(CeiFluids.EXPERIENCE.get().getSource(), 3000), IFluidHandler.FluidAction.EXECUTE);
+                }));
+        scene.overlay.showControls(new InputWindowElement(util.vector.centerOf(2, 3, 2), Pointing.DOWN).rightClick()
+                .withItem(Items.NAME_TAG.getDefaultInstance()), 40);
         scene.overlay.showText(40)
                 .text("Name Tag and Train Schedule can also be copied.")
                 .attachKeyFrame()
                 .placeNearTarget()
-                .pointAt(util.vector.topOf(2, 3, 2));
+                .pointAt(util.vector.centerOf(2, 3, 2));
         scene.idle(40);
 
-        scene.overlay.showControls(new InputWindowElement(util.vector.centerOf(2, 3, 2), Pointing.DOWN).rightClick()
-                .withItem(Items.NAME_TAG.getDefaultInstance()), 40);
         item = Items.DIAMOND_SWORD.getDefaultInstance();
         beltStart = util.grid.at(6, 1, 2);
         beltItem = scene.world.createItemOnBelt(beltStart, Direction.DOWN, item);
@@ -576,7 +588,7 @@ public class EnchantmentScenes {
                 .text("If you set the name tag as the print target, you can use the printer to name the item.")
                 .attachKeyFrame()
                 .placeNearTarget()
-                .pointAt(util.vector.topOf(2, 3, 2));
+                .pointAt(util.vector.centerOf(2, 3, 2));
         scene.idle(40);
     }
 
@@ -619,6 +631,7 @@ public class EnchantmentScenes {
                 .colored(PonderPalette.RED)
                 .placeNearTarget()
                 .pointAt(util.vector.topOf(3, 4, 0));
+        scene.overlay.showOutline(PonderPalette.RED, new Object(), util.select.position(3, 4, 0), 40);
         scene.idle(50);
         scene.overlay.showText(40)
                 .text("Don't worry, the leaked liquid experience will turn into experience orbs. Players can also stand at the opening of the pipe to absorb experience.") // We do not use PonderLocalization. For registerText only
@@ -626,6 +639,7 @@ public class EnchantmentScenes {
                 .attachKeyFrame()
                 .placeNearTarget()
                 .pointAt(util.vector.topOf(3, 4, 0));
+        scene.overlay.showOutline(PonderPalette.GREEN, new Object(), util.select.position(3, 4, 0), 40);
         scene.idle(50);
 
     }
