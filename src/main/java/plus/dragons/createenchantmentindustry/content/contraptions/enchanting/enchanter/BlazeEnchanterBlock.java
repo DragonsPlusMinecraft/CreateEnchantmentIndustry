@@ -11,6 +11,7 @@ import com.simibubi.create.foundation.block.IBE;
 import com.simibubi.create.foundation.blockEntity.ComparatorUtil;
 import com.simibubi.create.foundation.utility.Lang;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.StringRepresentable;
@@ -92,6 +93,20 @@ public class BlazeEnchanterBlock extends HorizontalDirectionalBlock implements I
             heldItem = player.getItemInHand(handIn);
         }
 
+        if (player.isShiftKeyDown() && handIn == InteractionHand.MAIN_HAND && heldItem.isEmpty()){
+            if(!player.level.isClientSide()){
+                if(player.level.getBlockEntity(pos) instanceof BlazeEnchanterBlockEntity blazeEnchanter){
+                    withBlockEntityDo(player.level, pos,
+                            toolbox -> NetworkHooks.openScreen((ServerPlayer) player,
+                                    blazeEnchanter, buf -> {
+                                        buf.writeItem(blazeEnchanter.targetItem);
+                                        buf.writeBoolean(false);
+                                        buf.writeBlockPos(pos);
+                                    }));
+                }
+            }
+            return InteractionResult.SUCCESS;
+        }
         if (!heldItem.isEmpty()){
             return onBlockEntityUse(worldIn, pos, te -> {
                 if(heldItem.is(CeiItems.ENCHANTING_GUIDE.get())){
@@ -125,36 +140,21 @@ public class BlazeEnchanterBlock extends HorizontalDirectionalBlock implements I
                 else return InteractionResult.PASS;
             });
         } else {
-            if(player.isShiftKeyDown()){
-                if(!player.level.isClientSide()){
-                    if(player.level.getBlockEntity(pos) instanceof BlazeEnchanterBlockEntity blazeEnchanter){
-                        withBlockEntityDo(player.level, pos,
-                                toolbox -> NetworkHooks.openScreen((ServerPlayer) player,
-                                        blazeEnchanter, buf -> {
-                                    buf.writeItem(blazeEnchanter.targetItem);
-                                    buf.writeBoolean(false);
-                                    buf.writeBlockPos(pos);
-                                }));
+            return onBlockEntityUse(worldIn, pos, te -> {
+                ItemStack heldItemStack = te.getHeldItemStack();
+                if (!heldItemStack.isEmpty()) {
+                    if (!worldIn.isClientSide) {
+                        te.heldItem = null;
+                        player.setItemInHand(handIn, heldItemStack);
+                        te.notifyUpdate();
                     }
-                }
-                return InteractionResult.SUCCESS;
-            } else {
-                return onBlockEntityUse(worldIn, pos, te -> {
-                    ItemStack heldItemStack = te.getHeldItemStack();
-                    if (!heldItemStack.isEmpty()) {
-                        if (!worldIn.isClientSide) {
-                            te.heldItem = null;
-                            player.setItemInHand(handIn, heldItemStack);
-                            te.notifyUpdate();
-                        }
-                        return InteractionResult.SUCCESS;
-                    } if (!te.goggles)
-                        return InteractionResult.PASS;
-                    te.goggles = false;
-                    te.notifyUpdate();
                     return InteractionResult.SUCCESS;
-                });
-            }
+                } if (!te.goggles)
+                    return InteractionResult.PASS;
+                te.goggles = false;
+                te.notifyUpdate();
+                return InteractionResult.SUCCESS;
+            });
         }
     }
 
