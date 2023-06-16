@@ -51,6 +51,9 @@ public class PrinterTargetItemHandler implements IItemHandler {
 
     @Override
     public boolean isItemValid(int slot, @NotNull ItemStack stack) {
-        return (stack.is(Items.ENCHANTED_BOOK) || stack.is(Items.WRITTEN_BOOK) || stack.is(Items.NAME_TAG) || stack.is(AllItems.SCHEDULE.get())) && stack.getCount() == 1;
+        for(var entry:PrintEntries.ENTRIES.values()){
+            if(entry.match(stack)) return true;
+        }
+        return false;
     }
 }
