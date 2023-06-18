@@ -1,9 +1,9 @@
 {
-	"_": "Missing Localizations: 14",
+	"_": "Missing Localizations: 0",
 
 	"_": "->------------------------]  Game Elements  [------------------------<-",
 
-	"block.create_enchantment_industry.blaze_enchanter": "烈焰人附魔室",
+	"block.create_enchantment_industry.blaze_enchanter": "烈焰使者附魔室",
 	"block.create_enchantment_industry.disenchanter": "祛魔池",
 	"block.create_enchantment_industry.ink": "墨水",
 	"block.create_enchantment_industry.printer": "印表機",
@@ -32,8 +32,8 @@
 	"advancement.create_enchantment_industry.copiable_mystery.desc": "用印表機影印一本附魔書",
 	"advancement.create_enchantment_industry.relic_restoration": "文物修復",
 	"advancement.create_enchantment_industry.relic_restoration.desc": "影印一本破爛不堪的成書",
-	"advancement.create_enchantment_industry.emerging_brand": "UNLOCALIZED: Emerging Brand",
-	"advancement.create_enchantment_industry.emerging_brand.desc": "UNLOCALIZED: Using the printer to name items",
+	"advancement.create_enchantment_industry.emerging_brand": "新興品牌",
+	"advancement.create_enchantment_industry.emerging_brand.desc": "使用印表機來命名物品",
 	"advancement.create_enchantment_industry.great_publisher": "大出版商",
 	"advancement.create_enchantment_industry.great_publisher.desc": "用印表機影印 1000 本書",
 	"advancement.create_enchantment_industry.experimental": "實踐經驗",
@@ -46,14 +46,14 @@
 	"advancement.create_enchantment_industry.a_shower_experience.desc": "破壞流體管道，然後享受你的經驗浴",
 	"advancement.create_enchantment_industry.experienced_recycler": "“經驗豐富”的回收工",
 	"advancement.create_enchantment_industry.experienced_recycler.desc": "使用祛魔池回收 1,000,000 mB 液態經驗",
-	"advancement.create_enchantment_industry.blazes_new_job": "烈焰人的新工作",
-	"advancement.create_enchantment_industry.blazes_new_job.desc": "給烈焰人燃燒室一本附魔指南，將其轉化為烈焰人附魔室",
+	"advancement.create_enchantment_industry.blazes_new_job": "烈焰使者的新工作",
+	"advancement.create_enchantment_industry.blazes_new_job.desc": "給烈焰使者動力爐一本附魔指南，將其轉化為烈焰使者附魔室",
 	"advancement.create_enchantment_industry.first_order": "首批訂單",
-	"advancement.create_enchantment_industry.first_order.desc": "使用烈焰人燃燒室為未附魔物品附魔",
+	"advancement.create_enchantment_industry.first_order.desc": "使用烈焰使者附魔室為未附魔物品附魔",
 	"advancement.create_enchantment_industry.additional_order": "追加訂單",
-	"advancement.create_enchantment_industry.additional_order.desc": "使用烈焰人燃燒室為已附魔物品附魔",
+	"advancement.create_enchantment_industry.additional_order.desc": "使用烈焰使者附魔室為已附魔物品附魔",
 	"advancement.create_enchantment_industry.hypothetical_extension": "假想延拓",
-	"advancement.create_enchantment_industry.hypothetical_extension.desc": "使用烈焰人燃燒室為物品完成超越附魔",
+	"advancement.create_enchantment_industry.hypothetical_extension.desc": "使用烈焰使者附魔室為物品完成超越附魔",
 
 
 	"_": "->------------------------]  UI & Messages  [------------------------<-",
@@ -64,7 +64,7 @@
 	"create_enchantment_industry.gui.goggles.blaze_enchanter": "當前附魔：",
 	"create_enchantment_industry.gui.goggles.blaze_enchanter.invalid_target": "無效目標",
 	"create_enchantment_industry.gui.goggles.xp_consumption": "消耗經驗：%s mB",
-	"create_enchantment_industry.gui.goggles.hyper_xp_consumption": "UNLOCALIZED: Consumes Hyper Experience: %s mB",
+	"create_enchantment_industry.gui.goggles.hyper_xp_consumption": "消耗超經驗：%s mB",
 	"create_enchantment_industry.gui.goggles.ink_consumption": "消耗墨水：%s mB",
 	"create_enchantment_industry.gui.goggles.too_expensive": "過於昂貴！",
 
@@ -74,22 +74,22 @@
 	"recipe.create_enchantment_industry.disenchanting": "祛魔",
 
 	"create_enchantment_industry.display_source.blaze_enchanter_source_target_enchantment": "目標附魔",
-	"create_enchantment_industry.display_source.printer_source_copy_content": "UNLOCALIZED: Copy Content",
+	"create_enchantment_industry.display_source.printer_source_copy_content": "影印內容",
 
 
 	"_": "->------------------------]  Item Descriptions  [------------------------<-",
 
-	"item.create_enchantment_industry.enchanting_guide.tooltip": "ENCHANTING GUIDE TOOLTIPS",
+	"item.create_enchantment_industry.enchanting_guide.tooltip": "附魔指南",
 	"item.create_enchantment_industry.enchanting_guide.tooltip.current_enchantment": "當前附魔：",
 	"item.create_enchantment_industry.enchanting_guide.tooltip.not_configured": "未設定",
 
-	"item.create_enchantment_industry.experience_rotor.tooltip": "EXPERIENCE ROTOR",
+	"item.create_enchantment_industry.experience_rotor.tooltip": "經驗轉子",
 	"item.create_enchantment_industry.experience_rotor.tooltip.summary": "在_攪拌配方_中用於轉換_經驗流體_",
 
 
 	"_": "->------------------------]  Ponder Content  [------------------------<-",
 
-	"create_enchantment_industry.ponder.disenchant.header": "祛魔池使用",
+	"create_enchantment_industry.ponder.disenchant.header": "使用祛魔池",
 	"create_enchantment_industry.ponder.disenchant.text_1": "所有接收的物品都將被祛除附魔，被去除的附魔將被折算成液態經驗儲存。",
 	"create_enchantment_industry.ponder.disenchant.text_2": "站在祛魔池上方的玩家將被快速洗去經驗等級，所洗去的經驗值將被轉換為液態經驗儲存。",
 
@@ -98,23 +98,23 @@
 	"create_enchantment_industry.ponder.experience_bottle.text_2": "附魔之瓶也能通過注液器製造。",
 
 	"create_enchantment_industry.ponder.transform.header": "使用附魔指南",
-	"create_enchantment_industry.ponder.transform.text_1": "手持附魔指南潛行右鍵烈焰人燃燒室將其轉化為烈焰人附魔室。",
-	"create_enchantment_industry.ponder.transform.text_2": "要使烈焰人附魔室正常工作，應首先配置好附魔指南。右鍵附魔指南或右擊烈焰人附魔室都可打開配置面板。",
-	"create_enchantment_industry.ponder.transform.text_3": "如需取回附魔指南，請持扳手潛行右鍵烈焰人附魔室。",
-	"create_enchantment_industry.ponder.transform.text_4": "UNLOCALIZED: You can replace the Enchanting Guide by holding it directly in your hand and right-clicking on the Blaze Enchanter.",
+	"create_enchantment_industry.ponder.transform.text_1": "手持附魔指南潛行右鍵烈焰使者動力爐室將其轉化為烈焰使者附魔室。",
+	"create_enchantment_industry.ponder.transform.text_2": "要使烈焰使者附魔室正常工作，應首先配置好附魔指南。右鍵附魔指南或右擊烈焰使者附魔室都可打開配置面板。",
+	"create_enchantment_industry.ponder.transform.text_3": "如需取回附魔指南，請持扳手潛行右鍵烈焰使者附魔室。",
+	"create_enchantment_industry.ponder.transform.text_4": "你也可以直接手持附魔指南右鍵烈焰使者附魔室來更換。",
 
-	"create_enchantment_industry.ponder.copy.header": "影印機使用",
+	"create_enchantment_industry.ponder.copy.header": "使用印表機",
 	"create_enchantment_industry.ponder.copy.text_1": "影印附魔書需要液態經驗。",
-	"create_enchantment_industry.ponder.copy.text_2": "UNLOCALIZED: If the enchantment on the enchantment book you are copying has a level that exceeds its maximum level, then you will need Hyper Experience.",
+	"create_enchantment_industry.ponder.copy.text_2": "如果想要影印的附魔書包含超出等級上限的附魔，你就需要使用超經驗",
 	"create_enchantment_industry.ponder.copy.text_3": "影印成書需要墨水。",
-	"create_enchantment_industry.ponder.copy.text_4": "UNLOCALIZED: Name Tag and Train Schedule can also be copied.",
-	"create_enchantment_industry.ponder.copy.text_5": "UNLOCALIZED: If you set the name tag as the print target, you can use the printer to name the item.",
+	"create_enchantment_industry.ponder.copy.text_4": "命名牌和火車時刻表也可以影印。",
+	"create_enchantment_industry.ponder.copy.text_5": "將命名牌設置為影印目標時，印表機可以命名物品。",
 
-	"create_enchantment_industry.ponder.enchant.header": "烈焰人附魔室使用",
-	"create_enchantment_industry.ponder.enchant.text_1": "UNLOCALIZED: Blaze Enchanter can enchant your items.",
-	"create_enchantment_industry.ponder.enchant.text_2": "UNLOCALIZED: However, it cannot work on books...",
-	"create_enchantment_industry.ponder.enchant.text_3": "UNLOCALIZED: ... nor can it add incompatible enchantments to your items.",
-	"create_enchantment_industry.ponder.enchant.text_4": "UNLOCALIZED: Blaze Enchanter can upgrade an existing enchantment to a higher level if feasible.",
+	"create_enchantment_industry.ponder.enchant.header": "使用烈焰使者附魔室",
+	"create_enchantment_industry.ponder.enchant.text_1": "烈焰使者附魔室可以附魔物品。",
+	"create_enchantment_industry.ponder.enchant.text_2": "但它並不能附魔書本...",
+	"create_enchantment_industry.ponder.enchant.text_3": "也不能附魔上不相容的附魔。",
+	"create_enchantment_industry.ponder.enchant.text_4": "當可行時，烈焰使者附魔室會升級現有的附魔",
 
 	"create_enchantment_industry.ponder.hyper_enchant.header": "超越附魔",
 	"create_enchantment_industry.ponder.hyper_enchant.text_1": "這是一罐液態超經驗。",
@@ -124,16 +124,16 @@
 	"create_enchantment_industry.ponder.drop_experience_nugget.header": "...經驗農場？",
 	"create_enchantment_industry.ponder.drop_experience_nugget.text_1": "機械手殺死生物時將掉落經驗顆粒。",
 
-	"create_enchantment_industry.ponder.crushing_wheel_tweak.header": "UNLOCALIZED: We call it inefficiency...",
-	"create_enchantment_industry.ponder.crushing_wheel_tweak.text_1": "UNLOCALIZED: The Crushing Wheel has a chance of dropping a very small amount of experience nugget when it kills a creature.",
+	"create_enchantment_industry.ponder.crushing_wheel_tweak.header": "我們稱之為低效...",
+	"create_enchantment_industry.ponder.crushing_wheel_tweak.text_1": "粉碎輪在擊殺生物後有一定概率掉落非常少的經驗顆粒。",
 
 	"create_enchantment_industry.ponder.absorb_experience_nugget.header": "融化經驗顆粒",
 	"create_enchantment_industry.ponder.absorb_experience_nugget.text_1": "經驗顆粒可被祛魔池吸收。",
 
 	"create_enchantment_industry.ponder.leak.header": "噢不！漏出來了！",
-	"create_enchantment_industry.ponder.leak.text_1": "I have a tank full of experience",
-	"create_enchantment_industry.ponder.leak.text_2": "I have an open-ended pipe",
-	"create_enchantment_industry.ponder.leak.text_3": "Ugh!",
+	"create_enchantment_industry.ponder.leak.text_1": "我有一罐液態經驗",
+	"create_enchantment_industry.ponder.leak.text_2": "我有一處開口管道",
+	"create_enchantment_industry.ponder.leak.text_3": "噢!",
 	"create_enchantment_industry.ponder.leak.text_4": "不用擔心，洩露的液態經驗會變為經驗球。玩家也可以站在管道開口處吸收經驗。",
 	"create_enchantment_industry.ponder.tag.experience": "經驗值相關",
 	"create_enchantment_industry.ponder.tag.experience.description": "與經驗值相關的物品與組件",
