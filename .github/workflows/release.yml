@@ -50,8 +50,8 @@ jobs:
           version: ${{ env.VERSION }}
           version-type: release
           changelog-file: changelog/${{ env.VERSION }}.md
-          files-primary: build/libs/*-${{ env.VERSION }}!(-@(dev|sources|slim)).jar
-          files-secondary: ""
+          files: |
+            build/libs/*-${{ env.VERSION }}!(-@(dev|sources|slim)).jar
 
           loaders: |
             forge
