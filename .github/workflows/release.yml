@@ -38,7 +38,7 @@ jobs:
           # Modrinth
           modrinth-id: JWGBpFUP
           modrinth-featured: true
-          modrinth-unfeatured: subset
+          modrinth-unfeature-mode: subset
           modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
 
           # CurseForge
