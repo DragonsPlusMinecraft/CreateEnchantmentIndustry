@@ -33,11 +33,12 @@ jobs:
         run: ./gradlew build
 
       - name: Publish (CurseForge/Modrinth)
-        uses: Kir-Antipov/mc-publish@v3.1
+        uses: Kir-Antipov/mc-publish@v3.3
         with:
           # Modrinth
           modrinth-id: JWGBpFUP
           modrinth-featured: true
+          modrinth-unfeature-mode: subset
           modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
 
           # CurseForge
@@ -57,7 +58,7 @@ jobs:
           game-versions: |
             ${{ env.MINECRAFT_VERSION }}
           dependencies: |
-            create | depends | *
+            create(required)
           java: |
             ${{ env.JAVA_VERSION }}
           retry-attempts: 2
