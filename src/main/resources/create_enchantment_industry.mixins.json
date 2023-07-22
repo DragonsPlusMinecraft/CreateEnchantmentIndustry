@@ -7,7 +7,7 @@
   "mixins": [
     "AdvancementBehaviourAccessor",
     "AllFluidsMixin",
-    "BasinBlockMixin",
+    "BasinBlockEntityMixin",
     "CreateAdvancementConstructor",
     "CreateAdvancementMixin",
     "CreateCreativeModeTabMixin",
