@@ -13,7 +13,6 @@
 
 	"fluid.create_enchantment_industry.experience": "Жидкий опыт",
 	"fluid.create_enchantment_industry.hyper_experience": "Жидкий гиперопыт",
-	"fluid.create_enchantment_industry.ink": "Чернила",
 
 	"item.create_enchantment_industry.enchanting_guide": "Зачаровательное задание",
 	"item.create_enchantment_industry.experience_rotor": "Мешалка опыта",
@@ -57,69 +56,6 @@
 	"advancement.create_enchantment_industry.hypothetical_extension.desc": "Наложите чары на предмет с помощью гиперзачарования всполоха",
 
 
-	"_": "->------------------------]  Ponder Content  [------------------------<-",
-
-	"create_enchantment_industry.ponder.tag.experience": "Работа с опытом",
-	"create_enchantment_industry.ponder.tag.experience.description": "Предметы и компоненты для работы с опытом",
-
-	"create_enchantment_industry.ponder.absorb_experience_nugget.header": "Превращение кусочков опыта в жидкость",
-	"create_enchantment_industry.ponder.absorb_experience_nugget.text_1": "Кусочки опыта могут быть превращены в жидкость с помощью чаросъёмника",
-
-	"create_enchantment_industry.ponder.copy.header": "Использованием печатного станка",
-	"create_enchantment_industry.ponder.copy.text_1": "Жидкий опыт нужен для копирования зачарованных книг",
-	"create_enchantment_industry.ponder.copy.text_2": "Если уровень чар в копируемой чародейской книге превышает его максимальный уровень, то вам потребуется гиперопыт",
-	"create_enchantment_industry.ponder.copy.text_3": "А чернила необходимы для копирования подписанных книг",
-	"create_enchantment_industry.ponder.copy.text_4": "Бирки и распсисания поездов также могут быть скопированы",
-	"create_enchantment_industry.ponder.copy.text_5": "Если в качестве исходника в принртере задана бирка, то его можно использовать для присвоения выбранного названия предметам",
-
-	"create_enchantment_industry.ponder.crushing_wheel_tweak.header": "Мы называем это неэффективностью...",
-	"create_enchantment_industry.ponder.crushing_wheel_tweak.text_1": "У дробильных колёс есть шанс выпадения очень небольшого количества кусочков опыта, когда они убивают существо",
-
-	"create_enchantment_industry.ponder.disenchant.header": "Снятием чар",
-	"create_enchantment_industry.ponder.disenchant.text_1": "Зачарования с входящих предметов будут сняты и превращены в жидкий опыт, пригодный для хранения",
-	"create_enchantment_industry.ponder.disenchant.text_2": "Со стоящего на чаросъёмнике игрока будет быстро сниматься опыт. Снятый опыт будет превращён в жидкость, пригодную для хранения",
-
-	"create_enchantment_industry.ponder.drop_experience_nugget.header": "Автофермой опыта?",
-	"create_enchantment_industry.ponder.drop_experience_nugget.text_1": "При убийстве существ автономным активатором будут выпадать кусочки опыта",
-
-	"create_enchantment_industry.ponder.enchant.header": "Зачарование",
-	"create_enchantment_industry.ponder.enchant.text_1": "Всполох-чародей может зачаровать ваши предметы",
-	"create_enchantment_industry.ponder.enchant.text_2": "Однако, он не может работать с книгами...",
-	"create_enchantment_industry.ponder.enchant.text_3": "...и также не может добавлять несовместимые чары к вашим предметам",
-	"create_enchantment_industry.ponder.enchant.text_4": "Всполох-чародей может повысить уровень существующих чар до более высокого, если это возможно",
-
-	"create_enchantment_industry.ponder.experience_bottle.header": "Работа с пузырьками опыта",
-	"create_enchantment_industry.ponder.experience_bottle.text_1": "Опыт из пузырька может быть слит в осушитель предметов",
-	"create_enchantment_industry.ponder.experience_bottle.text_2": "Создать пузырёк опыта можно, наполнив пустую бутылочку опытом из дозатора",
-
-	"create_enchantment_industry.ponder.hyper_enchant.header": "Гиперзачарованиями",
-	"create_enchantment_industry.ponder.hyper_enchant.text_1": "Это жидкий гиперопыт",
-	"create_enchantment_industry.ponder.hyper_enchant.text_2": "Кормление гиперопытом разогреет всполоха-зачарователя. В таком состоянии уровень накладываемых им зачарований повышается на один",
-	"create_enchantment_industry.ponder.hyper_enchant.text_3": "Чары, имеющие только один максимальный уровнень, не могут быть улучшены до второго уровня в гиперчарах",
-
-	"create_enchantment_industry.ponder.leak.header": "Утечкой опыта!",
-	"create_enchantment_industry.ponder.leak.text_1": "Есть бак, наполненный опытом",
-	"create_enchantment_industry.ponder.leak.text_2": "Есть открытая труба",
-	"create_enchantment_industry.ponder.leak.text_3": "Ой!",
-	"create_enchantment_industry.ponder.leak.text_4": "Не беспокойтесь! Вылившийся опыт превратится в обычные сферы опыта. Можно даже встать под вытекающий опыт, чтобы вернуть его себе",
-
-	"create_enchantment_industry.ponder.transform.header": "Выдачей зачаровательного задание",
-	"create_enchantment_industry.ponder.transform.text_1": "Кликните ПКМ по горелке всполоха с зачаровательным заданием в руке, для того чтобы превратить его в всполоха-чародея",
-	"create_enchantment_industry.ponder.transform.text_2": "Чтобы всполох-чародей мог работать, сначала необходимо настроить зачаровательное задание. Кликнув ПКМ по всполоху-чародею или зачаровательному заданию в руке вы откроете интерфейс конфигурации",
-	"create_enchantment_industry.ponder.transform.text_3": "Для отзыва зачаровательного задания от Всполоха-чародея кликните по нему ПКМ крадучись гаечным ключом",
-	"create_enchantment_industry.ponder.transform.text_4": "Вы можете заменить текущее зачаровательное задание, держа его прямо в руке и кликнув ПКМ по всполоху-чародею",
-
-
-	"_": "->------------------------]  Item Descriptions  [------------------------<-",
-
-	"item.create_enchantment_industry.enchanting_guide.tooltip": "ЗАЧАРОВАТЕЛЬНОЕ ЗАДАНИЕ",
-	"item.create_enchantment_industry.enchanting_guide.tooltip.current_enchantment": "Требуемое зачарование:",
-	"item.create_enchantment_industry.enchanting_guide.tooltip.not_configured": "Не установлено",
-
-	"item.create_enchantment_industry.experience_rotor.tooltip": "МЕШАЛКА ОПЫТА",
-	"item.create_enchantment_industry.experience_rotor.tooltip.summary": "Используется в _рецептах смешивания_ для преобразования _жидкостей опыта_ из других модов",
-
-
 	"_": "->------------------------]  UI & Messages  [------------------------<-",
 
 	"create_enchantment_industry.gui.enchanting_guide.no_enchantment": "Нет зачарования",
@@ -139,6 +75,68 @@
 
 	"create_enchantment_industry.display_source.blaze_enchanter_source_target_enchantment": "Желаемое зачарование",
 	"create_enchantment_industry.display_source.printer_source_copy_content": "Копирование содержимого",
+
+
+	"_": "->------------------------]  Item Descriptions  [------------------------<-",
+
+	"item.create_enchantment_industry.enchanting_guide.tooltip": "ЗАЧАРОВАТЕЛЬНОЕ ЗАДАНИЕ",
+	"item.create_enchantment_industry.enchanting_guide.tooltip.current_enchantment": "Требуемое зачарование:",
+	"item.create_enchantment_industry.enchanting_guide.tooltip.not_configured": "Не установлено",
+
+	"item.create_enchantment_industry.experience_rotor.tooltip": "МЕШАЛКА ОПЫТА",
+	"item.create_enchantment_industry.experience_rotor.tooltip.summary": "Используется в _рецептах смешивания_ для преобразования _жидкостей опыта_ из других модов",
+
+
+	"_": "->------------------------]  Ponder Content  [------------------------<-",
+
+	"create_enchantment_industry.ponder.disenchant.header": "Снятием чар",
+	"create_enchantment_industry.ponder.disenchant.text_1": "Зачарования с входящих предметов будут сняты и превращены в жидкий опыт, пригодный для хранения",
+	"create_enchantment_industry.ponder.disenchant.text_2": "Со стоящего на чаросъёмнике игрока будет быстро сниматься опыт. Снятый опыт будет превращён в жидкость, пригодную для хранения",
+
+	"create_enchantment_industry.ponder.experience_bottle.header": "Работа с пузырьками опыта",
+	"create_enchantment_industry.ponder.experience_bottle.text_1": "Опыт из пузырька может быть слит в осушитель предметов",
+	"create_enchantment_industry.ponder.experience_bottle.text_2": "Создать пузырёк опыта можно, наполнив пустую бутылочку опытом из дозатора",
+
+	"create_enchantment_industry.ponder.transform.header": "Выдачей зачаровательного задание",
+	"create_enchantment_industry.ponder.transform.text_1": "Кликните ПКМ по горелке всполоха с зачаровательным заданием в руке, для того чтобы превратить его в всполоха-чародея",
+	"create_enchantment_industry.ponder.transform.text_2": "Чтобы всполох-чародей мог работать, сначала необходимо настроить зачаровательное задание. Кликнув ПКМ по всполоху-чародею или зачаровательному заданию в руке вы откроете интерфейс конфигурации",
+	"create_enchantment_industry.ponder.transform.text_3": "Для отзыва зачаровательного задания от Всполоха-чародея кликните по нему ПКМ крадучись гаечным ключом",
+	"create_enchantment_industry.ponder.transform.text_4": "Вы можете заменить текущее зачаровательное задание, держа его прямо в руке и кликнув ПКМ по всполоху-чародею",
+
+	"create_enchantment_industry.ponder.copy.header": "Использованием печатного станка",
+	"create_enchantment_industry.ponder.copy.text_1": "Жидкий опыт нужен для копирования зачарованных книг",
+	"create_enchantment_industry.ponder.copy.text_2": "Если уровень чар в копируемой чародейской книге превышает его максимальный уровень, то вам потребуется гиперопыт",
+	"create_enchantment_industry.ponder.copy.text_3": "А чернила необходимы для копирования подписанных книг",
+	"create_enchantment_industry.ponder.copy.text_4": "Бирки и распсисания поездов также могут быть скопированы",
+	"create_enchantment_industry.ponder.copy.text_5": "Если в качестве исходника в принртере задана бирка, то его можно использовать для присвоения выбранного названия предметам",
+
+	"create_enchantment_industry.ponder.enchant.header": "Зачарование",
+	"create_enchantment_industry.ponder.enchant.text_1": "Всполох-чародей может зачаровать ваши предметы",
+	"create_enchantment_industry.ponder.enchant.text_2": "Однако, он не может работать с книгами...",
+	"create_enchantment_industry.ponder.enchant.text_3": "...и также не может добавлять несовместимые чары к вашим предметам",
+	"create_enchantment_industry.ponder.enchant.text_4": "Всполох-чародей может повысить уровень существующих чар до более высокого, если это возможно",
+
+	"create_enchantment_industry.ponder.hyper_enchant.header": "Гиперзачарованиями",
+	"create_enchantment_industry.ponder.hyper_enchant.text_1": "Это жидкий гиперопыт",
+	"create_enchantment_industry.ponder.hyper_enchant.text_2": "Кормление гиперопытом разогреет всполоха-зачарователя. В таком состоянии уровень накладываемых им зачарований повышается на один",
+	"create_enchantment_industry.ponder.hyper_enchant.text_3": "Чары, имеющие только один максимальный уровнень, не могут быть улучшены до второго уровня в гиперчарах",
+
+	"create_enchantment_industry.ponder.drop_experience_nugget.header": "Автофермой опыта?",
+	"create_enchantment_industry.ponder.drop_experience_nugget.text_1": "При убийстве существ автономным активатором будут выпадать кусочки опыта",
+
+	"create_enchantment_industry.ponder.crushing_wheel_tweak.header": "Мы называем это неэффективностью...",
+	"create_enchantment_industry.ponder.crushing_wheel_tweak.text_1": "У дробильных колёс есть шанс выпадения очень небольшого количества кусочков опыта, когда они убивают существо",
+
+	"create_enchantment_industry.ponder.absorb_experience_nugget.header": "Превращение кусочков опыта в жидкость",
+	"create_enchantment_industry.ponder.absorb_experience_nugget.text_1": "Кусочки опыта могут быть превращены в жидкость с помощью чаросъёмника",
+
+	"create_enchantment_industry.ponder.leak.header": "Утечкой опыта!",
+	"create_enchantment_industry.ponder.leak.text_1": "Есть бак, наполненный опытом",
+	"create_enchantment_industry.ponder.leak.text_2": "Есть открытая труба",
+	"create_enchantment_industry.ponder.leak.text_3": "Ой!",
+	"create_enchantment_industry.ponder.leak.text_4": "Не беспокойтесь! Вылившийся опыт превратится в обычные сферы опыта. Можно даже встать под вытекающий опыт, чтобы вернуть его себе",
+	"create_enchantment_industry.ponder.tag.experience": "Работа с опытом",
+	"create_enchantment_industry.ponder.tag.experience.description": "Предметы и компоненты для работы с опытом",
 
 	"_": "Thank you for translating Create: Enchantment Industry!"
 
