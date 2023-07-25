@@ -3,8 +3,7 @@ package plus.dragons.createenchantmentindustry.content.contraptions.enchanting.e
 import com.jozufozu.flywheel.core.PartialModel;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Quaternion;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
 //import com.simibubi.create.AllBlockPartials;
 //import com.simibubi.create.content.contraptions.relays.belt.transport.TransportedItemStack;
 import com.simibubi.create.AllPartialModels;
@@ -28,9 +27,11 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.resources.model.Material;
 import net.minecraft.core.Direction;
 import net.minecraft.util.Mth;
+import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.client.ForgeHooksClient;
+import net.minecraftforge.common.util.TransformationHelper;
 import plus.dragons.createenchantmentindustry.EnchantmentIndustry;
 import plus.dragons.createenchantmentindustry.content.contraptions.enchanting.enchanter.BlazeEnchanterBlock.HeatLevel;
 
@@ -100,12 +101,12 @@ public class BlazeEnchanterRenderer extends SmartBlockEntityRenderer<BlazeEnchan
         float rotX = active ? rot + PI / 2 : 0;
         float rotY = rot + PI + transported.angle * movingProgress;
         float rotZ = active ? rot : 0;
-        ps.mulPose(Quaternion.fromXYZ(rotX, rotY, rotZ));
+        ps.mulPose(TransformationHelper.quatFromXYZ(rotX, rotY, rotZ, false));
 
         ps.scale(0.5f, 0.5f, 0.5f);
 
         ItemRenderer itemRenderer = Minecraft.getInstance().getItemRenderer();
-        itemRenderer.renderStatic(transported.stack, ItemTransforms.TransformType.FIXED, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, ps, buffer, 0);
+        itemRenderer.renderStatic(transported.stack, ItemDisplayContext.FIXED, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, ps, buffer, be.getLevel(),0);
 
         ps.popPose();
     }
@@ -177,8 +178,8 @@ public class BlazeEnchanterRenderer extends SmartBlockEntityRenderer<BlazeEnchan
         ps.translate(0.5, 0.25, 0.5);
         float time = AnimationTickHolder.getRenderTime(be.getLevel());
         ps.translate(0.0, 0.1f + Mth.sin(time * 0.1f) * 0.01, 0.0);
-        ps.mulPose(Vector3f.YP.rotation(horizontalAngle + PI / 2));
-        ps.mulPose(Vector3f.ZP.rotationDegrees(80.0f));
+        ps.mulPose(Axis.YP.rotation(horizontalAngle + PI / 2));
+        ps.mulPose(Axis.ZP.rotationDegrees(80.0f));
         float flip = Mth.lerp(partialTicks, be.oFlip, be.flip);
         float page0 = Mth.frac(flip + 0.25f) * 1.6f - 0.3f;
         float page1 = Mth.frac(flip + 0.75f) * 1.6f - 0.3f;

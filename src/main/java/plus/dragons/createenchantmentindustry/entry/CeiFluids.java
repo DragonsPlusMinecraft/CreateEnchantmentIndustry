@@ -1,6 +1,5 @@
 package plus.dragons.createenchantmentindustry.entry;
 
-import com.simibubi.create.AllCreativeModeTabs;
 import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.tterrag.registrate.util.entry.FluidEntry;
 import net.minecraft.resources.ResourceLocation;
@@ -19,10 +18,6 @@ import plus.dragons.createenchantmentindustry.content.contraptions.fluids.experi
 import static plus.dragons.createenchantmentindustry.EnchantmentIndustry.REGISTRATE;
 
 public class CeiFluids {
-    
-    static {
-        REGISTRATE.creativeModeTab(() -> AllCreativeModeTabs.BASE_CREATIVE_TAB);
-    }
 
     public static final ResourceLocation EXPERIENCE_STILL_RL = EnchantmentIndustry.genRL("fluid/experience_still");
     public static final ResourceLocation EXPERIENCE_FLOW_RL = EnchantmentIndustry.genRL("fluid/experience_flow");

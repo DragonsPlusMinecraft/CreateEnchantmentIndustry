@@ -3,6 +3,7 @@ package plus.dragons.createenchantmentindustry.content.contraptions.enchanting.e
 import com.simibubi.create.foundation.utility.Pair;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraftforge.fml.util.ObfuscationReflectionHelper;
@@ -18,9 +19,9 @@ import java.util.Optional;
 
 public class EnchantmentEntry extends Pair<Enchantment, Integer> {
     public static final TagKey<Enchantment> HYPER_ENCHANTABLE =
-        TagKey.create(Registry.ENCHANTMENT_REGISTRY, EnchantmentIndustry.genRL("hyper_enchantable"));
+        TagKey.create(Registries.ENCHANTMENT, EnchantmentIndustry.genRL("hyper_enchantable"));
     public static final TagKey<Enchantment> HYPER_ENCHANTABLE_BLACKLIST =
-            TagKey.create(Registry.ENCHANTMENT_REGISTRY, EnchantmentIndustry.genRL("hyper_enchantable_blacklist"));
+            TagKey.create(Registries.ENCHANTMENT, EnchantmentIndustry.genRL("hyper_enchantable_blacklist"));
 
     
     protected EnchantmentEntry(Enchantment first, Integer second) {

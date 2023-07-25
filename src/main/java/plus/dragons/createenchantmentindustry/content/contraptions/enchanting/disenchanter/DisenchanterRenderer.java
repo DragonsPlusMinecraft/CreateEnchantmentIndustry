@@ -14,6 +14,7 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.core.Direction;
 import net.minecraft.util.Mth;
+import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
@@ -94,7 +95,7 @@ public class DisenchanterRenderer extends SmartBlockEntityRenderer<DisenchanterB
             }
             ps.scale(.5f, .5f, .5f);
             if (!blockItem) ts.rotateX(90);
-            itemRenderer.renderStatic(itemStack, ItemTransforms.TransformType.FIXED, light, overlay, ps, buffer, 0);
+            itemRenderer.renderStatic(itemStack, ItemDisplayContext.FIXED, light, overlay, ps, buffer, be.getLevel(),0);
             ps.popPose();
 
             if (!blockItem) ts.rotateY(10);

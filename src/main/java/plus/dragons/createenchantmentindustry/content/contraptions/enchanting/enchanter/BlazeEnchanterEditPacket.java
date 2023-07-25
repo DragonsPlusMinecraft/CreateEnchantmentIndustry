@@ -38,7 +38,7 @@ public class BlazeEnchanterEditPacket extends SimplePacketBase {
     public boolean handle(Context context) {
         context.enqueueWork(() -> {
                     ServerPlayer sender = context.getSender();
-                    if(!(sender.level.getBlockEntity(blockPos) instanceof BlazeEnchanterBlockEntity blazeEnchanter))
+                    if(!(sender.level().getBlockEntity(blockPos) instanceof BlazeEnchanterBlockEntity blazeEnchanter))
                         return;
 
                     CompoundTag tag = blazeEnchanter.targetItem.getOrCreateTag();

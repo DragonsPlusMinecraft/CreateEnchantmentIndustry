@@ -108,7 +108,7 @@ public class EnchantingGuideMenu extends GhostItemMenu<ItemStack> {
     @Override
     public boolean stillValid(Player player) {
         if(!directItemStackEdit){
-            return super.stillValid(player) && player.level.getBlockEntity(blockPos) instanceof BlazeEnchanterBlockEntity;
+            return super.stillValid(player) && player.level().getBlockEntity(blockPos) instanceof BlazeEnchanterBlockEntity;
         }
         return super.stillValid(player);
     }

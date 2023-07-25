@@ -1,15 +1,12 @@
 package plus.dragons.createenchantmentindustry;
 
 import com.simibubi.create.foundation.config.ui.BaseConfigScreen;
-import net.minecraft.world.inventory.InventoryMenu;
-import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import plus.dragons.createenchantmentindustry.content.contraptions.enchanting.enchanter.BlazeEnchanterRenderer;
 import plus.dragons.createenchantmentindustry.content.contraptions.fluids.ink.InkRenderingCamera;
 import plus.dragons.createenchantmentindustry.entry.CeiBlockPartials;
 import plus.dragons.createenchantmentindustry.foundation.config.CeiConfigs;
@@ -35,14 +32,6 @@ public class EnchantmentIndustryClient {
     public void setup(final FMLClientSetupEvent event) {
         CeiPonderIndex.register();
         CeiPonderIndex.registerTags();
-    }
-    
-    @SuppressWarnings("deprecation")
-    @SubscribeEvent
-    public void modelRegistry(final TextureStitchEvent.Pre event) {
-        if (event.getAtlas().location().equals(InventoryMenu.BLOCK_ATLAS)) {
-            event.addSprite(BlazeEnchanterRenderer.BOOK_MATERIAL.texture());
-        }
     }
     
     @SubscribeEvent

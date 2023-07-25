@@ -2,9 +2,7 @@ package plus.dragons.createenchantmentindustry.content.contraptions.fluids.exper
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Matrix3f;
-import com.mojang.math.Matrix4f;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderer;
@@ -13,6 +11,8 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
+import org.joml.Matrix3f;
+import org.joml.Matrix4f;
 
 public class HyperExperienceOrbRenderer extends EntityRenderer<HyperExperienceOrb> {
     private static final ResourceLocation HYPER_EXPERIENCE_ORB_LOCATION = new ResourceLocation("textures/entity/experience_orb.png");
@@ -41,7 +41,7 @@ public class HyperExperienceOrbRenderer extends EntityRenderer<HyperExperienceOr
         int green = (int) (((Mth.sin(time) + 1.0F) * 0.5F + 0.5F) * 255.0F);
         ps.translate(0, .1, 0);
         ps.mulPose(this.entityRenderDispatcher.cameraOrientation());
-        ps.mulPose(Vector3f.YP.rotationDegrees(180.0F));
+        ps.mulPose(Axis.YP.rotationDegrees(180.0F));
         ps.scale(.3F, .3F, .3F);
         VertexConsumer vertexconsumer = buffer.getBuffer(RENDER_TYPE);
         PoseStack.Pose pose = ps.last();

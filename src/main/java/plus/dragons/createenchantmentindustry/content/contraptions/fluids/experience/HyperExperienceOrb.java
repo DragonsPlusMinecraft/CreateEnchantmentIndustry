@@ -1,6 +1,7 @@
 package plus.dragons.createenchantmentindustry.content.contraptions.fluids.experience;
 
 import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ExperienceOrb;
 import net.minecraft.world.entity.player.Player;
@@ -37,7 +38,7 @@ public class HyperExperienceOrb extends ExperienceOrb {
     
     @Override
     public void playerTouch(Player player) {
-        if (!this.level.isClientSide) {
+        if (!this.level().isClientSide) {
             if (player.takeXpDelay == 0) {
                 if (MinecraftForge.EVENT_BUS.post(new PlayerXpEvent.PickupXp(player, this)))
                     return;
@@ -83,7 +84,7 @@ public class HyperExperienceOrb extends ExperienceOrb {
     }
     
     @Override
-    public Packet<?> getAddEntityPacket() {
+    public Packet<ClientGamePacketListener> getAddEntityPacket() {
         return NetworkHooks.getEntitySpawningPacket(this);
     }
     

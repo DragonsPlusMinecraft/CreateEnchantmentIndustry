@@ -50,10 +50,10 @@ public class HyperExperienceBottle extends ThrowableItemProjectile {
      */
     protected void onHit(HitResult pResult) {
         super.onHit(pResult);
-        if (this.level instanceof ServerLevel) {
-            this.level.levelEvent(2002, this.blockPosition(), PotionUtils.getColor(Potions.WATER));
-            int amount = 3 + this.level.random.nextInt(5) + this.level.random.nextInt(5);
-            CeiFluids.HYPER_EXPERIENCE.get().drop((ServerLevel)this.level, this.position(), amount);
+        if (this.level() instanceof ServerLevel) {
+            this.level().levelEvent(2002, this.blockPosition(), PotionUtils.getColor(Potions.WATER));
+            int amount = 3 + this.level().random.nextInt(5) + this.level().random.nextInt(5);
+            CeiFluids.HYPER_EXPERIENCE.get().drop((ServerLevel)this.level(), this.position(), amount);
             this.discard();
         }
     }

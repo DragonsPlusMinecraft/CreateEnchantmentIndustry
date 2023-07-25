@@ -20,6 +20,7 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -49,7 +50,7 @@ public class PrinterBlock extends Block implements IWrenchable, IBE<PrinterBlock
     }
 
     @Override
-    public List<ItemStack> getDrops(BlockState pState, LootContext.Builder pBuilder) {
+    public List<ItemStack> getDrops(BlockState pState, LootParams.Builder pParams) {
         var ret = new ArrayList<ItemStack>();
         ret.add(CeiBlocks.PRINTER.asStack());
         return ret;
@@ -103,6 +104,7 @@ public class PrinterBlock extends Block implements IWrenchable, IBE<PrinterBlock
     public boolean hasAnalogOutputSignal(BlockState state) {
         return true;
     }
+
 
     @Override
     public int getAnalogOutputSignal(BlockState blockState, Level level, BlockPos pos) {

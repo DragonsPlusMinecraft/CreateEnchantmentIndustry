@@ -276,7 +276,7 @@ public class PrintEntries {
 
         @Override
         public boolean valid(ItemStack target, ItemStack tested) {
-            return tested.is(target.getItem()) && !ItemStack.tagMatches(target, tested);
+            return tested.is(target.getItem()) && !ItemStack.isSameItemSameTags(target, tested);
         }
 
         @Override

@@ -5,6 +5,7 @@ import com.simibubi.create.AllItems;
 import com.simibubi.create.Create;
 import net.minecraft.Util;
 import net.minecraft.advancements.FrameType;
+import net.minecraft.advancements.critereon.ContextAwarePredicate;
 import net.minecraft.advancements.critereon.EntityPredicate;
 import net.minecraft.advancements.critereon.InventoryChangeTrigger;
 import net.minecraft.advancements.critereon.MinMaxBounds;
@@ -73,7 +74,7 @@ public class CeiAdvancements {
     GREAT_PUBLISHER = ADVANCEMENT_FACTORY.builder("great_publisher")
             .title("Great Publisher")
             .description("Copy 1000 books using Printer")
-            .externalTrigger("book_copied", new AccumulativeTrigger.TriggerInstance(CeiTriggers.BOOK_PRINTED.getId(), EntityPredicate.Composite.ANY, MinMaxBounds.Ints.atLeast(1000)))
+            .externalTrigger("book_copied", new AccumulativeTrigger.TriggerInstance(CeiTriggers.BOOK_PRINTED.getId(), ContextAwarePredicate.ANY, MinMaxBounds.Ints.atLeast(1000)))
             .icon(CeiBlocks.PRINTER)
             .announce(true)
             .frame(FrameType.CHALLENGE)
@@ -110,7 +111,7 @@ public class CeiAdvancements {
             .title("Experienced Recycler")
             .description("Recycle 1,000,000 mB of experience from Disenchanter")
             .icon(AllBlocks.COPPER_VALVE_HANDLE)
-            .externalTrigger("experience_recycled", new AccumulativeTrigger.TriggerInstance(CeiTriggers.DISENCHANTED.getId(), EntityPredicate.Composite.ANY, MinMaxBounds.Ints.atLeast(1000000)))
+            .externalTrigger("experience_recycled", new AccumulativeTrigger.TriggerInstance(CeiTriggers.DISENCHANTED.getId(), ContextAwarePredicate.ANY, MinMaxBounds.Ints.atLeast(1000000)))
             .announce(true)
             .frame(FrameType.CHALLENGE)
             .parent(A_SHOWER_EXPERIENCE)

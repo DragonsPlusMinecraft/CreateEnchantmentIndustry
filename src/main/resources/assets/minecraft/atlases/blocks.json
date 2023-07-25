@@ -1,0 +1,13 @@
+{
+  "sources": [
+    {
+      "type": "single",
+      "resource": "create_enchantment_industry:block/blaze_enchanter_book"
+    },
+    {
+      "type": "directory",
+      "source": "fluid",
+      "prefix": "fluid/"
+    }
+  ]
+}

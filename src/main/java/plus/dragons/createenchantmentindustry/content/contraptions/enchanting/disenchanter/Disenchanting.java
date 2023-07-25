@@ -62,7 +62,7 @@ public class Disenchanting {
         var recipe = CeiRecipeTypes.DISENCHANTING.<RecipeWrapper, DisenchantRecipe>find(WRAPPER, level).orElse(null);
         if (recipe != null && !recipe.hasNoResult()) {
             var xp = new FluidStack(CeiFluids.EXPERIENCE.get().getSource(), recipe.getExperience());
-            var result = recipe.getResultItem().copy();
+            var result = recipe.getResultItem(level.registryAccess()).copy();
             return Pair.of(xp, result);
         }
         return null;

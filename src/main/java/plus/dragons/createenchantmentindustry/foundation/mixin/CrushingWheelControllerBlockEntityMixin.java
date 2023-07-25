@@ -42,11 +42,11 @@ public class CrushingWheelControllerBlockEntityMixin {
                             (facing.getAxis() == Direction.Axis.Z ? 0.25D : 0.0D) * offset);
                     Vec3 outPos = centerPos.add((facing.getAxis() == Direction.Axis.X ? .55f * offset : 0f),
                             (facing.getAxis() == Direction.Axis.Y ? .55f * offset : 0f), (facing.getAxis() == Direction.Axis.Z ? .55f * offset : 0f));
-                    var expItem = new ItemEntity(processingEntity.level,outPos.x(),outPos.y(),outPos.z(), new ItemStack(AllItems.EXP_NUGGET.get(),count));
+                    var expItem = new ItemEntity(processingEntity.level(),outPos.x(),outPos.y(),outPos.z(), new ItemStack(AllItems.EXP_NUGGET.get(),count));
                     expItem.setDeltaMovement(outSpeed);
                     expItem.getPersistentData()
                             .put("BypassCrushingWheel", NbtUtils.writeBlockPos(self.getBlockPos()));
-                    processingEntity.level.addFreshEntity(expItem);
+                    processingEntity.level().addFreshEntity(expItem);
                 }
 
             }

@@ -17,11 +17,6 @@ import static plus.dragons.createenchantmentindustry.EnchantmentIndustry.REGISTR
 
 
 public class CeiBlocks {
-    
-    static {
-        REGISTRATE.creativeModeTab(() -> AllCreativeModeTabs.BASE_CREATIVE_TAB);
-    }
-
     public static final BlockEntry<DisenchanterBlock> DISENCHANTER = REGISTRATE
             .block("disenchanter", DisenchanterBlock::new)
             .initialProperties(SharedProperties::copperMetal)
