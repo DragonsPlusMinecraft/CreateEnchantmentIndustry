@@ -29,6 +29,7 @@ public class CeiItems {
             .register();
 
     public static void fillCreateItemGroup(BuildCreativeModeTabContentsEvent event) {
+        // TODO not working, need fix
         if (event.getTab() == AllCreativeModeTabs.getBaseTab()) {
             MutableHashedLinkedMap<ItemStack, CreativeModeTab.TabVisibility> entries = event.getEntries();
             entries.putAfter(AllBlocks.ITEM_DRAIN.asStack(), CeiBlocks.DISENCHANTER.asStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);

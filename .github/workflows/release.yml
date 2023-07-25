@@ -5,10 +5,10 @@ permissions:
   contents: write
 
 env:
-  MINECRAFT_VERSION: 1.19.2
+  MINECRAFT_VERSION: 1.20.1
   JAVA_VERSION: 17
-  VERSION: 1.2.5.b
-  CREATE_VERSION: 0.5.1.b
+  VERSION: 1.2.5.SNAPSHOT-1
+  CREATE_VERSION: 0.5.1.d
 
 jobs:
   release:
@@ -48,7 +48,7 @@ jobs:
           # Config
           name: "CEI ${{ env.VERSION }} for Create ${{ env.MINECRAFT_VERSION }}-${{ env.CREATE_VERSION }}"
           version: ${{ env.VERSION }}
-          version-type: release
+          version-type: alpha
           changelog-file: changelog/${{ env.VERSION }}.md
           files: |
             build/libs/*-${{ env.VERSION }}!(-@(dev|sources|slim)).jar
