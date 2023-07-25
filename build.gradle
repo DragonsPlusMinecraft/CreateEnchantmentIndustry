@@ -15,56 +15,39 @@ java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 println "Java: ${System.getProperty 'java.version'}, JVM: ${System.getProperty 'java.vm.version'} (${System.getProperty 'java.vendor'}), Arch: ${System.getProperty 'os.arch'}"
 minecraft {
     mappings channel: 'parchment', version: "${parchment_version}-${minecraft_version}"
-
     accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
-
     runs {
         client {
             workingDirectory project.file('run')
-
             arg '-mixin.config=create_enchantment_industry.mixins.json'
-
             property 'forge.logging.markers', 'REGISTRIES'
-
             property 'forge.enabledGameTestNamespaces', 'create_enchantment_industry'
-
             mods {
                 create_enchantment_industry {
                     source sourceSets.main
                 }
             }
         }
-
         server {
             workingDirectory project.file('run')
-
             arg '-mixin.config=create_enchantment_industry.mixins.json'
-
             property 'forge.logging.markers', 'REGISTRIES'
-
             property 'forge.logging.console.level', 'debug'
-
             property 'forge.enabledGameTestNamespaces', 'create_enchantment_industry'
-
             mods {
                 create_enchantment_industry {
                     source sourceSets.main
                 }
             }
         }
-
         data {
             workingDirectory project.file('run')
-
             property 'forge.logging.markers', 'REGISTRIES'
-
             property 'forge.logging.console.level', 'debug'
-
             args '--mod', 'create_enchantment_industry',
                  '--all', '--output', file('src/generated/resources/'),
                  '--existing', file('src/main/resources/'),
                  '--existing-mod', 'create'
-
             mods {
                 create_enchantment_industry {
                     source sourceSets.main
@@ -131,7 +114,7 @@ mixin {
 }
 
 jar {
-    classifier = 'slim'
+    archiveClassifier = 'slim'
     manifest {
         attributes([
                 "Specification-Title"     : "create_enchantment_industry",
@@ -159,7 +142,7 @@ void removeRedundant(jarTask){
 jar.finalizedBy('reobfJar')
 addLicense(jar)
 removeRedundant(jar)
-tasks.jarJar.setClassifier('')
+tasks.jarJar.setArchiveClassifier('')
 tasks.jarJar.finalizedBy('reobfJarJar')
 addLicense(tasks.jarJar)
 removeRedundant(tasks.jarJar)
