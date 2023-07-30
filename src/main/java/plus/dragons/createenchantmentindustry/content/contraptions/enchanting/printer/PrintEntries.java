@@ -353,15 +353,15 @@ public class PrintEntries {
 
         @Override
         public void addToGoggleTooltip(List<Component> tooltip, boolean isPlayerSneaking, ItemStack target) {
-            var b = CeiLang.itemName(target).style(ChatFormatting.BLUE);
+            var b = LANG.itemName(target).style(ChatFormatting.BLUE);
             b.forGoggles(tooltip, 1);
             boolean tooExpensive = Printing.isTooExpensive(this, target, CeiConfigs.SERVER.copierTankCapacity.get());
             if (tooExpensive)
-                tooltip.add(new TextComponent("     ").append(CeiLang.translate(
+                tooltip.add(Component.literal("     ").append(LANG.translate(
                         "gui.goggles.too_expensive").component()
                 ).withStyle(ChatFormatting.RED));
             else
-                tooltip.add(new TextComponent("     ").append(CeiLang.translate(
+                tooltip.add(Component.literal("     ").append(LANG.translate(
                         "gui.goggles.ink_consumption",
                         String.valueOf(CeiConfigs.SERVER.copyClipboardCost.get())).component()
                 ).withStyle(ChatFormatting.DARK_GRAY));
@@ -369,7 +369,7 @@ public class PrintEntries {
 
         @Override
         public MutableComponent getDisplaySourceContent(ItemStack target) {
-            return CeiLang.itemName(target).component();
+            return LANG.itemName(target).component();
         }
     }
 
