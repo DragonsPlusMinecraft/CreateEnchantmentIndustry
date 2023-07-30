@@ -61,7 +61,7 @@ public class PrintEntries {
 
         @Override
         public int requiredInkAmount(ItemStack target) {
-            return getExperienceFromItem(target);
+            return (int) (getExperienceFromItem(target) * CeiConfigs.SERVER.copyEnchantedBookCostCoefficient.get());
         }
 
         @Override
@@ -75,7 +75,7 @@ public class PrintEntries {
 
         @Override
         public boolean isTooExpensive(ItemStack target, int limit) {
-            return getExperienceFromItem(target) > limit;
+            return (int) (getExperienceFromItem(target) * CeiConfigs.SERVER.copyEnchantedBookCostCoefficient.get()) > limit;
         }
 
         @Override
@@ -95,7 +95,7 @@ public class PrintEntries {
                         .reduce(false, (a,a2)->a||a2);
                 tooltip.add(new TextComponent("     ").append(CeiLang.translate(
                         hyper ? "gui.goggles.hyper_xp_consumption": "gui.goggles.xp_consumption",
-                        String.valueOf(getExperienceFromItem(target))).component()
+                        String.valueOf((int) (getExperienceFromItem(target) * CeiConfigs.SERVER.copyEnchantedBookCostCoefficient.get()))).component()
                 ).withStyle(hyper? ChatFormatting.AQUA: ChatFormatting.GREEN));
             }
             var map = EnchantmentHelper.getEnchantments(target);
