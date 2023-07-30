@@ -42,6 +42,9 @@ public class CeiServerConfig extends ConfigBase {
     public final ConfigInt copyTrainScheduleCost = i(10, 1, 1000,
             "copyTrainScheduleCost",
             Comments.copyTrainScheduleCost);
+    public final ConfigInt copyClipboardCost = i(10, 1, 1000,
+            "copyClipboardCost",
+            Comments.copyClipboardCost);
     public final ConfigFloat crushingWheelDropExpRate = f(0.3f, 0, 1,
             "crushingWheelDropExpRate",
             Comments.crushingWheelDropExpRate);
@@ -76,6 +79,7 @@ public class CeiServerConfig extends ConfigBase {
         static String copyWrittenBookCostPerPage = "The amount of ink needed to be consumed by Copying one page of Written Book";
         static String copyNameTagCost = "The amount of liquid experience needed to be consumed by Copying Name Tag";
         static String copyTrainScheduleCost = "The amount of ink needed to be consumed by Copying Train Schedule";
+        static String copyClipboardCost = "The amount of ink needed to be consumed by Copying Clipboard";
         static String crushingWheelDropExpRate = "The probability of dropping Experience Nugget after killing a creature on the Crushing Wheel";
         static String copyingWrittenBookAlwaysGetOriginalVersion =
                 "Whether or not copying a written book always get original version. Setting it to false let you always get copy version of the book.";
