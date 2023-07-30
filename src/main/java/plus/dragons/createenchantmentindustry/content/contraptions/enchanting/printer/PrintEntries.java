@@ -1,5 +1,6 @@
 package plus.dragons.createenchantmentindustry.content.contraptions.enchanting.printer;
 
+import com.simibubi.create.AllBlocks;
 import com.simibubi.create.AllItems;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
@@ -32,10 +33,12 @@ public class PrintEntries {
         var e2 = new WrittenBook();
         var e3 = new NameTag();
         var e4 = new Schedule();
+        var e5 = new ClipBoard();
         ENTRIES.put(e1.id(),e1);
         ENTRIES.put(e2.id(),e2);
         ENTRIES.put(e3.id(),e3);
         ENTRIES.put(e4.id(),e4);
+        ENTRIES.put(e5.id(),e5);
 
         var event = new PrintEntryRegisterEvent();
         MinecraftForge.EVENT_BUS.post(event);
@@ -313,6 +316,60 @@ public class PrintEntries {
         @Override
         public MutableComponent getDisplaySourceContent(ItemStack target) {
             return LANG.itemName(target).component();
+        }
+    }
+
+    static class ClipBoard implements PrintEntry{
+
+        @Override
+        public ResourceLocation id() {
+            return EnchantmentIndustry.genRL("clipboard");
+        }
+
+        @Override
+        public boolean match(ItemStack toPrint) {
+            return toPrint.is(AllBlocks.CLIPBOARD.get().asItem());
+        }
+
+        @Override
+        public boolean valid(ItemStack target, ItemStack tested) {
+            return tested.is(target.getItem()) && !ItemStack.tagMatches(target, tested);
+        }
+
+        @Override
+        public int requiredInkAmount(ItemStack target) {
+            return CeiConfigs.SERVER.copyClipboardCost.get();
+        }
+
+        @Override
+        public Fluid requiredInkType(ItemStack target) {
+            return CeiFluids.INK.get();
+        }
+
+        @Override
+        public boolean isTooExpensive(ItemStack target, int limit) {
+            return CeiConfigs.SERVER.copyClipboardCost.get() > limit;
+        }
+
+        @Override
+        public void addToGoggleTooltip(List<Component> tooltip, boolean isPlayerSneaking, ItemStack target) {
+            var b = CeiLang.itemName(target).style(ChatFormatting.BLUE);
+            b.forGoggles(tooltip, 1);
+            boolean tooExpensive = Printing.isTooExpensive(this, target, CeiConfigs.SERVER.copierTankCapacity.get());
+            if (tooExpensive)
+                tooltip.add(new TextComponent("     ").append(CeiLang.translate(
+                        "gui.goggles.too_expensive").component()
+                ).withStyle(ChatFormatting.RED));
+            else
+                tooltip.add(new TextComponent("     ").append(CeiLang.translate(
+                        "gui.goggles.ink_consumption",
+                        String.valueOf(CeiConfigs.SERVER.copyClipboardCost.get())).component()
+                ).withStyle(ChatFormatting.DARK_GRAY));
+        }
+
+        @Override
+        public MutableComponent getDisplaySourceContent(ItemStack target) {
+            return CeiLang.itemName(target).component();
         }
     }
 
