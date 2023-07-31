@@ -7,7 +7,7 @@ permissions:
 env:
   MINECRAFT_VERSION: 1.20.1
   JAVA_VERSION: 17
-  VERSION: 1.2.6.SNAPSHOT-2
+  VERSION: 1.2.6
   CREATE_VERSION: 0.5.1.d
 
 jobs:
