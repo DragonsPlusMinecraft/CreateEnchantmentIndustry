@@ -48,7 +48,7 @@ jobs:
           # Config
           name: "CEI ${{ env.VERSION }} for Create ${{ env.MINECRAFT_VERSION }}-${{ env.CREATE_VERSION }}"
           version: ${{ env.VERSION }}
-          version-type: alpha
+          version-type: release
           changelog-file: changelog/${{ env.VERSION }}.md
           files: |
             build/libs/*-${{ env.VERSION }}!(-@(dev|sources|slim)).jar
