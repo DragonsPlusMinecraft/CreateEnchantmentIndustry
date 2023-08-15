@@ -24,10 +24,6 @@ public class CeiServerConfig extends ConfigBase {
     public final ConfigFloat deployerXpDropChance = f(1, 0, 1,
         "deployerXpDropChance",
         Comments.deployerXpDropChance);
-
-    public final ConfigFloat deployerXpDropScale= f(0.34F, 0.1F, 100,
-            "deployerXpDropScale",
-            Comments.deployerXpDropScale);
     public final ConfigBool enableHyperEnchant = b(true, "enableHyperEnchant");
     public final ConfigFloat enchantByBlazeEnchanterCostCoefficient= f(1, 0.01f, 100,
             "enchantByBlazeEnchanterCostCoefficient");
@@ -48,6 +44,9 @@ public class CeiServerConfig extends ConfigBase {
     public final ConfigFloat crushingWheelDropExpRate = f(0.3f, 0, 1,
             "crushingWheelDropExpRate",
             Comments.crushingWheelDropExpRate);
+    public final ConfigFloat crushingWheelDropExpScale = f(0.34F, 0.1F, 100,
+            "crushingWheelDropExpScale",
+            Comments.crushingWheelDropExpScaleScale);
     public final ConfigBool copyingWrittenBookAlwaysGetOriginalVersion = b(true,
             "copyingWrittenBookAlwaysGetOriginalVersion",
             Comments.copyingWrittenBookAlwaysGetOriginalVersion);
@@ -74,8 +73,8 @@ public class CeiServerConfig extends ConfigBase {
             "The Maximum Extended Levels beyond Enchantment's Max Level that can be reached through Hyper-Enchanting";
         static String deployerXpDropChance =
             "The Chance of whether Deployer-killed entities will drop Experience Nugget";
-        static String deployerXpDropScale =
-                "The Scale of Experience Nugget dropped by Deployer-killed entities";
+        static String crushingWheelDropExpScaleScale =
+                "The Scale of Experience Nugget dropped by Crushing-Wheel-killed entities";
         static String copyWrittenBookCostPerPage = "The amount of ink needed to be consumed by Copying one page of Written Book";
         static String copyNameTagCost = "The amount of liquid experience needed to be consumed by Copying Name Tag";
         static String copyTrainScheduleCost = "The amount of ink needed to be consumed by Copying Train Schedule";
