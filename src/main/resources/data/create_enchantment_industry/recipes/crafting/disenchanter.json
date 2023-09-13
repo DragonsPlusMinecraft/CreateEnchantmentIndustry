@@ -8,14 +8,9 @@
     "A": {
       "item": "create:copper_casing"
     },
-    "B": [
-      {
-        "item": "create:sand_paper"
-      },
-      {
-        "item": "create:red_sand_paper"
-      }
-    ]
+    "B": {
+      "tag": "create:sandpaper"
+    }
   },
   "result": {
     "item": "create_enchantment_industry:disenchanter"
