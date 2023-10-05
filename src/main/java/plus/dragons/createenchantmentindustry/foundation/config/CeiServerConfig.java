@@ -27,8 +27,12 @@ public class CeiServerConfig extends ConfigBase {
     public final ConfigBool enableHyperEnchant = b(true, "enableHyperEnchant");
     public final ConfigFloat enchantByBlazeEnchanterCostCoefficient= f(1, 0.01f, 100,
             "enchantByBlazeEnchanterCostCoefficient");
+    public final ConfigFloat hyperEnchantByBlazeEnchanterCostCoefficient= f(1, 0.01f, 100,
+            "hyperEnchantByBlazeEnchanterCostCoefficient");
     public final ConfigFloat copyEnchantedBookCostCoefficient= f(1, 0.01f, 100,
             "copyEnchantedBookCostCoefficient");
+    public final ConfigFloat copyEnchantedBookWithHyperExperienceCostCoefficient = f(1, 0.01f, 100,
+            "copyEnchantedBookWithHyperExperienceCostCoefficient");
     public final ConfigInt copyWrittenBookCostPerPage = i(5, 1, 100,
             "copyWrittenBookCostPerPage",
             Comments.copyWrittenBookCostPerPage);
