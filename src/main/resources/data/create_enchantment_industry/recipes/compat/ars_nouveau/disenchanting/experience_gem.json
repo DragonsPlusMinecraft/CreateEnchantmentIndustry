@@ -1,0 +1,14 @@
+{
+  "type": "create_enchantment_industry:disenchanting",
+  "ingredients": [
+    {
+      "item": "ars_nouveau:experience_gem"
+    }
+  ],
+  "results": [
+    {
+      "fluid": "create_enchantment_industry:experience",
+      "amount": 3
+    }
+  ]
+}
