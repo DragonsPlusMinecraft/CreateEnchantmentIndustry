@@ -23,7 +23,8 @@
     "PlayerMixin",
     "SpoutBlockEntityAccessor",
     "SpoutBlockMixin",
-    "TankSegmentAccessor"
+    "TankSegmentAccessor",
+    "AbstractFurnaceBlockEntityMixin"
   ],
   "client": [
     "CameraMixin"
