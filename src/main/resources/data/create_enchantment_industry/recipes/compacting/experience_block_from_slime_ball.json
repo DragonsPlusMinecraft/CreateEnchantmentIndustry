@@ -1,0 +1,17 @@
+{
+  "type": "create:compacting",
+  "ingredients": [
+    {
+      "amount": 27,
+      "fluid": "create_enchantment_industry:experience"
+    },
+    {
+      "item": "minecraft:slime_ball"
+    }
+  ],
+  "results": [
+    {
+      "item": "create:experience_block"
+    }
+  ]
+}
