@@ -351,8 +351,9 @@ public class BlazeEnchanterBlockEntity extends SmartBlockEntity implements IHave
         FluidStack exp = new FluidStack(hyper
             ? CeiFluids.HYPER_EXPERIENCE.get().getSource()
             : CeiFluids.EXPERIENCE.get().getSource(),
-                (int) (Enchanting.getExperienceConsumption(entry.getFirst(), entry.getSecond()) * CeiConfigs.SERVER.enchantByBlazeEnchanterCostCoefficient.get())
-        );
+                (int) (Enchanting.getExperienceConsumption(entry.getFirst(), entry.getSecond()) *
+                        (hyper? CeiConfigs.SERVER.hyperEnchantByBlazeEnchanterCostCoefficient.get():
+                                CeiConfigs.SERVER.enchantByBlazeEnchanterCostCoefficient.get())));
         
         if (processingTicks > 5) {
             var tankFluid = internalTank.getPrimaryHandler().getFluid().getFluid();
@@ -520,7 +521,9 @@ public class BlazeEnchanterBlockEntity extends SmartBlockEntity implements IHave
                         .append(CeiLang.translate("gui.goggles.blaze_enchanter.invalid_target").component())
                         .withStyle(ChatFormatting.RED));
                 else {
-                    int consumption = (int) (Enchanting.getExperienceConsumption(entry.getFirst(), entry.getSecond()) * CeiConfigs.SERVER.enchantByBlazeEnchanterCostCoefficient.get());
+                    int consumption = (int) (Enchanting.getExperienceConsumption(entry.getFirst(), entry.getSecond()) *
+                            (hyper()? CeiConfigs.SERVER.hyperEnchantByBlazeEnchanterCostCoefficient.get():
+                                    CeiConfigs.SERVER.enchantByBlazeEnchanterCostCoefficient.get()));
                     if (consumption > CeiConfigs.SERVER.blazeEnchanterTankCapacity.get())
                         tooltip.add(new TextComponent("     ").append(CeiLang.translate("gui.goggles.too_expensive")
                             .component())
