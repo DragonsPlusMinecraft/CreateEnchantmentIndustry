@@ -14,7 +14,7 @@ public class EnchantmentLevelUtil {
     static {
         Method method;
         try {
-            Class<?> EnchHooks = Class.forName(" dev.shadowsoffire.apotheosis.ench.asm.EnchHooks");
+            Class<?> EnchHooks = Class.forName("dev.shadowsoffire.apotheosis.ench.asm.EnchHooks");
             method = EnchHooks.getMethod("getMaxLevel", Enchantment.class);
         } catch (Throwable exception) {
             EnchantmentIndustry.LOGGER.debug("Failed to load EnchHooks from Apotheosis, fall back to vanilla method...");
