@@ -15,14 +15,15 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
-import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import plus.dragons.createenchantmentindustry.content.contraptions.fluids.experience.FurnaceExpExtractor;
-
-import javax.annotation.Nullable;
 
 @Mixin(AbstractFurnaceBlockEntity.class)
 abstract public class AbstractFurnaceBlockEntityMixin<T> extends BaseContainerBlockEntity implements WorldlyContainer, RecipeHolder, StackedContentsCompatible {
@@ -42,23 +43,21 @@ abstract public class AbstractFurnaceBlockEntityMixin<T> extends BaseContainerBl
         return new FurnaceExpExtractor(recipesUsed,(AbstractFurnaceBlockEntity)(Object)this);
     }
 
-    @Override
-    public <T> @NotNull LazyOptional<T> getCapability(@NotNull Capability<T> capability, @Nullable Direction facing) {
+    @Inject(method = "getCapability", at = @At("HEAD"), cancellable = true, remap = false)
+    private void createEnchantmentIndustry$getCapability(Capability<T> capability, Direction facing, CallbackInfoReturnable<LazyOptional<T>> cir) {
         if (!this.remove && facing != null && capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
-            return createEnchantmentIndustry$expExtractor.cast();
+            cir.setReturnValue(createEnchantmentIndustry$expExtractor.cast());
         }
-        return super.getCapability(capability, facing);
     }
 
-    @Override
-    public void invalidateCaps() {
-        super.invalidateCaps();
+    @Inject(method = "invalidateCaps", at = @At("HEAD"), remap = false)
+    private void createEnchantmentIndustry$invalidateCaps(CallbackInfo ci) {
         createEnchantmentIndustry$expExtractor.invalidate();
     }
 
-    @Override
-    public void reviveCaps() {
-        super.reviveCaps();
+    @Inject(method = "reviveCaps", at = @At("HEAD"), remap = false)
+    private void createEnchantmentIndustry$reviveCaps(CallbackInfo ci) {
         this.createEnchantmentIndustry$expExtractor = LazyOptional.of(this::createEnchantmentIndustry$createExpExtractor);
     }
+
 }
