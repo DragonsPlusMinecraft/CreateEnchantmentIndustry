@@ -14,15 +14,4 @@ public class ExperienceRotorItem extends Item {
     public boolean isFoil(@NotNull ItemStack pStack) {
         return true;
     }
-
-    @Override
-    public boolean hasCraftingRemainingItem(ItemStack stack) {
-        return true;
-    }
-
-    @Override
-    public ItemStack getCraftingRemainingItem(ItemStack itemStack) {
-        return itemStack;
-    }
-
 }
