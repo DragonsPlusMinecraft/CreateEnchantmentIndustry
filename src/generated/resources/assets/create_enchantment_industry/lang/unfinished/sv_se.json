@@ -1,0 +1,144 @@
+{
+
+	"_": "->------------------------]  Game Elements  [------------------------<-",
+
+	"block.create_enchantment_industry.blaze_enchanter": "Brännarförtrollare",
+	"block.create_enchantment_industry.disenchanter": "Avförtrollare",
+	"block.create_enchantment_industry.ink": "Bläck",
+	"block.create_enchantment_industry.printer": "Skrivare",
+
+	"entity.create_enchantment_industry.hyper_experience_bottle": "Kasta Hyperförtrollningsflaska",
+	"entity.create_enchantment_industry.hyper_experience_orb": "Hyper-Erfarenhetsklot",
+
+	"fluid.create_enchantment_industry.experience": "Erfarenhetsvätska",
+	"fluid.create_enchantment_industry.hyper_experience": "Hyper-Erfarenhetsvätska",
+	"fluid.create_enchantment_industry.ink": "Bläck",
+
+	"item.create_enchantment_industry.enchanting_guide": "Förtrollningsguide",
+	"item.create_enchantment_industry.experience_rotor": "Erfarenhetsrotor",
+	"item.create_enchantment_industry.hyper_experience_bottle": "Hyperförtrollningsflaska",
+	"item.create_enchantment_industry.ink_bucket": "Bläckhink",
+
+
+	"_": "->------------------------]  Advancements  [------------------------<-",
+
+	"advancement.create_enchantment_industry.experienced_engineer": "Erfaren Ingenjör",
+	"advancement.create_enchantment_industry.experienced_engineer.desc": "Få några Erfarenhetsklimpar från att krossa malm eller döda mobs med en utrullare",
+	"advancement.create_enchantment_industry.black_as_ink": "Svart som bläck!",
+	"advancement.create_enchantment_industry.black_as_ink.desc": "Skaffa en Bläckhink för ditt bokförlag",
+	"advancement.create_enchantment_industry.copiable_masterpiece": "Kopierbart mästerverk",
+	"advancement.create_enchantment_industry.copiable_masterpiece.desc": "Kopiera en skriven bok med en Skrivare",
+	"advancement.create_enchantment_industry.copiable_mystery": "Kopierbart mysterium",
+	"advancement.create_enchantment_industry.copiable_mystery.desc": "Kopiera en förtrollad bok med en Skrivare",
+	"advancement.create_enchantment_industry.relic_restoration": "Återställande av reliker",
+	"advancement.create_enchantment_industry.relic_restoration.desc": "Gör en helt ny kopia av en sliten bok",
+	"advancement.create_enchantment_industry.emerging_brand": "Växande varumärke",
+	"advancement.create_enchantment_industry.emerging_brand.desc": "Använd en Skrivare för att namnge ett föremål",
+	"advancement.create_enchantment_industry.great_publisher": "Grymt bokförlag",
+	"advancement.create_enchantment_industry.great_publisher.desc": "Kopiera 1000 böcker med en Skrivare",
+	"advancement.create_enchantment_industry.experimental": "Experimental",
+	"advancement.create_enchantment_industry.experimental.desc": "Skaffa lite Erfarenhetsvätska för dina förtrollningsexperiment!",
+	"advancement.create_enchantment_industry.gone_with_the_foil": "Borta med folien",
+	"advancement.create_enchantment_industry.gone_with_the_foil.desc": "Se ett förtrollat föremål bli avförtrollad av en Avförtrollare",
+	"advancement.create_enchantment_industry.spirit_taking": "Själsugande",
+	"advancement.create_enchantment_industry.spirit_taking.desc": "Få din erfarenhet absorberad av en Avförtrollare",
+	"advancement.create_enchantment_industry.a_shower_experience": "En dusch med \"Förtrollning\"",
+	"advancement.create_enchantment_industry.a_shower_experience.desc": "Ta sönder ett Vätskerör och bada i den läkta erfarenheten",
+	"advancement.create_enchantment_industry.experienced_recycler": "Erfaren återvinnare",
+	"advancement.create_enchantment_industry.experienced_recycler.desc": "Återvinn 1,000,000 mH av erfarenhet från en Avförtrollare",
+	"advancement.create_enchantment_industry.blazes_new_job": "Brännarens nya jobb",
+	"advancement.create_enchantment_industry.blazes_new_job.desc": "Ge din Brännare en Förtrollningsguide och gör den till en Brännarförtrollare",
+	"advancement.create_enchantment_industry.first_order": "Första beställningen",
+	"advancement.create_enchantment_industry.first_order.desc": "Lägg till en förtrollning på ett icke förtrollat föremål med hjälp av en Brännarförtrollare",
+	"advancement.create_enchantment_industry.additional_order": "En till beställning",
+	"advancement.create_enchantment_industry.additional_order.desc": "Lägg till en förtrollning på ett förtrollat föremål med hjälp av en Brännarförtrollare",
+	"advancement.create_enchantment_industry.hypothetical_extension": "Hypotetisk Förlängning",
+	"advancement.create_enchantment_industry.hypothetical_extension.desc": "Lägg till en förtrollning på ett föremål med en Brännarförtrollare Hyper-förtrollning",
+
+
+	"_": "->------------------------]  Ponder Content  [------------------------<-",
+
+	"create_enchantment_industry.ponder.tag.experience": "Förtrollningsrelaterat",
+	"create_enchantment_industry.ponder.tag.experience.description": "Föremål och Komponenter relaterat till erfarenhet",
+
+	"create_enchantment_industry.ponder.absorb_experience_nugget.header": "Konvertera Erfarenhetsklimp till vätska",
+	"create_enchantment_industry.ponder.absorb_experience_nugget.text_1": "Erfarenhetsklimp kan bli absorberad av en Avförtrollare.",
+
+	"create_enchantment_industry.ponder.copy.header": "Använda Skrivaren",
+	"create_enchantment_industry.ponder.copy.text_1": "Erfarenhetsvätska behövs för att duplicera förtrollade böcker.",
+	"create_enchantment_industry.ponder.copy.text_2": "Om förtrollningen på den boken du kopierar har en nivå som överstigen sin maximala nivå, då behöver du Hyper-Erfarenhet.",
+	"create_enchantment_industry.ponder.copy.text_3": "Bläck behövs för att duplicera skrivna böcker.",
+	"create_enchantment_industry.ponder.copy.text_4": "Namnskylt och tågscheman kan också bli kopierade.",
+	"create_enchantment_industry.ponder.copy.text_5": "Om du sätter namnskylten som utskrivsmål, kan du använda skrivaren för att namnge föremålet",
+
+	"create_enchantment_industry.ponder.crushing_wheel_tweak.header": "Vi kallar det ineffektivitet...",
+	"create_enchantment_industry.ponder.crushing_wheel_tweak.text_1": "Stenkrossar har en liten chans att droppa en väldigt liten mängd erfarenhetsklimpar när den dödar en varelse.",
+
+	"create_enchantment_industry.ponder.disenchant.header": "Avförtrollning",
+	"create_enchantment_industry.ponder.disenchant.text_1": "Alla mottagna föremål kommer få sin förtrollning borttagen och den borttagna förtrollningen kommer förvandlas till Erfarenhetsvätska för lagring.",
+	"create_enchantment_industry.ponder.disenchant.text_2": "Spelare som står på Avförtrollaren kommer snabbt att bli av med sin erfarenhet, och den absorberade erfarenheten kommer att förvandlas till Erfarenhetsvätska för lagring.",
+
+	"create_enchantment_industry.ponder.drop_experience_nugget.header": "Kanske en Exp-farm?",
+	"create_enchantment_industry.ponder.drop_experience_nugget.text_1": "När ett mob dödas av en utrullare, släpps en Erfarenhetsklimp.",
+
+	"create_enchantment_industry.ponder.enchant.header": "Förtrollning",
+	"create_enchantment_industry.ponder.enchant.text_1": "Brännarförtrollare kan förtrolla dina föremål.",
+	"create_enchantment_industry.ponder.enchant.text_2": "Dock, kan den inte förtrolla böcker...",
+	"create_enchantment_industry.ponder.enchant.text_3": "... och heller inte okompatibla förtrollningar på dina förmål.",
+	"create_enchantment_industry.ponder.enchant.text_4": "Brännarförtrollare kan uppgradera en förtrollning som redan finns till en högre nivå om möjligt.",
+
+	"create_enchantment_industry.ponder.experience_bottle.header": "Hantering av Förtrollningsflaska",
+	"create_enchantment_industry.ponder.experience_bottle.text_1": "Förtrollningsflaska kan tömmas med ett avlopp .",
+	"create_enchantment_industry.ponder.experience_bottle.text_2": "Förtrollningsflaska kan också skapas med hjälp av en Pip.",
+
+	"create_enchantment_industry.ponder.hyper_enchant.header": "Hyper-förtrollning",
+	"create_enchantment_industry.ponder.hyper_enchant.text_1": "Det här är Hyper-Erfarenhet",
+	"create_enchantment_industry.ponder.hyper_enchant.text_2": "Hyper-Erfarenhet kan få Brännarförtrollare in i ett kokande tillstånd, och nivån på förtrollningen producerat i detta tillstånd kommer vara ett högre än den inställda förtrollningen.",
+	"create_enchantment_industry.ponder.hyper_enchant.text_3": "Förtrollningar med en toppnivå på 1 kan inte uppgraderas till en nivå 2 med hyper-förtrollning.",
+
+	"create_enchantment_industry.ponder.leak.header": "Åh nej! Det läcker!",
+	"create_enchantment_industry.ponder.leak.text_1": "Jag har en tank full av erfarenhetsvätska",
+	"create_enchantment_industry.ponder.leak.text_2": "Jag har ett vätskerör med öppen ände",
+	"create_enchantment_industry.ponder.leak.text_3": "Ugh!",
+	"create_enchantment_industry.ponder.leak.text_4": "Oroa dig inte, den läkta erfarenhetsvätskan kommer göras om till Erfarenhetsklot. Spelare kan också stå vid öppningen av vätskeröret för att absorbera erfarenheten.",
+
+	"create_enchantment_industry.ponder.transform.header": "Använda Förtrollningsguiden",
+	"create_enchantment_industry.ponder.transform.text_1": "Högerklicka på Brännaren med en förtrollningsguide i handen när du sneakar för att transformera den till en Brännarförtrollare.",
+	"create_enchantment_industry.ponder.transform.text_2": "För att få Brännarenförtrollaren att fungera måste förtrollningsguiden konfigureras först. Högerklicka på Brännarförtrollaren eller högerklicka förtrollningsguiden i handen för att öppna konfigurationspanelen.",
+	"create_enchantment_industry.ponder.transform.text_3": "För att få tillbaka en förtrollningsguide, högerklicka på Brännarförtrollaren med en Skiftnyckel samtidigt som du sneakar.",
+	"create_enchantment_industry.ponder.transform.text_4": "Du kan byta ut förtrollningsguiden genom att hålla den i din hand och högerklicka på Brännarförtrollaren.",
+
+
+	"_": "->------------------------]  Item Descriptions  [------------------------<-",
+
+	"item.create_enchantment_industry.enchanting_guide.tooltip": "FÖRTROLLNINGSGUIDE VERKTYGSTIPS",
+	"item.create_enchantment_industry.enchanting_guide.tooltip.current_enchantment": "Nuvarande förtrollning:",
+	"item.create_enchantment_industry.enchanting_guide.tooltip.not_configured": "Inte konfigurerad",
+
+	"item.create_enchantment_industry.experience_rotor.tooltip": "ERFARENHETSROTOR",
+	"item.create_enchantment_industry.experience_rotor.tooltip.summary": "Används i _Blandnings_ _Recept_ för att konvertera _Erfarenhets_ _Vätskor_.",
+
+
+	"_": "->------------------------]  UI & Messages  [------------------------<-",
+
+	"create_enchantment_industry.gui.enchanting_guide.no_enchantment": "Inga tillgängliga förtrollningar",
+	"create_enchantment_industry.gui.goggles.printer": "Objekt som ska kopieras:",
+	"create_enchantment_industry.gui.goggles.printer.no_target": "Inget",
+	"create_enchantment_industry.gui.goggles.blaze_enchanter": "Aktiv förtrollning:",
+	"create_enchantment_industry.gui.goggles.blaze_enchanter.invalid_target": "Ogiltigt mål",
+	"create_enchantment_industry.gui.goggles.xp_consumption": "Förbrukar XP: %s mH",
+	"create_enchantment_industry.gui.goggles.hyper_xp_consumption": "Förbrukar Hyper-XP: %s mH",
+	"create_enchantment_industry.gui.goggles.ink_consumption": "Förbrukar bläck: %s mH",
+	"create_enchantment_industry.gui.goggles.too_expensive": "För dyrt!",
+
+	"create_enchantment_industry.generic.unit.page": "Sida",
+	"create_enchantment_industry.generic.unit.pages": "Sidor",
+
+	"recipe.create_enchantment_industry.disenchanting": "Avförtrollar",
+
+	"create_enchantment_industry.display_source.blaze_enchanter_source_target_enchantment": "Vald förtrollning",
+	"create_enchantment_industry.display_source.printer_source_copy_content": "Kopiera innehåll",
+
+	"_": "Thank you for translating Create: Enchantment Industry!"
+
+}
