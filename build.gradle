@@ -4,6 +4,7 @@ plugins {
     id 'org.spongepowered.mixin'
     id 'org.parchmentmc.librarian.forgegradle'
     id 'maven-publish'
+    id "me.modmuss50.mod-publish-plugin" version "0.3.5"
 }
 
 version = mod_version
@@ -154,6 +155,36 @@ void removeRedundant(jarTask){
     jarTask.exclude(".cache")
     jarTask.exclude("assets/create_enchantment_industry/lang/unfinished")
     jarTask.exclude("assets/create_enchantment_industry/lang/default")
+}
+
+publishMods {
+    file = tasks.jarJar.archiveFile
+    changelog = new File("changelog/${mod_version}.md").text
+    version = mod_version
+    type = STABLE
+    displayName = "CEI ${mod_version} for Create ${minecraft_version}-${create_version}"
+    modLoaders.add("forge")
+    modLoaders.add("neoforge")
+
+    curseforge {
+        projectId = "688768"
+        accessToken = providers.environmentVariable("CURSEFORGE_TOKEN")
+        minecraftVersions.add(minecraft_version)
+
+        requires {
+            slug = "create"
+        }
+    }
+
+    modrinth {
+        projectId = "JWGBpFUP"
+        accessToken = providers.environmentVariable("MODRINTH_TOKEN")
+        minecraftVersions.add(minecraft_version)
+
+        requires {
+            slug = "create"
+        }
+    }
 }
 
 jar.finalizedBy('reobfJar')
