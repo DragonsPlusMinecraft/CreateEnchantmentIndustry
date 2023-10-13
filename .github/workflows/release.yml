@@ -4,61 +4,28 @@ on: [workflow_dispatch]
 permissions:
   contents: write
 
-env:
-  MINECRAFT_VERSION: 1.20.1
-  JAVA_VERSION: 17
-  VERSION: 1.2.7.c
-  CREATE_VERSION: 0.5.1.e
-
 jobs:
   release:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
-        with:
-          submodules: true
 
-      - name: Setup Java
+      - name: Setup JDK 17
         uses: actions/setup-java@v2
         with:
-          distribution: "temurin"
-          java-version: 17
+          java-version: '17'
+          distribution: temurin
+          cache: gradle
 
-      - name: Make Gradle Wrapper Executable
-        if: ${{ runner.os != 'Windows' }}
+      - name: Validate Gradle Wrapper Integrity
+        uses: gradle/wrapper-validation-action@v1
+
+      - name: Make Gradle wrapper executable
         run: chmod +x ./gradlew
 
-      - name: Build
-        run: ./gradlew build
-
-      - name: Publish (CurseForge/Modrinth)
-        uses: Kir-Antipov/mc-publish@v3.3
-        with:
-          # Modrinth
-          modrinth-id: JWGBpFUP
-          modrinth-featured: true
-          modrinth-unfeature-mode: subset
-          modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
-
-          # CurseForge
-          curseforge-id: 688768
-          curseforge-token: ${{ secrets.CURSEFORGE_TOKEN }}
-
-          # Config
-          name: "CEI ${{ env.VERSION }} for Create ${{ env.MINECRAFT_VERSION }}-${{ env.CREATE_VERSION }}"
-          version: ${{ env.VERSION }}
-          version-type: release
-          changelog-file: changelog/${{ env.VERSION }}.md
-          files: |
-            build/libs/*-${{ env.VERSION }}!(-@(dev|sources|slim)).jar
-          loaders: |
-            forge
-          game-versions: |
-            ${{ env.MINECRAFT_VERSION }}
-          dependencies: |
-            create(required)
-          java: |
-            ${{ env.JAVA_VERSION }}
-          retry-attempts: 2
-          retry-delay: 10000
+      - name: Build & Release
+        env:
+          MODRINTH_TOKEN: ${{ secrets.MODRINTH_TOKEN }}
+          CURSEFORGE_TOKEN: ${{ secrets.CURSEFORGE_TOKEN }}
+        run: ./gradlew build publishMods
