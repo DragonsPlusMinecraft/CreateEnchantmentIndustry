@@ -150,13 +150,12 @@ void removeRedundant(jarTask){
 }
 
 publishMods {
-    file = tasks.jarJar.archiveFile
+    file = tasks.jar.archiveFile
     changelog = new File("changelog/${mod_version}.md").text
     version = mod_version
     type = STABLE
     displayName = "CEI ${mod_version} for Create ${minecraft_version}-${create_version}"
     modLoaders.add("forge")
-    modLoaders.add("neoforge")
 
     curseforge {
         projectId = "688768"
