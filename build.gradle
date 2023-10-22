@@ -142,7 +142,7 @@ void removeRedundant(jarTask){
 
 publishMods {
     file = tasks.jarJar.archiveFile
-    changelog = new File("changelog/${mod_version}.md").toString()
+    changelog = new File("changelog/${mod_version}.md").text
     version = mod_version
     type = STABLE
     displayName = "CEI ${mod_version} for Create ${minecraft_version}-${create_version}"
