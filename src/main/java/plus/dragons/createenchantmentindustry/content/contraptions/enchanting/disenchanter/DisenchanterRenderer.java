@@ -138,6 +138,7 @@ public class DisenchanterRenderer extends SmartBlockEntityRenderer<DisenchanterB
         var result = Disenchanting.disenchantResult(transported.stack, be.getLevel());
         if (result == null) return;
         FluidStack xp = result.getFirst();
+        if(xp.isEmpty()) return;
 
         int processingTicks = be.processingTicks;
         float processingProgress = processingTicks == 0 ? 0
