@@ -1,4 +1,5 @@
-## Welcome to Create Enchantment Industry, a mod offering more tools and methods to handle experience & enchantment in Create.
+## Welcome to **Create Enchantment Industry**
+A mod offering more tools and methods to handle experience & enchantment in Create.
 
 ![Forge Logo](https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/cozy/supported/forge_vector.svg "Forge Logo")
 
