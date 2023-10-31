@@ -164,7 +164,6 @@ publishMods {
     type = STABLE
     displayName = "CEI ${mod_version} for Create ${minecraft_version}-${create_version}"
     modLoaders.add("forge")
-    modLoaders.add("neoforge")
 
     curseforge {
         projectId = "688768"
