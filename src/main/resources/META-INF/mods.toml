@@ -25,6 +25,6 @@ side="BOTH"
 [[dependencies.create_enchantment_industry]]
 modId="create"
 mandatory=true
-versionRange="[0.5.1.e,)"
+versionRange="[0.5.1.f,)"
 ordering="NONE"
 side="BOTH"
