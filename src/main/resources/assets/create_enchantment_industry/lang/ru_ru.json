@@ -24,11 +24,11 @@
 	"_": "->------------------------]  Advancements  [------------------------<-",
 
 	"advancement.create_enchantment_industry.experienced_engineer": "Опытный инженер",
-	"advancement.create_enchantment_industry.experienced_engineer.desc": "Получите кусочки опыта с помощью дробления руд или убийства мобов автономным активатором",
+	"advancement.create_enchantment_industry.experienced_engineer.desc": "Получите кусочки опыта с помощью дробления руд или убийства существ автономным активатором",
 	"advancement.create_enchantment_industry.black_as_ink": "Чернильная тьма",
 	"advancement.create_enchantment_industry.black_as_ink.desc": "Раздобудьте ведро чернил для своей типографии",
 	"advancement.create_enchantment_industry.copiable_masterpiece": "Репродукция шедевра",
-	"advancement.create_enchantment_industry.copiable_masterpiece.desc": "Скопируйте написанную книгу на печатном станке",
+	"advancement.create_enchantment_industry.copiable_masterpiece.desc": "Скопируйте подписанную книгу на печатном станке",
 	"advancement.create_enchantment_industry.copiable_mystery": "Непонятное, но воспроизводимое",
 	"advancement.create_enchantment_industry.copiable_mystery.desc": "Скопируйте зачарованную книгу на печатном станке",
 	"advancement.create_enchantment_industry.relic_restoration": "Сохранение реликвии",
@@ -36,7 +36,7 @@
 	"advancement.create_enchantment_industry.emerging_brand": "Знак качества",
 	"advancement.create_enchantment_industry.emerging_brand.desc": "Используйте печатный станок для переименования предметов",
 	"advancement.create_enchantment_industry.great_publisher": "Первопечатник Фёдоров",
-	"advancement.create_enchantment_industry.great_publisher.desc": "Сделайте 1000 копий книг на печатном станке",
+	"advancement.create_enchantment_industry.great_publisher.desc": "Создайте 1000 копий книг на печатном станке",
 	"advancement.create_enchantment_industry.experimental": "Экспериментатор",
 	"advancement.create_enchantment_industry.experimental.desc": "Получите жидкий опыт для экспериментов с зачарованием",
 	"advancement.create_enchantment_industry.gone_with_the_foil": "Разоблачение",
@@ -46,7 +46,7 @@
 	"advancement.create_enchantment_industry.a_shower_experience": "Нахлынувшие воспоминания",
 	"advancement.create_enchantment_industry.a_shower_experience.desc": "Сломайте жидкостную трубу и верните себе пролившийся опыт",
 	"advancement.create_enchantment_industry.experienced_recycler": "Обмен опытом",
-	"advancement.create_enchantment_industry.experienced_recycler.desc": "Переработайте 1,000,000 мВ опыта с помощью чаросъёмника",
+	"advancement.create_enchantment_industry.experienced_recycler.desc": "Переработайте 1000000 мВ опыта с помощью чаросъёмника",
 	"advancement.create_enchantment_industry.blazes_new_job": "Огненный маг",
 	"advancement.create_enchantment_industry.blazes_new_job.desc": "Выдайте всполоху в горелке зачаровательное задание, чтобы превратить его в всполоха-чародея",
 	"advancement.create_enchantment_industry.first_order": "Первые шаги",
@@ -60,17 +60,17 @@
 	"_": "->------------------------]  Ponder Content  [------------------------<-",
 
 	"create_enchantment_industry.ponder.tag.experience": "Работа с опытом",
-	"create_enchantment_industry.ponder.tag.experience.description": "Предметы и компоненты для работы с опытом",
+	"create_enchantment_industry.ponder.tag.experience.description": "Блоки и компоненты для работы с опытом",
 
-	"create_enchantment_industry.ponder.absorb_experience_nugget.header": "Превращение кусочков опыта в жидкость",
+	"create_enchantment_industry.ponder.absorb_experience_nugget.header": "Превращением кусочков опыта в жидкость",
 	"create_enchantment_industry.ponder.absorb_experience_nugget.text_1": "Кусочки опыта могут быть превращены в жидкость с помощью чаросъёмника",
 
 	"create_enchantment_industry.ponder.copy.header": "Использованием печатного станка",
 	"create_enchantment_industry.ponder.copy.text_1": "Жидкий опыт нужен для копирования зачарованных книг",
 	"create_enchantment_industry.ponder.copy.text_2": "Если уровень чар в копируемой чародейской книге превышает его максимальный уровень, то вам потребуется гиперопыт",
 	"create_enchantment_industry.ponder.copy.text_3": "А чернила необходимы для копирования подписанных книг",
-	"create_enchantment_industry.ponder.copy.text_4": "Бирки и распсисания поездов также могут быть скопированы",
-	"create_enchantment_industry.ponder.copy.text_5": "Если в качестве исходника в принртере задана бирка, то его можно использовать для присвоения выбранного названия предметам",
+	"create_enchantment_industry.ponder.copy.text_4": "Бирки и расписания поездов также могут быть скопированы",
+	"create_enchantment_industry.ponder.copy.text_5": "Если в качестве исходника в принтере задана бирка, то его можно использовать для присвоения названия бирки предметам",
 
 	"create_enchantment_industry.ponder.crushing_wheel_tweak.header": "Мы называем это неэффективностью...",
 	"create_enchantment_industry.ponder.crushing_wheel_tweak.text_1": "У дробильных колёс есть шанс выпадения очень небольшого количества кусочков опыта, когда они убивают существо",
@@ -82,7 +82,7 @@
 	"create_enchantment_industry.ponder.drop_experience_nugget.header": "Автофермой опыта?",
 	"create_enchantment_industry.ponder.drop_experience_nugget.text_1": "При убийстве существ автономным активатором будут выпадать кусочки опыта",
 
-	"create_enchantment_industry.ponder.enchant.header": "Зачарование",
+	"create_enchantment_industry.ponder.enchant.header": "Зачарованием с помощью всполоха-чародея",
 	"create_enchantment_industry.ponder.enchant.text_1": "Всполох-чародей может зачаровать ваши предметы",
 	"create_enchantment_industry.ponder.enchant.text_2": "Однако, он не может работать с книгами...",
 	"create_enchantment_industry.ponder.enchant.text_3": "...и также не может добавлять несовместимые чары к вашим предметам",
@@ -106,7 +106,7 @@
 	"create_enchantment_industry.ponder.transform.header": "Выдачей зачаровательного задание",
 	"create_enchantment_industry.ponder.transform.text_1": "Кликните ПКМ по горелке всполоха с зачаровательным заданием в руке, для того чтобы превратить его в всполоха-чародея",
 	"create_enchantment_industry.ponder.transform.text_2": "Чтобы всполох-чародей мог работать, сначала необходимо настроить зачаровательное задание. Кликнув ПКМ по всполоху-чародею или зачаровательному заданию в руке вы откроете интерфейс конфигурации",
-	"create_enchantment_industry.ponder.transform.text_3": "Для отзыва зачаровательного задания от Всполоха-чародея кликните по нему ПКМ крадучись гаечным ключом",
+	"create_enchantment_industry.ponder.transform.text_3": "Для отзыва зачаровательного задания от всполоха-чародея кликните по нему ПКМ крадучись гаечным ключом",
 	"create_enchantment_industry.ponder.transform.text_4": "Вы можете заменить текущее зачаровательное задание, держа его прямо в руке и кликнув ПКМ по всполоху-чародею",
 
 
@@ -140,6 +140,6 @@
 	"create_enchantment_industry.display_source.blaze_enchanter_source_target_enchantment": "Желаемое зачарование",
 	"create_enchantment_industry.display_source.printer_source_copy_content": "Копирование содержимого",
 
-	"_": "Thank you for translating Create: Enchantment Industry!"
+	"_": "Спасибо, что переводите Create: Enchantment Industry!"
 
 }
