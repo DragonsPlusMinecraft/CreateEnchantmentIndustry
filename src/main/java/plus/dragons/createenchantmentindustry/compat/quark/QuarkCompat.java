@@ -60,6 +60,7 @@ public class QuarkCompat {
             @Override
             public int requiredInkAmount(@NotNull ItemStack target) {
                 var enchantment = getTomeEnchantment(target);
+                if(enchantment==null) return 50;
                 return enchantment.getMinCost(1) + Enchanting.rarityLevel(enchantment.getRarity());
             }
 
@@ -104,7 +105,6 @@ public class QuarkCompat {
                 }
                 return ret.component();
             }
-
             private static Enchantment getTomeEnchantment(ItemStack stack) {
                 ListTag list = EnchantedBookItem.getEnchantments(stack);
 
