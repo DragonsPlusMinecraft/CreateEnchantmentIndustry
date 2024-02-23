@@ -492,12 +492,12 @@ public class EnchantmentScenes {
         scene.world.modifyBlockEntity(util.grid.at(2, 3, 2), PrinterBlockEntity.class, be ->
                 be.getCapability(ForgeCapabilities.FLUID_HANDLER).ifPresent(tank ->
                         tank.fill(new FluidStack(CeiFluids.EXPERIENCE.get().getSource(), 3000), IFluidHandler.FluidAction.EXECUTE)));
-        scene.overlay.showText(40)
+        scene.overlay.showText(60)
                 .text("Liquid Experience is required to duplicate enchanted books.")
                 .attachKeyFrame()
                 .placeNearTarget()
                 .pointAt(util.vector.centerOf(2, 3, 2));
-        scene.idle(40);
+        scene.idle(60);
 
         scene.world.modifyBlockEntity(util.grid.at(2, 1, 5), CreativeFluidTankBlockEntity.class, be -> ((CreativeFluidTankBlockEntity.CreativeSmartFluidTank) be.getTankInventory())
                 .setContainedFluid(new FluidStack(CeiFluids.HYPER_EXPERIENCE.get().getSource(), 1000)));
@@ -506,12 +506,12 @@ public class EnchantmentScenes {
                         tank.drain(3000, IFluidHandler.FluidAction.EXECUTE);
                         tank.fill(new FluidStack(CeiFluids.HYPER_EXPERIENCE.get().getSource(), 3000), IFluidHandler.FluidAction.EXECUTE);
                 }));
-        scene.overlay.showText(40)
+        scene.overlay.showText(90)
                 .text("If the enchantment on the enchantment book you are copying has a level that exceeds its maximum level, then you will need Hyper Experience.")
                 .attachKeyFrame()
                 .placeNearTarget()
                 .pointAt(util.vector.centerOf(2, 3, 2));
-        scene.idle(40);
+        scene.idle(90);
 
         var item = Items.BOOK.getDefaultInstance();
         BlockPos beltStart = util.grid.at(6, 1, 2);
@@ -536,12 +536,12 @@ public class EnchantmentScenes {
                     tank.drain(3000, IFluidHandler.FluidAction.EXECUTE);
                     tank.fill(new FluidStack(CeiFluids.INK.get().getSource(), 3000), IFluidHandler.FluidAction.EXECUTE);
                 }));
-        scene.overlay.showText(40)
+        scene.overlay.showText(60)
                 .text("Ink is required to duplicate written books.")
                 .attachKeyFrame()
                 .placeNearTarget()
                 .pointAt(util.vector.centerOf(2, 3, 2));
-        scene.idle(40);
+        scene.idle(60);
 
         item = Items.BOOK.getDefaultInstance();
         beltStart = util.grid.at(6, 1, 2);
@@ -565,12 +565,12 @@ public class EnchantmentScenes {
                 }));
         scene.overlay.showControls(new InputWindowElement(util.vector.centerOf(2, 3, 2), Pointing.DOWN).rightClick()
                 .withItem(Items.NAME_TAG.getDefaultInstance()), 40);
-        scene.overlay.showText(40)
+        scene.overlay.showText(60)
                 .text("Name Tag and Train Schedule can also be copied.")
                 .attachKeyFrame()
                 .placeNearTarget()
                 .pointAt(util.vector.centerOf(2, 3, 2));
-        scene.idle(40);
+        scene.idle(60);
 
         item = Items.DIAMOND_SWORD.getDefaultInstance();
         beltStart = util.grid.at(6, 1, 2);
@@ -584,12 +584,12 @@ public class EnchantmentScenes {
         scene.world.removeItemsFromBelt(copierPos.below(2));
         scene.world.createItemOnBelt(copierPos.below(2), Direction.UP, Items.DIAMOND_SWORD.getDefaultInstance());
 
-        scene.overlay.showText(40)
+        scene.overlay.showText(70)
                 .text("If you set the name tag as the print target, you can use the printer to name the item.")
                 .attachKeyFrame()
                 .placeNearTarget()
                 .pointAt(util.vector.centerOf(2, 3, 2));
-        scene.idle(40);
+        scene.idle(70);
     }
 
     public static void leak(SceneBuilder scene, SceneBuildingUtil util) {
@@ -633,14 +633,14 @@ public class EnchantmentScenes {
                 .pointAt(util.vector.topOf(3, 4, 0));
         scene.overlay.showOutline(PonderPalette.RED, new Object(), util.select.position(3, 4, 0), 40);
         scene.idle(50);
-        scene.overlay.showText(40)
+        scene.overlay.showText(60)
                 .text("Don't worry, the leaked liquid experience will turn into experience orbs. Players can also stand at the opening of the pipe to absorb experience.") // We do not use PonderLocalization. For registerText only
                 .colored(PonderPalette.GREEN)
                 .attachKeyFrame()
                 .placeNearTarget()
                 .pointAt(util.vector.topOf(3, 4, 0));
         scene.overlay.showOutline(PonderPalette.GREEN, new Object(), util.select.position(3, 4, 0), 40);
-        scene.idle(50);
+        scene.idle(70);
 
     }
 
