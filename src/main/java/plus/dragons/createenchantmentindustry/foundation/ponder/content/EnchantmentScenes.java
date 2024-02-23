@@ -492,12 +492,12 @@ public class EnchantmentScenes {
         scene.world.modifyBlockEntity(util.grid.at(2, 3, 2), PrinterBlockEntity.class, be ->
                 be.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY).ifPresent(tank ->
                         tank.fill(new FluidStack(CeiFluids.EXPERIENCE.get().getSource(), 3000), IFluidHandler.FluidAction.EXECUTE)));
-        scene.overlay.showText(40)
+        scene.overlay.showText(60)
                 .text("")
                 .attachKeyFrame()
                 .placeNearTarget()
                 .pointAt(util.vector.centerOf(2, 3, 2));
-        scene.idle(40);
+        scene.idle(60);
 
         scene.world.modifyBlockEntity(util.grid.at(2, 1, 5), CreativeFluidTankBlockEntity.class, be -> ((CreativeFluidTankBlockEntity.CreativeSmartFluidTank) be.getTankInventory())
                 .setContainedFluid(new FluidStack(CeiFluids.HYPER_EXPERIENCE.get().getSource(), 1000)));
@@ -506,12 +506,12 @@ public class EnchantmentScenes {
                         tank.drain(3000, IFluidHandler.FluidAction.EXECUTE);
                         tank.fill(new FluidStack(CeiFluids.HYPER_EXPERIENCE.get().getSource(), 3000), IFluidHandler.FluidAction.EXECUTE);
                 }));
-        scene.overlay.showText(40)
+        scene.overlay.showText(90)
                 .text("")
                 .attachKeyFrame()
                 .placeNearTarget()
                 .pointAt(util.vector.centerOf(2, 3, 2));
-        scene.idle(40);
+        scene.idle(90);
 
         var item = Items.BOOK.getDefaultInstance();
         BlockPos beltStart = util.grid.at(6, 1, 2);
@@ -536,12 +536,12 @@ public class EnchantmentScenes {
                     tank.drain(3000, IFluidHandler.FluidAction.EXECUTE);
                     tank.fill(new FluidStack(CeiFluids.INK.get().getSource(), 3000), IFluidHandler.FluidAction.EXECUTE);
                 }));
-        scene.overlay.showText(40)
+        scene.overlay.showText(60)
                 .text("")
                 .attachKeyFrame()
                 .placeNearTarget()
                 .pointAt(util.vector.centerOf(2, 3, 2));
-        scene.idle(40);
+        scene.idle(60);
 
         item = Items.BOOK.getDefaultInstance();
         beltStart = util.grid.at(6, 1, 2);
@@ -565,12 +565,12 @@ public class EnchantmentScenes {
                 }));
         scene.overlay.showControls(new InputWindowElement(util.vector.centerOf(2, 3, 2), Pointing.DOWN).rightClick()
                 .withItem(Items.NAME_TAG.getDefaultInstance()), 40);
-        scene.overlay.showText(40)
+        scene.overlay.showText(60)
                 .text("")
                 .attachKeyFrame()
                 .placeNearTarget()
                 .pointAt(util.vector.centerOf(2, 3, 2));
-        scene.idle(40);
+        scene.idle(60);
 
         item = Items.DIAMOND_SWORD.getDefaultInstance();
         beltStart = util.grid.at(6, 1, 2);
@@ -584,12 +584,12 @@ public class EnchantmentScenes {
         scene.world.removeItemsFromBelt(copierPos.below(2));
         scene.world.createItemOnBelt(copierPos.below(2), Direction.UP, Items.DIAMOND_SWORD.getDefaultInstance());
 
-        scene.overlay.showText(40)
+        scene.overlay.showText(70)
                 .text("")
                 .attachKeyFrame()
                 .placeNearTarget()
                 .pointAt(util.vector.centerOf(2, 3, 2));
-        scene.idle(40);
+        scene.idle(70);
     }
 
     public static void leak(SceneBuilder scene, SceneBuildingUtil util){
