@@ -33,7 +33,6 @@ public class DeployerFakePlayerMixin {
                 event.setDroppedExperience(xp);
         }
 
-
         int amount = xp / 3 + (player.getRandom().nextInt(3) < xp % 3 ? 1 : 0);
         if (amount <= 0) return;
         Item nugget = AllItems.EXP_NUGGET.get();
