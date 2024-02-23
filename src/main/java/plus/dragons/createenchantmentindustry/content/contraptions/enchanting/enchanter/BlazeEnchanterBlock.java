@@ -87,13 +87,16 @@ public class BlazeEnchanterBlock extends HorizontalDirectionalBlock implements I
     public InteractionResult use(BlockState state, Level worldIn, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hit) {
         ItemStack heldItem;
 
+        if(handIn==InteractionHand.OFF_HAND)
+            return InteractionResult.PASS;
+
         if (player.isCreative()) {
             heldItem = player.getItemInHand(handIn).copy();
         } else {
             heldItem = player.getItemInHand(handIn);
         }
 
-        if (player.isShiftKeyDown() && handIn == InteractionHand.MAIN_HAND && heldItem.isEmpty()){
+        if (player.isShiftKeyDown() && heldItem.isEmpty()){
             if(!player.level.isClientSide()){
                 if(player.level.getBlockEntity(pos) instanceof BlazeEnchanterBlockEntity blazeEnchanter){
                     withBlockEntityDo(player.level, pos,
