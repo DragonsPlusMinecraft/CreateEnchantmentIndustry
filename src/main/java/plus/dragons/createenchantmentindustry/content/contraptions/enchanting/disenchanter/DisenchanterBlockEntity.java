@@ -40,9 +40,9 @@ import plus.dragons.createdragonlib.mixin.AdvancementBehaviourAccessor;
 import plus.dragons.createenchantmentindustry.content.contraptions.enchanting.enchanter.Enchanting;
 import plus.dragons.createenchantmentindustry.content.contraptions.fluids.experience.ExperienceFluid;
 import plus.dragons.createenchantmentindustry.entry.CeiFluids;
+import plus.dragons.createenchantmentindustry.foundation.advancement.CeiAdvancements;
 import plus.dragons.createenchantmentindustry.foundation.advancement.CeiTriggers;
 import plus.dragons.createenchantmentindustry.foundation.config.CeiConfigs;
-import plus.dragons.createenchantmentindustry.foundation.advancement.CeiAdvancements;
 
 import java.util.IdentityHashMap;
 import java.util.List;

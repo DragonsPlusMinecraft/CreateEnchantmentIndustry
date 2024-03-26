@@ -6,7 +6,6 @@ import com.simibubi.create.Create;
 import net.minecraft.Util;
 import net.minecraft.advancements.FrameType;
 import net.minecraft.advancements.critereon.ContextAwarePredicate;
-import net.minecraft.advancements.critereon.EntityPredicate;
 import net.minecraft.advancements.critereon.InventoryChangeTrigger;
 import net.minecraft.advancements.critereon.MinMaxBounds;
 import net.minecraft.world.item.ItemStack;

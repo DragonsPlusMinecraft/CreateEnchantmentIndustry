@@ -1,16 +1,14 @@
 package plus.dragons.createenchantmentindustry.entry;
 
-import com.simibubi.create.AllCreativeModeTabs;
 import com.simibubi.create.content.processing.AssemblyOperatorBlockItem;
 import com.simibubi.create.foundation.data.AssetLookup;
 import com.simibubi.create.foundation.data.SharedProperties;
 import com.simibubi.create.foundation.data.TagGen;
 import com.tterrag.registrate.util.entry.BlockEntry;
-import net.minecraft.client.renderer.RenderType;
-import plus.dragons.createenchantmentindustry.content.contraptions.enchanting.enchanter.TargetEnchantmentDisplaySource;
-import plus.dragons.createenchantmentindustry.content.contraptions.enchanting.printer.PrinterBlock;
 import plus.dragons.createenchantmentindustry.content.contraptions.enchanting.disenchanter.DisenchanterBlock;
 import plus.dragons.createenchantmentindustry.content.contraptions.enchanting.enchanter.BlazeEnchanterBlock;
+import plus.dragons.createenchantmentindustry.content.contraptions.enchanting.enchanter.TargetEnchantmentDisplaySource;
+import plus.dragons.createenchantmentindustry.content.contraptions.enchanting.printer.PrinterBlock;
 import plus.dragons.createenchantmentindustry.content.contraptions.enchanting.printer.PrinterDisplaySource;
 
 import static com.simibubi.create.content.redstone.displayLink.AllDisplayBehaviours.assignDataBehaviour;

@@ -1,12 +1,12 @@
 package plus.dragons.createenchantmentindustry.entry;
 
 import com.tterrag.registrate.util.entry.BlockEntityEntry;
-import plus.dragons.createenchantmentindustry.content.contraptions.enchanting.printer.PrinterBlockEntity;
-import plus.dragons.createenchantmentindustry.content.contraptions.enchanting.printer.PrinterRenderer;
 import plus.dragons.createenchantmentindustry.content.contraptions.enchanting.disenchanter.DisenchanterBlockEntity;
 import plus.dragons.createenchantmentindustry.content.contraptions.enchanting.disenchanter.DisenchanterRenderer;
 import plus.dragons.createenchantmentindustry.content.contraptions.enchanting.enchanter.BlazeEnchanterBlockEntity;
 import plus.dragons.createenchantmentindustry.content.contraptions.enchanting.enchanter.BlazeEnchanterRenderer;
+import plus.dragons.createenchantmentindustry.content.contraptions.enchanting.printer.PrinterBlockEntity;
+import plus.dragons.createenchantmentindustry.content.contraptions.enchanting.printer.PrinterRenderer;
 
 import static plus.dragons.createenchantmentindustry.EnchantmentIndustry.REGISTRATE;
 

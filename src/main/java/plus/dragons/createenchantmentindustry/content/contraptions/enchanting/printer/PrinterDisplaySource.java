@@ -3,14 +3,8 @@ package plus.dragons.createenchantmentindustry.content.contraptions.enchanting.p
 import com.simibubi.create.content.redstone.displayLink.DisplayLinkContext;
 import com.simibubi.create.content.redstone.displayLink.source.SingleLineDisplaySource;
 import com.simibubi.create.content.redstone.displayLink.target.DisplayTargetStats;
-import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.world.item.Items;
-import net.minecraft.world.item.WrittenBookItem;
-import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import plus.dragons.createenchantmentindustry.EnchantmentIndustry;
-
-import static plus.dragons.createenchantmentindustry.EnchantmentIndustry.LANG;
 
 public class PrinterDisplaySource extends SingleLineDisplaySource {
     @Override

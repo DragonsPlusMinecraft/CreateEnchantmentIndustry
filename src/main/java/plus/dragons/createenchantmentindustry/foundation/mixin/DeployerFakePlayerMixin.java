@@ -9,9 +9,8 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import plus.dragons.createenchantmentindustry.foundation.config.CeiConfigs;
-import java.util.Arrays;
 import plus.dragons.createenchantmentindustry.content.contraptions.fluids.experience.MendingByDeployer;
+import plus.dragons.createenchantmentindustry.foundation.config.CeiConfigs;
 @Mixin(value = DeployerFakePlayer.class, remap = false)
 public class DeployerFakePlayerMixin {
 

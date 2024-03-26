@@ -1,11 +1,8 @@
 package plus.dragons.createenchantmentindustry.content.contraptions.enchanting.printer;
 
-import com.simibubi.create.AllItems;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraftforge.items.IItemHandler;
 import org.jetbrains.annotations.NotNull;
-import plus.dragons.createenchantmentindustry.foundation.config.CeiConfigs;
 
 public class PrinterTargetItemHandler implements IItemHandler {
     PrinterBlockEntity be;

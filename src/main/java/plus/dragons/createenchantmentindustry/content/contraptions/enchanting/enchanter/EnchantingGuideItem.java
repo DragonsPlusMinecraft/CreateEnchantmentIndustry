@@ -29,8 +29,6 @@ import plus.dragons.createenchantmentindustry.foundation.advancement.CeiAdvancem
 
 import java.util.List;
 
-import static plus.dragons.createenchantmentindustry.EnchantmentIndustry.LANG;
-
 public class EnchantingGuideItem extends Item implements MenuProvider {
     public EnchantingGuideItem(Properties pProperties) {
         super(pProperties);

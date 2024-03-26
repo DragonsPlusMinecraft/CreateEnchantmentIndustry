@@ -3,7 +3,6 @@ package plus.dragons.createenchantmentindustry.entry;
 import com.simibubi.create.Create;
 import com.simibubi.create.foundation.data.TagGen;
 import com.simibubi.create.foundation.utility.Lang;
-import com.tterrag.registrate.providers.RegistrateItemTagsProvider;
 import com.tterrag.registrate.providers.RegistrateTagsProvider;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
