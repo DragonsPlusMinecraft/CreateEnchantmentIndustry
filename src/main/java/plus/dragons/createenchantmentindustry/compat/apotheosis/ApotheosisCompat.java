@@ -11,10 +11,13 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.alchemy.Potion;
 import net.minecraft.world.item.alchemy.PotionBrewing;
 import net.minecraft.world.item.alchemy.Potions;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fml.ModList;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import plus.dragons.createenchantmentindustry.EnchantmentIndustry;
+import plus.dragons.createenchantmentindustry.content.contraptions.enchanting.enchanter.Enchanting;
 import plus.dragons.createenchantmentindustry.entry.CeiFluids;
 
 public class ApotheosisCompat {
@@ -47,6 +50,15 @@ public class ApotheosisCompat {
                     .build();
                 PotionMixingRecipes.ALL.add(recipe);
             });
+    }
+
+    public static void banTomeFromEnchanter(){
+        if(ModList.get().isLoaded("apotheosis")){
+            Enchanting.UNENCHANTABLE_CONDITIONS.add((itemStack)->{
+                var id = itemStack.getItem().toString();
+                return id.startsWith("apotheosis:") && id.contains("tome");
+            });
+        }
     }
     
 }

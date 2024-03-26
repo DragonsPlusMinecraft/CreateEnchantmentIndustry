@@ -22,7 +22,6 @@ public class EnchantmentEntry extends Pair<Enchantment, Integer> {
         TagKey.create(Registries.ENCHANTMENT, EnchantmentIndustry.genRL("hyper_enchantable"));
     public static final TagKey<Enchantment> HYPER_ENCHANTABLE_BLACKLIST =
             TagKey.create(Registries.ENCHANTMENT, EnchantmentIndustry.genRL("hyper_enchantable_blacklist"));
-
     
     protected EnchantmentEntry(Enchantment first, Integer second) {
         super(first, second);

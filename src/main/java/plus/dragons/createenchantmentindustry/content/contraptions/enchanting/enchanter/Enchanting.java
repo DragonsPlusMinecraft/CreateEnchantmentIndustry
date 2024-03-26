@@ -1,15 +1,26 @@
 package plus.dragons.createenchantmentindustry.content.contraptions.enchanting.enchanter;
 
 import com.simibubi.create.foundation.utility.Pair;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.tags.TagKey;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import org.jetbrains.annotations.Nullable;
+import plus.dragons.createenchantmentindustry.EnchantmentIndustry;
 import plus.dragons.createenchantmentindustry.entry.CeiItems;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
+import java.util.function.Predicate;
 
 public class Enchanting {
+
+    public static final TagKey<Item> UNENCHANTABLE =
+            TagKey.create(Registries.ITEM, EnchantmentIndustry.genRL("unenchantable"));
+    public static final List<Predicate<ItemStack>> UNENCHANTABLE_CONDITIONS = new ArrayList<>();
 
     @Nullable
     public static EnchantmentEntry getTargetEnchantment(ItemStack itemStack, boolean hyper) {
@@ -28,6 +39,14 @@ public class Enchanting {
     
     @Nullable
     public static EnchantmentEntry getValidEnchantment(ItemStack itemStack, ItemStack targetItem, boolean hyper) {
+
+        if(itemStack.is(UNENCHANTABLE)) return null;
+        if(!UNENCHANTABLE_CONDITIONS.isEmpty()){
+            if(UNENCHANTABLE_CONDITIONS.stream()
+                    .map(itemStackPredicate -> itemStackPredicate.test(itemStack))
+                    .reduce((b1,b2)->b1||b2).get()) return null;
+        }
+
         var entry = getTargetEnchantment(targetItem, hyper);
         if (entry == null || !entry.valid())
             return null;

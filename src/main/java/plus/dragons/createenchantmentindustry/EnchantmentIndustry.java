@@ -93,6 +93,7 @@ public class EnchantmentIndustry {
             CeiFluids.registerLavaReaction();
             OpenEndedPipeEffects.register();
             ApotheosisCompat.addPotionMixingRecipes();
+            ApotheosisCompat.banTomeFromEnchanter();
             QuarkCompat.registerPrintEntry();
         });
     }
