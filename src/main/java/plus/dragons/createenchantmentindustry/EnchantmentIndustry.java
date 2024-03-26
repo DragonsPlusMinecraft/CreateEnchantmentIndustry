@@ -72,11 +72,11 @@ public class EnchantmentIndustry {
         CeiItems.register();
         CeiRecipeTypes.register(modEventBus);
         CeiTags.register();
+        CeiCreativeModeTab.register(modEventBus);
         REGISTRATE.registerEventListeners(modEventBus);
     }
 
     private void registerForgeEvents(IEventBus forgeEventBus) {
-        forgeEventBus.addListener(CeiItems::fillCreateItemGroup);
         forgeEventBus.addListener(CeiFluids::handleInkEffect);
     }
     
