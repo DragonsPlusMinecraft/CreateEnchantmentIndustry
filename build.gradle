@@ -1,8 +1,17 @@
 plugins {
     id 'idea'
     id 'maven-publish'
-    id "net.neoforged.moddev.legacyforge" version "2.0.78"
+    id 'net.neoforged.gradle.userdev' version '7.0.145'
     id "me.modmuss50.mod-publish-plugin" version "0.8.4"
+}
+
+tasks.named('wrapper', Wrapper).configure {
+    // Define wrapper values here so as to not have to always do so when updating gradlew.properties.
+    // Switching this to Wrapper.DistributionType.ALL will download the full gradle sources that comes with
+    // documentation attached on cursor hover of gradle classes and methods. However, this comes with increased
+    // file size for Gradle. If you do switch this to ALL, run the Gradle wrapper task twice afterwards.
+    // (Verify by checking gradle/wrapper/gradle-wrapper.properties to see if distributionUrl now points to `-all`)
+    distributionType = Wrapper.DistributionType.BIN
 }
 
 base {
@@ -11,7 +20,7 @@ base {
     version = "${mod_version}-for-create-${create_version}"
 }
 
-java.toolchain.languageVersion = JavaLanguageVersion.of(17)
+java.toolchain.languageVersion = JavaLanguageVersion.of(21)
 
 println "Java: ${System.getProperty 'java.version'}, JVM: ${System.getProperty 'java.vm.version'} (${System.getProperty 'java.vendor'}), Arch: ${System.getProperty 'os.arch'}"
 
@@ -22,72 +31,50 @@ idea {
     }
 }
 
-legacyForge {
-    version = "$minecraft_version-$forge_version"
+minecraft.accessTransformers.file rootProject.file('src/main/resources/META-INF/accesstransformer.cfg')
 
-    // TODO - Try turning this on later  see Create
-    validateAccessTransformers = false
-    accessTransformers.from "src/main/resources/META-INF/accesstransformer.cfg"
+runs {
+    // applies to all the run configs below
+    configureEach {
+        systemProperty 'forge.logging.markers', ''
+        systemProperty 'forge.logging.console.level', 'info'
+        jvmArguments = ["-XX:+IgnoreUnrecognizedVMOptions", "-XX:+AllowEnhancedClassRedefinition"]
+        //jvmArgs("-XX:-OmitStackTraceInFastThrow") // uncomment when you get exceptions with null messages etc
+        //jvmArgs '-XX:+UnlockCommercialFeatures' // uncomment for profiling
 
-    parchment {
-        minecraftVersion = minecraft_version
-        mappingsVersion = parchment_version
+        systemProperty 'mixin.debug.export', 'true'
+        systemProperty 'mixin.debug.verbose', 'true'
+
+        modSource project.sourceSets.main
     }
 
-    mods {
-        create_enchantment_industry {
-            sourceSet sourceSets.main
-        }
+    client {
+        workingDirectory 'run'
     }
 
-    runs {
-        // applies to all the run configs below
-        configureEach {
-            systemProperty 'forge.logging.markers', ''
-            systemProperty 'forge.logging.console.level', 'info'
-            jvmArguments = ["-XX:+IgnoreUnrecognizedVMOptions", "-XX:+AllowEnhancedClassRedefinition"]
-            //jvmArgs("-XX:-OmitStackTraceInFastThrow") // uncomment when you get exceptions with null messages etc
-            //jvmArgs '-XX:+UnlockCommercialFeatures' // uncomment for profiling
+    server {
+        workingDirectory 'run/server'
+        programArgument '--nogui'
+    }
 
-            systemProperty 'mixin.debug.export', 'true'
-            systemProperty 'mixin.debug.verbose', 'true'
+    data {
+        workingDirectory 'run'
+        systemProperty 'forge.logging.markers', 'REGISTRIES,REGISTRYDUMP'
+        systemProperty 'forge.logging.console.level', 'debug'
+        programArguments.addAll("--mod", "create_enchantment_industry", "--all", "--output", file("src/generated/resources/").getAbsolutePath(), "--existing", file("src/main/resources").getAbsolutePath())
+    }
 
-            programArgument '-mixin.config=create_enchantment_industry.mixins.json'
-        }
-
-        client {
-            client()
-
-            gameDirectory = project.file('run')
-        }
-
-        server {
-            server()
-
-            gameDirectory = project.file('run/server')
-        }
-
-        data {
-            data()
-
-            gameDirectory = project.file('run')
-            systemProperty 'forge.logging.markers', 'REGISTRIES,REGISTRYDUMP'
-            systemProperty 'forge.logging.console.level', 'debug'
-            programArguments.addAll("--mod", "create_enchantment_industry", "--all", "--output", file("src/generated/resources/").getAbsolutePath(), "--existing", file("src/main/resources").getAbsolutePath())
-        }
-
-        gameTestServer {
-            type = "gameTestServer"
-
-            gameDirectory = project.file('run/gametest')
-            // setForceExit false <- FIXME 1.20  see Create
-        }
+    gameTestServer {
+        workingDirectory 'run/gametest'
+        // setForceExit false <- FIXME 1.20  see Create
     }
 }
 
 repositories {
     maven { url = "https://maven.createmod.net" } // Ponder, Flywheel
     maven { url = "https://maven.tterrag.com" } // Registrate
+    maven { url = "https://mvn.devos.one/snapshots" } // Registrate snapshots
+    maven { url = "https://raw.githubusercontent.com/Fuzss/modresources/main/maven/" } // ForgeConfigAPIPort
     maven { url = "https://maven.blamejared.com" } // JEI, Vazkii's Mods
     maven { url = "https://maven.theillusivec4.top/" } // Curios API
     maven { url = "https://www.cursemaven.com" }
@@ -99,6 +86,8 @@ repositories {
 }
 
 dependencies {
+    implementation "net.neoforged:neoforge:${neo_version}"
+
     /*jarJar("plus.dragons.createdragonlib:create_dragon_lib-${minecraft_version}") {
         version {
             strictly "${create_dragon_lib_version_range}"
@@ -106,23 +95,21 @@ dependencies {
         transitive = false
     }*/
 
-    modImplementation("com.simibubi.create:create-${minecraft_version}:${create_version}-${create_version_number}") { transitive = false }
-    modImplementation("net.createmod.ponder:Ponder-Forge-${minecraft_version}:${ponder_version}")
-    modCompileOnly("dev.engine-room.flywheel:flywheel-forge-api-${flywheel_minecraft_version}:${flywheel_version}")
-    modRuntimeOnly("dev.engine-room.flywheel:flywheel-forge-${flywheel_minecraft_version}:${flywheel_version}")
-    modImplementation("com.tterrag.registrate:Registrate:${registrate_version}")
-    compileOnly(annotationProcessor("io.github.llamalad7:mixinextras-common:0.4.1"))
+    implementation("com.simibubi.create:create-${minecraft_version}:${create_version}-${create_version_number}") { transitive = false }
+    implementation("net.createmod.ponder:Ponder-NeoForge-${minecraft_version}:${ponder_version}")
+    compileOnly("dev.engine-room.flywheel:flywheel-neoforge-api-${flywheel_minecraft_version}:${flywheel_version}")
+    runtimeOnly("dev.engine-room.flywheel:flywheel-neoforge-${flywheel_minecraft_version}:${flywheel_version}")
+    implementation("com.tterrag.registrate:Registrate:${registrate_version}")
+    compileOnly(annotationProcessor("io.github.llamalad7:mixinextras-common:${mixinextras_version}"))
 
     // modImplementation("plus.dragons.createdragonlib:create_dragon_lib-${minecraft_version}:${create_dragon_lib_version}")
 
-    modCompileOnly("mezz.jei:jei-${jei_minecraft_version}-common-api:${jei_version}")
-    modCompileOnly("mezz.jei:jei-${jei_minecraft_version}-forge-api:${jei_version}")
-    modImplementation("mezz.jei:jei-${jei_minecraft_version}-forge:${jei_version}")
+    compileOnly("mezz.jei:jei-${jei_minecraft_version}-common-api:${jei_version}")
+    compileOnly("mezz.jei:jei-${jei_minecraft_version}-neoforge-api:${jei_version}")
+    implementation("mezz.jei:jei-${jei_minecraft_version}-neoforge:${jei_version}")
 
-    modCompileOnly("top.theillusivec4.curios:curios-forge:${curios_version}+${curios_minecraft_version}:api")
-    modRuntimeOnly("top.theillusivec4.curios:curios-forge:${curios_version}+${curios_minecraft_version}")
-
-    annotationProcessor "org.spongepowered:mixin:${mixin_version}:processor"
+    compileOnly("top.theillusivec4.curios:curios-neoforge:${curios_version}+${curios_minecraft_version}:api")
+    runtimeOnly("top.theillusivec4.curios:curios-neoforge:${curios_version}+${curios_minecraft_version}")
 }
 
 sourceSets.main.resources {
@@ -130,11 +117,6 @@ sourceSets.main.resources {
     exclude ".cache"
     exclude "assets/create_enchantment_industry/lang-gen"
     exclude "assets/create_enchantment_industry/lang/default"
-}
-
-mixin {
-    add sourceSets.main, 'create_enchantment_industry.refmap.json'
-    config 'create_enchantment_industry.mixins.json'
 }
 
 
@@ -156,6 +138,7 @@ jar {
     }
 }
 
+/* TODO
 publishMods {
     file = reobfJar.archiveFile
     changelog = new File("changelog/${mod_version}.md").text
@@ -185,6 +168,7 @@ publishMods {
         }
     }
 }
+*/
 
 
 publishing {

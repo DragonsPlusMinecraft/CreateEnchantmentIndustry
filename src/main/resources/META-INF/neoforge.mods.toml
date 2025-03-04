@@ -1,0 +1,39 @@
+modLoader="javafml"
+loaderVersion="[1,)"
+license="MIT"
+issueTrackerURL="${issues_url}"
+logoFile="pack.png"
+logoBlur=false
+
+[[mods]]
+modId="create_enchantment_industry"
+version="${file.jarVersion}"
+displayName="Create Enchantment Industry"
+authors="MarbleGateKeeper & LimonBlaze" #optional
+description='''
+Automatic Enchanting, with Create.
+'''
+
+[[mixins]]
+config = "create_enchantment_industry.mixins.json"
+
+[[dependencies.create_enchantment_industry]]
+modId="neoforge"
+type="required"
+versionRange="[21.1.60,)"
+ordering="NONE"
+side="BOTH"
+
+[[dependencies.create_enchantment_industry]]
+modId="minecraft"
+type="required"
+versionRange="[1.21, 1.22)"
+ordering="NONE"
+side="BOTH"
+
+[[dependencies.create_enchantment_industry]]
+modId="create"
+mandatory=true
+versionRange="[6.0.0,)"
+ordering="NONE"
+side="BOTH"
