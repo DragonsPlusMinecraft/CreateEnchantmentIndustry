@@ -1,6 +1,5 @@
 package plus.dragons.createenchantmentindustry.entry;
 
-import com.simibubi.create.AllPackets;
 import com.simibubi.create.Create;
 import net.createmod.catnip.net.base.BasePacketPayload;
 import net.createmod.catnip.net.base.CatnipPacketRegistry;
