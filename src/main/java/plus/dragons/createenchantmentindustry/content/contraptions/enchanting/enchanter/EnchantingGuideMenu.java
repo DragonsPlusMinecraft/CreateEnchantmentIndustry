@@ -92,7 +92,7 @@ public class EnchantingGuideMenu extends GhostItemMenu<ItemStack> {
 
     @Override
     protected ItemStack createOnClient(RegistryFriendlyByteBuf extraData) {
-        return ItemStack.STREAM_CODEC.decode(extraData);
+        return ItemStack.OPTIONAL_STREAM_CODEC.decode(extraData);
     }
 
     @Override

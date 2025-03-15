@@ -18,7 +18,7 @@ public class EnchantingGuideEditPacket implements ServerboundPacketPayload {
 
     public static final StreamCodec<RegistryFriendlyByteBuf, EnchantingGuideEditPacket> STREAM_CODEC = StreamCodec.composite(
             ByteBufCodecs.INT, packet -> packet.index,
-            ItemStack.STREAM_CODEC, packet -> packet.itemStack,
+            ItemStack.OPTIONAL_STREAM_CODEC, packet -> packet.itemStack,
             EnchantingGuideEditPacket::new
     );
 
@@ -33,7 +33,7 @@ public class EnchantingGuideEditPacket implements ServerboundPacketPayload {
             return;
 
         mainHandItem.set(CeiComponents.ENCHANTING_INDEX, index);
-        mainHandItem.set(CeiComponents.ENCHANTING_TARGET, (CompoundTag) itemStack.save(sender.level().registryAccess()));
+        mainHandItem.set(CeiComponents.ENCHANTING_TARGET, (CompoundTag) itemStack.saveOptional(sender.level().registryAccess()));
 
         sender.getCooldowns()
                 .addCooldown(mainHandItem.getItem(), 5);

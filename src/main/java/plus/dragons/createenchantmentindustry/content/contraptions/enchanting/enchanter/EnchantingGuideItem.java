@@ -80,7 +80,7 @@ public class EnchantingGuideItem extends Item implements MenuProvider {
         if (!player.isShiftKeyDown() && hand == InteractionHand.MAIN_HAND) {
             if (!world.isClientSide && player instanceof ServerPlayer sp)
                 sp.openMenu(this, buf -> {
-                    ItemStack.STREAM_CODEC.encode(buf, heldItem);
+                    ItemStack.OPTIONAL_STREAM_CODEC.encode(buf, heldItem);
                     buf.writeBoolean(true);
                 });
             return InteractionResultHolder.success(heldItem);
