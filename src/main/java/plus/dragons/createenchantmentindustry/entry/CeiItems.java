@@ -2,7 +2,6 @@ package plus.dragons.createenchantmentindustry.entry;
 
 import com.tterrag.registrate.util.entry.ItemEntry;
 import net.minecraft.world.item.Rarity;
-import plus.dragons.createenchantmentindustry.EnchantmentIndustry;
 import plus.dragons.createenchantmentindustry.content.contraptions.enchanting.enchanter.EnchantingGuideItem;
 import plus.dragons.createenchantmentindustry.content.contraptions.fluids.experience.ExperienceRotorItem;
 import plus.dragons.createenchantmentindustry.content.contraptions.fluids.experience.HyperExperienceBottleItem;
@@ -10,10 +9,6 @@ import plus.dragons.createenchantmentindustry.content.contraptions.fluids.experi
 import static plus.dragons.createenchantmentindustry.EnchantmentIndustry.REGISTRATE;
 
 public class CeiItems {
-
-    static {
-        EnchantmentIndustry.REGISTRATE.setCreativeTab(CeiCreativeModeTab.CREATIVE_TAB);
-    }
 
     public static final ItemEntry<EnchantingGuideItem> ENCHANTING_GUIDE = REGISTRATE.item("enchanting_guide", EnchantingGuideItem::new)
             .properties(prop -> prop.stacksTo(1))

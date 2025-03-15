@@ -6,7 +6,6 @@ import com.simibubi.create.foundation.data.AssetLookup;
 import com.simibubi.create.foundation.data.SharedProperties;
 import com.simibubi.create.foundation.data.TagGen;
 import com.tterrag.registrate.util.entry.BlockEntry;
-import plus.dragons.createenchantmentindustry.EnchantmentIndustry;
 import plus.dragons.createenchantmentindustry.content.contraptions.enchanting.disenchanter.DisenchanterBlock;
 import plus.dragons.createenchantmentindustry.content.contraptions.enchanting.enchanter.BlazeEnchanterBlock;
 import plus.dragons.createenchantmentindustry.content.contraptions.enchanting.printer.PrinterBlock;
@@ -14,10 +13,6 @@ import plus.dragons.createenchantmentindustry.content.contraptions.enchanting.pr
 import static plus.dragons.createenchantmentindustry.EnchantmentIndustry.REGISTRATE;
 
 public class CeiBlocks {
-
-    static {
-        EnchantmentIndustry.REGISTRATE.setCreativeTab(CeiCreativeModeTab.CREATIVE_TAB);
-    }
 
     public static final BlockEntry<DisenchanterBlock> DISENCHANTER = REGISTRATE
             .block("disenchanter", DisenchanterBlock::new)

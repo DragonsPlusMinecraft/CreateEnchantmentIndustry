@@ -1,11 +1,12 @@
 package plus.dragons.createenchantmentindustry;
 
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.CreativeModeTab;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModContainer;
-import net.neoforged.fml.ModLoadingContext;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.neoforge.common.NeoForge;
@@ -26,7 +27,8 @@ public class EnchantmentIndustry {
     public static final Logger LOGGER = LogManager.getLogger();
     public static final String NAME = "Create: Enchantment Industry";
     public static final String ID = "create_enchantment_industry";
-    public static final SafeRegistrate REGISTRATE = new SafeRegistrate(ID);
+    public static final SafeRegistrate REGISTRATE = new SafeRegistrate(ID)
+            .defaultCreativeTab((ResourceKey<CreativeModeTab>) null);
     public static final Lang LANG = new Lang(ID);
     public static final AdvancementFactory ADVANCEMENT_FACTORY = AdvancementFactory.create(NAME, ID,
         CeiAdvancements::register);
@@ -44,6 +46,7 @@ public class EnchantmentIndustry {
 
     private void registerEntries(IEventBus modEventBus) {
         CeiCreativeModeTab.register(modEventBus);
+        REGISTRATE.setCreativeTab(CeiCreativeModeTab.CREATIVE_TAB);
         CeiBlocks.register();
         CeiBlockEntities.register();
         modEventBus.addListener(CeiBlockEntities::registerCapabilities);

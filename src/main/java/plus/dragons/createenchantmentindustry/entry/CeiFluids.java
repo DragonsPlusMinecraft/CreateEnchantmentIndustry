@@ -19,10 +19,6 @@ import static plus.dragons.createenchantmentindustry.EnchantmentIndustry.REGISTR
 
 public class CeiFluids {
 
-    static {
-        EnchantmentIndustry.REGISTRATE.setCreativeTab(CeiCreativeModeTab.CREATIVE_TAB);
-    }
-
     public static final ResourceLocation EXPERIENCE_STILL_RL = EnchantmentIndustry.genRL("fluid/experience_still");
     public static final ResourceLocation EXPERIENCE_FLOW_RL = EnchantmentIndustry.genRL("fluid/experience_flow");
 

@@ -8,9 +8,11 @@ import com.tterrag.registrate.util.nullness.NonNullSupplier;
 import net.createmod.catnip.lang.Lang;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
+import net.minecraft.world.item.CreativeModeTab;
 import net.neoforged.bus.api.IEventBus;
 
 public class SafeRegistrate extends CreateRegistrate {
@@ -18,7 +20,12 @@ public class SafeRegistrate extends CreateRegistrate {
     public SafeRegistrate(String modid) {
         super(modid);
     }
-    
+
+    public SafeRegistrate defaultCreativeTab(ResourceKey<CreativeModeTab> creativeModeTab) {
+        super.defaultCreativeTab(creativeModeTab);
+        return this;
+    }
+
     @Override
     public SafeRegistrate registerEventListeners(IEventBus bus) {
         super.registerEventListeners(bus);
