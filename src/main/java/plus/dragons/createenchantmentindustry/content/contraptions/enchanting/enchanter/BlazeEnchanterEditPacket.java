@@ -1,57 +1,66 @@
 package plus.dragons.createenchantmentindustry.content.contraptions.enchanting.enchanter;
 
-import com.simibubi.create.foundation.networking.SimplePacketBase;
+import io.netty.buffer.ByteBuf;
+import net.createmod.catnip.net.base.ServerboundPacketPayload;
+import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.network.NetworkEvent.Context;
+import plus.dragons.createenchantmentindustry.entry.CeiComponents;
+import plus.dragons.createenchantmentindustry.entry.CeiPackets;
 
-public class BlazeEnchanterEditPacket extends SimplePacketBase {
+public class BlazeEnchanterEditPacket implements ServerboundPacketPayload {
 
     private final int index;
     private final ItemStack itemStack;
     private final BlockPos blockPos;
 
+    public static final StreamCodec<RegistryFriendlyByteBuf, BlazeEnchanterEditPacket> STREAM_CODEC = StreamCodec.composite(
+            ByteBufCodecs.INT, packet -> packet.index,
+            ItemStack.STREAM_CODEC, packet -> packet.itemStack,
+            BlockPos.STREAM_CODEC, packet -> packet.blockPos,
+            BlazeEnchanterEditPacket::new
+    );
 
     public BlazeEnchanterEditPacket(int index, ItemStack enchantedBook, BlockPos blockPos) {
         this.index = index;
-        itemStack = enchantedBook;
+        this.itemStack = enchantedBook;
         this.blockPos = blockPos;
     }
 
-    public BlazeEnchanterEditPacket(FriendlyByteBuf buffer) {
-        index = buffer.readInt();
-        itemStack = buffer.readItem();
-        blockPos = buffer.readBlockPos();
+    public void handle(ServerPlayer sender) {
+        if(!(sender.level().getBlockEntity(blockPos) instanceof BlazeEnchanterBlockEntity blazeEnchanter))
+            return;
+
+        ItemStack target = blazeEnchanter.targetItem;
+        target.set(CeiComponents.ENCHANTING_INDEX, index);
+        target.set(CeiComponents.ENCHANTING_TARGET, (CompoundTag) itemStack.save(sender.level().registryAccess()));
+        //target.remove(); //TODO; blockpos
+
+        System.out.println("item components: ");
+        target.getComponents().forEach(component -> {
+            System.out.println("item component: " + component.toString());
+        });
+        System.out.println();
+
+//          original code
+//        CompoundTag tag = blazeEnchanter.targetItem.getOrCreateTag();
+//        tag.putInt("index", index);
+//        tag.put("target", itemStack.serializeNBT());
+//        tag.remove("blockPos");
+
+        if(blazeEnchanter.processingTicks > 5){
+            blazeEnchanter.processingTicks = BlazeEnchanterBlockEntity.ENCHANTING_TIME;
+        }
+
+        blazeEnchanter.notifyUpdate();
     }
 
-    @Override
-    public void write(FriendlyByteBuf buffer) {
-        buffer.writeInt(index);
-        buffer.writeItem(itemStack);
-        buffer.writeBlockPos(blockPos);
-    }
-
-    @Override
-    public boolean handle(Context context) {
-        context.enqueueWork(() -> {
-                    ServerPlayer sender = context.getSender();
-                    if(!(sender.level().getBlockEntity(blockPos) instanceof BlazeEnchanterBlockEntity blazeEnchanter))
-                        return;
-
-                    CompoundTag tag = blazeEnchanter.targetItem.getOrCreateTag();
-                    tag.putInt("index", index);
-                    tag.put("target", itemStack.serializeNBT());
-                    tag.remove("blockPos");
-
-                    if(blazeEnchanter.processingTicks>5){
-                        blazeEnchanter.processingTicks = BlazeEnchanterBlockEntity.ENCHANTING_TIME;
-                    }
-
-                    blazeEnchanter.notifyUpdate();
-                });
-        return true;
+    public PacketTypeProvider getTypeProvider() {
+        return CeiPackets.CONFIGURE_BLAZE_ENCHANTER;
     }
 }

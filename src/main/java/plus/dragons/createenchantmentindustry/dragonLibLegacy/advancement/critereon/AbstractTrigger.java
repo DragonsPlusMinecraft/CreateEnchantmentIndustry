@@ -2,8 +2,7 @@ package plus.dragons.createenchantmentindustry.dragonLibLegacy.advancement.crite
 
 import com.google.common.collect.Maps;
 import net.minecraft.advancements.CriterionTrigger;
-import net.minecraft.advancements.critereon.AbstractCriterionTriggerInstance;
-import net.minecraft.advancements.critereon.ContextAwarePredicate;
+import net.minecraft.advancements.critereon.SimpleCriterionTrigger;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.PlayerAdvancements;
 import net.minecraft.server.level.ServerPlayer;
@@ -44,7 +43,6 @@ public abstract class AbstractTrigger<T extends AbstractTrigger.Instance> implem
         this.listeners.remove(playerAdvancementsIn);
     }
 
-    @Override
     public ResourceLocation getId() {
         return id;
     }
@@ -56,8 +54,7 @@ public abstract class AbstractTrigger<T extends AbstractTrigger.Instance> implem
             List<Listener<T>> list = new LinkedList<>();
 
             for (Listener<T> listener : playerListeners) {
-                if (listener.getTriggerInstance()
-                        .test(suppliers)) {
+                if (listener.trigger().test(suppliers)) {
                     list.add(listener);
                 }
             }
@@ -65,14 +62,10 @@ public abstract class AbstractTrigger<T extends AbstractTrigger.Instance> implem
         }
     }
 
-    public abstract static class Instance extends AbstractCriterionTriggerInstance {
-
-        public Instance(ResourceLocation idIn, ContextAwarePredicate player) {
-            super(idIn, player);
-        }
+    public abstract static class Instance implements SimpleCriterionTrigger.SimpleInstance {
 
         protected abstract boolean test(@Nullable List<Supplier<Object>> suppliers);
-        
+
     }
 
 }

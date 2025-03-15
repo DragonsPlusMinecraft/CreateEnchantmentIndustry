@@ -1,5 +1,6 @@
 package plus.dragons.createenchantmentindustry.content.contraptions.enchanting.enchanter;
 
+import com.mojang.serialization.MapCodec;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.AllItems;
 import com.simibubi.create.AllShapes;
@@ -9,13 +10,16 @@ import com.simibubi.create.content.processing.burner.BlazeBurnerBlock;
 import com.simibubi.create.foundation.advancement.AdvancementBehaviour;
 import com.simibubi.create.foundation.block.IBE;
 import com.simibubi.create.foundation.blockEntity.ComparatorUtil;
+import net.createmod.catnip.gui.ScreenOpener;
 import net.createmod.catnip.lang.Lang;
+import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -23,6 +27,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -32,9 +37,11 @@ import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraftforge.network.NetworkHooks;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 import plus.dragons.createenchantmentindustry.entry.CeiBlockEntities;
 import plus.dragons.createenchantmentindustry.entry.CeiItems;
 
@@ -45,9 +52,15 @@ import java.util.List;
 public class BlazeEnchanterBlock extends HorizontalDirectionalBlock implements IWrenchable, IBE<BlazeEnchanterBlockEntity> {
 
     public static final EnumProperty<HeatLevel> HEAT_LEVEL = EnumProperty.create("blaze", HeatLevel.class);
+    public static final MapCodec<BlazeEnchanterBlock> CODEC = simpleCodec(BlazeEnchanterBlock::new);
+
     public BlazeEnchanterBlock(Properties pProperties) {
         super(pProperties);
         registerDefaultState(defaultBlockState().setValue(HEAT_LEVEL, HeatLevel.SMOULDERING));
+    }
+
+    protected MapCodec<? extends HorizontalDirectionalBlock> codec() {
+        return CODEC;
     }
 
     @Override
@@ -82,11 +95,11 @@ public class BlazeEnchanterBlock extends HorizontalDirectionalBlock implements I
     }
 
     @Override
-    public InteractionResult use(BlockState state, Level worldIn, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hit) {
+    public ItemInteractionResult useItemOn(ItemStack pStack, BlockState state, Level worldIn, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hit) {
         ItemStack heldItem;
 
         if(handIn==InteractionHand.OFF_HAND)
-            return InteractionResult.PASS;
+            return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
 
         if (player.isCreative()) {
             heldItem = player.getItemInHand(handIn).copy();
@@ -98,18 +111,21 @@ public class BlazeEnchanterBlock extends HorizontalDirectionalBlock implements I
             if(!player.level().isClientSide()){
                 if(player.level().getBlockEntity(pos) instanceof BlazeEnchanterBlockEntity blazeEnchanter){
                     withBlockEntityDo(player.level(), pos,
-                            toolbox -> NetworkHooks.openScreen((ServerPlayer) player,
-                                    blazeEnchanter, buf -> {
-                                        buf.writeItem(blazeEnchanter.targetItem);
+                            toolbox -> {
+                                if (player instanceof ServerPlayer serverPlayer) {
+                                    serverPlayer.openMenu(blazeEnchanter, buf -> {
+                                        ItemStack.STREAM_CODEC.encode(buf, blazeEnchanter.targetItem);
                                         buf.writeBoolean(false);
                                         buf.writeBlockPos(pos);
-                                    }));
+                                    });
+                                }
+                            });
                 }
             }
-            return InteractionResult.SUCCESS;
+            return ItemInteractionResult.SUCCESS;
         }
         if (!heldItem.isEmpty()){
-            return onBlockEntityUse(worldIn, pos, te -> {
+            return onBlockEntityUseItemOn(worldIn, pos, te -> {
                 if(heldItem.is(CeiItems.ENCHANTING_GUIDE.get())){
                     if (!worldIn.isClientSide) {
                         var target = te.targetItem.copy();
@@ -118,7 +134,7 @@ public class BlazeEnchanterBlock extends HorizontalDirectionalBlock implements I
                             player.setItemInHand(handIn, target);
                         te.notifyUpdate();
                     }
-                    return InteractionResult.SUCCESS;
+                    return ItemInteractionResult.SUCCESS;
                 } else if(Enchanting.getValidEnchantment(heldItem, te.targetItem, te.hyper()) != null) {
                     ItemStack heldItemStack = te.getHeldItemStack();
                     if (heldItemStack.isEmpty()) {
@@ -128,20 +144,20 @@ public class BlazeEnchanterBlock extends HorizontalDirectionalBlock implements I
                                 player.setItemInHand(handIn, ItemStack.EMPTY);
                             te.notifyUpdate();
                         }
-                        return InteractionResult.SUCCESS;
+                        return ItemInteractionResult.SUCCESS;
                     }
-                    return InteractionResult.FAIL;
+                    return ItemInteractionResult.FAIL;
                 } else if (AllItems.GOGGLES.isIn(heldItem)) {
                     if (te.goggles)
-                        return InteractionResult.PASS;
+                        return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
                     te.goggles = true;
                     te.notifyUpdate();
-                    return InteractionResult.SUCCESS;
+                    return ItemInteractionResult.SUCCESS;
                 }
-                else return InteractionResult.PASS;
+                else return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
             });
         } else {
-            return onBlockEntityUse(worldIn, pos, te -> {
+            return onBlockEntityUseItemOn(worldIn, pos, te -> {
                 ItemStack heldItemStack = te.getHeldItemStack();
                 if (!heldItemStack.isEmpty()) {
                     if (!worldIn.isClientSide) {
@@ -149,12 +165,12 @@ public class BlazeEnchanterBlock extends HorizontalDirectionalBlock implements I
                         player.setItemInHand(handIn, heldItemStack);
                         te.notifyUpdate();
                     }
-                    return InteractionResult.SUCCESS;
+                    return ItemInteractionResult.SUCCESS;
                 } if (!te.goggles)
-                    return InteractionResult.PASS;
+                    return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
                 te.goggles = false;
                 te.notifyUpdate();
-                return InteractionResult.SUCCESS;
+                return ItemInteractionResult.SUCCESS;
             });
         }
     }
@@ -181,7 +197,7 @@ public class BlazeEnchanterBlock extends HorizontalDirectionalBlock implements I
     }
 
     @Override
-    public ItemStack getCloneItemStack(BlockGetter pLevel, BlockPos pPos, BlockState pState) {
+    public ItemStack getCloneItemStack(BlockState state, HitResult target, LevelReader level, BlockPos pos, Player player) {
         return new ItemStack(AllBlocks.BLAZE_BURNER.get());
     }
 
@@ -204,7 +220,7 @@ public class BlazeEnchanterBlock extends HorizontalDirectionalBlock implements I
     }
 
     @Override
-    public boolean isPathfindable(BlockState state, BlockGetter reader, BlockPos pos, PathComputationType type) {
+    public boolean isPathfindable(BlockState pState, PathComputationType pPathComputationType) {
         return false;
     }
 

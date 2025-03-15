@@ -22,19 +22,20 @@ import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.resources.model.Material;
 import net.minecraft.core.Direction;
+import net.minecraft.util.FastColor;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.client.ForgeHooksClient;
-import net.minecraftforge.common.util.TransformationHelper;
+import net.neoforged.neoforge.client.ClientHooks;
+import net.neoforged.neoforge.common.util.TransformationHelper;
 import plus.dragons.createenchantmentindustry.EnchantmentIndustry;
 import plus.dragons.createenchantmentindustry.content.contraptions.enchanting.enchanter.BlazeEnchanterBlock.HeatLevel;
 
 import static plus.dragons.createenchantmentindustry.content.contraptions.enchanting.enchanter.BlazeEnchanterBlockEntity.ENCHANTING_TIME;
 
 public class BlazeEnchanterRenderer extends SmartBlockEntityRenderer<BlazeEnchanterBlockEntity> {
-    public static final Material BOOK_MATERIAL = ForgeHooksClient.getBlockMaterial(EnchantmentIndustry.genRL("block/blaze_enchanter_book"));
+    public static final Material BOOK_MATERIAL = ClientHooks.getBlockMaterial(EnchantmentIndustry.genRL("block/blaze_enchanter_book"));
     private static final float PI = 3.14159265358979323846f;
     private final BookModel bookModel;
 
@@ -181,7 +182,7 @@ public class BlazeEnchanterRenderer extends SmartBlockEntityRenderer<BlazeEnchan
         float page1 = Mth.frac(flip + 0.75f) * 1.6f - 0.3f;
         this.bookModel.setupAnim(time, Mth.clamp(page0, 0.0f, 1.0f), Mth.clamp(page1, 0.0f, 1.0f), 1);
         VertexConsumer vertexconsumer = BOOK_MATERIAL.buffer(buffer, RenderType::entitySolid);
-        this.bookModel.render(ps, vertexconsumer, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, 1.0f, 1.0f, 1.0f, 1.0f);
+        this.bookModel.render(ps, vertexconsumer, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, FastColor.ARGB32.colorFromFloat(1.0f, 1.0f, 1.0f, 1.0f));
 
         ps.popPose();
     }

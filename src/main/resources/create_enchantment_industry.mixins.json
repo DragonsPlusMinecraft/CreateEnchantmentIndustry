@@ -5,7 +5,6 @@
   "compatibilityLevel": "JAVA_21",
   "refmap": "create_enchantment_industry.refmap.json",
   "mixins": [
-    "AbstractFurnaceBlockEntityMixin",
     "BasinBlockEntityMixin",
     "CrushingWheelControllerBlockEntityMixin",
     "DeployerFakePlayerMixin",

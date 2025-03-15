@@ -1,6 +1,6 @@
 package plus.dragons.createenchantmentindustry.api;
 
-import net.minecraftforge.eventbus.api.Event;
+import net.neoforged.bus.api.Event;
 import org.antlr.v4.runtime.misc.NotNull;
 import plus.dragons.createenchantmentindustry.content.contraptions.enchanting.printer.PrintEntries;
 import plus.dragons.createenchantmentindustry.content.contraptions.enchanting.printer.PrintEntry;

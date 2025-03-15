@@ -6,28 +6,27 @@ import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.AbstractCookingRecipe;
 import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.level.block.entity.AbstractFurnaceBlockEntity;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.neoforged.neoforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import org.antlr.v4.runtime.misc.NotNull;
 import plus.dragons.createenchantmentindustry.entry.CeiFluids;
 
 import java.util.ArrayList;
 
-public class FurnaceExpExtractor implements IFluidHandler{
-    final Object2IntOpenHashMap<ResourceLocation> recipesUsed;
+public class FurnaceExpExtractor implements IFluidHandler {
     final AbstractFurnaceBlockEntity BE;
 
     public FurnaceExpExtractor(Object2IntOpenHashMap<ResourceLocation> recipesUsed, AbstractFurnaceBlockEntity BE) {
-        this.recipesUsed = recipesUsed;
         this.BE = BE;
     }
 
     int getTotalExp() {
         AtomicDouble result = new AtomicDouble(0);
-        for (Object2IntMap.Entry<ResourceLocation> entry : recipesUsed.object2IntEntrySet()) {
+        for (Object2IntMap.Entry<ResourceLocation> entry : BE.recipesUsed.object2IntEntrySet()) {
             BE.getLevel().getRecipeManager().byKey(entry.getKey()).ifPresent(recipe ->
-                    result.addAndGet(((AbstractCookingRecipe) recipe).getExperience() * entry.getIntValue())
+                    result.addAndGet(((AbstractCookingRecipe) recipe.value()).getExperience() * entry.getIntValue())
             );
         }
         return (int) Math.floor(result.floatValue());
@@ -77,11 +76,11 @@ public class FurnaceExpExtractor implements IFluidHandler{
         if (total == 0) {
             return FluidStack.EMPTY;
         } else if (maxDrain <= total) {
-            if (action.execute()) recipesUsed.clear();
+            if (action.execute()) BE.recipesUsed.clear();
             return new FluidStack(CeiFluids.EXPERIENCE.get(), total);
         }
-        ArrayList<Recipe<?>> allRecipes = new ArrayList<>();
-        for (Object2IntMap.Entry<ResourceLocation> entry : recipesUsed.object2IntEntrySet()) {
+        ArrayList<RecipeHolder<?>> allRecipes = new ArrayList<>();
+        for (Object2IntMap.Entry<ResourceLocation> entry : BE.recipesUsed.object2IntEntrySet()) {
             BE.getLevel().getRecipeManager().byKey(entry.getKey()).ifPresent(recipe -> {
                 for(int i=0;i<entry.getIntValue();i++){
                     allRecipes.add(recipe);
@@ -96,13 +95,13 @@ public class FurnaceExpExtractor implements IFluidHandler{
                     BE.setRecipeUsed(recipe);
                 }
             } else {
-                var exp = ((AbstractCookingRecipe) recipe).getExperience();
+                var exp = ((AbstractCookingRecipe) recipe.value()).getExperience();
                 if (exp <= maxDrain - result) {
                     result+=exp;
                 } else {
                     done = true;
                     if (action.execute()) {
-                        recipesUsed.clear();
+                        BE.recipesUsed.clear();
                     }
                 }
             }

@@ -4,6 +4,7 @@ import com.simibubi.create.content.processing.burner.BlazeBurnerBlock;
 import com.simibubi.create.content.processing.burner.BlazeBurnerBlockEntity;
 import com.simibubi.create.foundation.advancement.AdvancementBehaviour;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtOps;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
@@ -18,9 +19,9 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.UseOnContext;
+import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.network.NetworkHooks;
 import plus.dragons.createenchantmentindustry.entry.CeiBlocks;
 import plus.dragons.createenchantmentindustry.entry.CeiContainerTypes;
 import plus.dragons.createenchantmentindustry.entry.CeiItems;
@@ -77,9 +78,9 @@ public class EnchantingGuideItem extends Item implements MenuProvider {
     public InteractionResultHolder<ItemStack> use(Level world, Player player, InteractionHand hand) {
         ItemStack heldItem = player.getItemInHand(hand);
         if (!player.isShiftKeyDown() && hand == InteractionHand.MAIN_HAND) {
-            if (!world.isClientSide && player instanceof ServerPlayer)
-                NetworkHooks.openScreen((ServerPlayer) player, this, buf -> {
-                    buf.writeItem(heldItem);
+            if (!world.isClientSide && player instanceof ServerPlayer sp)
+                sp.openMenu(this, buf -> {
+                    ItemStack.STREAM_CODEC.encode(buf, heldItem);
                     buf.writeBoolean(true);
                 });
             return InteractionResultHolder.success(heldItem);
@@ -88,14 +89,14 @@ public class EnchantingGuideItem extends Item implements MenuProvider {
     }
 
     @Override
-    public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> pTooltipComponents, TooltipFlag pIsAdvanced) {
-        super.appendHoverText(pStack, pLevel, pTooltipComponents, pIsAdvanced);
+    public void appendHoverText(ItemStack pStack, TooltipContext pContext, List<Component> pTooltipComponents, TooltipFlag pIsAdvanced) {
+        super.appendHoverText(pStack, pContext, pTooltipComponents, pIsAdvanced);
         pTooltipComponents.add(Component.translatable("item.create_enchantment_industry.enchanting_guide.tooltip.current_enchantment"));
         EnchantmentEntry enchantment = getEnchantment(pStack);
         if (enchantment == null) {
             pTooltipComponents.add(Component.translatable("item.create_enchantment_industry.enchanting_guide.tooltip.not_configured"));
         } else
-            pTooltipComponents.add(enchantment.getFirst().getFullname(enchantment.getSecond()));
+            pTooltipComponents.add(Enchantment.getFullname(enchantment.getEnchantmentHolder(), enchantment.getSecond()));
     }
 
     @Override
@@ -112,20 +113,17 @@ public class EnchantingGuideItem extends Item implements MenuProvider {
 
     @Nullable
     public static EnchantmentEntry getEnchantment(ItemStack itemStack) {
-        var tag = itemStack.getTag();
-        if (tag == null || !tag.contains("target", Tag.TAG_COMPOUND))
-            return null;
-        var target = (CompoundTag) tag.get("target");
-        if (target == null)
-            return null;
-        var book = ItemStack.of(target);
-        var enchantments = List.copyOf(EnchantmentHelper.getEnchantments(book).entrySet());
-        if (enchantments.isEmpty())
-            return null;
-        var index = tag.getInt("index");
-        if(index>=enchantments.size()) // When certain enchantment of the enchantment book has been removed from the game, this works.
-            index=0;
-        var result = enchantments.get(index);
-        return EnchantmentEntry.of(result.getKey(), result.getValue());
+        if (!EnchantmentHelper.canStoreEnchantments(itemStack)) return null;
+
+        var enchants = EnchantmentHelper.getEnchantmentsForCrafting(itemStack);
+        if (enchants.isEmpty()) return null;
+
+        //get first available enchant
+        var set = enchants.entrySet();
+        if (set.isEmpty()) return null;
+
+        var first = set.iterator().next();
+        if (first == null) return null;
+        return EnchantmentEntry.of(first.getKey(), first.getIntValue());
     }
 }

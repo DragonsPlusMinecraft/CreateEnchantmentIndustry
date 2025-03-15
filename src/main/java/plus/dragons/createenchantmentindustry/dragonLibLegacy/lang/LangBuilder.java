@@ -2,6 +2,7 @@ package plus.dragons.createenchantmentindustry.dragonLibLegacy.lang;
 
 import joptsimple.internal.Strings;
 import net.minecraft.ChatFormatting;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.entity.player.Player;
@@ -153,7 +154,7 @@ public class LangBuilder {
     }
     
     public String json() {
-        return Component.Serializer.toJson(component());
+        return Component.Serializer.toJson(component(), RegistryAccess.EMPTY);
     }
     
     public void sendStatus(Player player) {

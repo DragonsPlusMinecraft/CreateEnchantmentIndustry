@@ -4,6 +4,8 @@ import com.simibubi.create.Create;
 import com.simibubi.create.foundation.data.TagGen;
 import com.tterrag.registrate.providers.RegistrateTagsProvider;
 import net.createmod.catnip.lang.Lang;
+import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.FluidTags;
@@ -16,35 +18,30 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
-import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.IForgeRegistry;
 import plus.dragons.createenchantmentindustry.EnchantmentIndustry;
 
-import java.util.Collections;
 import java.util.Locale;
 
 
 public class CeiTags {
-    public static <T> TagKey<T> optionalTag(IForgeRegistry<T> registry,
-                                            ResourceLocation id) {
-        return registry.tags()
-                .createOptionalTagKey(id, Collections.emptySet());
+    public static <T> TagKey<T> optionalTag(Registry<T> registry, ResourceLocation id) {
+        return TagKey.create(registry.key(), id);
     }
 
-    public static <T> TagKey<T> forgeTag(IForgeRegistry<T> registry, String path) {
-        return optionalTag(registry, new ResourceLocation("forge", path));
+    public static <T> TagKey<T> commonTag(Registry<T> registry, String path) {
+        return optionalTag(registry, ResourceLocation.fromNamespaceAndPath("c", path));
     }
 
-    public static TagKey<Block> forgeBlockTag(String path) {
-        return forgeTag(ForgeRegistries.BLOCKS, path);
+    public static TagKey<Block> commonBlockTag(String path) {
+        return commonTag(BuiltInRegistries.BLOCK, path);
     }
 
-    public static TagKey<Item> forgeItemTag(String path) {
-        return forgeTag(ForgeRegistries.ITEMS, path);
+    public static TagKey<Item> commonItemTag(String path) {
+        return commonTag(BuiltInRegistries.ITEM, path);
     }
 
-    public static TagKey<Fluid> forgeFluidTag(String path) {
-        return forgeTag(ForgeRegistries.FLUIDS, path);
+    public static TagKey<Fluid> commonFluidTag(String path) {
+        return commonTag(BuiltInRegistries.FLUID, path);
     }
     String FORGE = "forge";
     String CREATE = "create";
@@ -56,7 +53,7 @@ public class CeiTags {
     public enum NameSpace {
         MOD(EnchantmentIndustry.ID, false, true),
         CREATE(Create.ID, false, true),
-        FORGE("forge")
+        COMMON("c")
         ;
 
         public final String id;
@@ -105,9 +102,9 @@ public class CeiTags {
         }
 
         BlockTag(NameSpace namespace, String path, boolean optional, boolean alwaysDatagen) {
-            ResourceLocation id = new ResourceLocation(namespace.id, path == null ? Lang.asId(name()) : path);
+            ResourceLocation id = ResourceLocation.fromNamespaceAndPath(namespace.id, path == null ? Lang.asId(name()) : path);
             if (optional) {
-                tag = optionalTag(ForgeRegistries.BLOCKS, id);
+                tag = optionalTag(BuiltInRegistries.BLOCK, id);
             } else {
                 tag = BlockTags.create(id);
             }
@@ -160,9 +157,9 @@ public class CeiTags {
         }
 
         ItemTag(NameSpace namespace, String path, boolean optional, boolean alwaysDatagen) {
-            ResourceLocation id = new ResourceLocation(namespace.id, path == null ? Lang.asId(name()) : path);
+            ResourceLocation id = ResourceLocation.fromNamespaceAndPath(namespace.id, path == null ? Lang.asId(name()) : path);
             if (optional) {
-                tag = optionalTag(ForgeRegistries.ITEMS, id);
+                tag = optionalTag(BuiltInRegistries.ITEM, id);
             } else {
                 tag = ItemTags.create(id);
             }
@@ -185,7 +182,7 @@ public class CeiTags {
 
     public enum FluidTag {
         //No experience fluid tag here as different ratios is not acceptable
-        INK(NameSpace.FORGE, false),
+        INK(NameSpace.COMMON, false),
         BLAZE_ENCHANTER_INPUT(false),
         PRINTER_INPUT(true);
 
@@ -217,9 +214,9 @@ public class CeiTags {
         }
 
         FluidTag(NameSpace namespace, String path, boolean optional, boolean alwaysDatagen) {
-            ResourceLocation id = new ResourceLocation(namespace.id, path == null ? Lang.asId(name()) : path);
+            ResourceLocation id = ResourceLocation.fromNamespaceAndPath(namespace.id, path == null ? Lang.asId(name()) : path);
             if (optional) {
-                tag = optionalTag(ForgeRegistries.FLUIDS, id);
+                tag = optionalTag(BuiltInRegistries.FLUID, id);
             } else {
                 tag = FluidTags.create(id);
             }

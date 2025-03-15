@@ -12,7 +12,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.FluidStack;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -52,7 +52,7 @@ public class OpenEndedPipeMixin {
                     var orb = new ExperienceOrb(world, orbPos.x, orbPos.y, orbPos.z, 1);
                     orb.setDeltaMovement(speed);
                     world.addFreshEntity(orb);
-                    ((OpenEndedPipe) (Object) this).provideHandler().ifPresent(f->f.getFluidInTank(0).setAmount(0));
+                    ((OpenEndedPipe) (Object) this).provideHandler().getCapability().getFluidInTank(0).setAmount(0);
                     cir.setReturnValue(true);
                 }
                 if (!(world instanceof ServerLevel slevel))
@@ -72,14 +72,14 @@ public class OpenEndedPipeMixin {
                     int left = amount % players.size();
                     players.forEach(player -> {
                         CeiAdvancements.A_SHOWER_EXPERIENCE.getTrigger().trigger((ServerPlayer) player);
-                        expfluid.awardOrDrop(player, slevel, orbPos, speed, partial);
+                        expfluid.awardOrDrop((ServerPlayer) player, slevel, orbPos, speed, partial);
                     });
                     if (left != 0) {
                         var lucky = players.get(world.random.nextInt(players.size()));
-                        expfluid.awardOrDrop(lucky, slevel, orbPos, speed, left);
+                        expfluid.awardOrDrop((ServerPlayer) lucky, slevel, orbPos, speed, left);
                     }
                 }
-                ((OpenEndedPipe) (Object) this).provideHandler().ifPresent(f->f.getFluidInTank(0).setAmount(0));
+                ((OpenEndedPipe) (Object) this).provideHandler().getCapability().getFluidInTank(0).setAmount(0);
                 cir.setReturnValue(true);
             }
         }

@@ -13,6 +13,7 @@ import net.createmod.catnip.data.Pair;
 import net.createmod.catnip.math.VecHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
@@ -27,15 +28,16 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
-import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.capability.IFluidHandler;
-import net.minecraftforge.items.ItemHandlerHelper;
+import net.neoforged.neoforge.capabilities.Capabilities;
+import net.neoforged.neoforge.capabilities.CapabilityRegistry;
+import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
+import net.neoforged.neoforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.capability.IFluidHandler;
+import net.neoforged.neoforge.items.ItemHandlerHelper;
 import org.antlr.v4.runtime.misc.NotNull;
 import plus.dragons.createenchantmentindustry.content.contraptions.enchanting.enchanter.Enchanting;
 import plus.dragons.createenchantmentindustry.content.contraptions.fluids.experience.ExperienceFluid;
+import plus.dragons.createenchantmentindustry.entry.CeiBlockEntities;
 import plus.dragons.createenchantmentindustry.entry.CeiFluids;
 import plus.dragons.createenchantmentindustry.foundation.advancement.CeiAdvancements;
 import plus.dragons.createenchantmentindustry.foundation.advancement.CeiTriggers;
@@ -56,7 +58,7 @@ public class DisenchanterBlockEntity extends SmartBlockEntity implements IHaveGo
     SmartFluidTankBehaviour internalTank;
     TransportedItemStack heldItem;
     int processingTicks;
-    Map<Direction, LazyOptional<DisenchanterItemHandler>> itemHandlers;
+    Map<Direction, DisenchanterItemHandler> itemHandlers;
 
     AABB absorbArea;
 
@@ -64,10 +66,21 @@ public class DisenchanterBlockEntity extends SmartBlockEntity implements IHaveGo
         super(type, pos, state);
         itemHandlers = new IdentityHashMap<>();
         for (Direction d : Iterate.horizontalDirections) {
-            DisenchanterItemHandler disenchanterItemHandler = new DisenchanterItemHandler(this, d);
-            itemHandlers.put(d, LazyOptional.of(() -> disenchanterItemHandler));
+            itemHandlers.put(d, new DisenchanterItemHandler(this, d));
         }
         absorbArea = new AABB(pos.above());
+    }
+
+    public static void registerCapabilities(RegisterCapabilitiesEvent event) {
+        event.registerBlockEntity(
+				Capabilities.ItemHandler.BLOCK,
+                CeiBlockEntities.DISENCHANTER.get(),
+				(be, context) -> {
+					if (context != null && context.getAxis().isHorizontal())
+						return be.itemHandlers.get(context);
+					return null;
+				}
+		);
     }
 
     @Override
@@ -352,8 +365,8 @@ public class DisenchanterBlockEntity extends SmartBlockEntity implements IHaveGo
         }
 
         if (inserted.getCount() > 1 && Disenchanting.disenchantResult(inserted, level) != null) {
-            returned = ItemHandlerHelper.copyStackWithSize(inserted, inserted.getCount() - 1);
-            inserted = ItemHandlerHelper.copyStackWithSize(inserted, 1);
+            returned = DisenchanterItemHandler.copyStackWithSize(inserted, inserted.getCount() - 1);
+            inserted = DisenchanterItemHandler.copyStackWithSize(inserted, 1);
         }
 
         if (simulate)
@@ -384,8 +397,7 @@ public class DisenchanterBlockEntity extends SmartBlockEntity implements IHaveGo
     @Override
     public void invalidate() {
         super.invalidate();
-        for (LazyOptional<DisenchanterItemHandler> lazyOptional : itemHandlers.values())
-            lazyOptional.invalidate();
+        invalidateCapabilities();
     }
 
     @Override
@@ -404,38 +416,24 @@ public class DisenchanterBlockEntity extends SmartBlockEntity implements IHaveGo
     }
 
     @Override
-    public void write(CompoundTag compoundTag, boolean clientPacket) {
+    public void write(CompoundTag compoundTag, HolderLookup.Provider registries, boolean clientPacket) {
         compoundTag.putInt("ProcessingTicks", processingTicks);
         if (heldItem != null)
-            compoundTag.put("HeldItem", heldItem.serializeNBT());
-        super.write(compoundTag, clientPacket);
+            compoundTag.put("HeldItem", heldItem.serializeNBT(registries));
+        super.write(compoundTag, registries, clientPacket);
     }
 
     @Override
-    protected void read(CompoundTag compoundTag, boolean clientPacket) {
+    protected void read(CompoundTag compoundTag, HolderLookup.Provider registries, boolean clientPacket) {
         heldItem = null;
         processingTicks = compoundTag.getInt("ProcessingTicks");
         if (compoundTag.contains("HeldItem"))
-            heldItem = TransportedItemStack.read(compoundTag.getCompound("HeldItem"));
-        super.read(compoundTag, clientPacket);
-    }
-
-    @Override
-    @NotNull
-    public <T> LazyOptional<T> getCapability(Capability<T> capability, @Nullable Direction side) {
-        if (side != null && side.getAxis()
-                .isHorizontal() && isItemHandlerCap(capability))
-            return itemHandlers.get(side)
-                    .cast();
-
-        if ((side != Direction.UP) && isFluidHandlerCap(capability))
-            return internalTank.getCapability()
-                    .cast();
-        return super.getCapability(capability, side);
+            heldItem = TransportedItemStack.read(compoundTag.getCompound("HeldItem"), registries);
+        super.read(compoundTag, registries, clientPacket);
     }
 
     @Override
     public boolean addToGoggleTooltip(List<Component> tooltip, boolean isPlayerSneaking) {
-        return containedFluidTooltip(tooltip, isPlayerSneaking, getCapability(ForgeCapabilities.FLUID_HANDLER));
+        return containedFluidTooltip(tooltip, isPlayerSneaking, level.getCapability(Capabilities.FluidHandler.BLOCK, worldPosition, null));
     }
 }

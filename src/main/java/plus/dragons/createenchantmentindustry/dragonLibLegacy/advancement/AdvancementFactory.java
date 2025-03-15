@@ -1,7 +1,7 @@
 package plus.dragons.createenchantmentindustry.dragonLibLegacy.advancement;
 
 import net.minecraft.data.DataGenerator;
-import net.minecraftforge.data.event.GatherDataEvent;
+import net.neoforged.neoforge.data.event.GatherDataEvent;
 import plus.dragons.createenchantmentindustry.dragonLibLegacy.advancement.critereon.TriggerFactory;
 
 public class AdvancementFactory {
@@ -32,6 +32,7 @@ public class AdvancementFactory {
         preTask.run();
         DataGenerator datagen = event.getGenerator();
         advancementGen.generator = datagen;
+        advancementGen.provider = event.getLookupProvider();
         datagen.addProvider(event.includeServer(), advancementGen);
     }
 

@@ -1,6 +1,6 @@
 package plus.dragons.createenchantmentindustry.content.contraptions.fluids.ink;
 
-import net.minecraftforge.client.event.ViewportEvent;
+import net.neoforged.neoforge.client.event.ViewportEvent;
 
 public interface InkRenderingCamera {
 

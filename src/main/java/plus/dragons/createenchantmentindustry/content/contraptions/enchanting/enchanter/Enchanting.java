@@ -5,8 +5,10 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.item.enchantment.ItemEnchantments;
 import plus.dragons.createenchantmentindustry.EnchantmentIndustry;
 import plus.dragons.createenchantmentindustry.entry.CeiItems;
 
@@ -26,20 +28,15 @@ public class Enchanting {
     public static EnchantmentEntry getTargetEnchantment(ItemStack itemStack, boolean hyper) {
         if (itemStack.is(CeiItems.ENCHANTING_GUIDE.get())) {
             var result = EnchantingGuideItem.getEnchantment(itemStack);
-            if (!hyper || result == null)
-                return result;
-            else {
-                var enchantment = result.getFirst();
-                int level = result.getSecond() + 1;
-                return EnchantmentEntry.of(enchantment, level);
-            }
+            if (result != null && hyper)
+                result.setSecond(result.getSecond() + 1);
+            return result;
         } else
             throw new RuntimeException("TargetItem is not an enchanting guide for blaze!");
     }
     
     @Nullable
     public static EnchantmentEntry getValidEnchantment(ItemStack itemStack, ItemStack targetItem, boolean hyper) {
-
         if(itemStack.is(UNENCHANTABLE)) return null;
         if(!UNENCHANTABLE_CONDITIONS.isEmpty()){
             if(UNENCHANTABLE_CONDITIONS.stream()
@@ -53,9 +50,17 @@ public class Enchanting {
         var enchantment = entry.getFirst();
 
         ItemStack toCheck = itemStack.copy();
-        Map<Enchantment, Integer> modified = EnchantmentHelper.getEnchantments(toCheck);
+        var modified = EnchantmentHelper.getEnchantmentsForCrafting(toCheck);
 
-        if (modified.containsKey(enchantment) && modified.get(enchantment) >= entry.getSecond()) {
+        //TODO
+        System.out.println();
+        System.out.println(enchantment);
+        System.out.println(modified);
+        System.out.println(modified.entrySet());
+        System.out.println();
+
+        return null;
+        /*if (modified.containsKey(enchantment) && modified.get(enchantment) >= entry.getSecond()) {
             return null;
         }
 
@@ -69,13 +74,13 @@ public class Enchanting {
             if (!e.getKey().isCompatibleWith(enchantment))
                 return null;
         }
-        return entry;
+        return entry;*/
     }
 
-    public static void enchantItem(ItemStack itemStack, Pair<Enchantment, Integer> enchantment) {
-        var map = EnchantmentHelper.getEnchantments(itemStack);
-        map.put(enchantment.getFirst(), enchantment.getSecond());
-        EnchantmentHelper.setEnchantments(map, itemStack);
+    public static void enchantItem(ItemStack itemStack, EnchantmentEntry enchantment) {
+        ItemEnchantments.Mutable itemenchantments$mutable = new ItemEnchantments.Mutable(EnchantmentHelper.getEnchantmentsForCrafting(itemStack));
+        itemenchantments$mutable.set(enchantment.getEnchantmentHolder(), enchantment.getSecond());
+        EnchantmentHelper.setEnchantments(itemStack, itemenchantments$mutable.toImmutable());
     }
     
     public static int expPointFromLevel(int level) {
@@ -98,17 +103,17 @@ public class Enchanting {
         }
     }
 
-    public static int rarityLevel(Enchantment.Rarity rarity) {
+    public static int rarityLevel(Rarity rarity) {
         return switch(rarity) {
             case COMMON -> 1;
             case UNCOMMON -> 2;
             case RARE -> 3;
-            case VERY_RARE -> 4;
+            case EPIC -> 4;
         };
     }
 
-    public static int getExperienceConsumption(Enchantment enchantment, int level) {
-        int xpLevel = enchantment.getMinCost(level) + level * rarityLevel(enchantment.getRarity());
+    public static int getExperienceConsumption(ItemStack itemStack, Enchantment enchantment, int level) {
+        int xpLevel = enchantment.getMinCost(level) + level * rarityLevel(itemStack.getRarity());
         return expPointForNextLevel(xpLevel);
     }
     

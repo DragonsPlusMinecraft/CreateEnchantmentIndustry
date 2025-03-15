@@ -1,6 +1,6 @@
 package plus.dragons.createenchantmentindustry.foundation.mixin;
 
-import net.minecraftforge.fluids.capability.templates.FluidTank;
+import net.neoforged.neoforge.fluids.capability.templates.FluidTank;
 import org.spongepowered.asm.mixin.Mixin;
 
 @Mixin(targets = "com.simibubi.create.content.fluids.OpenEndedPipe$OpenEndFluidHandler")

@@ -5,12 +5,14 @@ import com.simibubi.create.foundation.gui.menu.AbstractSimiContainerScreen;
 import com.simibubi.create.foundation.gui.widget.Label;
 import com.simibubi.create.foundation.gui.widget.SelectionScrollInput;
 import net.createmod.catnip.gui.element.GuiGameElement;
+import net.createmod.catnip.platform.CatnipServices;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.Rect2i;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
 import plus.dragons.createenchantmentindustry.dragonLibLegacy.gui.ComponentLabel;
+import plus.dragons.createenchantmentindustry.entry.CeiComponents;
 import plus.dragons.createenchantmentindustry.entry.CeiPackets;
 
 import javax.annotation.Nullable;
@@ -59,7 +61,7 @@ public class EnchantingGuideScreen extends AbstractSimiContainerScreen<Enchantin
                 new Rect2i(guideX + ENCHANTING_GUIDE.width, guideY + ENCHANTING_GUIDE.height - 48, 48, 48),
                 new Rect2i(guideX, guideY, imageWidth, imageHeight)
         );
-        index = menu.contentHolder.getOrCreateTag().getInt("index");
+        index = menu.contentHolder.get(CeiComponents.ENCHANTING_INDEX);
         scrollInput = new SelectionScrollInput(guideX + 40, guideY + 22, 120, 16);
         scrollInputLabel = new ComponentLabel(guideX + 43, guideY + 26, Component.empty()).withShadow();
         scrollInput.calling(index -> this.index = index).writingTo(scrollInputLabel);
@@ -94,9 +96,9 @@ public class EnchantingGuideScreen extends AbstractSimiContainerScreen<Enchantin
     public void removed() {
         super.removed();
         if(directItemStackEdit)
-            CeiPackets.channel.sendToServer(new EnchantingGuideEditPacket(index, menu.getSlot(36).getItem()));
+            CatnipServices.NETWORK.sendToServer(new EnchantingGuideEditPacket(index, menu.getSlot(36).getItem()));
         else
-            CeiPackets.channel.sendToServer(new BlazeEnchanterEditPacket(index, menu.getSlot(36).getItem(), blockPos));
+            CatnipServices.NETWORK.sendToServer(new BlazeEnchanterEditPacket(index, menu.getSlot(36).getItem(), blockPos));
     }
 
     @Override

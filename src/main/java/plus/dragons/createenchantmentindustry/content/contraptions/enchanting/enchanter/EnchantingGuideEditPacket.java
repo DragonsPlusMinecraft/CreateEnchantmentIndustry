@@ -1,50 +1,45 @@
 package plus.dragons.createenchantmentindustry.content.contraptions.enchanting.enchanter;
 
-import com.simibubi.create.foundation.networking.SimplePacketBase;
+import net.createmod.catnip.net.base.ServerboundPacketPayload;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.network.NetworkEvent.Context;
+import plus.dragons.createenchantmentindustry.entry.CeiComponents;
 import plus.dragons.createenchantmentindustry.entry.CeiItems;
+import plus.dragons.createenchantmentindustry.entry.CeiPackets;
 
-public class EnchantingGuideEditPacket extends SimplePacketBase {
+public class EnchantingGuideEditPacket implements ServerboundPacketPayload {
 
     private final int index;
     private final ItemStack itemStack;
 
+    public static final StreamCodec<RegistryFriendlyByteBuf, EnchantingGuideEditPacket> STREAM_CODEC = StreamCodec.composite(
+            ByteBufCodecs.INT, packet -> packet.index,
+            ItemStack.STREAM_CODEC, packet -> packet.itemStack,
+            EnchantingGuideEditPacket::new
+    );
 
     public EnchantingGuideEditPacket(int index, ItemStack enchantedBook) {
         this.index = index;
         itemStack = enchantedBook;
     }
 
-    public EnchantingGuideEditPacket(FriendlyByteBuf buffer) {
-        index = buffer.readInt();
-        itemStack = buffer.readItem();
+    public void handle(ServerPlayer sender) {
+        ItemStack mainHandItem = sender.getMainHandItem();
+        if (!CeiItems.ENCHANTING_GUIDE.isIn(mainHandItem))
+            return;
+
+        mainHandItem.set(CeiComponents.ENCHANTING_INDEX, index);
+        mainHandItem.set(CeiComponents.ENCHANTING_TARGET, (CompoundTag) itemStack.save(sender.level().registryAccess()));
+
+        sender.getCooldowns()
+                .addCooldown(mainHandItem.getItem(), 5);
     }
 
-    @Override
-    public void write(FriendlyByteBuf buffer) {
-        buffer.writeInt(index);
-        buffer.writeItem(itemStack);
-    }
-
-    @Override
-    public boolean handle(Context context) {
-        context.enqueueWork(() -> {
-                    ServerPlayer sender = context.getSender();
-                    ItemStack mainHandItem = sender.getMainHandItem();
-                    if (!CeiItems.ENCHANTING_GUIDE.isIn(mainHandItem))
-                        return;
-
-                    CompoundTag tag = mainHandItem.getOrCreateTag();
-                    tag.putInt("index", index);
-                    tag.put("target", itemStack.serializeNBT());
-
-                    sender.getCooldowns()
-                            .addCooldown(mainHandItem.getItem(), 5);
-                });
-        return true;
+    public PacketTypeProvider getTypeProvider() {
+        return CeiPackets.CONFIGURE_ENCHANTING_GUIDE_FOR_BLAZE;
     }
 }

@@ -3,8 +3,7 @@ package plus.dragons.createenchantmentindustry.content.contraptions.enchanting.d
 import com.simibubi.create.content.kinetics.belt.transport.TransportedItemStack;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.items.ItemHandlerHelper;
+import net.neoforged.neoforge.items.IItemHandler;
 import org.antlr.v4.runtime.misc.NotNull;
 
 public class DisenchanterItemHandler implements IItemHandler {
@@ -40,8 +39,8 @@ public class DisenchanterItemHandler implements IItemHandler {
 
         ItemStack returned = ItemStack.EMPTY;
         if (stack.getCount() > 1 && Disenchanting.disenchantResult(stack, be.getLevel()) != null) {
-            returned = ItemHandlerHelper.copyStackWithSize(stack, stack.getCount() - 1);
-            stack = ItemHandlerHelper.copyStackWithSize(stack, 1);
+            returned = copyStackWithSize(stack, stack.getCount() - 1);
+            stack = copyStackWithSize(stack, 1);
         }
 
         if (!simulate) {
@@ -52,6 +51,16 @@ public class DisenchanterItemHandler implements IItemHandler {
         }
 
         return returned;
+    }
+
+    @NotNull
+    public static ItemStack copyStackWithSize(@NotNull ItemStack itemStack, int size)
+    {
+        if (size == 0)
+            return ItemStack.EMPTY;
+        ItemStack copy = itemStack.copy();
+        copy.setCount(size);
+        return copy;
     }
 
     @Override

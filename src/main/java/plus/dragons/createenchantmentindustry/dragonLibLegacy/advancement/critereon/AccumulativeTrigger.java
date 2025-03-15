@@ -3,8 +3,10 @@ package plus.dragons.createenchantmentindustry.dragonLibLegacy.advancement.crite
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
 import com.google.gson.JsonObject;
+import com.mojang.serialization.Codec;
 import net.createmod.catnip.nbt.NBTHelper;
 import net.minecraft.advancements.critereon.*;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.resources.ResourceLocation;
@@ -15,32 +17,25 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.saveddata.SavedData;
 import net.minecraft.world.level.storage.DimensionDataStorage;
 import org.antlr.v4.runtime.misc.NotNull;
+import org.jetbrains.annotations.Nullable;
 
+import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
+import java.util.function.Supplier;
 
-public class AccumulativeTrigger extends SimpleCriterionTrigger<AccumulativeTrigger.TriggerInstance>{
-
-    private final ResourceLocation id;
+public class AccumulativeTrigger extends AbstractTrigger<AccumulativeTrigger.TriggerInstance>{
 
     public AccumulativeTrigger(ResourceLocation pId) {
-        this.id = pId;
-    }
-
-    @Override
-    @NotNull
-    protected TriggerInstance createInstance(JsonObject pJson, @NotNull ContextAwarePredicate player, @NotNull DeserializationContext pContext) {
-        MinMaxBounds.Ints requirements = MinMaxBounds.Ints.fromJson(pJson.get("requirement"));
-        return new TriggerInstance(id, player, requirements);
+        super(pId);
     }
 
     public void trigger(Player pPlayer, int change){
-        this.trigger((ServerPlayer) pPlayer, (triggerInstance) -> triggerInstance.matches(id, pPlayer, change));
+        //this.trigger((ServerPlayer) pPlayer, (triggerInstance) -> triggerInstance.matches(id, pPlayer, change));
     }
 
-    @Override
-    @NotNull
-    public ResourceLocation getId() {
-        return id;
+    public Codec<TriggerInstance> codec() {
+        return null; //TODO
     }
 
     private static class AccumulativeData extends SavedData {
@@ -61,7 +56,7 @@ public class AccumulativeTrigger extends SimpleCriterionTrigger<AccumulativeTrig
         }
 
         @SuppressWarnings("all")
-        public static AccumulativeData load(CompoundTag compoundNBT){
+        public static AccumulativeData load(CompoundTag compoundNBT, HolderLookup.Provider provider) {
             AccumulativeData ret = new AccumulativeData();
 
             if(!compoundNBT.contains("AccumulativeData"))
@@ -78,7 +73,7 @@ public class AccumulativeTrigger extends SimpleCriterionTrigger<AccumulativeTrig
         }
 
         @Override
-        public CompoundTag save(CompoundTag pCompoundTag) {
+        public CompoundTag save(CompoundTag pCompoundTag, HolderLookup.Provider pProvider) {
             var dataListTag = NBTHelper.writeCompoundList(data.cellSet().stream().toList(), cell -> {
                 var ret = new CompoundTag();
                 NBTHelper.writeResourceLocation(ret,"TriggerId",cell.getRowKey());
@@ -100,14 +95,14 @@ public class AccumulativeTrigger extends SimpleCriterionTrigger<AccumulativeTrig
 
         ServerLevel serverWorld = level.getServer().overworld();
         DimensionDataStorage dimensionSavedDataManager = serverWorld.getDataStorage();
-        return dimensionSavedDataManager.computeIfAbsent(AccumulativeData::load, AccumulativeData::new, "accumulative_data");
+        return dimensionSavedDataManager.computeIfAbsent(new SavedData.Factory<>(AccumulativeData::new, AccumulativeData::load), "accumulative_data");
     }
 
-    public static class TriggerInstance extends AbstractCriterionTriggerInstance {
+    public static class TriggerInstance extends AbstractTrigger.Instance {
         private final MinMaxBounds.Ints requirement;
 
         public TriggerInstance(ResourceLocation pCriterion, ContextAwarePredicate player, MinMaxBounds.Ints requirement) {
-            super(pCriterion, player);
+//            super(pCriterion, player); FIXME
             this.requirement = requirement;
         }
 
@@ -117,13 +112,21 @@ public class AccumulativeTrigger extends SimpleCriterionTrigger<AccumulativeTrig
             return requirement.matches(data.get(resourceLocation, player.getUUID()));
         }
 
-        @Override
-        @NotNull
-        public JsonObject serializeToJson(@NotNull SerializationContext pConditions) {
-            JsonObject jsonObject = super.serializeToJson(pConditions);
-            jsonObject.add("requirement", requirement.serializeToJson());
-            return jsonObject;
+        protected boolean test(@Nullable List<Supplier<Object>> suppliers) {
+            return false;
         }
+
+        public Optional<ContextAwarePredicate> player() {
+            return Optional.empty();
+        }
+
+//        @Override
+//        @NotNull
+//        public JsonObject serializeToJson(@NotNull SerializationContext pConditions) {
+//            JsonObject jsonObject = super.serializeToJson(pConditions);
+//            jsonObject.add("requirement", requirement.serializeToJson());
+//            return jsonObject;
+//        }
     }
     
 }

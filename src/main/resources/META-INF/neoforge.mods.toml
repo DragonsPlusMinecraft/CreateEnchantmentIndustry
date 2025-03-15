@@ -17,6 +17,9 @@ Automatic Enchanting, with Create.
 [[mixins]]
 config = "create_enchantment_industry.mixins.json"
 
+[[accessTransformers]]
+file="META-INF/accesstransformer.cfg"
+
 [[dependencies.create_enchantment_industry]]
 modId="neoforge"
 type="required"

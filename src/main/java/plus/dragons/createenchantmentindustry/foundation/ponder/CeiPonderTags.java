@@ -21,7 +21,7 @@ public class CeiPonderTags {
                 title("Experience Related").
                 description("Items and Components related to experience").register();
 
-        PonderTagRegistrationHelper<RegistryEntry<?>> HELPER = helper.withKeyFunction(RegistryEntry::getId);
+        PonderTagRegistrationHelper<RegistryEntry<?, ?>> HELPER = helper.withKeyFunction(RegistryEntry::getId);
         HELPER.addToTag(EXPERIENCE)
                 .add(CeiBlocks.DISENCHANTER)
                 .add(CeiBlocks.PRINTER)

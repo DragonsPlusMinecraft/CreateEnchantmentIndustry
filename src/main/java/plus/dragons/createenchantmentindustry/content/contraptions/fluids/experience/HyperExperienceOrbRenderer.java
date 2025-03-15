@@ -15,7 +15,7 @@ import org.joml.Matrix3f;
 import org.joml.Matrix4f;
 
 public class HyperExperienceOrbRenderer extends EntityRenderer<HyperExperienceOrb> {
-    private static final ResourceLocation HYPER_EXPERIENCE_ORB_LOCATION = new ResourceLocation("textures/entity/experience_orb.png");
+    private static final ResourceLocation HYPER_EXPERIENCE_ORB_LOCATION = ResourceLocation.parse("textures/entity/experience_orb.png");
     private static final RenderType RENDER_TYPE = RenderType.itemEntityTranslucentCull(HYPER_EXPERIENCE_ORB_LOCATION);
 
     public HyperExperienceOrbRenderer(EntityRendererProvider.Context context) {
@@ -45,27 +45,24 @@ public class HyperExperienceOrbRenderer extends EntityRenderer<HyperExperienceOr
         ps.scale(.3F, .3F, .3F);
         VertexConsumer vertexconsumer = buffer.getBuffer(RENDER_TYPE);
         PoseStack.Pose pose = ps.last();
-        Matrix4f matrix4f = pose.pose();
-        Matrix3f matrix3f = pose.normal();
-        vertex(vertexconsumer, matrix4f, matrix3f, -0.5F, -0.25F, red, green, 255, u1, v2, light);
-        vertex(vertexconsumer, matrix4f, matrix3f, 0.5F, -0.25F, red, green, 255, u2, v2, light);
-        vertex(vertexconsumer, matrix4f, matrix3f, 0.5F, 0.75F, red, green, 255, u2, v1, light);
-        vertex(vertexconsumer, matrix4f, matrix3f, -0.5F, 0.75F, red, green, 255, u1, v1, light);
+        vertex(vertexconsumer, pose, -0.5F, -0.25F, red, green, 255, u1, v2, light);
+        vertex(vertexconsumer, pose, 0.5F, -0.25F, red, green, 255, u2, v2, light);
+        vertex(vertexconsumer, pose, 0.5F, 0.75F, red, green, 255, u2, v1, light);
+        vertex(vertexconsumer, pose, -0.5F, 0.75F, red, green, 255, u1, v1, light);
         ps.popPose();
         super.render(orb, yaw, partialTicks, ps, buffer, light);
     }
 
-    private void vertex(VertexConsumer buffer, Matrix4f pose, Matrix3f normal,
+    private void vertex(VertexConsumer buffer, PoseStack.Pose pose,
                         float x, float y,
                         int r, int g, int b,
                         float u, float v, int light) {
-        buffer.vertex(pose, x, y, 0.0F)
-                .color(r, g, b, 128)
-                .uv(u, v)
-                .overlayCoords(OverlayTexture.NO_OVERLAY)
-                .uv2(light)
-                .normal(normal, 0.0F, 1.0F, 0.0F)
-                .endVertex();
+        buffer.addVertex(pose.pose(), x, y, 0.0F)
+                .setColor(r, g, b, 128)
+                .setUv(u, v)
+                .setOverlay(OverlayTexture.NO_OVERLAY)
+                .setLight(light)
+                .setNormal(pose, 0.0F, 1.0F, 0.0F);
     }
 
     @Override

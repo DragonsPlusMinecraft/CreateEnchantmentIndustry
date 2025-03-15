@@ -3,9 +3,8 @@ package plus.dragons.createenchantmentindustry.content.contraptions.fluids;
 import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
 import com.simibubi.create.foundation.blockEntity.behaviour.BehaviourType;
 import com.simibubi.create.foundation.blockEntity.behaviour.fluid.SmartFluidTankBehaviour;
-import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.neoforged.neoforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import plus.dragons.createenchantmentindustry.foundation.mixin.TankSegmentAccessor;
 
 import java.util.function.Predicate;
@@ -27,7 +26,7 @@ public class FilteringFluidTankBehaviour extends SmartFluidTankBehaviour {
             this.tanks[i] = tankSegment;
             handlers[i] = ((TankSegmentAccessor)tankSegment).getTank();
         }
-        this.capability = LazyOptional.of(() -> new InternalFluidHandler(handlers, enforceVariety));
+        this.capability = new InternalFluidHandler(handlers, enforceVariety);
     }
     
     public static FilteringFluidTankBehaviour single(Predicate<FluidStack> filter, SmartBlockEntity be, int capacity) {

@@ -2,13 +2,13 @@ package plus.dragons.createenchantmentindustry.content.contraptions.fluids.exper
 
 import com.simibubi.create.content.fluids.VirtualFluid;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.ExperienceOrb;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.entity.player.PlayerXpEvent;
+import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.event.entity.player.PlayerXpEvent;
 
 import javax.annotation.Nullable;
 
@@ -30,24 +30,18 @@ public class ExperienceFluid extends VirtualFluid {
     }
     
     public void drop(ServerLevel level, Vec3 pos, int fluidAmount) {
-        while(fluidAmount > 0) {
-            int orbSize = ExperienceOrb.getExperienceValue(fluidAmount);
-            fluidAmount -= orbSize;
-            if (!ExperienceOrb.tryMergeToExisting(level, pos, orbSize)) {
-                level.addFreshEntity(this.convertToOrb(level, pos.x, pos.y, pos.z, orbSize));
-            }
-        }
+        ExperienceOrb.award(level, pos, fluidAmount);
     }
     
-    public void awardOrDrop(@Nullable Player player, ServerLevel level, Vec3 pos, Vec3 speed, int amount) {
+    public void awardOrDrop(@Nullable ServerPlayer player, ServerLevel level, Vec3 pos, Vec3 speed, int amount) {
         var orb = this.convertToOrb(level, pos.x, pos.y, pos.z, amount);
-        if (player == null || MinecraftForge.EVENT_BUS.post(new PlayerXpEvent.PickupXp(player, orb))) {
-            if (!ExperienceOrb.tryMergeToExisting(level, pos, orb.value)) {
+        if (player == null || NeoForge.EVENT_BUS.post(new PlayerXpEvent.PickupXp(player, orb)).isCanceled()) {
+            if (!ExperienceOrb.tryMergeToExisting(level, pos, orb.value)) { //TODO: AT
                 orb.setDeltaMovement(speed);
                 level.addFreshEntity(orb);
             }
         } else {
-            int left = orb.repairPlayerItems(player, orb.value);
+            int left = orb.repairPlayerItems(player, orb.value); //TODO: AT
             if (left > 0) {
                 player.giveExperiencePoints(left);
                 this.applyAdditionalEffects(player, left);

@@ -9,14 +9,14 @@ import plus.dragons.createenchantmentindustry.content.contraptions.enchanting.pr
 import java.util.function.Supplier;
 
 public class CeiDisplaySources {
-    public static final RegistryEntry<PrinterDisplaySource> COPY_CONTENT = simple("copy_content", PrinterDisplaySource::new);
-    public static final RegistryEntry<TargetEnchantmentDisplaySource> TARGET_ENCHANTMENT = simple("target_enchantment", TargetEnchantmentDisplaySource::new);
+    public static final RegistryEntry<DisplaySource, PrinterDisplaySource> COPY_CONTENT = simple("copy_content", PrinterDisplaySource::new);
+    public static final RegistryEntry<DisplaySource, TargetEnchantmentDisplaySource> TARGET_ENCHANTMENT = simple("target_enchantment", TargetEnchantmentDisplaySource::new);
 
 
     public static void register() {
     }
 
-    private static <T extends DisplaySource> RegistryEntry<T> simple(String name, Supplier<T> supplier) {
+    private static <T extends DisplaySource> RegistryEntry<DisplaySource, T> simple(String name, Supplier<T> supplier) {
         return EnchantmentIndustry.REGISTRATE.displaySource(name, supplier).register();
     }
 }

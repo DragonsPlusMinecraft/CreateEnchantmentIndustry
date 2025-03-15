@@ -2,7 +2,7 @@ package plus.dragons.createenchantmentindustry.foundation.config;
 
 import net.createmod.catnip.config.ConfigBase;
 import net.createmod.catnip.config.ui.ConfigAnnotations;
-import net.minecraftforge.common.ForgeConfigSpec;
+import net.neoforged.neoforge.common.ModConfigSpec;
 
 public class CeiServerConfig extends ConfigBase {
     
@@ -54,9 +54,8 @@ public class CeiServerConfig extends ConfigBase {
     public final ConfigBool copyingWrittenBookAlwaysGetOriginalVersion = b(true,
             "copyingWrittenBookAlwaysGetOriginalVersion",
             Comments.copyingWrittenBookAlwaysGetOriginalVersion);
-    
-    @Override
-    public void registerAll(ForgeConfigSpec.Builder builder) {
+
+    public void registerAll(ModConfigSpec.Builder builder) {
         super.registerAll(builder);
     }
 

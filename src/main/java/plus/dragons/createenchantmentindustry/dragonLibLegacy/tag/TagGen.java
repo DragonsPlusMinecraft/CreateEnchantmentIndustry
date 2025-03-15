@@ -126,10 +126,10 @@ public class TagGen {
             String... path) {
         return b -> {
             for (String p : path)
-                b.tag(AllTags.forgeBlockTag(p));
+                b.tag(AllTags.commonBlockTag(p));
             ItemBuilder<BlockItem, BlockBuilder<T, P>> item = b.item();
             for (String p : path)
-                item.tag(AllTags.forgeItemTag(p));
+                item.tag(AllTags.commonItemTag(p));
             return item;
         };
     }

@@ -7,8 +7,8 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraftforge.event.entity.living.LivingEvent;
-import net.minecraftforge.fluids.ForgeFlowingFluid;
+import net.neoforged.neoforge.event.tick.EntityTickEvent;
+import net.neoforged.neoforge.fluids.BaseFlowingFluid;
 import plus.dragons.createenchantmentindustry.dragonLibLegacy.fluid.FluidLavaReaction;
 import plus.dragons.createenchantmentindustry.dragonLibLegacy.fluid.NoTintFluidType;
 import plus.dragons.createenchantmentindustry.EnchantmentIndustry;
@@ -42,7 +42,7 @@ public class CeiFluids {
     public static final ResourceLocation INK_STILL_RL = EnchantmentIndustry.genRL("fluid/ink_still");
     public static final ResourceLocation INK_FLOW_RL = EnchantmentIndustry.genRL("fluid/ink_flow");
 
-    public static final FluidEntry<ForgeFlowingFluid.Flowing> INK = REGISTRATE
+    public static final FluidEntry<BaseFlowingFluid.Flowing> INK = REGISTRATE
             .fluid("ink", INK_STILL_RL, INK_FLOW_RL, NoTintFluidType::new)
             .properties(b -> b.viscosity(1000)
                     .density(1000))
@@ -50,7 +50,7 @@ public class CeiFluids {
                     .tickRate(25)
                     .slopeFindDistance(4)
                     .explosionResistance(100f))
-            .source(ForgeFlowingFluid.Source::new) // TODO: remove when Registrate fixes FluidBuilder
+            .source(BaseFlowingFluid.Source::new) // TODO: remove when Registrate fixes FluidBuilder
             .tag(CeiTags.FluidTag.INK.tag)
             .bucket()
             .build()
@@ -59,11 +59,12 @@ public class CeiFluids {
     public static void register() {
     }
 
-    public static void handleInkEffect(LivingEvent.LivingTickEvent event) {
-        LivingEntity entity = event.getEntity();
-        if (entity.tickCount % 20 != 0) return;
-        if (entity.isEyeInFluidType(INK.getType())) {
-            entity.addEffect(new MobEffectInstance(MobEffects.BLINDNESS, 100, 0, true, false, false));
+    public static void handleInkEffect(EntityTickEvent.Pre event) {
+        if (event.getEntity() instanceof LivingEntity entity) {
+            if (entity.tickCount % 20 != 0) return;
+            if (entity.isEyeInFluidType(INK.getType())) {
+                entity.addEffect(new MobEffectInstance(MobEffects.BLINDNESS, 100, 0, true, false, false));
+            }
         }
     }
 

@@ -1,22 +1,19 @@
 package plus.dragons.createenchantmentindustry;
 
 import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.DistExecutor;
-import net.minecraftforge.fml.ModLoadingContext;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.ModLoadingContext;
+import net.neoforged.fml.common.Mod;
+import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.neoforged.neoforge.common.NeoForge;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import plus.dragons.createenchantmentindustry.dragonLibLegacy.advancement.AdvancementFactory;
 import plus.dragons.createenchantmentindustry.dragonLibLegacy.init.SafeRegistrate;
 import plus.dragons.createenchantmentindustry.dragonLibLegacy.lang.Lang;
-import plus.dragons.createenchantmentindustry.compat.apotheosis.ApotheosisCompat;
-import plus.dragons.createenchantmentindustry.compat.quark.QuarkCompat;
+//import plus.dragons.createenchantmentindustry.compat.apotheosis.ApotheosisCompat;
+//import plus.dragons.createenchantmentindustry.compat.quark.QuarkCompat;
 import plus.dragons.createenchantmentindustry.entry.*;
 import plus.dragons.createenchantmentindustry.foundation.advancement.CeiAdvancements;
 import plus.dragons.createenchantmentindustry.foundation.config.CeiConfigs;
@@ -31,25 +28,24 @@ public class EnchantmentIndustry {
     public static final AdvancementFactory ADVANCEMENT_FACTORY = AdvancementFactory.create(NAME, ID,
         CeiAdvancements::register);
 
-    public EnchantmentIndustry() {
-        IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
-        IEventBus forgeEventBus = MinecraftForge.EVENT_BUS;
+    public EnchantmentIndustry(IEventBus modEventBus) {
+        IEventBus forgeEventBus = NeoForge.EVENT_BUS;
         
-        CeiConfigs.register(ModLoadingContext.get());
+        CeiConfigs.register(ModLoadingContext.get().getActiveContainer());
         
         registerEntries(modEventBus);
         modEventBus.register(this);
         registerForgeEvents(forgeEventBus);
-        
-        DistExecutor.safeRunWhenOn(Dist.CLIENT, () -> EnchantmentIndustryClient::new);
     }
 
     private void registerEntries(IEventBus modEventBus) {
         CeiBlocks.register();
         CeiBlockEntities.register();
+        modEventBus.addListener(CeiBlockEntities::registerCapabilities);
         CeiContainerTypes.register();
         CeiEntityTypes.register();
         CeiFluids.register();
+        CeiComponents.register(modEventBus);
         CeiItems.register();
         CeiRecipeTypes.register(modEventBus);
         CeiTags.register();
@@ -66,16 +62,16 @@ public class EnchantmentIndustry {
     public void setup(final FMLCommonSetupEvent event) {
         event.enqueueWork(() -> {
             CeiAdvancements.register();
-            CeiPackets.registerPackets();
+            CeiPackets.register();
             CeiFluids.registerLavaReaction();
-            ApotheosisCompat.addPotionMixingRecipes();
-            ApotheosisCompat.banTomeFromEnchanter();
-            QuarkCompat.registerPrintEntry();
+//            ApotheosisCompat.addPotionMixingRecipes();
+//            ApotheosisCompat.banTomeFromEnchanter();
+//            QuarkCompat.registerPrintEntry();
         });
     }
 
     public static ResourceLocation genRL(String name) {
-        return new ResourceLocation(ID, name);
+        return ResourceLocation.fromNamespaceAndPath(ID, name);
     }
 
 }

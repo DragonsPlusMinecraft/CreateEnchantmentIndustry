@@ -9,6 +9,7 @@ import com.simibubi.create.foundation.blockEntity.ComparatorUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -58,26 +59,24 @@ public class PrinterBlock extends Block implements IWrenchable, IBE<PrinterBlock
     public boolean canSurvive(BlockState state, LevelReader worldIn, BlockPos pos) {
         return !AllBlocks.BASIN.has(worldIn.getBlockState(pos.below()));
     }
-    
-    @Override
-    public InteractionResult use(BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand,
-                                 BlockHitResult blockRayTraceResult) {
+
+    protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
         if(hand==InteractionHand.OFF_HAND)
-            return InteractionResult.PASS;
+            return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
         ItemStack heldItem = player.getItemInHand(hand);
         if (heldItem.isEmpty()) {
-            return onBlockEntityUse(world, pos, be -> {
+            return onBlockEntityUseItemOn(world, pos, be -> {
                 if (!be.getCopyTarget().isEmpty()) {
                     player.setItemInHand(hand, be.getCopyTarget());
                     be.setCopyTarget(ItemStack.EMPTY);
-                    return InteractionResult.SUCCESS;
-                } else return InteractionResult.PASS;
+                    return ItemInteractionResult.SUCCESS;
+                } else return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
             });
         }
         var copy = heldItem.copy();
         copy.setCount(1);
         if(Printing.match(copy)!=null){
-            return onBlockEntityUse(world, pos, be -> {
+            return onBlockEntityUseItemOn(world, pos, be -> {
                 if (!player.getAbilities().instabuild) heldItem.shrink(1);
                 if (!be.getCopyTarget().isEmpty()) {
                     if(!player.getAbilities().instabuild && heldItem.isEmpty()){
@@ -89,10 +88,10 @@ public class PrinterBlock extends Block implements IWrenchable, IBE<PrinterBlock
                     }
                 }
                 be.setCopyTarget(copy);
-                return InteractionResult.SUCCESS;
+                return ItemInteractionResult.SUCCESS;
             });
         }
-        return InteractionResult.PASS;
+        return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
     }
 
     @Override
@@ -112,7 +111,7 @@ public class PrinterBlock extends Block implements IWrenchable, IBE<PrinterBlock
     }
 
     @Override
-    public boolean isPathfindable(BlockState state, BlockGetter reader, BlockPos pos, PathComputationType type) {
+    protected boolean isPathfindable(BlockState pState, PathComputationType pPathComputationType) {
         return false;
     }
 

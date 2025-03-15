@@ -6,8 +6,8 @@ import net.createmod.catnip.gui.element.ScreenElement;
 import net.createmod.catnip.theme.Color;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 
 /*
 MIT License
@@ -42,7 +42,7 @@ public class GuiTexture implements ScreenElement {
     public final int startX, startY;
 
     public GuiTexture(String modid, String location, int startX, int startY, int width, int height) {
-        this.location = new ResourceLocation(modid, "textures/gui/" + location + ".png");
+        this.location = ResourceLocation.fromNamespaceAndPath(modid, "textures/gui/" + location + ".png");
         this.width = width;
         this.height = height;
         this.startX = startX;

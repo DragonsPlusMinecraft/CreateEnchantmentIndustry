@@ -1,25 +1,26 @@
 package plus.dragons.createenchantmentindustry.foundation.config;
 
-import net.minecraftforge.common.ForgeConfigSpec;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.ModLoadingContext;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.config.ModConfig;
-import net.minecraftforge.fml.event.config.ModConfigEvent;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.ModContainer;
+import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.fml.config.ModConfig;
+import net.neoforged.fml.event.config.ModConfigEvent;
+import net.neoforged.neoforge.common.ModConfigSpec;
 import org.apache.commons.lang3.tuple.Pair;
 
-@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
+@EventBusSubscriber(bus = EventBusSubscriber.Bus.MOD)
 public class CeiConfigs {
 
     public static CeiServerConfig SERVER;
-    public static ForgeConfigSpec SERVER_SPEC;
+    public static ModConfigSpec SERVER_SPEC;
 
-    public static void register(ModLoadingContext context) {
-        Pair<CeiServerConfig, ForgeConfigSpec> serverConfigPair = new ForgeConfigSpec.Builder().configure(builder -> {
+    public static void register(ModContainer context) {
+        final Pair<CeiServerConfig, ModConfigSpec> serverConfigPair = new ModConfigSpec.Builder().configure(builder -> {
             CeiServerConfig config = new CeiServerConfig();
             config.registerAll(builder);
             return config;
         });
+
         SERVER = serverConfigPair.getKey();
         SERVER_SPEC = serverConfigPair.getValue();
         context.registerConfig(ModConfig.Type.SERVER, SERVER_SPEC);

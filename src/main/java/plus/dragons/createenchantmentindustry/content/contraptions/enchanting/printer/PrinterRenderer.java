@@ -11,7 +11,7 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.FluidStack;
 import plus.dragons.createenchantmentindustry.entry.CeiBlockPartials;
 
 public class PrinterRenderer extends SmartBlockEntityRenderer<PrinterBlockEntity> {

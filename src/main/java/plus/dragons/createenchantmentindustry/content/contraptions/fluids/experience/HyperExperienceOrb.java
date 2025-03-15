@@ -2,13 +2,15 @@ package plus.dragons.createenchantmentindustry.content.contraptions.fluids.exper
 
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
+import net.minecraft.network.protocol.game.ClientboundAddExperienceOrbPacket;
+import net.minecraft.server.level.ServerEntity;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ExperienceOrb;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.entity.player.PlayerXpEvent;
-import net.minecraftforge.network.NetworkHooks;
+import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.event.entity.player.PlayerXpEvent;
 import plus.dragons.createenchantmentindustry.entry.CeiEntityTypes;
 import plus.dragons.createenchantmentindustry.entry.CeiFluids;
 
@@ -38,13 +40,13 @@ public class HyperExperienceOrb extends ExperienceOrb {
     
     @Override
     public void playerTouch(Player player) {
-        if (!this.level().isClientSide) {
+        if (player instanceof ServerPlayer serverplayer) {
             if (player.takeXpDelay == 0) {
-                if (MinecraftForge.EVENT_BUS.post(new PlayerXpEvent.PickupXp(player, this)))
+                if (NeoForge.EVENT_BUS.post(new PlayerXpEvent.PickupXp(player, this)).isCanceled())
                     return;
                 player.takeXpDelay = 2;
                 player.take(this, 1);
-                int i = this.repairPlayerItems(player, this.value);
+                int i = this.repairPlayerItems(serverplayer, this.value);
                 if (i > 0) {
                     player.giveExperiencePoints(i);
                     applyPlayerEffects(player, i);
@@ -82,10 +84,4 @@ public class HyperExperienceOrb extends ExperienceOrb {
             return value >= 3 ? 1 : 0;
         }
     }
-    
-    @Override
-    public Packet<ClientGamePacketListener> getAddEntityPacket() {
-        return NetworkHooks.getEntitySpawningPacket(this);
-    }
-    
 }

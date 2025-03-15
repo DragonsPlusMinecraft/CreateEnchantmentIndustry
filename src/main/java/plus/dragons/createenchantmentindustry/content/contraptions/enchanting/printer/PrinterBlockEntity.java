@@ -12,6 +12,8 @@ import net.createmod.catnip.math.VecHelper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
@@ -26,20 +28,19 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
-import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.fluids.FluidStack;
+import net.neoforged.neoforge.capabilities.Capabilities;
+import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
+import net.neoforged.neoforge.fluids.FluidStack;
 import org.antlr.v4.runtime.misc.NotNull;
 import plus.dragons.createenchantmentindustry.content.contraptions.fluids.FilteringFluidTankBehaviour;
 import plus.dragons.createenchantmentindustry.content.contraptions.fluids.experience.ExperienceFluid;
+import plus.dragons.createenchantmentindustry.entry.CeiBlockEntities;
 import plus.dragons.createenchantmentindustry.entry.CeiTags;
 import plus.dragons.createenchantmentindustry.foundation.advancement.CeiAdvancements;
 import plus.dragons.createenchantmentindustry.foundation.advancement.CeiTriggers;
 import plus.dragons.createenchantmentindustry.foundation.config.CeiConfigs;
 import plus.dragons.createenchantmentindustry.foundation.mixin.dragonLibLegacy.AdvancementBehaviourAccessor;
 
-import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -58,13 +59,27 @@ public class PrinterBlockEntity extends SmartBlockEntity implements IHaveGoggleI
     public PrintEntry printEntry;
     boolean sendParticles;
 
-    LazyOptional<PrinterTargetItemHandler> itemHandler = LazyOptional.of(()->new PrinterTargetItemHandler(this));
+    PrinterTargetItemHandler itemHandler = new PrinterTargetItemHandler(this);
 
     public PrinterBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
         processingTicks = -1;
         copyTarget = null;
         tooExpensive = false;
+    }
+
+    public static void registerCapabilities(RegisterCapabilitiesEvent event) {
+        event.registerBlockEntity(
+                Capabilities.FluidHandler.BLOCK,
+                CeiBlockEntities.PRINTER.get(),
+                (be, context) -> context != Direction.DOWN ? be.tank.getCapability() : null
+        );
+
+        event.registerBlockEntity(
+                Capabilities.ItemHandler.BLOCK,
+                CeiBlockEntities.PRINTER.get(),
+                (be, context) -> be.itemHandler
+        );
     }
 
     @Override
@@ -179,7 +194,7 @@ public class PrinterBlockEntity extends SmartBlockEntity implements IHaveGoggleI
         if (!level.isClientSide()) {
             if (item.is(Items.WRITTEN_BOOK)) {
                 award(CeiAdvancements.COPIABLE_MASTERPIECE.asCreateAdvancement());
-                if (item.getOrCreateTag().getInt("generation") == 3)
+                if (item.get(DataComponents.WRITTEN_BOOK_CONTENT).generation() == 3)
                     award(CeiAdvancements.RELIC_RESTORATION.asCreateAdvancement());
             } else if(item.is(Items.ENCHANTED_BOOK))
                 award(CeiAdvancements.COPIABLE_MYSTERY.asCreateAdvancement());
@@ -231,12 +246,12 @@ public class PrinterBlockEntity extends SmartBlockEntity implements IHaveGoggleI
     }
 
     @Override
-    protected void write(CompoundTag compoundTag, boolean clientPacket) {
-        super.write(compoundTag, clientPacket);
+    protected void write(CompoundTag compoundTag, HolderLookup.Provider registries, boolean clientPacket) {
+        super.write(compoundTag, registries, clientPacket);
         compoundTag.putInt("ProcessingTicks", processingTicks);
         compoundTag.putBoolean("tooExpensive", tooExpensive);
         if (copyTarget != null)
-            compoundTag.put("copyTarget", copyTarget.serializeNBT());
+            compoundTag.put("copyTarget", copyTarget.save(registries));
         if (sendParticles && clientPacket) {
             compoundTag.putBoolean("SpawnParticles", true);
             sendParticles = false;
@@ -244,19 +259,19 @@ public class PrinterBlockEntity extends SmartBlockEntity implements IHaveGoggleI
     }
 
     @Override
-    public void writeSafe(CompoundTag tag) {
-        super.writeSafe(tag);
+    public void writeSafe(CompoundTag tag, HolderLookup.Provider registries) {
+        super.writeSafe(tag, registries);
         tag.putBoolean("tooExpensive", tooExpensive);
     }
 
     @Override
-    protected void read(CompoundTag compoundTag, boolean clientPacket) {
-        super.read(compoundTag, clientPacket);
+    protected void read(CompoundTag compoundTag, HolderLookup.Provider registries, boolean clientPacket) {
+        super.read(compoundTag, registries, clientPacket);
         copyTarget = null;
         processingTicks = compoundTag.getInt("ProcessingTicks");
         tooExpensive = compoundTag.getBoolean("tooExpensive");
         if (compoundTag.contains("copyTarget")){
-            copyTarget = ItemStack.of(compoundTag.getCompound("copyTarget"));
+            copyTarget = ItemStack.parseOptional(registries, compoundTag.getCompound("copyTarget"));
             matchPrintEntry(copyTarget);
         }
         if (!clientPacket)
@@ -269,18 +284,7 @@ public class PrinterBlockEntity extends SmartBlockEntity implements IHaveGoggleI
     @Override
     public void invalidate() {
         super.invalidate();
-        this.itemHandler.invalidate();
-    }
-
-    @Override
-    @NotNull
-    public <T> LazyOptional<T> getCapability(Capability<T> cap, @Nullable Direction side) {
-        if (cap == ForgeCapabilities.FLUID_HANDLER && side != Direction.DOWN)
-            return tank.getCapability()
-                    .cast();
-        else if(cap == ForgeCapabilities.ITEM_HANDLER)
-            return itemHandler.cast();
-        return super.getCapability(cap, side);
+        invalidateCapabilities();
     }
 
     @Override
@@ -298,7 +302,7 @@ public class PrinterBlockEntity extends SmartBlockEntity implements IHaveGoggleI
         } else {
             printEntry.addToGoggleTooltip(tooltip,isPlayerSneaking,copyTarget);
         }
-        containedFluidTooltip(tooltip, isPlayerSneaking, getCapability(ForgeCapabilities.FLUID_HANDLER));
+        containedFluidTooltip(tooltip, isPlayerSneaking, level.getCapability(Capabilities.FluidHandler.BLOCK, worldPosition, null));
         return true;
     }
 

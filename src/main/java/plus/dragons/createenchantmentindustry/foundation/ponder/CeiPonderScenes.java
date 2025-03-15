@@ -11,7 +11,7 @@ import plus.dragons.createenchantmentindustry.entry.CeiItems;
 public class CeiPonderScenes {
 
     public static void register(PonderSceneRegistrationHelper<ResourceLocation> helper) {
-        PonderSceneRegistrationHelper<ItemProviderEntry<?>> HELPER = helper.withKeyFunction(RegistryEntry::getId);
+        PonderSceneRegistrationHelper<ItemProviderEntry<?, ?>> HELPER = helper.withKeyFunction(RegistryEntry::getId);
 
         HELPER.forComponents(CeiBlocks.DISENCHANTER)
                 .addStoryBoard("disenchant", EnchantmentScenes::disenchant, CeiPonderTags.EXPERIENCE);

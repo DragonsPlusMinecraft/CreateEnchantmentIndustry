@@ -4,6 +4,7 @@ import com.simibubi.create.content.redstone.displayLink.DisplayLinkContext;
 import com.simibubi.create.content.redstone.displayLink.source.SingleLineDisplaySource;
 import com.simibubi.create.content.redstone.displayLink.target.DisplayTargetStats;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.world.item.enchantment.Enchantment;
 import plus.dragons.createenchantmentindustry.EnchantmentIndustry;
 
 public class TargetEnchantmentDisplaySource extends SingleLineDisplaySource {
@@ -14,7 +15,7 @@ public class TargetEnchantmentDisplaySource extends SingleLineDisplaySource {
         EnchantmentEntry entry = Enchanting.getTargetEnchantment(blazeEnchanter.targetItem, blazeEnchanter.hyper());
         if(entry == null || !entry.valid()){
             return EnchantmentIndustry.LANG.translate("gui.goggles.blaze_enchanter.invalid_target").component();
-        } else return (MutableComponent) entry.getFirst().getFullname(entry.getSecond());
+        } else return (MutableComponent) Enchantment.getFullname(entry.getEnchantmentHolder(), entry.getSecond());
     }
 
     @Override

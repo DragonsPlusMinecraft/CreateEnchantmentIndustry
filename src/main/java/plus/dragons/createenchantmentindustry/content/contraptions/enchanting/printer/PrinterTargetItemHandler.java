@@ -1,7 +1,7 @@
 package plus.dragons.createenchantmentindustry.content.contraptions.enchanting.printer;
 
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.items.IItemHandler;
+import net.neoforged.neoforge.items.IItemHandler;
 import org.antlr.v4.runtime.misc.NotNull;
 
 public class PrinterTargetItemHandler implements IItemHandler {

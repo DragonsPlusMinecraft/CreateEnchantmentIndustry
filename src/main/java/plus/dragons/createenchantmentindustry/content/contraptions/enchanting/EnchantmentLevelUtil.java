@@ -1,7 +1,7 @@
 package plus.dragons.createenchantmentindustry.content.contraptions.enchanting;
 
 import net.minecraft.world.item.enchantment.Enchantment;
-import net.minecraftforge.fml.util.ObfuscationReflectionHelper;
+import net.neoforged.fml.util.ObfuscationReflectionHelper;
 import plus.dragons.createenchantmentindustry.EnchantmentIndustry;
 
 import java.lang.invoke.MethodHandle;
