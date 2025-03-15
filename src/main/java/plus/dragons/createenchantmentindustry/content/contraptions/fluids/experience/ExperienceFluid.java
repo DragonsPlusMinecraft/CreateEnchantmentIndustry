@@ -36,12 +36,12 @@ public class ExperienceFluid extends VirtualFluid {
     public void awardOrDrop(@Nullable ServerPlayer player, ServerLevel level, Vec3 pos, Vec3 speed, int amount) {
         var orb = this.convertToOrb(level, pos.x, pos.y, pos.z, amount);
         if (player == null || NeoForge.EVENT_BUS.post(new PlayerXpEvent.PickupXp(player, orb)).isCanceled()) {
-            if (!ExperienceOrb.tryMergeToExisting(level, pos, orb.value)) { //TODO: AT
+            if (!ExperienceOrb.tryMergeToExisting(level, pos, orb.value)) {
                 orb.setDeltaMovement(speed);
                 level.addFreshEntity(orb);
             }
         } else {
-            int left = orb.repairPlayerItems(player, orb.value); //TODO: AT
+            int left = orb.repairPlayerItems(player, orb.value);
             if (left > 0) {
                 player.giveExperiencePoints(left);
                 this.applyAdditionalEffects(player, left);

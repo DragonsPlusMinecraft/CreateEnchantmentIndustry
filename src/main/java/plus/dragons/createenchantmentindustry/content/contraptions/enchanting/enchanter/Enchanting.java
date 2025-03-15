@@ -45,34 +45,22 @@ public class Enchanting {
         var entry = getTargetEnchantment(targetItem, hyper);
         if (entry == null || !entry.valid())
             return null;
-        var enchantment = entry.getFirst();
 
         ItemStack toCheck = itemStack.copy();
         var modified = EnchantmentHelper.getEnchantmentsForCrafting(toCheck);
 
-        //TODO
-        System.out.println();
-        System.out.println(enchantment);
-        System.out.println(modified);
-        System.out.println(modified.entrySet());
-        System.out.println();
-
-        return null;
-        /*if (modified.containsKey(enchantment) && modified.get(enchantment) >= entry.getSecond()) {
+        if (modified.keySet().contains(entry.getEnchantmentHolder()) &&
+                modified.getLevel(entry.getEnchantmentHolder()) >= entry.getSecond()) {
             return null;
         }
 
-        // If the item already has the enchantment remove it to pass the checks
-        modified.remove(enchantment);
-        EnchantmentHelper.setEnchantments(modified, toCheck);
-
-        if (!enchantment.canEnchant(toCheck))
+        if (!toCheck.supportsEnchantment(entry.getEnchantmentHolder()))
             return null;
-        for (var e : modified.entrySet()) {
-            if (!e.getKey().isCompatibleWith(enchantment))
-                return null;
-        }
-        return entry;*/
+
+        if (!EnchantmentHelper.isEnchantmentCompatible(modified.keySet(), entry.getEnchantmentHolder()))
+            return null;
+
+        return entry;
     }
 
     public static void enchantItem(ItemStack itemStack, EnchantmentEntry enchantment) {
