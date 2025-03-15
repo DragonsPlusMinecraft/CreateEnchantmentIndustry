@@ -1,7 +1,7 @@
 modLoader="javafml"
 loaderVersion="[1,)"
 license="MIT"
-issueTrackerURL="${issues_url}"
+issueTrackerURL="https://github.com/DragonsPlusMinecraft/CreateEnchantmentIndustry/issues"
 logoFile="pack.png"
 logoBlur=false
 

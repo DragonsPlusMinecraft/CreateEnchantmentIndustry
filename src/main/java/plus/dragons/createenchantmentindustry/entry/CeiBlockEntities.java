@@ -1,5 +1,6 @@
 package plus.dragons.createenchantmentindustry.entry;
 
+import com.simibubi.create.foundation.block.IBE;
 import com.tterrag.registrate.util.entry.BlockEntityEntry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -52,18 +53,30 @@ public class CeiBlockEntities {
         PrinterBlockEntity.registerCapabilities(event);
         BlazeEnchanterBlockEntity.registerCapabilities(event);
 
-        registerOptional(event, AbstractFurnaceBlockEntity.class, (be, side) -> new FurnaceExpExtractor(be.recipesUsed, be));
+        registerOptional(event, AbstractFurnaceBlockEntity.class, (be, side) -> {
+            if (side != null && !be.isRemoved())
+                return new FurnaceExpExtractor(be);
+            return null;
+        });
     }
 
     public static <BE extends BlockEntity> void registerOptional(RegisterCapabilitiesEvent e, Class<BE> beClass, ICapabilityProvider<BE, Direction, IFluidHandler> provider) {
         for (BlockEntityType<?> beType : BuiltInRegistries.BLOCK_ENTITY_TYPE) {
             final Optional<Block> optState = beType.getValidBlocks().stream().findAny();
-            if(optState.isEmpty()) continue;
-            BlockState blockState = optState.get().defaultBlockState();
-            if(beClass.isInstance(beType.create(BlockPos.ZERO, blockState))) {
+            if (optState.isEmpty()) continue;
+            final Block block = optState.get();
+            if (block instanceof IBE<?> ibe) {
+                System.out.println("IBE found: " + block.getClass());
+                if (beClass.isInstance(ibe.getBlockEntityClass())) {
+                    //noinspection unchecked
+                    e.registerBlockEntity(Capabilities.FluidHandler.BLOCK, (BlockEntityType<? extends BE>) beType, provider);
+                }
+                return;
+            }
+            final BlockState blockState = block.defaultBlockState();
+            if (beClass.isInstance(beType.create(BlockPos.ZERO, blockState))) {
                 //noinspection unchecked
-                e.registerBlockEntity(Capabilities.FluidHandler.BLOCK, (BlockEntityType<? extends BE>) beType,
-                        (be, side) -> provider.getCapability(beClass.cast(be), side));
+                e.registerBlockEntity(Capabilities.FluidHandler.BLOCK, (BlockEntityType<? extends BE>) beType, provider);
             }
         }
     }

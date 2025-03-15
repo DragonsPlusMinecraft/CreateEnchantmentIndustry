@@ -19,7 +19,6 @@ import mezz.jei.api.registration.IRecipeRegistration;
 import mezz.jei.api.runtime.IIngredientManager;
 import mezz.jei.api.runtime.IJeiRuntime;
 import net.createmod.catnip.config.ConfigBase;
-import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Recipe;
@@ -49,9 +48,9 @@ import java.util.function.Supplier;
 import static com.simibubi.create.compat.jei.CreateJEI.*;
 import static plus.dragons.createenchantmentindustry.EnchantmentIndustry.LANG;
 
-@MethodsReturnNonnullByDefault
-@ParametersAreNonnullByDefault
 @JeiPlugin
+@SuppressWarnings("unused")
+@ParametersAreNonnullByDefault
 public class CeiJEIPlugin implements IModPlugin {
     private static final ResourceLocation ID = EnchantmentIndustry.genRL("jei_plugin");
 
@@ -65,7 +64,7 @@ public class CeiJEIPlugin implements IModPlugin {
 
     @Override
     public void registerCategories(IRecipeCategoryRegistration registration) {
-        loadCategories(registration);
+        loadCategories();
         registration.addRecipeCategories(allCategories.toArray(IRecipeCategory[]::new));
     }
 
@@ -92,15 +91,13 @@ public class CeiJEIPlugin implements IModPlugin {
         return new RecipeCategoryBuilder<>(cls);
     }
 
-    private void loadCategories(IRecipeCategoryRegistration registration) {
+    private void loadCategories() {
         allCategories.clear();
-        allCategories.add(
-                builder(DisenchantRecipe.class)
-                        .addTypedRecipes(CeiRecipeTypes.DISENCHANTING)
-                        .catalyst(CeiBlocks.DISENCHANTER::get)
-                        .emptyBackground(177, 50)
-                        .build("disenchanting", DisenchantingCategory::new)
-        );
+        builder(DisenchantRecipe.class)
+                .addTypedRecipes(CeiRecipeTypes.DISENCHANTING)
+                .catalyst(CeiBlocks.DISENCHANTER::get)
+                .emptyBackground(177, 50)
+                .build("disenchanting", DisenchantingCategory::new);
     }
 
     private class RecipeCategoryBuilder<T extends Recipe<? extends RecipeInput>> {

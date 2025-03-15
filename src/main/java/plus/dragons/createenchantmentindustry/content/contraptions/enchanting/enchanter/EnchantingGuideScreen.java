@@ -61,7 +61,8 @@ public class EnchantingGuideScreen extends AbstractSimiContainerScreen<Enchantin
                 new Rect2i(guideX + ENCHANTING_GUIDE.width, guideY + ENCHANTING_GUIDE.height - 48, 48, 48),
                 new Rect2i(guideX, guideY, imageWidth, imageHeight)
         );
-        index = menu.contentHolder.get(CeiComponents.ENCHANTING_INDEX);
+        final Integer i = menu.contentHolder.get(CeiComponents.ENCHANTING_INDEX);
+        index = i == null ? 0 : i;
         scrollInput = new SelectionScrollInput(guideX + 40, guideY + 22, 120, 16);
         scrollInputLabel = new ComponentLabel(guideX + 43, guideY + 26, Component.empty()).withShadow();
         scrollInput.calling(index -> this.index = index).writingTo(scrollInputLabel);

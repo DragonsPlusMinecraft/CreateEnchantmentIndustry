@@ -1,12 +1,15 @@
 package plus.dragons.createenchantmentindustry;
 
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.ModLoadingContext;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.registries.RegisterEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import plus.dragons.createenchantmentindustry.dragonLibLegacy.advancement.AdvancementFactory;
@@ -28,17 +31,19 @@ public class EnchantmentIndustry {
     public static final AdvancementFactory ADVANCEMENT_FACTORY = AdvancementFactory.create(NAME, ID,
         CeiAdvancements::register);
 
-    public EnchantmentIndustry(IEventBus modEventBus) {
+    public EnchantmentIndustry(IEventBus modEventBus, ModContainer modContainer) {
         IEventBus forgeEventBus = NeoForge.EVENT_BUS;
         
-        CeiConfigs.register(ModLoadingContext.get().getActiveContainer());
-        
+        CeiConfigs.register(modContainer);
+
+        REGISTRATE.registerEventListeners(modEventBus);
         registerEntries(modEventBus);
         modEventBus.register(this);
         registerForgeEvents(forgeEventBus);
     }
 
     private void registerEntries(IEventBus modEventBus) {
+        CeiCreativeModeTab.register(modEventBus);
         CeiBlocks.register();
         CeiBlockEntities.register();
         modEventBus.addListener(CeiBlockEntities::registerCapabilities);
@@ -47,21 +52,25 @@ public class EnchantmentIndustry {
         CeiFluids.register();
         CeiComponents.register(modEventBus);
         CeiItems.register();
+        modEventBus.addListener(EnchantmentIndustry::onRegister);
         CeiRecipeTypes.register(modEventBus);
         CeiTags.register();
-        CeiCreativeModeTab.register(modEventBus);
         CeiDisplaySources.register();
-        REGISTRATE.registerEventListeners(modEventBus);
     }
 
     private void registerForgeEvents(IEventBus forgeEventBus) {
         forgeEventBus.addListener(CeiFluids::handleInkEffect);
     }
+
+    public static void onRegister(final RegisterEvent event) {
+        if (event.getRegistry() == BuiltInRegistries.TRIGGER_TYPES) {
+            CeiAdvancements.register();
+        }
+    }
     
     @SubscribeEvent
     public void setup(final FMLCommonSetupEvent event) {
         event.enqueueWork(() -> {
-            CeiAdvancements.register();
             CeiPackets.register();
             CeiFluids.registerLavaReaction();
 //            ApotheosisCompat.addPotionMixingRecipes();

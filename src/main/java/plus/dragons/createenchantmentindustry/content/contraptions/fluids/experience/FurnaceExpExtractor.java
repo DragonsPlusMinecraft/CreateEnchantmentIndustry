@@ -18,7 +18,7 @@ import java.util.ArrayList;
 public class FurnaceExpExtractor implements IFluidHandler {
     final AbstractFurnaceBlockEntity BE;
 
-    public FurnaceExpExtractor(Object2IntOpenHashMap<ResourceLocation> recipesUsed, AbstractFurnaceBlockEntity BE) {
+    public FurnaceExpExtractor(AbstractFurnaceBlockEntity BE) {
         this.BE = BE;
     }
 
