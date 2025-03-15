@@ -81,6 +81,16 @@ public class DisenchanterBlockEntity extends SmartBlockEntity implements IHaveGo
 					return null;
 				}
 		);
+
+        event.registerBlockEntity(
+                Capabilities.FluidHandler.BLOCK,
+                CeiBlockEntities.DISENCHANTER.get(),
+                (be, context) -> {
+                    if (context != Direction.UP)
+                        return be.internalTank.getCapability();
+                    return null;
+                }
+        );
     }
 
     @Override

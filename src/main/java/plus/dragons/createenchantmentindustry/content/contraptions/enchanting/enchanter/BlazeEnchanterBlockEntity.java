@@ -102,16 +102,24 @@ public class BlazeEnchanterBlockEntity extends SmartBlockEntity implements IHave
                     return null;
                 }
         );
+
+        event.registerBlockEntity(
+                Capabilities.FluidHandler.BLOCK,
+                CeiBlockEntities.BLAZE_ENCHANTER.get(),
+                (be, context) -> {
+                    if (context == Direction.DOWN)
+                        return be.internalTank.getCapability();
+                    return null;
+                }
+        );
     }
 
     @Override
-    @SuppressWarnings("deprecation") //Fluid Tags are still useful for mod interaction
     public void addBehaviours(List<BlockEntityBehaviour> behaviours) {
         behaviours.add(new DirectBeltInputBehaviour(this).allowingBeltFunnels()
                 .setInsertionHandler(this::tryInsertingFromSide));
         behaviours.add(internalTank = FilteringFluidTankBehaviour
-                .single(fluidStack -> fluidStack.getFluid().is(CeiTags.FluidTag.BLAZE_ENCHANTER_INPUT.tag),
-                    this, CeiConfigs.SERVER.blazeEnchanterTankCapacity.get())
+                .single(CeiFluids::isExperienceFluid, this, CeiConfigs.SERVER.blazeEnchanterTankCapacity.get())
                 .whenFluidUpdates(() -> {
                     var fluid = internalTank.getPrimaryHandler().getFluid().getFluid();
                     if (CeiFluids.EXPERIENCE.is(fluid))

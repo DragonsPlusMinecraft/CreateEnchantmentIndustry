@@ -14,11 +14,11 @@ public class EnchantmentLevelUtil {
     static {
         Method method;
         try {
-            Class<?> EnchHooks = Class.forName("dev.shadowsoffire.apotheosis.ench.asm.EnchHooks");
+            Class<?> EnchHooks = Class.forName("dev.shadowsoffire.apothic_enchanting.asm.EnchHooks");
             method = EnchHooks.getMethod("getMaxLevel", Enchantment.class);
         } catch (Throwable exception) {
             EnchantmentIndustry.LOGGER.debug("Failed to load EnchHooks from Apotheosis, fall back to vanilla method...");
-            method = ObfuscationReflectionHelper.findMethod(Enchantment.class, "m_6586_");
+            method = ObfuscationReflectionHelper.findMethod(Enchantment.class, "getMaxLevel");
         }
         try {
             method.setAccessible(true);

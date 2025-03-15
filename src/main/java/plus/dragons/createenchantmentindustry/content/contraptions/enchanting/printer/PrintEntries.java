@@ -29,25 +29,25 @@ import java.util.Map;
 import static plus.dragons.createenchantmentindustry.EnchantmentIndustry.LANG;
 
 public class PrintEntries {
-    public static Map<ResourceLocation,PrintEntry> ENTRIES = new HashMap<>();
+    public static Map<ResourceLocation, PrintEntry> ENTRIES = new HashMap<>();
 
-    static{
+    static {
         var e1 = new EnchantedBook();
         var e2 = new WrittenBook();
         var e3 = new NameTag();
         var e4 = new Schedule();
         var e5 = new ClipBoard();
-        ENTRIES.put(e1.id(),e1);
-        ENTRIES.put(e2.id(),e2);
-        ENTRIES.put(e3.id(),e3);
-        ENTRIES.put(e4.id(),e4);
-        ENTRIES.put(e5.id(),e5);
+        ENTRIES.put(e1.id(), e1);
+        ENTRIES.put(e2.id(), e2);
+        ENTRIES.put(e3.id(), e3);
+        ENTRIES.put(e4.id(), e4);
+        ENTRIES.put(e5.id(), e5);
 
         var event = new PrintEntryRegisterEvent();
         NeoForge.EVENT_BUS.post(event);
     }
 
-    static class EnchantedBook implements PrintEntry{
+    static class EnchantedBook implements PrintEntry {
 
         @Override
         public ResourceLocation id() {
@@ -67,9 +67,9 @@ public class PrintEntries {
         @Override
         public int requiredInkAmount(ItemStack target) {
             return (int) (getExperienceFromItem(target) *
-                    (requiredInkType(target).isSame(CeiFluids.HYPER_EXPERIENCE.get())?
-                    CeiConfigs.SERVER.copyEnchantedBookWithHyperExperienceCostCoefficient.get():
-                    CeiConfigs.SERVER.copyEnchantedBookCostCoefficient.get()));
+                    (requiredInkType(target).isSame(CeiFluids.HYPER_EXPERIENCE.get()) ?
+                            CeiConfigs.SERVER.copyEnchantedBookWithHyperExperienceCostCoefficient.get() :
+                            CeiConfigs.SERVER.copyEnchantedBookCostCoefficient.get()));
         }
 
         @Override
@@ -77,14 +77,14 @@ public class PrintEntries {
             return EnchantmentHelper.getEnchantmentsForCrafting(target)
                     .entrySet()
                     .stream()
-                    .map(entry -> entry.getValue()>EnchantmentLevelUtil.getMaxLevel(entry.getKey().value()))
-                    .reduce(false, (a,b)->a||b) ? CeiFluids.HYPER_EXPERIENCE.get(): CeiFluids.EXPERIENCE.get();
+                    .map(entry -> entry.getIntValue() > EnchantmentLevelUtil.getMaxLevel(entry.getKey().value()))
+                    .reduce(false, (a, b) -> a || b) ? CeiFluids.HYPER_EXPERIENCE.get() : CeiFluids.EXPERIENCE.get();
         }
 
         @Override
         public boolean isTooExpensive(ItemStack target, int limit) {
-            return (int) (getExperienceFromItem(target) * (requiredInkType(target).isSame(CeiFluids.HYPER_EXPERIENCE.get())?
-                    CeiConfigs.SERVER.copyEnchantedBookWithHyperExperienceCostCoefficient.get():
+            return (int) (getExperienceFromItem(target) * (requiredInkType(target).isSame(CeiFluids.HYPER_EXPERIENCE.get()) ?
+                    CeiConfigs.SERVER.copyEnchantedBookWithHyperExperienceCostCoefficient.get() :
                     CeiConfigs.SERVER.copyEnchantedBookCostCoefficient.get())) > limit;
         }
 
@@ -97,18 +97,18 @@ public class PrintEntries {
                 tooltip.add(Component.literal("     ").append(LANG.translate(
                         "gui.goggles.too_expensive").component()
                 ).withStyle(ChatFormatting.RED));
-            else{
+            else {
                 var hyper = EnchantmentHelper.getEnchantmentsForCrafting(target)
                         .entrySet()
                         .stream()
-                        .map(entry -> entry.getValue()>EnchantmentLevelUtil.getMaxLevel(entry.getKey().value()))
-                        .reduce(false, (a,a2)->a||a2);
+                        .map(entry -> entry.getValue() > EnchantmentLevelUtil.getMaxLevel(entry.getKey().value()))
+                        .reduce(false, (a, a2) -> a || a2);
                 tooltip.add(Component.literal("     ").append(LANG.translate(
-                        hyper ? "gui.goggles.hyper_xp_consumption": "gui.goggles.xp_consumption",
-                        String.valueOf((int) (getExperienceFromItem(target) * (requiredInkType(target).isSame(CeiFluids.HYPER_EXPERIENCE.get())?
-                                CeiConfigs.SERVER.copyEnchantedBookWithHyperExperienceCostCoefficient.get():
+                        hyper ? "gui.goggles.hyper_xp_consumption" : "gui.goggles.xp_consumption",
+                        String.valueOf((int) (getExperienceFromItem(target) * (requiredInkType(target).isSame(CeiFluids.HYPER_EXPERIENCE.get()) ?
+                                CeiConfigs.SERVER.copyEnchantedBookWithHyperExperienceCostCoefficient.get() :
                                 CeiConfigs.SERVER.copyEnchantedBookCostCoefficient.get())))).component()
-                ).withStyle(hyper? ChatFormatting.AQUA: ChatFormatting.GREEN));
+                ).withStyle(hyper ? ChatFormatting.AQUA : ChatFormatting.GREEN));
             }
             var map = EnchantmentHelper.getEnchantmentsForCrafting(target);
             for (var e : map.entrySet()) {
@@ -119,7 +119,7 @@ public class PrintEntries {
 
         @Override
         public MutableComponent getDisplaySourceContent(ItemStack target) {
-            var ret = LANG.itemName(target).text( " / ");
+            var ret = LANG.itemName(target).text(" / ");
             var map = EnchantmentHelper.getEnchantmentsForCrafting(target);
             for (var e : map.entrySet()) {
                 Component name = Enchantment.getFullname(e.getKey(), e.getValue());
@@ -136,7 +136,8 @@ public class PrintEntries {
                     .reduce(0, Integer::sum);
         }
     }
-    static class WrittenBook implements PrintEntry{
+
+    static class WrittenBook implements PrintEntry {
 
         @Override
         public ResourceLocation id() {
@@ -169,11 +170,11 @@ public class PrintEntries {
             if (!CeiConfigs.SERVER.copyingWrittenBookAlwaysGetOriginalVersion.get()) {
                 var content = ret.get(DataComponents.WRITTEN_BOOK_CONTENT);
                 int generation = content.generation();
-				if (generation <= 1) {
+                if (generation <= 1) {
                     content = new WrittenBookContent(content.title(), content.author(), content.generation() + 1, content.pages(), content.resolved());
-					ret.set(DataComponents.WRITTEN_BOOK_CONTENT, content);
+                    ret.set(DataComponents.WRITTEN_BOOK_CONTENT, content);
                 }
-			}
+            }
             return ret;
         }
 
@@ -215,14 +216,14 @@ public class PrintEntries {
             var page = getPageCount(target);
             return LANG.builder()
                     .add(LANG.itemName(target))
-                    .text( " / ")
+                    .text(" / ")
                     .add(LANG.number(page)
                             .text(" ")
                             .add(page == 1 ? LANG.translate("generic.unit.page") : LANG.translate("generic.unit.pages"))).component();
         }
     }
 
-    static class NameTag implements PrintEntry{
+    static class NameTag implements PrintEntry {
 
         @Override
         public ResourceLocation id() {
@@ -285,7 +286,7 @@ public class PrintEntries {
         }
     }
 
-    static class Schedule implements PrintEntry{
+    static class Schedule implements PrintEntry {
 
         @Override
         public ResourceLocation id() {
@@ -339,7 +340,7 @@ public class PrintEntries {
         }
     }
 
-    static class ClipBoard implements PrintEntry{
+    static class ClipBoard implements PrintEntry {
 
         @Override
         public ResourceLocation id() {

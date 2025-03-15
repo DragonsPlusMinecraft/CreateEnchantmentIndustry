@@ -9,6 +9,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.block.Blocks;
 import net.neoforged.neoforge.event.tick.EntityTickEvent;
 import net.neoforged.neoforge.fluids.BaseFlowingFluid;
+import net.neoforged.neoforge.fluids.FluidStack;
 import plus.dragons.createenchantmentindustry.dragonLibLegacy.fluid.FluidLavaReaction;
 import plus.dragons.createenchantmentindustry.dragonLibLegacy.fluid.NoTintFluidType;
 import plus.dragons.createenchantmentindustry.EnchantmentIndustry;
@@ -74,6 +75,10 @@ public class CeiFluids {
             Blocks.BLACKSTONE.defaultBlockState(),
             Blocks.BLACKSTONE.defaultBlockState()
         );
+    }
+
+    public static boolean isExperienceFluid(FluidStack stack) {
+        return stack.getFluid().isSame(EXPERIENCE.get()) || stack.getFluid().isSame(HYPER_EXPERIENCE.get());
     }
 
 }

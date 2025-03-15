@@ -3,9 +3,6 @@ package plus.dragons.createenchantmentindustry.content.contraptions.enchanting.e
 import com.simibubi.create.content.processing.burner.BlazeBurnerBlock;
 import com.simibubi.create.content.processing.burner.BlazeBurnerBlockEntity;
 import com.simibubi.create.foundation.advancement.AdvancementBehaviour;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.NbtOps;
-import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
@@ -22,7 +19,9 @@ import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
+import net.neoforged.neoforge.server.ServerLifecycleHooks;
 import plus.dragons.createenchantmentindustry.entry.CeiBlocks;
+import plus.dragons.createenchantmentindustry.entry.CeiComponents;
 import plus.dragons.createenchantmentindustry.entry.CeiContainerTypes;
 import plus.dragons.createenchantmentindustry.entry.CeiItems;
 import plus.dragons.createenchantmentindustry.foundation.advancement.CeiAdvancements;
@@ -113,17 +112,21 @@ public class EnchantingGuideItem extends Item implements MenuProvider {
 
     @Nullable
     public static EnchantmentEntry getEnchantment(ItemStack itemStack) {
-        if (!EnchantmentHelper.canStoreEnchantments(itemStack)) return null;
+        var targetComponent = itemStack.get(CeiComponents.ENCHANTING_TARGET);
+        if (targetComponent == null) return null;
 
-        var enchants = EnchantmentHelper.getEnchantmentsForCrafting(itemStack);
+        var target = ItemStack.parseOptional(ServerLifecycleHooks.getCurrentServer().registryAccess(), targetComponent);
+
+        var enchants = EnchantmentHelper.getEnchantmentsForCrafting(target);
         if (enchants.isEmpty()) return null;
 
-        //get first available enchant
-        var set = enchants.entrySet();
-        if (set.isEmpty()) return null;
+        var index = itemStack.get(CeiComponents.ENCHANTING_INDEX);
+        if (index >= enchants.size()) index = 0;
 
-        var first = set.iterator().next();
-        if (first == null) return null;
-        return EnchantmentEntry.of(first.getKey(), first.getIntValue());
+        var iterator = enchants.entrySet().iterator();
+        for (int i = 0; i < index; i++) iterator.next();
+
+        var entry = iterator.next();
+        return EnchantmentEntry.of(entry.getKey(), entry.getIntValue());
     }
 }

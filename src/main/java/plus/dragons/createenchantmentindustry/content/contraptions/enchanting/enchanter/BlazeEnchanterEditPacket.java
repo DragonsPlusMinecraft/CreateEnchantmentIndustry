@@ -39,21 +39,8 @@ public class BlazeEnchanterEditPacket implements ServerboundPacketPayload {
         ItemStack target = blazeEnchanter.targetItem;
         target.set(CeiComponents.ENCHANTING_INDEX, index);
         target.set(CeiComponents.ENCHANTING_TARGET, (CompoundTag) itemStack.save(sender.level().registryAccess()));
-        //target.remove(); //TODO; blockpos
 
-        System.out.println("item components: ");
-        target.getComponents().forEach(component -> {
-            System.out.println("item component: " + component.toString());
-        });
-        System.out.println();
-
-//          original code
-//        CompoundTag tag = blazeEnchanter.targetItem.getOrCreateTag();
-//        tag.putInt("index", index);
-//        tag.put("target", itemStack.serializeNBT());
-//        tag.remove("blockPos");
-
-        if(blazeEnchanter.processingTicks > 5){
+        if (blazeEnchanter.processingTicks > 5) {
             blazeEnchanter.processingTicks = BlazeEnchanterBlockEntity.ENCHANTING_TIME;
         }
 
