@@ -2,10 +2,8 @@ package plus.dragons.createenchantmentindustry.content.contraptions.fluids.exper
 
 import com.google.common.util.concurrent.AtomicDouble;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
-import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.AbstractCookingRecipe;
-import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.level.block.entity.AbstractFurnaceBlockEntity;
 import net.neoforged.neoforge.fluids.FluidStack;

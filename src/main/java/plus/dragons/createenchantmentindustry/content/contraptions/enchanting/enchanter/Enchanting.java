@@ -1,6 +1,5 @@
 package plus.dragons.createenchantmentindustry.content.contraptions.enchanting.enchanter;
 
-import net.createmod.catnip.data.Pair;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
@@ -15,7 +14,6 @@ import plus.dragons.createenchantmentindustry.entry.CeiItems;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.function.Predicate;
 
 public class Enchanting {

@@ -29,12 +29,9 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.capabilities.Capabilities;
-import net.neoforged.neoforge.capabilities.CapabilityRegistry;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
-import net.neoforged.neoforge.items.ItemHandlerHelper;
-import org.antlr.v4.runtime.misc.NotNull;
 import plus.dragons.createenchantmentindustry.content.contraptions.enchanting.enchanter.Enchanting;
 import plus.dragons.createenchantmentindustry.content.contraptions.fluids.experience.ExperienceFluid;
 import plus.dragons.createenchantmentindustry.entry.CeiBlockEntities;
@@ -44,7 +41,6 @@ import plus.dragons.createenchantmentindustry.foundation.advancement.CeiTriggers
 import plus.dragons.createenchantmentindustry.foundation.config.CeiConfigs;
 import plus.dragons.createenchantmentindustry.foundation.mixin.dragonLibLegacy.AdvancementBehaviourAccessor;
 
-import javax.annotation.Nullable;
 import java.util.IdentityHashMap;
 import java.util.List;
 import java.util.Map;

@@ -2,21 +2,19 @@ package plus.dragons.createenchantmentindustry.dragonLibLegacy.advancement.crite
 
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
-import com.google.gson.JsonObject;
 import com.mojang.serialization.Codec;
 import net.createmod.catnip.nbt.NBTHelper;
-import net.minecraft.advancements.critereon.*;
+import net.minecraft.advancements.critereon.ContextAwarePredicate;
+import net.minecraft.advancements.critereon.MinMaxBounds;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.saveddata.SavedData;
 import net.minecraft.world.level.storage.DimensionDataStorage;
-import org.antlr.v4.runtime.misc.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;

@@ -1,7 +1,5 @@
 package plus.dragons.createenchantmentindustry.dragonLibLegacy.advancement.critereon;
 
-import net.minecraft.advancements.CriteriaTriggers;
-import net.minecraft.advancements.CriterionTrigger;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;

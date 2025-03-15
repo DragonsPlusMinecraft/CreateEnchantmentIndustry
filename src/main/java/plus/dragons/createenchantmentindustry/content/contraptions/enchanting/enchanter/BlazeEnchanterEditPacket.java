@@ -1,8 +1,6 @@
 package plus.dragons.createenchantmentindustry.content.contraptions.enchanting.enchanter;
 
-import io.netty.buffer.ByteBuf;
 import net.createmod.catnip.net.base.ServerboundPacketPayload;
-import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.RegistryFriendlyByteBuf;

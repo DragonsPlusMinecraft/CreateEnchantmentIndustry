@@ -7,7 +7,6 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.inventory.AnvilMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.ItemEnchantments;
 import net.minecraft.world.level.Level;
@@ -19,8 +18,6 @@ import plus.dragons.createenchantmentindustry.entry.CeiFluids;
 import plus.dragons.createenchantmentindustry.entry.CeiRecipeTypes;
 
 import javax.annotation.Nullable;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 public class Disenchanting {
 

@@ -1,8 +1,8 @@
 package plus.dragons.createenchantmentindustry.foundation.advancement;
 
+import plus.dragons.createenchantmentindustry.EnchantmentIndustry;
 import plus.dragons.createenchantmentindustry.dragonLibLegacy.advancement.critereon.AccumulativeTrigger;
 import plus.dragons.createenchantmentindustry.dragonLibLegacy.advancement.critereon.TriggerFactory;
-import plus.dragons.createenchantmentindustry.EnchantmentIndustry;
 
 import static plus.dragons.createenchantmentindustry.EnchantmentIndustry.ADVANCEMENT_FACTORY;
 

@@ -13,7 +13,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
 import plus.dragons.createenchantmentindustry.dragonLibLegacy.gui.ComponentLabel;
 import plus.dragons.createenchantmentindustry.entry.CeiComponents;
-import plus.dragons.createenchantmentindustry.entry.CeiPackets;
 
 import javax.annotation.Nullable;
 import java.util.Collections;

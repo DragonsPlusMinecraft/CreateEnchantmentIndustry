@@ -1,7 +1,6 @@
 package plus.dragons.createenchantmentindustry.dragonLibLegacy.advancement;
 
 import com.google.common.collect.Sets;
-import com.simibubi.create.foundation.advancement.CreateAdvancement;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.CachedOutput;

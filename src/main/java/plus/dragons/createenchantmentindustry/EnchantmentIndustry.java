@@ -16,8 +16,6 @@ import org.apache.logging.log4j.Logger;
 import plus.dragons.createenchantmentindustry.dragonLibLegacy.advancement.AdvancementFactory;
 import plus.dragons.createenchantmentindustry.dragonLibLegacy.init.SafeRegistrate;
 import plus.dragons.createenchantmentindustry.dragonLibLegacy.lang.Lang;
-//import plus.dragons.createenchantmentindustry.compat.apotheosis.ApotheosisCompat;
-//import plus.dragons.createenchantmentindustry.compat.quark.QuarkCompat;
 import plus.dragons.createenchantmentindustry.entry.*;
 import plus.dragons.createenchantmentindustry.foundation.advancement.CeiAdvancements;
 import plus.dragons.createenchantmentindustry.foundation.config.CeiConfigs;

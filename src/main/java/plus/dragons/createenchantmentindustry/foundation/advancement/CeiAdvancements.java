@@ -4,21 +4,16 @@ import com.simibubi.create.AllBlocks;
 import com.simibubi.create.AllItems;
 import com.simibubi.create.Create;
 import net.minecraft.advancements.AdvancementType;
-import net.minecraft.advancements.critereon.ContextAwarePredicate;
 import net.minecraft.advancements.critereon.InventoryChangeTrigger;
-import net.minecraft.advancements.critereon.MinMaxBounds;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.Enchantments;
 import plus.dragons.createenchantmentindustry.dragonLibLegacy.advancement.AdvancementHolder;
-import plus.dragons.createenchantmentindustry.dragonLibLegacy.advancement.critereon.AccumulativeTrigger;
 import plus.dragons.createenchantmentindustry.entry.CeiBlocks;
 import plus.dragons.createenchantmentindustry.entry.CeiFluids;
 import plus.dragons.createenchantmentindustry.entry.CeiItems;
-
-import java.util.Map;
 
 import static plus.dragons.createenchantmentindustry.EnchantmentIndustry.ADVANCEMENT_FACTORY;
 

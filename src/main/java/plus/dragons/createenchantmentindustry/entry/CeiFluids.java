@@ -10,11 +10,11 @@ import net.minecraft.world.level.block.Blocks;
 import net.neoforged.neoforge.event.tick.EntityTickEvent;
 import net.neoforged.neoforge.fluids.BaseFlowingFluid;
 import net.neoforged.neoforge.fluids.FluidStack;
-import plus.dragons.createenchantmentindustry.dragonLibLegacy.fluid.FluidLavaReaction;
-import plus.dragons.createenchantmentindustry.dragonLibLegacy.fluid.NoTintFluidType;
 import plus.dragons.createenchantmentindustry.EnchantmentIndustry;
 import plus.dragons.createenchantmentindustry.content.contraptions.fluids.experience.ExperienceFluid;
 import plus.dragons.createenchantmentindustry.content.contraptions.fluids.experience.HyperExperienceFluid;
+import plus.dragons.createenchantmentindustry.dragonLibLegacy.fluid.FluidLavaReaction;
+import plus.dragons.createenchantmentindustry.dragonLibLegacy.fluid.NoTintFluidType;
 
 import static plus.dragons.createenchantmentindustry.EnchantmentIndustry.REGISTRATE;
 

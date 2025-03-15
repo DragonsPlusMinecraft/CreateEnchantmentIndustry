@@ -10,7 +10,6 @@ import com.simibubi.create.foundation.blockEntity.behaviour.fluid.SmartFluidTank
 import com.simibubi.create.foundation.utility.BlockHelper;
 import net.createmod.catnip.animation.LerpedFloat;
 import net.createmod.catnip.data.Iterate;
-import net.createmod.catnip.data.Pair;
 import net.createmod.catnip.math.AngleHelper;
 import net.createmod.catnip.math.VecHelper;
 import net.minecraft.ChatFormatting;
@@ -43,11 +42,12 @@ import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.fluids.FluidStack;
-import net.neoforged.neoforge.items.ItemHandlerHelper;
-import org.antlr.v4.runtime.misc.NotNull;
 import plus.dragons.createenchantmentindustry.content.contraptions.fluids.FilteringFluidTankBehaviour;
 import plus.dragons.createenchantmentindustry.content.contraptions.fluids.experience.ExperienceFluid;
-import plus.dragons.createenchantmentindustry.entry.*;
+import plus.dragons.createenchantmentindustry.entry.CeiBlockEntities;
+import plus.dragons.createenchantmentindustry.entry.CeiContainerTypes;
+import plus.dragons.createenchantmentindustry.entry.CeiFluids;
+import plus.dragons.createenchantmentindustry.entry.CeiItems;
 import plus.dragons.createenchantmentindustry.foundation.advancement.CeiAdvancements;
 import plus.dragons.createenchantmentindustry.foundation.config.CeiConfigs;
 
