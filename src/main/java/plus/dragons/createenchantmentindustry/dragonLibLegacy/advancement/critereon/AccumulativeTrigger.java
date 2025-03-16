@@ -134,10 +134,6 @@ public class AccumulativeTrigger extends SimpleCriterionTrigger<AccumulativeTrig
             this.requirement = requirement;
         }
 
-        protected boolean test(@Nullable List<Supplier<Object>> suppliers) {
-            return false; //TODO
-        }
-
         public boolean matches(ResourceLocation resourceLocation, Player player, int change) {
             AccumulativeData data = get(player.level());
             data.change(resourceLocation, player.getUUID(), change);
