@@ -1,5 +1,6 @@
 package plus.dragons.createenchantmentindustry.dragonLibLegacy.advancement.critereon;
 
+import net.minecraft.advancements.critereon.SimpleCriterionTrigger;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
@@ -8,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TriggerFactory {
-    private final List<AbstractTrigger<?>> triggers = new ArrayList<>();
+    private final List<CriterionWithId<? extends SimpleCriterionTrigger.SimpleInstance>> triggers = new ArrayList<>();
     
     public SimpleTrigger simple(ResourceLocation resourceLocation) {
         return add(new SimpleTrigger(resourceLocation));
@@ -18,7 +19,7 @@ public class TriggerFactory {
         return add(new AccumulativeTrigger(resourceLocation));
     }
 
-    private <T extends AbstractTrigger<?>> T add(T instance) {
+    private <T extends CriterionWithId<? extends SimpleCriterionTrigger.SimpleInstance>> T add(T instance) {
         triggers.add(instance);
         return instance;
     }

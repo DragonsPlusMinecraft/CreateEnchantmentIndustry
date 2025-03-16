@@ -11,7 +11,7 @@ import javax.annotation.Nullable;
 import java.util.*;
 import java.util.function.Supplier;
 
-public abstract class AbstractTrigger<T extends AbstractTrigger.Instance> implements CriterionTrigger<T> {
+public abstract class AbstractTrigger<T extends AbstractTrigger.Instance> implements CriterionWithId<T> {
 
     public AbstractTrigger(ResourceLocation id) {
         this.id = id;

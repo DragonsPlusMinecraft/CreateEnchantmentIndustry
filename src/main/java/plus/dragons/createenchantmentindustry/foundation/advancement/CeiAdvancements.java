@@ -5,15 +5,19 @@ import com.simibubi.create.AllItems;
 import com.simibubi.create.Create;
 import net.minecraft.advancements.AdvancementType;
 import net.minecraft.advancements.critereon.InventoryChangeTrigger;
+import net.minecraft.advancements.critereon.MinMaxBounds;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.Enchantments;
 import plus.dragons.createenchantmentindustry.dragonLibLegacy.advancement.AdvancementHolder;
+import plus.dragons.createenchantmentindustry.dragonLibLegacy.advancement.critereon.AccumulativeTrigger;
 import plus.dragons.createenchantmentindustry.entry.CeiBlocks;
 import plus.dragons.createenchantmentindustry.entry.CeiFluids;
 import plus.dragons.createenchantmentindustry.entry.CeiItems;
+
+import java.util.Optional;
 
 import static plus.dragons.createenchantmentindustry.EnchantmentIndustry.ADVANCEMENT_FACTORY;
 
@@ -68,8 +72,7 @@ public class CeiAdvancements {
     GREAT_PUBLISHER = ADVANCEMENT_FACTORY.builder("great_publisher")
             .title("Great Publisher")
             .description("Copy 1000 books using Printer")
-            //TODO
-            //.externalTrigger("book_copied", new AccumulativeTrigger.TriggerInstance(CeiTriggers.BOOK_PRINTED.getId(), ContextAwarePredicate.ANY, MinMaxBounds.Ints.atLeast(1000)))
+            .externalTrigger(CeiTriggers.BOOK_PRINTED.getId().getPath(), CeiTriggers.BOOK_PRINTED.createCriterion(new AccumulativeTrigger.Instance(Optional.empty(), MinMaxBounds.Ints.atLeast(1000))))
             .icon(CeiBlocks.PRINTER)
             .announce(true)
             .frame(AdvancementType.CHALLENGE)
@@ -106,8 +109,7 @@ public class CeiAdvancements {
             .title("Experienced Recycler")
             .description("Recycle 1,000,000 mB of experience from Disenchanter")
             .icon(AllBlocks.COPPER_VALVE_HANDLE)
-            //TODO
-            //.externalTrigger("experience_recycled", new AccumulativeTrigger.TriggerInstance(CeiTriggers.DISENCHANTED.getId(), ContextAwarePredicate.ANY, MinMaxBounds.Ints.atLeast(1000000)))
+            .externalTrigger(CeiTriggers.DISENCHANTED.getId().getPath(), CeiTriggers.DISENCHANTED.createCriterion(new AccumulativeTrigger.Instance(Optional.empty(), MinMaxBounds.Ints.atLeast(1_000_000))))
             .announce(true)
             .frame(AdvancementType.CHALLENGE)
             .parent(A_SHOWER_EXPERIENCE)

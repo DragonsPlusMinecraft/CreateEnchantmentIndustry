@@ -5,6 +5,7 @@ import com.simibubi.create.foundation.advancement.CreateAdvancement;
 import com.tterrag.registrate.util.entry.ItemProviderEntry;
 import com.tterrag.registrate.util.nullness.NonNullUnaryOperator;
 import net.minecraft.advancements.*;
+import net.minecraft.advancements.critereon.SimpleCriterionTrigger;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -12,6 +13,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ItemLike;
+import plus.dragons.createenchantmentindustry.dragonLibLegacy.advancement.critereon.CriterionWithId;
 import plus.dragons.createenchantmentindustry.dragonLibLegacy.advancement.critereon.SimpleTrigger;
 import plus.dragons.createenchantmentindustry.dragonLibLegacy.advancement.critereon.TriggerFactory;
 import plus.dragons.createenchantmentindustry.foundation.mixin.dragonLibLegacy.CreateAdvancementConstructor;
@@ -218,6 +220,14 @@ public class AdvancementHolder {
             builder.addCriterion(key, trigger);
             this.builtin = false;
             return this;
+        }
+
+        public <T extends SimpleCriterionTrigger.SimpleInstance, C extends CriterionWithId<T>> Builder externalTrigger(String key, C trigger, T instance) {
+            return externalTrigger(key, trigger.createCriterion(instance));
+        }
+
+        public <T extends SimpleCriterionTrigger.SimpleInstance, C extends CriterionWithId<T>> Builder externalTrigger(String key, C trigger) {
+            return externalTrigger(key, trigger, trigger.instance());
         }
 
         public Builder parent(ResourceLocation id) {
