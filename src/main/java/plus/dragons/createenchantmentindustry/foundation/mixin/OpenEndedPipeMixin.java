@@ -1,4 +1,4 @@
-package plus.dragons.createenchantmentindustry.foundation.mixin.waitingForAPI;
+package plus.dragons.createenchantmentindustry.foundation.mixin;
 
 import com.simibubi.create.content.fluids.OpenEndedPipe;
 import net.createmod.catnip.math.VecHelper;
@@ -25,7 +25,6 @@ import plus.dragons.createenchantmentindustry.foundation.advancement.CeiAdvancem
 
 @Mixin(value = OpenEndedPipe.class)
 public class OpenEndedPipeMixin {
-    // TODO temporary solution. Waiting for API.
 
     @Shadow(remap = false)
     private Level world;
@@ -42,7 +41,7 @@ public class OpenEndedPipeMixin {
 
     @Inject(method = "provideFluidToSpace", at = @At("HEAD"), cancellable = true, remap = false)
     private void inject(FluidStack fluid, boolean simulate, CallbackInfoReturnable<Boolean> cir){
-        if(fluid.getFluid().isSame(CeiFluids.EXPERIENCE.get())){
+        if(fluid.getFluid().isSame(CeiFluids.EXPERIENCE.get()) || fluid.getFluid().isSame(CeiFluids.HYPER_EXPERIENCE.get())){
             if (world != null && world.isLoaded(this.outputPos) && !simulate) {
                 if (world instanceof PonderLevel){
                     var speed = new Vec3(outputPos.getX() - pos.getX() + Math.random() * 0.1,

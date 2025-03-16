@@ -1,4 +1,4 @@
-## Welcome to **Create Enchantment Industry**
+## Welcome to **Create: Enchantment Industry**
 A mod offering more tools and methods to handle experience & enchantment in Create.
 
 ## Contribute

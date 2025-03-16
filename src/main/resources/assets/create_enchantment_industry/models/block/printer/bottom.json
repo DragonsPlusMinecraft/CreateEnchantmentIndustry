@@ -1,37 +1,25 @@
 {
-	"credit": "By LimonBlaze, made with Blockbench",
+	"credit": "By LimonBlaze, made with Blockbench, ported to Create 6.0 by Eric Oswald",
 	"parent": "block/block",
 	"textures": {
 		"head": "create:block/mechanical_press_head",
-		"particle": "create:block/copper_side",
-		"hose": "create:block/hose_pulley_coil"
+		"hose": "create:block/hose_pulley_coil",
+		"drain": "create:block/item_drain_side",
+		"particle": "create:block/copper_underside"
 	},
 	"elements": [
-		{
-			"name": "rope",
-			"from": [6, -7, 6],
-			"to": [10, 8, 10],
-			"rotation": {"angle": 0, "axis": "y", "origin": [7.75, 13, 8]},
-			"faces": {
-				"north": {"uv": [12, 0, 16, 16], "texture": "#hose"},
-				"east": {"uv": [12, 0, 16, 16], "texture": "#hose"},
-				"south": {"uv": [12, 0, 16, 16], "texture": "#hose"},
-				"west": {"uv": [12, 0, 16, 16], "texture": "#hose"},
-				"up": {"uv": [12, 0, 16, 4], "rotation": 90, "texture": "#hose"}
-			}
-		},
 		{
 			"name": "drain 2",
 			"from": [4.5, -7, 4.5],
 			"to": [11.5, -6, 11.5],
 			"rotation": {"angle": 0, "axis": "y", "origin": [6.75, 16, 6]},
 			"faces": {
-				"north": {"uv": [0, 1, 7, 2], "texture": "#hose"},
-				"east": {"uv": [0, 1, 7, 2], "texture": "#hose"},
-				"south": {"uv": [0, 1, 7, 2], "texture": "#hose"},
-				"west": {"uv": [0, 1, 7, 2], "texture": "#hose"},
-				"up": {"uv": [0, 2, 7, 9], "rotation": 90, "texture": "#hose"},
-				"down": {"uv": [0, 9, 7, 16], "texture": "#hose"}
+				"north": {"uv": [5, 8, 12, 9], "texture": "#drain"},
+				"east": {"uv": [5, 8, 12, 9], "texture": "#drain"},
+				"south": {"uv": [5, 8, 12, 9], "texture": "#drain"},
+				"west": {"uv": [5, 8, 12, 9], "texture": "#drain"},
+				"up": {"uv": [6, 4, 13, 11], "rotation": 90, "texture": "#particle"},
+				"down": {"uv": [0, 9, 7, 16], "texture": "#drain"}
 			}
 		},
 		{
@@ -40,12 +28,12 @@
 			"to": [10.5, -4, 10.5],
 			"rotation": {"angle": 0, "axis": "y", "origin": [7.75, 16, 7]},
 			"faces": {
-				"north": {"uv": [7, 2, 10, 7], "rotation": 270, "texture": "#hose"},
-				"east": {"uv": [7, 2, 10, 7], "rotation": 270, "texture": "#hose"},
-				"south": {"uv": [7, 2, 10, 7], "rotation": 270, "texture": "#hose"},
-				"west": {"uv": [7, 2, 10, 7], "rotation": 270, "texture": "#hose"},
-				"up": {"uv": [1, 3, 6, 8], "rotation": 90, "texture": "#hose"},
-				"down": {"uv": [0, 0, 0, 0], "texture": "#hose"}
+				"north": {"uv": [2, 6, 5, 11], "rotation": 270, "texture": "#drain"},
+				"east": {"uv": [2, 6, 5, 11], "rotation": 270, "texture": "#drain"},
+				"south": {"uv": [2, 6, 5, 11], "rotation": 270, "texture": "#drain"},
+				"west": {"uv": [2, 6, 5, 11], "rotation": 270, "texture": "#drain"},
+				"up": {"uv": [6, 6, 13, 13], "rotation": 90, "texture": "#drain"},
+				"down": {"uv": [0, 0, 0, 0], "texture": "#drain"}
 			}
 		},
 		{
@@ -59,6 +47,29 @@
 				"west": {"uv": [1, 0, 11, 4], "texture": "#head"},
 				"up": {"uv": [1, 5, 11, 15], "rotation": 180, "texture": "#head"},
 				"down": {"uv": [1, 5, 11, 15], "rotation": 180, "texture": "#head"}
+			}
+		},
+		{
+			"name": "Rope_lower",
+			"from": [6, -4, 6],
+			"to": [10, 5, 10],
+			"faces": {
+				"north": {"uv": [6, 0, 10, 9], "texture": "#hose"},
+				"east": {"uv": [6, 0, 10, 9], "texture": "#hose"},
+				"south": {"uv": [6, 0, 10, 9], "texture": "#hose"},
+				"west": {"uv": [6, 0, 10, 9], "texture": "#hose"}
+			}
+		},
+		{
+			"name": "Rope_upper",
+			"from": [6, 5, 6],
+			"to": [10, 8, 10],
+			"faces": {
+				"north": {"uv": [6, 13, 10, 16], "texture": "#hose"},
+				"east": {"uv": [6, 13, 10, 16], "texture": "#hose"},
+				"south": {"uv": [6, 13, 10, 16], "texture": "#hose"},
+				"west": {"uv": [6, 13, 10, 16], "texture": "#hose"},
+				"up": {"uv": [6, 3, 10, 7], "texture": "#hose"}
 			}
 		}
 	],
@@ -99,7 +110,7 @@
 			"name": "piston",
 			"origin": [0, 0, 0],
 			"color": 0,
-			"children": [0, 1, 2, 3]
+			"children": [0, 1, 2, 3, 4]
 		}
 	]
 }

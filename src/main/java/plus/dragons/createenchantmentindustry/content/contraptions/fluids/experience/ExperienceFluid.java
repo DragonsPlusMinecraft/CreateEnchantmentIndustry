@@ -13,16 +13,23 @@ import net.neoforged.neoforge.event.entity.player.PlayerXpEvent;
 import javax.annotation.Nullable;
 
 public class ExperienceFluid extends VirtualFluid {
+    public static ExperienceFluid createSource(Properties properties) {
+        return new ExperienceFluid(properties, true);
+    }
+
+    public static ExperienceFluid createFlowing(Properties properties) {
+        return new ExperienceFluid(properties, false);
+    }
     
     protected final int xpRatio;
     
-    public ExperienceFluid(int xpRatio, Properties properties) {
-        super(properties,true);
+    public ExperienceFluid(int xpRatio, Properties properties, boolean source) {
+        super(properties,source);
         this.xpRatio = xpRatio;
     }
     
-    public ExperienceFluid(Properties properties) {
-        this(1, properties);
+    public ExperienceFluid(Properties properties, boolean source) {
+        this(1, properties, source);
     }
     
     public ExperienceOrb convertToOrb(Level level, double x, double y, double z, int fluidAmount) {

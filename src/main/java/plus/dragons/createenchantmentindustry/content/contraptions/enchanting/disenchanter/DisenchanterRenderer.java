@@ -76,16 +76,16 @@ public class DisenchanterRenderer extends SmartBlockEntityRenderer<DisenchanterB
         int positive = insertedFrom.getAxisDirection().getStep();
         float verticalAngle = positive * offset * 360 + 180;
         if (insertedFrom.getAxis() != Direction.Axis.X)
-            ts.rotateX(verticalAngle);
+            ts.rotateXDegrees(verticalAngle);
         if (insertedFrom.getAxis() != Direction.Axis.Z)
-            ts.rotateZ(-verticalAngle);
+            ts.rotateZDegrees(-verticalAngle);
 
         int processingTicks = be.processingTicks;
         float processingProgress = switch (processingTicks) {
             case 0, DisenchanterBlockEntity.DISENCHANTER_TIME -> 0;
             default -> Mth.clamp((processingTicks - partialTicks) / DisenchanterBlockEntity.DISENCHANTER_TIME, 0, 1);
         };
-        ts.rotateY(processingProgress * 360);
+        ts.rotateYDegrees(processingProgress * 360);
 
         for (int i = 0; i <= count; i++) {
             ps.pushPose();
@@ -93,11 +93,11 @@ public class DisenchanterRenderer extends SmartBlockEntityRenderer<DisenchanterB
                 ps.translate(r.nextFloat() * .0625f * i, 0, r.nextFloat() * .0625f * i);
             }
             ps.scale(.5f, .5f, .5f);
-            if (!blockItem) ts.rotateX(90);
+            if (!blockItem) ts.rotateXDegrees(90);
             itemRenderer.renderStatic(itemStack, ItemDisplayContext.FIXED, light, overlay, ps, buffer, be.getLevel(),0);
             ps.popPose();
 
-            if (!blockItem) ts.rotateY(10);
+            if (!blockItem) ts.rotateYDegrees(10);
             ps.translate(0, blockItem ? 1 / 64d : 1 / 16d, 0);
         }
 

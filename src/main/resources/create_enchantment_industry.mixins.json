@@ -20,7 +20,7 @@
     "dragonLibLegacy.CreateAdvancementConstructor",
     "dragonLibLegacy.CreateAdvancementMixin",
     "dragonLibLegacy.FluidReactionsMixin",
-    "waitingForAPI.OpenEndedPipeMixin"
+    "OpenEndedPipeMixin"
   ],
   "client": [
     "CameraMixin"

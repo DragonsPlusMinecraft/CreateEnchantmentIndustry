@@ -1,3 +1,5 @@
+import me.modmuss50.mpp.ReleaseType
+
 plugins {
     id 'idea'
     id 'maven-publish'
@@ -83,30 +85,19 @@ repositories {
     maven { url = "https://maven.theillusivec4.top/" } // Curios API
     maven { url = "https://www.cursemaven.com" }
     maven { url = "https://api.modrinth.com/maven" }
-    maven {
-        name 'DragonsPlus Maven'
-        url "https://maven.dragons.plus/releases"
-    }
 }
 
 dependencies {
     implementation "net.neoforged:neoforge:${neo_version}"
 
-    /*jarJar("plus.dragons.createdragonlib:create_dragon_lib-${minecraft_version}") {
-        version {
-            strictly "${create_dragon_lib_version_range}"
-        }
-        transitive = false
-    }*/
-
-    implementation("com.simibubi.create:create-${minecraft_version}:${create_version}-${create_version_number}") { transitive = false }
+    implementation("com.simibubi.create:create-${minecraft_version}:${create_version}-${create_version_number}:slim") { transitive = false }
     implementation("net.createmod.ponder:Ponder-NeoForge-${minecraft_version}:${ponder_version}")
     compileOnly("dev.engine-room.flywheel:flywheel-neoforge-api-${flywheel_minecraft_version}:${flywheel_version}")
     runtimeOnly("dev.engine-room.flywheel:flywheel-neoforge-${flywheel_minecraft_version}:${flywheel_version}")
     implementation("com.tterrag.registrate:Registrate:${registrate_version}")
     compileOnly(annotationProcessor("io.github.llamalad7:mixinextras-common:${mixinextras_version}"))
 
-    // modImplementation("plus.dragons.createdragonlib:create_dragon_lib-${minecraft_version}:${create_dragon_lib_version}")
+    implementation("io.github.llamalad7:mixinextras-neoforge:${mixinextras_version}")
 
     compileOnly("mezz.jei:jei-${jei_minecraft_version}-common-api:${jei_version}")
     compileOnly("mezz.jei:jei-${jei_minecraft_version}-neoforge-api:${jei_version}")
@@ -147,7 +138,7 @@ publishMods {
     file = reobfJar.archiveFile
     changelog = new File("changelog/${mod_version}.md").text
     version = mod_version
-    type = BETA
+    type = STABLE
     displayName = "CEI ${mod_version} for Create ${minecraft_version}-${create_version}"
     modLoaders.add("forge")
     modLoaders.add("neoforge")
