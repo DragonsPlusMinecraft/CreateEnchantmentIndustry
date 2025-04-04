@@ -1,0 +1,15 @@
+{
+    "type": "create:milling",
+    "ingredients": [
+        {
+            "item": "minecraft:sculk"
+        }
+    ],
+    "results": [
+        {
+            "item": "create:experience_nugget",
+            "chance": 0.33
+        }
+    ],
+    "processingTime": 100
+}

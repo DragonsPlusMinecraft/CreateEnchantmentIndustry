@@ -1,0 +1,18 @@
+{
+    "type": "create:milling",
+    "ingredients": [
+        {
+            "tag": "create_enchantment_industry:sculk_five_xp"
+        }
+    ],
+    "results": [
+        {
+            "item": "create:experience_nugget"
+        },
+        {
+            "item": "create:experience_nugget",
+            "chance": 0.67
+        }
+    ],
+    "processingTime": 100
+}
