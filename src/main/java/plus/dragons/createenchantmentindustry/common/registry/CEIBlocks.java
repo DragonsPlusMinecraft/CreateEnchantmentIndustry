@@ -30,7 +30,6 @@ import com.simibubi.create.content.processing.AssemblyOperatorBlockItem;
 import com.simibubi.create.foundation.data.AssetLookup;
 import com.simibubi.create.foundation.data.BlockStateGen;
 import com.simibubi.create.foundation.data.SharedProperties;
-import com.simibubi.create.foundation.item.render.CustomRenderedItems;
 import com.tterrag.registrate.util.entry.BlockEntry;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.sounds.SoundEvents;
@@ -110,7 +109,6 @@ public class CEIBlocks {
             .item()
             .model((ctx, prov) -> prov.withExistingParent(ctx.getName(),
                     Create.asResource("block/blaze_burner/block_with_blaze")))
-            .onRegister(CustomRenderedItems::register)
             .build()
             .register();
     public static final BlockEntry<BlazeForgerBlock> BLAZE_FORGER = REGISTRATE
@@ -126,7 +124,6 @@ public class CEIBlocks {
             .item()
             .model((ctx, prov) -> prov.withExistingParent(ctx.getName(),
                     Create.asResource("block/blaze_burner/block_with_blaze")))
-            .onRegister(CustomRenderedItems::register)
             .build()
             .register();
     public static final BlockEntry<ExperienceBlock> SUPER_EXPERIENCE_BLOCK = REGISTRATE

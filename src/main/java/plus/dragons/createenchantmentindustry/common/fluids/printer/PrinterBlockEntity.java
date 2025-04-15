@@ -54,7 +54,9 @@ import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import org.jetbrains.annotations.Nullable;
 import plus.dragons.createdragonsplus.common.advancements.AdvancementBehaviour;
 import plus.dragons.createdragonsplus.util.FieldsNullabilityUnknownByDefault;
+import plus.dragons.createenchantmentindustry.common.fluids.printer.behaviour.AddressPrintingBehaviour;
 import plus.dragons.createenchantmentindustry.common.fluids.printer.behaviour.CustomNamePrintingBehaviour;
+import plus.dragons.createenchantmentindustry.common.fluids.printer.behaviour.PackagePatternPrintingBehaviour;
 import plus.dragons.createenchantmentindustry.common.registry.CEIAdvancements;
 import plus.dragons.createenchantmentindustry.common.registry.CEIStats;
 import plus.dragons.createenchantmentindustry.config.CEIConfig;
@@ -166,6 +168,8 @@ public class PrinterBlockEntity extends SmartBlockEntity implements IHaveGoggleI
             if (printer.getPrintingBehaviour() instanceof CustomNamePrintingBehaviour) advancement.trigger(CEIAdvancements.BRAND_REGISTRY.builtinTrigger());
             else if (resultItem.is(Items.WRITTEN_BOOK)) advancement.trigger(CEIAdvancements.COPIABLE_MASTERPIECE.builtinTrigger());
             else if (resultItem.is(Items.ENCHANTED_BOOK)) advancement.trigger(CEIAdvancements.COPIABLE_MYSTERY.builtinTrigger());
+            else if (printer.getPrintingBehaviour() instanceof PackagePatternPrintingBehaviour) advancement.trigger(CEIAdvancements.ASSEMBLY_AESTHETICS.builtinTrigger());
+            else if (printer.getPrintingBehaviour() instanceof AddressPrintingBehaviour) advancement.trigger(CEIAdvancements.SUPPLY_CHAIN_REFACTOR.builtinTrigger());
         }
         fluidStack.shrink(requiredFluid);
         setFluidInTank(fluidStack);

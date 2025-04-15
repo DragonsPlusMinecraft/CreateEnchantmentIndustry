@@ -20,6 +20,7 @@ package plus.dragons.createenchantmentindustry.common.registry;
 
 import com.google.common.collect.Sets;
 import com.simibubi.create.AllItems;
+import com.simibubi.create.content.logistics.box.PackageStyles;
 import com.simibubi.create.foundation.advancement.AllTriggers;
 import java.nio.file.Path;
 import java.util.*;
@@ -41,6 +42,7 @@ import net.minecraft.stats.Stats;
 import net.minecraft.world.item.Items;
 import plus.dragons.createdragonsplus.common.advancements.CDPAdvancement;
 import plus.dragons.createdragonsplus.common.advancements.criterion.BuiltinTrigger;
+import plus.dragons.createdragonsplus.common.registry.CDPItems;
 import plus.dragons.createdragonsplus.util.CodeReference;
 import plus.dragons.createenchantmentindustry.util.CEIAdvancement;
 
@@ -188,7 +190,7 @@ public class CEIAdvancements implements DataProvider {
                     .after(PARADOX_FUSION)),
 
             // Printer
-            COPIABLE_MASTERPIECE = create("copiable_masterpiece", b -> b.icon(CEIBlocks.BLAZE_FORGER)
+            COPIABLE_MASTERPIECE = create("copiable_masterpiece", b -> b.icon(Items.WRITTEN_BOOK)
                     .title("Copiable Masterpiece")
                     .description("Copy a Written Book using Printer")
                     .after(EXPERIENCED_ENGINEER)),
@@ -198,10 +200,20 @@ public class CEIAdvancements implements DataProvider {
                     .description("Copy a Enchanted Book using Printer")
                     .after(COPIABLE_MASTERPIECE)),
 
-            BRAND_REGISTRY = create("brand_registry", b -> b.icon(CEIBlocks.BLAZE_FORGER)
+            BRAND_REGISTRY = create("brand_registry", b -> b.icon(Items.NAME_TAG)
                     .title("Brand Registry")
                     .description("Using the printer to name an item")
                     .after(COPIABLE_MYSTERY)),
+
+            SUPPLY_CHAIN_REFACTOR = create("supply_chain_refactor", b -> b.icon(PackageStyles.getDefaultBox())
+                    .title("Supply Chain Refactor")
+                    .description("Using the printer to change package address")
+                    .after(BRAND_REGISTRY)),
+
+            ASSEMBLY_AESTHETICS = create("assembly_aesthetics", b -> b.icon(CDPItems.RARE_MARBLE_GATE_PACKAGE)
+                    .title("Assembly Aesthetics")
+                    .description("Using the printer to change package pattern")
+                    .after(SUPPLY_CHAIN_REFACTOR)),
 
             GREAT_PUBLISHER = create("great_publisher", b -> b.icon(CEIBlocks.PRINTER)
                     .title("Great Publisher")

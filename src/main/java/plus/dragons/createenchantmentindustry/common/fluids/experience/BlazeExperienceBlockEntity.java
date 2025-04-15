@@ -27,7 +27,6 @@ import com.simibubi.create.foundation.utility.CreateLang;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
-import net.createmod.catnip.animation.LerpedFloat;
 import net.createmod.catnip.lang.LangBuilder;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;

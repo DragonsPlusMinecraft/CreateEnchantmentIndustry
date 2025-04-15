@@ -104,6 +104,11 @@ dependencies {
 
     compileOnly("top.theillusivec4.curios:curios-neoforge:${curios_version}+${curios_minecraft_version}:api")
     localRuntime("top.theillusivec4.curios:curios-neoforge:${curios_version}+${curios_minecraft_version}")
+
+    // Check render crash issue
+    // runtimeOnly("curse.maven:ayame-paperdoll-1133652:6089792")
+    // runtimeOnly("curse.maven:cobblemon-687131:6125026")
+    // runtimeOnly("curse.maven:kotlin-for-forge-351264:5978393")
 }
 
 var generateModMetadata = tasks.register("generateModMetadata", ProcessResources) {

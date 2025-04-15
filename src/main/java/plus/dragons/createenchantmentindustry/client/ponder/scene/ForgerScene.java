@@ -46,8 +46,6 @@ public class ForgerScene {
         CreateSceneBuilder scene = new CreateSceneBuilder(builder);
         scene.title("blaze_forger.intro", "Introduction to Blaze Forger");
         scene.configureBasePlate(0, 0, 5);
-        scene.showBasePlate();
-        scene.idle(5);
         scene.world().showSection(util.select().everywhere(), Direction.DOWN);
         scene.idle(5);
 

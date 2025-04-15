@@ -19,7 +19,6 @@
 package plus.dragons.createenchantmentindustry.client.ponder.scene;
 
 import com.simibubi.create.content.fluids.tank.FluidTankBlockEntity;
-import com.simibubi.create.content.logistics.box.PackageItem;
 import com.simibubi.create.content.logistics.box.PackageStyles;
 import com.simibubi.create.content.logistics.depot.DepotBlockEntity;
 import com.simibubi.create.content.processing.basin.BasinBlockEntity;
@@ -153,7 +152,6 @@ public class MiscScene {
         scene.world().modifyBlockEntity(util.grid().at(2, 3, 2), PrinterBlockEntity.class, be -> {
             var printer = be.getBehaviour(PrinterBehaviour.TYPE);
             var packageItem = CDPItems.RARE_MARBLE_GATE_PACKAGE.asStack();
-            PackageItem.addAddress(packageItem, "1");
             printer.setFilter(packageItem);
         });
         scene.idle(85);

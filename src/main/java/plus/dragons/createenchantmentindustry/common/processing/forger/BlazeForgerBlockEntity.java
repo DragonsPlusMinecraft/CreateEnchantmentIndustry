@@ -86,13 +86,13 @@ public class BlazeForgerBlockEntity extends BlazeExperienceBlockEntity {
 
     @Override
     protected ConfigurableFluidTank createNormalTank(Consumer<FluidStack> fluidUpdateCallback) {
-        return new ConfigurableFluidTank(CEIConfig.fluids().blazeEnchanterFluidCapacity.get(), fluidUpdateCallback)
+        return new ConfigurableFluidTank(CEIConfig.fluids().blazeForgerFluidCapacity.get(), fluidUpdateCallback)
                 .allowInsertion(fluidStack -> fluidStack.is(CEIFluids.EXPERIENCE));
     }
 
     @Override
     protected ConfigurableFluidTank createSpecialTank(Consumer<FluidStack> fluidUpdateCallback) {
-        return new ConfigurableFluidTank(CEIConfig.fluids().blazeEnchanterFluidCapacity.get(), fluidUpdateCallback)
+        return new ConfigurableFluidTank(CEIConfig.fluids().blazeForgerFluidCapacity.get(), fluidUpdateCallback)
                 .forbidInsertion();
     }
 

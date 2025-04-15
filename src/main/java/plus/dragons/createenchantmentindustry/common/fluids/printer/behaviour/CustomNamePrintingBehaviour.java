@@ -79,7 +79,6 @@ public class CustomNamePrintingBehaviour implements PrintingBehaviour {
 
     @Override
     public void onFinished(Level level, BlockPos pos, PrinterBlockEntity printer) {
-        // TODO: Trigger advancement
         // Plays SoundEvents.ANVIL_USE
         level.levelEvent(1030, pos.below(), 0);
     }

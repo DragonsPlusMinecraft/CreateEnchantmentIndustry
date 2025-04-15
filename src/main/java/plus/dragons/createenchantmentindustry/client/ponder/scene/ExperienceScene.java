@@ -440,11 +440,17 @@ public class ExperienceScene {
         });
         scene.world().replaceBlocks(util.select().layer(1), CEIBlocks.SUPER_EXPERIENCE_BLOCK.getDefaultState(), false);
         scene.idle(5);
-        scene.overlay().showText(50)
+        scene.overlay().showText(45)
                 .text("Lighting Strike!")
                 .placeNearTarget()
                 .pointAt(util.vector().topOf(1, 2, 1));
         scene.idle(50);
+
+        scene.overlay().showText(80)
+                .text("The vast majority of lightning strikes only have a certain probability of transforming Block of Experience, and only lightning strikes caused by Super Enchanting are guaranteed to transform")
+                .placeNearTarget()
+                .pointAt(util.vector().topOf(1, 2, 1));
+        scene.idle(85);
 
         scene.world().replaceBlocks(util.select().position(1, 2, 1), Blocks.AIR.defaultBlockState(), true);
         scene.world().replaceBlocks(util.select().layer(1), Blocks.AIR.defaultBlockState(), true);

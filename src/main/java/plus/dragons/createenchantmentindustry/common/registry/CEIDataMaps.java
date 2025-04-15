@@ -59,6 +59,10 @@ public class CEIDataMaps {
             .builder(CEICommon.asResource("printing/address/ingredient"), Registries.FLUID, ExtraCodecs.POSITIVE_INT)
             .synced(Codec.INT, true)
             .build();
+    public static final DataMapType<Fluid, Integer> PRINTING_PATTERN_INGREDIENT = DataMapType
+            .builder(CEICommon.asResource("printing/pattern/ingredient"), Registries.FLUID, ExtraCodecs.POSITIVE_INT)
+            .synced(Codec.INT, true)
+            .build();
     public static final DataMapType<Fluid, Integer> PRINTING_COPY_INGREDIENT = DataMapType
             .builder(CEICommon.asResource("printing/copy/ingredient"), Registries.FLUID, ExtraCodecs.POSITIVE_INT)
             .synced(Codec.INT, true)
@@ -86,6 +90,7 @@ public class CEIDataMaps {
         event.register(EXPERIENCE_FUEL);
         event.register(FLUID_UNIT_EXPERIENCE);
         event.register(PRINTING_ADDRESS_INGREDIENT);
+        event.register(PRINTING_PATTERN_INGREDIENT);
         event.register(PRINTING_COPY_INGREDIENT);
         event.register(PRINTING_CUSTOM_NAME_INGREDIENT);
         event.register(PRINTING_CUSTOM_NAME_STYLE);
@@ -151,6 +156,8 @@ public class CEIDataMaps {
         var blackDye = CDPFluids.COMMON_TAGS.dyesByColor.get(DyeColor.BLACK);
         provider.builder(PRINTING_ADDRESS_INGREDIENT)
                 .add(blackDye, 10, false);
+        provider.builder(PRINTING_PATTERN_INGREDIENT)
+                .add(blackDye, 100, false);
         provider.builder(PRINTING_COPY_INGREDIENT)
                 .add(blackDye, 10, false);
         provider.builder(PRINTING_CUSTOM_NAME_INGREDIENT)

@@ -21,7 +21,6 @@ package plus.dragons.createenchantmentindustry.client;
 import net.createmod.ponder.foundation.PonderIndex;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
-import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import plus.dragons.createenchantmentindustry.client.model.CEIPartialModels;
@@ -31,12 +30,15 @@ import plus.dragons.createenchantmentindustry.common.CEICommon;
 @Mod(value = CEICommon.ID, dist = Dist.CLIENT)
 public class CEIClient {
     public CEIClient(IEventBus modBus) {
-        modBus.register(this);
+        // CEIPartialModels must be registered here,
+        // or when PartialModelEventHandler#onRegisterAdditional triggered,
+        // PartialModel.ALL won't include all partial model in 'some cases'
+        // AllPartialModels#ini does not do this since AllPartialModels is already triggered at AllBlocks.TRACK
+        CEIPartialModels.register();
+        modBus.addListener(CEIClient::setup);
     }
 
-    @SubscribeEvent
-    public void setup(final FMLClientSetupEvent event) {
+    public static void setup(final FMLClientSetupEvent event) {
         PonderIndex.addPlugin(new CEIPonderPlugin());
-        CEIPartialModels.register();
     }
 }

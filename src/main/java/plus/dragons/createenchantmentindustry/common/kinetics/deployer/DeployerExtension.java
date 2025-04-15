@@ -78,7 +78,7 @@ public class DeployerExtension {
             if (ExperienceHelper.canRepairItem(heldItem))
                 consumed = ExperienceHelper.repairItem(total, deployer.serverLevel(), heldItem, false);
         }
-        int nuggets = (total - consumed) / 3;
+        int nuggets = (event.getAmount() - consumed) / 3;
         if (nuggets > 0) {
             deployer.getInventory().placeItemBackInInventory(AllItems.EXP_NUGGET.asStack(nuggets));
         }

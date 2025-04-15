@@ -71,7 +71,6 @@ public class CopyPrintingBehaviour implements PrintingBehaviour {
 
     @Override
     public void onFinished(Level level, BlockPos pos, PrinterBlockEntity printer) {
-        // TODO: Trigger advancement
         // Plays SoundEvents.BOOK_PAGE_TURN
         level.levelEvent(1043, pos.below(), 0);
     }

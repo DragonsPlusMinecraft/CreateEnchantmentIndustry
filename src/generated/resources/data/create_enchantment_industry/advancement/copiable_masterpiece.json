@@ -13,7 +13,7 @@
     },
     "icon": {
       "count": 1,
-      "id": "create_enchantment_industry:blaze_forger"
+      "id": "minecraft:written_book"
     },
     "title": {
       "translate": "advancement.create_enchantment_industry.copiable_masterpiece"

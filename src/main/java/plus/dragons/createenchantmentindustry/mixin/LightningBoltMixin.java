@@ -35,6 +35,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import plus.dragons.createenchantmentindustry.common.fluids.experience.BlazeExperienceBlockEntity;
 import plus.dragons.createenchantmentindustry.common.registry.CEIBlocks;
+import plus.dragons.createenchantmentindustry.config.CEIConfig;
 
 @Mixin(LightningBolt.class)
 public abstract class LightningBoltMixin extends Entity {
@@ -48,7 +49,8 @@ public abstract class LightningBoltMixin extends Entity {
     @Inject(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LightningBolt;clearCopperOnLightningStrike(Lnet/minecraft/world/level/Level;Lnet/minecraft/core/BlockPos;)V"))
     private void tick$chargeExperienceOnLightingStrike(CallbackInfo ci) {
         if (!this.getPersistentData().getBoolean(BlazeExperienceBlockEntity.LIGHTNING_BOLT_EXPERIENCE_CHARGE_KEY))
-            return;
+            if (this.random.nextFloat() > CEIConfig.processing().regularLightningStrikeTransformXpBlockChance.get())
+                return;
         Level level = this.level();
         BlockPos pos = this.getStrikePosition();
         BlockState blockstate = level.getBlockState(pos);
