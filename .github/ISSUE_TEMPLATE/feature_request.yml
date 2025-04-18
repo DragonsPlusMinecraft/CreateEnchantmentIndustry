@@ -4,7 +4,7 @@ labels: [ "enhancement", "triage" ]
 body:
   -   type: textarea
       attributes:
-        label: Describe the your request
+        label: Describe your request
         description: A clear and concise description of feature request
       validations:
         required: true
