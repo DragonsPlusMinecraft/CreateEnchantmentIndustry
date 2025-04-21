@@ -1,4 +1,4 @@
-name: Publish
+name: Publish to Maven
 on: [workflow_dispatch]
 
 permissions:
@@ -24,7 +24,4 @@ jobs:
         run: chmod +x ./gradlew
 
       - name: Publish
-        env:
-          MODRINTH_TOKEN: ${{ secrets.MODRINTH_TOKEN }}
-          CURSEFORGE_TOKEN: ${{ secrets.CURSEFORGE_TOKEN }}
-        run: ./gradlew publish -PDragonsPlusUsername=${{ secrets.MAVEN_USERNAME }} -PDragonsPlusPassword=${{ secrets.MAVEN_PASSWORD }} publishMods
+        run: ./gradlew publish -PDragonsPlusUsername=${{ secrets.MAVEN_USERNAME }} -PDragonsPlusPassword=${{ secrets.MAVEN_PASSWORD }}

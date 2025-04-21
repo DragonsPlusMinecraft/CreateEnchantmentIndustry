@@ -43,12 +43,10 @@ import plus.dragons.createenchantmentindustry.util.CEILang;
 public class WrittenBookPrintingBehaviour implements PrintingBehaviour {
     private final SmartFluidTankBehaviour tank;
     private final WrittenBookContent content;
-    private final boolean awardAdvancement;
 
-    private WrittenBookPrintingBehaviour(SmartFluidTankBehaviour tank, WrittenBookContent content, boolean awardAdvancement) {
+    private WrittenBookPrintingBehaviour(SmartFluidTankBehaviour tank, WrittenBookContent content) {
         this.tank = tank;
         this.content = content;
-        this.awardAdvancement = awardAdvancement;
     }
 
     public static Optional<DataResult<PrintingBehaviour>> create(Level level, SmartFluidTankBehaviour tank, ItemStack stack) {
@@ -68,7 +66,7 @@ public class WrittenBookPrintingBehaviour implements PrintingBehaviour {
                 newGeneration,
                 content.pages(),
                 content.resolved());
-        return Optional.of(DataResult.success(new WrittenBookPrintingBehaviour(tank, content, generation >= 2)));
+        return Optional.of(DataResult.success(new WrittenBookPrintingBehaviour(tank, content)));
     }
 
     private OptionalInt getCost(FluidStack fluid) {
@@ -114,9 +112,6 @@ public class WrittenBookPrintingBehaviour implements PrintingBehaviour {
 
     @Override
     public void onFinished(Level level, BlockPos pos, PrinterBlockEntity printer) {
-        if (awardAdvancement) {
-            // TODO: Trigger advancement
-        }
         // Plays SoundEvents.BOOK_PAGE_TURN
         level.levelEvent(1043, pos.below(), 0);
     }

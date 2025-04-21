@@ -19,22 +19,28 @@
 package plus.dragons.createenchantmentindustry.client.ponder.scene;
 
 import com.simibubi.create.content.fluids.tank.FluidTankBlockEntity;
-import com.simibubi.create.content.logistics.box.PackageItem;
 import com.simibubi.create.content.logistics.box.PackageStyles;
 import com.simibubi.create.content.logistics.depot.DepotBlockEntity;
 import com.simibubi.create.content.processing.basin.BasinBlockEntity;
 import com.simibubi.create.foundation.ponder.CreateSceneBuilder;
+import java.util.List;
 import net.createmod.catnip.math.Pointing;
-import net.createmod.ponder.api.PonderPalette;
 import net.createmod.ponder.api.scene.SceneBuilder;
 import net.createmod.ponder.api.scene.SceneBuildingUtil;
 import net.minecraft.core.Direction;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.network.chat.Component;
+import net.minecraft.server.network.Filterable;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.component.WrittenBookContent;
+import net.minecraft.world.item.enchantment.Enchantments;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import plus.dragons.createdragonsplus.common.registry.CDPFluids;
 import plus.dragons.createdragonsplus.common.registry.CDPItems;
+import plus.dragons.createenchantmentindustry.client.ponder.CEIPonderScenes;
 import plus.dragons.createenchantmentindustry.common.fluids.printer.PrinterBehaviour;
 import plus.dragons.createenchantmentindustry.common.fluids.printer.PrinterBlockEntity;
 import plus.dragons.createenchantmentindustry.common.registry.CEIFluids;
@@ -150,11 +156,11 @@ public class MiscScene {
                 .placeNearTarget()
                 .attachKeyFrame()
                 .pointAt(util.vector().blockSurface(util.grid().at(2, 3, 2), Direction.WEST));
+        var writtenBook = Items.WRITTEN_BOOK.getDefaultInstance();
+        writtenBook.set(DataComponents.WRITTEN_BOOK_CONTENT, new WrittenBookContent(Filterable.passThrough("1"), "1", 1, List.of(Filterable.passThrough(Component.literal("1"))), true));
         scene.world().modifyBlockEntity(util.grid().at(2, 3, 2), PrinterBlockEntity.class, be -> {
             var printer = be.getBehaviour(PrinterBehaviour.TYPE);
-            var packageItem = CDPItems.RARE_MARBLE_GATE_PACKAGE.asStack();
-            PackageItem.addAddress(packageItem, "1");
-            printer.setFilter(packageItem);
+            printer.setFilter(writtenBook);
         });
         scene.idle(85);
 
@@ -175,10 +181,28 @@ public class MiscScene {
         scene.idle(35);
 
         scene.overlay().showText(80)
-                .text("You can always use JEI or another recipe book mod to check all printing recipes")
+                .text("Copying written book")
                 .attachKeyFrame()
-                .colored(PonderPalette.GREEN)
                 .independent();
+        scene.idle(10);
+        scene.world().modifyBlockEntity(util.grid().at(2, 1, 2), DepotBlockEntity.class,
+                be -> be.setHeldItem(new ItemStack(Items.BOOK)));
+        scene.world().modifyBlockEntity(util.grid().at(2, 3, 2), PrinterBlockEntity.class,
+                be -> be.processingTicks = 50);
+        scene.idle(45);
+        scene.world().modifyBlockEntity(util.grid().at(2, 1, 2), DepotBlockEntity.class,
+                be -> be.setHeldItem(Items.WRITTEN_BOOK.getDefaultInstance()));
+        scene.idle(50);
+
+        scene.overlay().showText(80)
+                .text("Changing package pattern")
+                .attachKeyFrame()
+                .independent();
+        scene.world().modifyBlockEntity(util.grid().at(2, 3, 2), PrinterBlockEntity.class, be -> {
+            var printer = be.getBehaviour(PrinterBehaviour.TYPE);
+            var packageItem = CDPItems.RARE_MARBLE_GATE_PACKAGE.asStack();
+            printer.setFilter(packageItem);
+        });
         scene.idle(10);
         scene.world().modifyBlockEntity(util.grid().at(2, 1, 2), DepotBlockEntity.class,
                 be -> be.setHeldItem(new ItemStack(PackageStyles.ALL_BOXES.get(1))));
@@ -188,5 +212,35 @@ public class MiscScene {
         scene.world().modifyBlockEntity(util.grid().at(2, 1, 2), DepotBlockEntity.class,
                 be -> be.setHeldItem(CDPItems.RARE_MARBLE_GATE_PACKAGE.asStack()));
         scene.idle(50);
+
+        scene.overlay().showText(80)
+                .text("Duplicating Enchanted Book")
+                .attachKeyFrame()
+                .independent();
+        var enchantedBook = Items.ENCHANTED_BOOK.getDefaultInstance();
+        CEIPonderScenes.enchant(scene, enchantedBook, Enchantments.CHANNELING, 1);
+        scene.world().modifyBlockEntity(util.grid().at(2, 3, 2), PrinterBlockEntity.class, be -> {
+            var printer = be.getBehaviour(PrinterBehaviour.TYPE);
+            printer.setFilter(enchantedBook);
+        });
+        scene.world().modifyBlockEntity(util.grid().at(2, 3, 2), PrinterBlockEntity.class, be -> {
+            be.getFluidHandler(null).drain(3000, IFluidHandler.FluidAction.EXECUTE);
+            be.getFluidHandler(null).fill(new FluidStack(CEIFluids.EXPERIENCE, 3000), IFluidHandler.FluidAction.EXECUTE);
+        });
+        scene.idle(10);
+        scene.world().modifyBlockEntity(util.grid().at(2, 1, 2), DepotBlockEntity.class,
+                be -> be.setHeldItem(new ItemStack(Items.BOOK)));
+        scene.world().modifyBlockEntity(util.grid().at(2, 3, 2), PrinterBlockEntity.class,
+                be -> be.processingTicks = 50);
+        scene.idle(45);
+        scene.world().modifyBlockEntity(util.grid().at(2, 1, 2), DepotBlockEntity.class,
+                be -> be.setHeldItem(Items.ENCHANTED_BOOK.getDefaultInstance()));
+        scene.idle(50);
+
+        scene.overlay().showText(80)
+                .text("It can also name items, copy train schedule, copy clipboard, change package address and more. You can use JEI to look up printing recipes")
+                .attachKeyFrame()
+                .independent();
+        scene.idle(80);
     }
 }

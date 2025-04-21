@@ -47,7 +47,7 @@ public class CrushingWheelControllerBlockEntityMixin {
         if (CEIConfig.kinetics().crushingWheelKillDropXp.get() && !processingEntity.isAlive() && processingEntity instanceof LivingEntity livingEntity) {
             if (!(processingEntity.level() instanceof ServerLevel serverLevel)) return;
             int reward = Math.max((int) Math.floor(livingEntity.getExperienceReward(serverLevel, processingEntity) * CEIConfig.kinetics().crushingWheelKillDropXpScale.get()), 1);
-            if (reward >= 1000 || Math.random() < CEIConfig.kinetics().crushingWheelKillDropXpRate.get()) {
+            if (reward >= 1000 || Math.random() < CEIConfig.kinetics().crushingWheelKillDropXpChance.get()) {
                 int count = reward / 3 + ((Math.random() < (reward % 3 / 3f)) ? 1 : 0);
                 if (count != 0) {
                     var self = (CrushingWheelControllerBlockEntity) (Object) this;

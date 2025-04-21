@@ -19,8 +19,9 @@
 package plus.dragons.createenchantmentindustry.common.fluids.printer.behaviour;
 
 import com.mojang.serialization.DataResult;
+import com.simibubi.create.AllDataComponents;
+import com.simibubi.create.content.logistics.box.PackageItem;
 import com.simibubi.create.foundation.blockEntity.behaviour.fluid.SmartFluidTankBehaviour;
-import com.simibubi.create.foundation.recipe.ItemCopyingRecipe.SupportsItemCopying;
 import com.simibubi.create.foundation.utility.CreateLang;
 import java.util.List;
 import java.util.Optional;
@@ -30,47 +31,46 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.fluids.FluidStack;
-import plus.dragons.createenchantmentindustry.common.CEICommon;
 import plus.dragons.createenchantmentindustry.common.fluids.printer.PrinterBlockEntity;
 import plus.dragons.createenchantmentindustry.common.registry.CEIDataMaps;
 import plus.dragons.createenchantmentindustry.config.CEIConfig;
 import plus.dragons.createenchantmentindustry.util.CEILang;
 
-public class CopyPrintingBehaviour implements PrintingBehaviour {
-    private final SupportsItemCopying itemCopying;
-    private final ItemStack original;
+public class PackagePatternPrintingBehaviour implements PrintingBehaviour {
+    private final ItemStack pattern;
     private final SmartFluidTankBehaviour tank;
 
-    public CopyPrintingBehaviour(SupportsItemCopying itemCopying, ItemStack original, SmartFluidTankBehaviour tank) {
-        this.itemCopying = itemCopying;
-        this.original = original;
+    public PackagePatternPrintingBehaviour(ItemStack pattern, SmartFluidTankBehaviour tank) {
+        this.pattern = pattern;
         this.tank = tank;
     }
 
     public static Optional<DataResult<PrintingBehaviour>> create(Level level, SmartFluidTankBehaviour tank, ItemStack stack) {
-        if (stack.getItem() instanceof SupportsItemCopying copiable)
-            return Optional.of(copiable.canCopyFromItem(stack)
-                    ? DataResult.success(new CopyPrintingBehaviour(copiable, stack, tank))
-                    : DataResult.error(() -> CEICommon.asLocalization("gui.printer.copy.invalid")));
+        if (stack.getItem() instanceof PackageItem) {
+            String address = stack.get(AllDataComponents.PACKAGE_ADDRESS);
+            if (address == null || address.isEmpty())
+                return Optional.of(DataResult.success(new PackagePatternPrintingBehaviour(stack.copy(), tank)));
+        }
         return Optional.empty();
     }
 
     @Override
     public int getRequiredItemCount(Level level, ItemStack stack) {
-        if (ItemStack.isSameItem(original, stack) && itemCopying.canCopyToItem(stack))
+        if (stack.getItem() instanceof PackageItem && !stack.is(pattern.getItem()))
             return 1;
         return 0;
     }
 
     @Override
     public int getRequiredFluidAmount(Level level, ItemStack stack, FluidStack fluidStack) {
-        var amount = fluidStack.getFluidHolder().getData(CEIDataMaps.PRINTING_COPY_INGREDIENT);
+        var amount = fluidStack.getFluidHolder().getData(CEIDataMaps.PRINTING_PATTERN_INGREDIENT);
         return amount == null ? 0 : amount;
     }
 
     @Override
     public ItemStack getResult(Level level, ItemStack stack, FluidStack fluidStack) {
-        return itemCopying.createCopy(original, 1);
+        var result = stack.transmuteCopy(pattern.getItem());
+        return result;
     }
 
     @Override
@@ -81,9 +81,8 @@ public class CopyPrintingBehaviour implements PrintingBehaviour {
 
     @Override
     public boolean addToGoggleTooltip(List<Component> tooltip, boolean isPlayerSneaking) {
-        CEILang.translate("gui.goggles.printing.copy").forGoggles(tooltip);
-        CEILang.item(original).style(ChatFormatting.GRAY).forGoggles(tooltip, 1);
-        var amount = tank.getPrimaryHandler().getFluid().getFluidHolder().getData(CEIDataMaps.PRINTING_COPY_INGREDIENT);
+        CEILang.translate("gui.goggles.printing.pattern").forGoggles(tooltip);
+        var amount = tank.getPrimaryHandler().getFluid().getFluidHolder().getData(CEIDataMaps.PRINTING_PATTERN_INGREDIENT);
         if (amount != null)
             CEILang.translate("gui.goggles.printing.cost",
                     CEILang.number(amount)

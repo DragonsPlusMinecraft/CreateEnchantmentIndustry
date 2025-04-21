@@ -267,4 +267,10 @@ public abstract class BlazeExperienceBlockEntity extends BlazeBlockEntity implem
         }
         return true;
     }
+
+    @Override
+    public void invalidate() {
+        super.invalidate();
+        invalidateCapabilities();
+    }
 }

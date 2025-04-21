@@ -29,7 +29,7 @@ public class CEIKineticsConfig extends ConfigBase {
     public final ConfigBool deployerMendItem = b(true, "deployerMendItem", Comments.deployerMendItem);
     public final ConfigBool deployerSweepAttack = b(true, "deployerSweepAttack", Comments.deployerSweepAttack);
     public final ConfigBool crushingWheelKillDropXp = b(true, "crushingWheelKillDropXp", Comments.crushingWheelKillDropXp);
-    public final ConfigFloat crushingWheelKillDropXpRate = f(0.3f, 0, 1, "crushingWheelKillDropXpRate", Comments.crushingWheelKillDropXpRate);
+    public final ConfigFloat crushingWheelKillDropXpChance = f(0.3f, 0, 1, "crushingWheelKillDropXpChance", Comments.crushingWheelKillDropXpChance);
     public final ConfigFloat crushingWheelKillDropXpScale = f(0.34f, 0, 1, "crushingWheelKillDropXpScale", Comments.crushingWheelKillDropXpScale);
     public final CEIStressConfig stressValues = nested(0, CEIStressConfig::new, Comments.stress);
 
@@ -39,7 +39,7 @@ public class CEIKineticsConfig extends ConfigBase {
     }
 
     static class Comments {
-        static String stress = "Fine tune the kinetic stats of individual components";
+        static final String stress = "Fine tune the kinetic stats of individual components";
         static final String deployerKillDropXp = "Whether Deployer killed entities should drop experience.";
         static final String deployerKillXpScale = "Scale for experience dropped from Deployer killed entities.";
         static final String deployerMineDropXp = "Whether Deployer mined blocks should drop experience.";
@@ -48,7 +48,7 @@ public class CEIKineticsConfig extends ConfigBase {
         static final String deployerMendItem = "Whether Mending enchantment applies to Deployer held item (Needs deployerCollectXp = true).";
         static final String deployerSweepAttack = "Whether Deployer can perform sweep attack.";
         static final String crushingWheelKillDropXp = "Whether Crushing Wheel killed entities should drop experience.";
-        static final String crushingWheelKillDropXpRate = "Possibility for Crushing Wheel killed entities drop experience.";
+        static final String crushingWheelKillDropXpChance = "Probability of Crushing Wheel killed entities dropping experience.";
         static final String crushingWheelKillDropXpScale = "Scale for experience dropped from Crushing Wheel killed entities.";
     }
 }

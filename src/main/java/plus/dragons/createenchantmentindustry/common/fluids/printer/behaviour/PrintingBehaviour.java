@@ -36,6 +36,7 @@ public interface PrintingBehaviour extends IHaveGoggleInformation {
     @Internal
     List<Provider> PROVIDERS = Util.make(new ArrayList<>(), list -> {
         list.add(AddressPrintingBehaviour::create);
+        list.add(PackagePatternPrintingBehaviour::create);
         list.add(CopyPrintingBehaviour::create);
         list.add(CustomNamePrintingBehaviour::create);
         list.add(EnchantedBookPrintingBehaviour::create);

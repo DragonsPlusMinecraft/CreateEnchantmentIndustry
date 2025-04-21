@@ -25,6 +25,7 @@ import static plus.dragons.createenchantmentindustry.common.CEICommon.REGISTRATE
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.AllTags.AllBlockTags;
 import com.simibubi.create.Create;
+import com.simibubi.create.api.behaviour.movement.MovementBehaviour;
 import com.simibubi.create.content.materials.ExperienceBlock;
 import com.simibubi.create.content.processing.AssemblyOperatorBlockItem;
 import com.simibubi.create.foundation.data.AssetLookup;
@@ -44,6 +45,7 @@ import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.common.util.DeferredSoundType;
 import plus.dragons.createdragonsplus.common.processing.blaze.BlazeBlock;
+import plus.dragons.createdragonsplus.common.processing.blaze.BlazeMovementBehaviour;
 import plus.dragons.createenchantmentindustry.common.fluids.experience.ExperienceHatchBlock;
 import plus.dragons.createenchantmentindustry.common.fluids.printer.PrinterBlock;
 import plus.dragons.createenchantmentindustry.common.kinetics.grindstone.GrindstoneDrainBlock;
@@ -102,6 +104,7 @@ public class CEIBlocks {
             .properties(p -> p.mapColor(MapColor.COLOR_GRAY).lightLevel(BlazeBlock::getLight))
             .transform(pickaxeOnly())
             .addLayer(() -> RenderType::cutoutMipped)
+            .onRegister(block -> MovementBehaviour.REGISTRY.register(block, new BlazeMovementBehaviour()))
             .tag(AllBlockTags.FAN_TRANSPARENT.tag, AllBlockTags.FAN_PROCESSING_CATALYSTS_SMOKING.tag)
             .blockstate((ctx, prov) -> prov.horizontalBlock(
                     ctx.getEntry(),
@@ -117,6 +120,7 @@ public class CEIBlocks {
             .properties(p -> p.mapColor(MapColor.COLOR_GRAY).lightLevel(BlazeBlock::getLight))
             .transform(pickaxeOnly())
             .addLayer(() -> RenderType::cutoutMipped)
+            .onRegister(block -> MovementBehaviour.REGISTRY.register(block, new BlazeMovementBehaviour()))
             .tag(AllBlockTags.FAN_TRANSPARENT.tag, AllBlockTags.FAN_PROCESSING_CATALYSTS_SMOKING.tag)
             .blockstate((ctx, prov) -> prov.horizontalBlock(
                     ctx.getEntry(),

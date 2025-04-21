@@ -78,7 +78,7 @@ public class EnchanterScene {
         var slotVec = util.vector().of(2, 2.5, 1.5);
         scene.overlay().showFilterSlotInput(slotVec, Direction.WEST, 70);
         scene.overlay().showText(70)
-                .text("Before you can start enchanting with it, you need to set the enchant level via the panel. The level cap of a vanilla enchanting table is 30")
+                .text("Before you can start enchanting with it, you need to set the enchanting level via the panel. The level cap of a vanilla enchanting table is 30")
                 .placeNearTarget()
                 .attachKeyFrame()
                 .pointAt(slotVec);
@@ -107,7 +107,7 @@ public class EnchanterScene {
                     var enchanter = be.getBehaviour(EnchanterBehaviour.TYPE);
                     enchanter.setTemplate(Items.DIAMOND_SWORD.getDefaultInstance());
                 });
-        scene.overlay().showControls(slotVec, Pointing.UP, 75).rightClick();
+        scene.overlay().showControls(slotVec, Pointing.UP, 75).rightClick().withItem(Items.DIAMOND_SWORD.getDefaultInstance());
         scene.idle(85);
 
         scene.overlay().showText(80)
@@ -118,6 +118,62 @@ public class EnchanterScene {
         scene.world().modifyBlockEntity(util.grid().at(2, 2, 1), BlazeEnchanterBlockEntity.class,
                 be -> be.insertItem(CEIItems.ENCHANTING_TEMPLATE.asStack(), false));
         scene.overlay().showControls(util.vector().centerOf(2, 2, 1), Pointing.RIGHT, 20).withItem(CEIItems.ENCHANTING_TEMPLATE.asStack());
+        scene.idle(100);
+        scene.world().modifyBlockEntity(util.grid().at(2, 2, 1), BlazeEnchanterBlockEntity.class,
+                be -> be.extractItem(true, false));
+
+        scene.overlay().showText(55)
+                .text("Template Enchanting Mode is used to produce the specified type of enchantment")
+                .attachKeyFrame()
+                .placeNearTarget()
+                .pointAt(util.vector().topOf(2, 2, 1));
+        scene.idle(60);
+        scene.overlay().showText(65)
+                .text("For example, if you want the chest armor enchantment, you can fill the filter slot with diamond chest armor")
+                .placeNearTarget()
+                .pointAt(util.vector().topOf(2, 2, 1));
+        scene.world().modifyBlockEntity(util.grid().at(2, 2, 1), BlazeEnchanterBlockEntity.class,
+                be -> {
+                    var enchanter = be.getBehaviour(EnchanterBehaviour.TYPE);
+                    enchanter.setTemplate(Items.DIAMOND_CHESTPLATE.getDefaultInstance());
+                });
+        scene.overlay().showControls(slotVec, Pointing.UP, 50).rightClick().withItem(Items.DIAMOND_CHESTPLATE.getDefaultInstance());
+        scene.idle(70);
+        scene.overlay().showText(80)
+                .text("Then give a blank Enchanting Template to Blaze and it will spawn enchantments that can be used on chest armor on that Enchanting Template")
+                .placeNearTarget()
+                .pointAt(util.vector().topOf(2, 2, 1));
+        scene.world().modifyBlockEntity(util.grid().at(2, 2, 1), BlazeEnchanterBlockEntity.class,
+                be -> be.insertItem(CEIItems.ENCHANTING_TEMPLATE.asStack(), false));
+        scene.idle(100);
+        scene.world().modifyBlockEntity(util.grid().at(2, 2, 1), BlazeEnchanterBlockEntity.class,
+                be -> be.extractItem(true, false));
+
+        scene.overlay().showText(65)
+                .text("The same way you get chest armor enchantments, you can put in a different kind of chest armor, such as a golden chest armor, which will produce different result")
+                .placeNearTarget()
+                .attachKeyFrame()
+                .pointAt(util.vector().topOf(2, 2, 1));
+        scene.world().modifyBlockEntity(util.grid().at(2, 2, 1), BlazeEnchanterBlockEntity.class,
+                be -> {
+                    var enchanter = be.getBehaviour(EnchanterBehaviour.TYPE);
+                    enchanter.setTemplate(Items.GOLDEN_CHESTPLATE.getDefaultInstance());
+                });
+        scene.overlay().showControls(slotVec, Pointing.UP, 50).rightClick().withItem(Items.GOLDEN_CHESTPLATE.getDefaultInstance());
+        scene.idle(70);
+        scene.overlay().showText(80)
+                .text("Because golden chest armor has better enchantability compared to diamond chest armor, it produces relatively better enchantments")
+                .placeNearTarget()
+                .pointAt(util.vector().topOf(2, 2, 1));
+        scene.world().modifyBlockEntity(util.grid().at(2, 2, 1), BlazeEnchanterBlockEntity.class,
+                be -> be.insertItem(CEIItems.ENCHANTING_TEMPLATE.asStack(), false));
+        scene.idle(100);
+
+        scene.overlay().showText(80)
+                .text("Please note! Higher Enchanting Level is not always better, some enchantments will not appear when Enchanting Level is too high!")
+                .placeNearTarget()
+                .attachKeyFrame()
+                .pointAt(util.vector().topOf(2, 2, 1));
         scene.idle(100);
     }
 
@@ -142,15 +198,14 @@ public class EnchanterScene {
         scene.idle(15);
 
         scene.overlay().showText(40)
-                .colored(PonderPalette.RED)
-                .text("Wow IT's SEETHING!")
+                .text("Blaze Enchanter is in Seething mode, or we call it Super Enchanting mode")
                 .placeNearTarget()
                 .pointAt(util.vector().topOf(2, 2, 1));
         scene.idle(45);
 
         scene.overlay().showText(100)
                 .attachKeyFrame()
-                .text("Now it's ready to do something truly remarkable! The enchant level cap is significantly increased! Treasure enchantments will be available!")
+                .text("Blaze Enchanter in Super Enchanting mode has received a huge boost to its adjustable Enchanting Level cap, and it can now produce Treasure Enchants")
                 .placeNearTarget()
                 .pointAt(util.vector().topOf(2, 2, 1));
         scene.world().modifyBlockEntity(util.grid().at(2, 2, 1), BlazeEnchanterBlockEntity.class,
@@ -160,6 +215,13 @@ public class EnchanterScene {
                     enchanter.setValue(60);
                 });
         scene.idle(105);
+
+        scene.overlay().showText(55)
+                .attachKeyFrame()
+                .text("Blaze Enchanter in Super Enchanting mode only accepts Super Enchanting Template")
+                .placeNearTarget()
+                .pointAt(util.vector().topOf(2, 2, 1));
+        scene.idle(60);
 
         scene.addKeyframe();
         scene.world().setBlock(util.grid().at(3, 2, 1), Blocks.LIGHTNING_ROD.defaultBlockState(), false);
@@ -205,7 +267,7 @@ public class EnchanterScene {
         scene.idle(25);
 
         scene.overlay().showText(80)
-                .text("You don't want to do anything? Fine")
+                .text("Please be careful! If you do nothing to protect it, a lightning strike will destroy everything")
                 .attachKeyFrame()
                 .independent();
         scene.idle(5);

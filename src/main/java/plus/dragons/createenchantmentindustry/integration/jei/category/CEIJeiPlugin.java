@@ -45,13 +45,7 @@ import plus.dragons.createenchantmentindustry.common.kinetics.grindstone.Mechani
 import plus.dragons.createenchantmentindustry.common.registry.CEIBlocks;
 import plus.dragons.createenchantmentindustry.common.registry.CEIRecipes;
 import plus.dragons.createenchantmentindustry.integration.jei.category.grinding.GrindingCategory;
-import plus.dragons.createenchantmentindustry.integration.jei.category.printing.AddressPrintingRecipeJEI;
-import plus.dragons.createenchantmentindustry.integration.jei.category.printing.CopyPrintingRecipeJEI;
-import plus.dragons.createenchantmentindustry.integration.jei.category.printing.CustomNamePrintingRecipeJEI;
-import plus.dragons.createenchantmentindustry.integration.jei.category.printing.EnchantedBookPrintingRecipeJEI;
-import plus.dragons.createenchantmentindustry.integration.jei.category.printing.PrintingCategory;
-import plus.dragons.createenchantmentindustry.integration.jei.category.printing.StandardPrintingRecipeJEI;
-import plus.dragons.createenchantmentindustry.integration.jei.category.printing.WrittenBookPrintingRecipeJEI;
+import plus.dragons.createenchantmentindustry.integration.jei.category.printing.*;
 
 @JeiPlugin
 public class CEIJeiPlugin implements IModPlugin {
@@ -79,6 +73,7 @@ public class CEIJeiPlugin implements IModPlugin {
                 .collect(Collectors.toList()));
         registration.addRecipes(PrintingCategory.TYPE, List.of(
                 AddressPrintingRecipeJEI.INSTANCE,
+                PatternPrintingRecipeJEI.INSTANCE,
                 CopyPrintingRecipeJEI.INSTANCE,
                 CustomNamePrintingRecipeJEI.INSTANCE,
                 WrittenBookPrintingRecipeJEI.INSTANCE));

@@ -359,9 +359,16 @@ public class ExperienceScene {
         scene.idle(5);
         scene.overlay().showText(55)
                 .text("Block of Experience is no longer purely decorative and storage block. You'll need it later")
+                .attachKeyFrame()
                 .placeNearTarget()
                 .pointAt(util.vector().topOf(2, 1, 0));
         scene.overlay().showOutline(PonderPalette.GREEN, util.select().fromTo(4, 1, 0, 0, 1, 1), util.select().fromTo(4, 1, 0, 0, 1, 1), 55);
+        scene.idle(60);
+
+        scene.overlay().showText(55)
+                .text("Block of Experience is required to make both the Enchantment Template and the Block of Super Experience")
+                .placeNearTarget()
+                .pointAt(util.vector().topOf(2, 1, 0));
         scene.idle(40);
 
         for (int i = 3; i <= 4; i++) {
@@ -370,12 +377,14 @@ public class ExperienceScene {
                 scene.idle(2);
             }
         }
-        scene.overlay().showText(40)
+
+        scene.overlay().showText(55)
                 .text("This is Block of Super Experience. You'll need it for making Super Enchanting Template")
                 .placeNearTarget()
+                .attachKeyFrame()
                 .pointAt(util.vector().topOf(2, 2, 3));
         scene.overlay().showOutline(PonderPalette.BLUE, util.select().fromTo(4, 1, 3, 0, 2, 4), util.select().fromTo(4, 1, 3, 0, 2, 4), 40);
-        scene.idle(40);
+        scene.idle(60);
 
         scene.world().showSection(util.select().position(3, 2, 1), Direction.DOWN);
         scene.world().showSection(util.select().position(3, 3, 3), Direction.DOWN);
@@ -387,7 +396,7 @@ public class ExperienceScene {
                 .pointAt(util.vector().topOf(3, 2, 1));
         scene.world().modifyBlock(util.grid().at(3, 3, 3), bs -> bs.setValue(BlazeBlock.HEAT_LEVEL, BlazeBurnerBlock.HeatLevel.KINDLED), false);
         scene.overlay().showOutline(PonderPalette.GREEN, util.select().position(3, 2, 1), util.select().position(3, 2, 1), 40);
-        scene.idle(40);
+        scene.idle(45);
 
         scene.world().showSection(util.select().position(1, 2, 1), Direction.DOWN);
         scene.world().showSection(util.select().position(1, 3, 3), Direction.DOWN);
@@ -399,7 +408,7 @@ public class ExperienceScene {
                 .pointAt(util.vector().topOf(1, 2, 1));
         scene.world().modifyBlock(util.grid().at(1, 3, 3), bs -> bs.setValue(BlazeBlock.HEAT_LEVEL, BlazeBurnerBlock.HeatLevel.KINDLED), false);
         scene.overlay().showOutline(PonderPalette.GREEN, util.select().position(1, 2, 1), util.select().position(1, 2, 1), 40);
-        scene.idle(40);
+        scene.idle(45);
 
         scene.world().modifyBlock(util.grid().at(3, 3, 3), bs -> bs.setValue(BlazeBlock.HEAT_LEVEL, BlazeBurnerBlock.HeatLevel.SEETHING), false);
         scene.world().modifyBlock(util.grid().at(3, 2, 1), bs -> bs.setValue(BlazeBlock.HEAT_LEVEL, BlazeBurnerBlock.HeatLevel.KINDLED), false);
@@ -407,14 +416,26 @@ public class ExperienceScene {
         scene.world().modifyBlock(util.grid().at(1, 3, 3), bs -> bs.setValue(BlazeBlock.HEAT_LEVEL, BlazeBurnerBlock.HeatLevel.SEETHING), false);
         scene.world().modifyBlock(util.grid().at(1, 2, 1), bs -> bs.setValue(BlazeBlock.HEAT_LEVEL, BlazeBurnerBlock.HeatLevel.KINDLED), false);
         scene.idle(5);
-        scene.overlay().showText(40)
-                .text("Super Enchanting allows you to break the limit!")
-                .attachKeyFrame()
+        scene.overlay().showText(55)
+                .text("There are Blaze on Seething mode, which means they're in Super Enchanting mode")
                 .placeNearTarget()
+                .attachKeyFrame()
                 .pointAt(util.vector().topOf(3, 3, 3));
         scene.overlay().showOutline(PonderPalette.BLUE, util.select().position(3, 3, 3), util.select().position(3, 3, 3), 40);
         scene.overlay().showOutline(PonderPalette.BLUE, util.select().position(1, 3, 3), util.select().position(1, 3, 3), 40);
+        scene.idle(60);
+
+        scene.overlay().showText(40)
+                .text("Super Enchanting allows you to break the limit!")
+                .placeNearTarget()
+                .pointAt(util.vector().topOf(3, 3, 3));
         scene.idle(40);
+
+        scene.overlay().showText(85)
+                .text("Super Enchanting specifically includes exceeding enchantment level cap, merging conflicting enchantments, and obtaining treasure enchantments directly")
+                .placeNearTarget()
+                .pointAt(util.vector().topOf(3, 3, 3));
+        scene.idle(90);
     }
 
     public static void prepare(SceneBuilder builder, SceneBuildingUtil util) {
@@ -431,8 +452,13 @@ public class ExperienceScene {
                 .placeNearTarget()
                 .pointAt(util.vector().topOf(1, 1, 1));
         scene.idle(80);
+        scene.overlay().showText(45)
+                .text("And you're supposed to use a lightning rod")
+                .attachKeyFrame()
+                .placeNearTarget()
+                .pointAt(util.vector().topOf(1, 2, 1));
         scene.world().showSection(util.select().position(1, 2, 1), Direction.DOWN);
-        scene.idle(20);
+        scene.idle(50);
         scene.world().createEntity(level -> {
             var lightning = EntityType.LIGHTNING_BOLT.create(level);
             lightning.moveTo(Vec3.atBottomCenterOf(util.grid().at(1, 2, 1)));
@@ -440,11 +466,17 @@ public class ExperienceScene {
         });
         scene.world().replaceBlocks(util.select().layer(1), CEIBlocks.SUPER_EXPERIENCE_BLOCK.getDefaultState(), false);
         scene.idle(5);
-        scene.overlay().showText(50)
+        scene.overlay().showText(45)
                 .text("Lighting Strike!")
                 .placeNearTarget()
                 .pointAt(util.vector().topOf(1, 2, 1));
         scene.idle(50);
+
+        scene.overlay().showText(80)
+                .text("The vast majority of lightning strikes only have a certain probability of transforming Block of Experience, and only lightning strikes caused by Super Enchanting are guaranteed to transform")
+                .placeNearTarget()
+                .pointAt(util.vector().topOf(1, 2, 1));
+        scene.idle(85);
 
         scene.world().replaceBlocks(util.select().position(1, 2, 1), Blocks.AIR.defaultBlockState(), true);
         scene.world().replaceBlocks(util.select().layer(1), Blocks.AIR.defaultBlockState(), true);
@@ -460,5 +492,26 @@ public class ExperienceScene {
                 .placeNearTarget()
                 .pointAt(util.vector().topOf(1, 1, 1));
         scene.idle(60);
+        scene.overlay().showText(80)
+                .text("You might be a little confused, if Cake o' Enchanting is used to put Blaze into Super Enchanting mode, what is Block of Super Experience used for?")
+                .attachKeyFrame()
+                .colored(PonderPalette.RED)
+                .placeNearTarget()
+                .pointAt(util.vector().topOf(1, 1, 1));
+        scene.idle(65);
+        scene.world().modifyBlockEntity(util.grid().at(1, 1, 1), DepotBlockEntity.class, be -> be.setHeldItem(CEIItems.SUPER_ENCHANTING_TEMPLATE.asStack()));
+        scene.idle(20);
+        scene.overlay().showText(45)
+                .text("The answer is used to make our third item: Super Enchanting Template")
+                .placeNearTarget()
+                .attachKeyFrame()
+                .pointAt(util.vector().topOf(1, 1, 1));
+        scene.idle(50);
+        scene.overlay().showText(75)
+                .text("In Super Enchanting mode, Blaze will not accept any normal Enchanting Templates and must use the Super Enchanting Template")
+                .placeNearTarget()
+                .attachKeyFrame()
+                .pointAt(util.vector().topOf(1, 1, 1));
+        scene.idle(80);
     }
 }

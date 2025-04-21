@@ -45,15 +45,13 @@ public class CEIItems {
             .item("enchanting_template", EnchantingTemplateItem::normal)
             .properties(prop -> prop
                     .rarity(Rarity.UNCOMMON)
-                    .component(DataComponents.STORED_ENCHANTMENTS, ItemEnchantments.EMPTY)
-                    .component(DataComponents.ENCHANTMENT_GLINT_OVERRIDE, true))
+                    .component(DataComponents.STORED_ENCHANTMENTS, ItemEnchantments.EMPTY))
             .register();
     public static final ItemEntry<EnchantingTemplateItem> SUPER_ENCHANTING_TEMPLATE = REGISTRATE
             .item("super_enchanting_template", EnchantingTemplateItem::special)
             .properties(prop -> prop
                     .rarity(Rarity.RARE)
-                    .component(DataComponents.STORED_ENCHANTMENTS, ItemEnchantments.EMPTY)
-                    .component(DataComponents.ENCHANTMENT_GLINT_OVERRIDE, true))
+                    .component(DataComponents.STORED_ENCHANTMENTS, ItemEnchantments.EMPTY))
             .register();
     public static final ItemEntry<Item> EXPERIENCE_CAKE_BASE = REGISTRATE
             .item("experience_cake_base", Item::new)

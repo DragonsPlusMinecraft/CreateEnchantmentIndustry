@@ -67,6 +67,10 @@ public class CEIConfig {
         return SERVER_CONFIG.enchantments;
     }
 
+    public static CEIProcessingConfig processing() {
+        return SERVER_CONFIG.processing;
+    }
+
     @SubscribeEvent
     public void onLoad(ModConfigEvent.Loading event) {
         var spec = event.getConfig().getSpec();

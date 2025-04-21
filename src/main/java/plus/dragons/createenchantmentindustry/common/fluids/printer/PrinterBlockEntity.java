@@ -48,13 +48,14 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import org.jetbrains.annotations.Nullable;
 import plus.dragons.createdragonsplus.common.advancements.AdvancementBehaviour;
 import plus.dragons.createdragonsplus.util.FieldsNullabilityUnknownByDefault;
+import plus.dragons.createenchantmentindustry.common.fluids.printer.behaviour.AddressPrintingBehaviour;
 import plus.dragons.createenchantmentindustry.common.fluids.printer.behaviour.CustomNamePrintingBehaviour;
+import plus.dragons.createenchantmentindustry.common.fluids.printer.behaviour.PackagePatternPrintingBehaviour;
 import plus.dragons.createenchantmentindustry.common.registry.CEIAdvancements;
 import plus.dragons.createenchantmentindustry.common.registry.CEIStats;
 import plus.dragons.createenchantmentindustry.config.CEIConfig;
@@ -166,6 +167,8 @@ public class PrinterBlockEntity extends SmartBlockEntity implements IHaveGoggleI
             if (printer.getPrintingBehaviour() instanceof CustomNamePrintingBehaviour) advancement.trigger(CEIAdvancements.BRAND_REGISTRY.builtinTrigger());
             else if (resultItem.is(Items.WRITTEN_BOOK)) advancement.trigger(CEIAdvancements.COPIABLE_MASTERPIECE.builtinTrigger());
             else if (resultItem.is(Items.ENCHANTED_BOOK)) advancement.trigger(CEIAdvancements.COPIABLE_MYSTERY.builtinTrigger());
+            else if (printer.getPrintingBehaviour() instanceof PackagePatternPrintingBehaviour) advancement.trigger(CEIAdvancements.ASSEMBLY_AESTHETICS.builtinTrigger());
+            else if (printer.getPrintingBehaviour() instanceof AddressPrintingBehaviour) advancement.trigger(CEIAdvancements.SUPPLY_CHAIN_REFACTOR.builtinTrigger());
         }
         fluidStack.shrink(requiredFluid);
         setFluidInTank(fluidStack);
@@ -203,8 +206,7 @@ public class PrinterBlockEntity extends SmartBlockEntity implements IHaveGoggleI
     @Override
     public boolean addToGoggleTooltip(List<Component> tooltip, boolean isPlayerSneaking) {
         assert level != null;
-        var handler = level.getCapability(Capabilities.FluidHandler.BLOCK, worldPosition, null);
-        boolean added = containedFluidTooltip(tooltip, isPlayerSneaking, handler);
+        boolean added = containedFluidTooltip(tooltip, isPlayerSneaking, tank.getPrimaryHandler());
         added |= printer.getPrintingBehaviour().addToGoggleTooltip(tooltip, isPlayerSneaking);
         return added;
     }

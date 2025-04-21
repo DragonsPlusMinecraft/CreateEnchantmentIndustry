@@ -119,7 +119,6 @@ public class EnchantedBookPrintingBehaviour implements PrintingBehaviour {
 
     @Override
     public void onFinished(Level level, BlockPos pos, PrinterBlockEntity printer) {
-        // TODO: Trigger advancement
         level.playSound(null, pos.below(), SoundEvents.ENCHANTMENT_TABLE_USE, SoundSource.BLOCKS,
                 1.0F, level.random.nextFloat() * 0.1F + 0.9F);
     }

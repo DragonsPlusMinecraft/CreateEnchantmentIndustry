@@ -19,6 +19,7 @@
 package plus.dragons.createenchantmentindustry.common.fluids.printer.behaviour;
 
 import com.simibubi.create.content.processing.sequenced.SequencedAssemblyRecipe;
+import com.simibubi.create.foundation.utility.CreateLang;
 import java.util.List;
 import java.util.Optional;
 import net.minecraft.ChatFormatting;
@@ -34,6 +35,7 @@ import plus.dragons.createenchantmentindustry.common.fluids.printer.PrinterBlock
 import plus.dragons.createenchantmentindustry.common.fluids.printer.PrintingInput;
 import plus.dragons.createenchantmentindustry.common.fluids.printer.PrintingRecipe;
 import plus.dragons.createenchantmentindustry.common.registry.CEIRecipes;
+import plus.dragons.createenchantmentindustry.config.CEIConfig;
 import plus.dragons.createenchantmentindustry.util.CEILang;
 
 public class RecipePrintingBehaviour implements PrintingBehaviour {
@@ -97,6 +99,16 @@ public class RecipePrintingBehaviour implements PrintingBehaviour {
             return false;
         CEILang.translate("gui.goggles.printing.template").forGoggles(tooltip);
         CEILang.item(template).style(ChatFormatting.GRAY).forGoggles(tooltip, 1);
+        if (lastRecipe != null) {
+            var cost = lastRecipe.value().getFluidIngredients().size();
+            CEILang.translate("gui.goggles.printing.cost",
+                    CEILang.number(lastRecipe.value().getFluidIngredients().size())
+                            .add(CreateLang.translate("generic.unit.millibuckets"))
+                            .style(cost <= CEIConfig.fluids().printerFluidCapacity.get()
+                                    ? ChatFormatting.GREEN
+                                    : ChatFormatting.RED))
+                    .forGoggles(tooltip, 1);
+        }
         return true;
     }
 }

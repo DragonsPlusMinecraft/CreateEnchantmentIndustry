@@ -1,5 +1,5 @@
 {
-  "parent": "create_enchantment_industry:sigil_forging",
+  "parent": "create_enchantment_industry:magic_unbinding",
   "criteria": {
     "0": {
       "conditions": {

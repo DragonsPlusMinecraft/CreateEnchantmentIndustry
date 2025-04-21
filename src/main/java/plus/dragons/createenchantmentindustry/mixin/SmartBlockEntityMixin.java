@@ -50,7 +50,7 @@ public abstract class SmartBlockEntityMixin extends CachedRenderBBBlockEntity {
         super(type, pos, state);
     }
 
-    @Inject(method = "setRemoved", at = @At(value = "INVOKE", target = "Lcom/simibubi/create/foundation/blockEntity/SmartBlockEntity;remove()V"))
+    @Inject(method = "destroy", at = @At(value = "HEAD"))
     private void setRemoved$dropExperienceFluid(CallbackInfo ci) {
         if (!(this.level instanceof ServerLevel serverLevel))
             return;

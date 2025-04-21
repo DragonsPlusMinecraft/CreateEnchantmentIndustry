@@ -20,6 +20,12 @@
     },
     "create:experience_block": 27,
     "create:experience_nugget": 3,
+    "create_enchantment_industry:experience_bucket": {
+      "experience": 1000,
+      "using_convert_to": {
+        "id": "minecraft:bucket"
+      }
+    },
     "create_enchantment_industry:experience_cake": {
       "experience": 1000,
       "special": true

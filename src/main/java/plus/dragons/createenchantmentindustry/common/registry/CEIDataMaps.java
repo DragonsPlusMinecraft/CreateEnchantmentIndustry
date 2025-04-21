@@ -35,6 +35,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.ExtraCodecs;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.material.Fluid;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -57,6 +58,10 @@ public class CEIDataMaps {
             .build();
     public static final DataMapType<Fluid, Integer> PRINTING_ADDRESS_INGREDIENT = DataMapType
             .builder(CEICommon.asResource("printing/address/ingredient"), Registries.FLUID, ExtraCodecs.POSITIVE_INT)
+            .synced(Codec.INT, true)
+            .build();
+    public static final DataMapType<Fluid, Integer> PRINTING_PATTERN_INGREDIENT = DataMapType
+            .builder(CEICommon.asResource("printing/pattern/ingredient"), Registries.FLUID, ExtraCodecs.POSITIVE_INT)
             .synced(Codec.INT, true)
             .build();
     public static final DataMapType<Fluid, Integer> PRINTING_COPY_INGREDIENT = DataMapType
@@ -86,6 +91,7 @@ public class CEIDataMaps {
         event.register(EXPERIENCE_FUEL);
         event.register(FLUID_UNIT_EXPERIENCE);
         event.register(PRINTING_ADDRESS_INGREDIENT);
+        event.register(PRINTING_PATTERN_INGREDIENT);
         event.register(PRINTING_COPY_INGREDIENT);
         event.register(PRINTING_CUSTOM_NAME_INGREDIENT);
         event.register(PRINTING_CUSTOM_NAME_STYLE);
@@ -102,6 +108,7 @@ public class CEIDataMaps {
 
     public static void generate(RegistrateDataMapProvider provider) {
         provider.builder(EXPERIENCE_FUEL)
+                .add(CEIItems.EXPERIENCE_BUCKET, ExperienceFuel.normal(1000, Items.BUCKET.getDefaultInstance()), false) // TODO Temporary solution for Create's bug, See https://github.com/Creators-of-Create/Create/pull/8304
                 .add(CEIItems.EXPERIENCE_CAKE, ExperienceFuel.special(1000), false)
                 .add(CEIItems.EXPERIENCE_CAKE_SLICE, ExperienceFuel.special(250), false)
                 .add(CEIBlocks.SUPER_EXPERIENCE_BLOCK.getId(), ExperienceFuel.special(27), false)
@@ -151,6 +158,8 @@ public class CEIDataMaps {
         var blackDye = CDPFluids.COMMON_TAGS.dyesByColor.get(DyeColor.BLACK);
         provider.builder(PRINTING_ADDRESS_INGREDIENT)
                 .add(blackDye, 10, false);
+        provider.builder(PRINTING_PATTERN_INGREDIENT)
+                .add(blackDye, 100, false);
         provider.builder(PRINTING_COPY_INGREDIENT)
                 .add(blackDye, 10, false);
         provider.builder(PRINTING_CUSTOM_NAME_INGREDIENT)

@@ -18,25 +18,21 @@
 
 package plus.dragons.createenchantmentindustry.common.registry;
 
-import com.simibubi.create.api.registry.CreateRegistries;
+import static plus.dragons.createenchantmentindustry.common.CEICommon.REGISTRATE;
+
 import com.simibubi.create.content.kinetics.mechanicalArm.ArmInteractionPointType;
-import net.minecraft.core.Holder;
+import com.tterrag.registrate.util.entry.RegistryEntry;
 import net.neoforged.bus.api.IEventBus;
-import net.neoforged.neoforge.registries.DeferredRegister;
-import plus.dragons.createenchantmentindustry.common.CEICommon;
 import plus.dragons.createenchantmentindustry.common.processing.enchanter.BlazeEnchanterArmInteractionPoint;
 import plus.dragons.createenchantmentindustry.common.processing.forger.BlazeForgerArmInteractionPoint;
 
 public class CEIArmInterationPoints {
-    public static final DeferredRegister<ArmInteractionPointType> TYPES = DeferredRegister
-            .create(CreateRegistries.ARM_INTERACTION_POINT_TYPE, CEICommon.ID);
+    public static final RegistryEntry<ArmInteractionPointType, BlazeEnchanterArmInteractionPoint.Type> BLAZE_ENCHANTER = REGISTRATE
+            .armInteractionPoint("blaze_enchanter", BlazeEnchanterArmInteractionPoint.Type::new)
+            .register();
+    public static final RegistryEntry<ArmInteractionPointType, BlazeForgerArmInteractionPoint.Type> BLAZE_FORGER = REGISTRATE
+            .armInteractionPoint("blaze_forger", BlazeForgerArmInteractionPoint.Type::new)
+            .register();
 
-    public static final Holder<ArmInteractionPointType> BLAZE_ENCHANTER = TYPES
-            .register("blaze_enchanter", BlazeEnchanterArmInteractionPoint.Type::new);
-    public static final Holder<ArmInteractionPointType> BLAZE_FORGER = TYPES
-            .register("blaze_forger", BlazeForgerArmInteractionPoint.Type::new);
-
-    public static void register(IEventBus modBus) {
-        TYPES.register(modBus);
-    }
+    public static void register(IEventBus modBus) {}
 }

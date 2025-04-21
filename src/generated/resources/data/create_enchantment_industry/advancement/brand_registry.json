@@ -13,7 +13,7 @@
     },
     "icon": {
       "count": 1,
-      "id": "create_enchantment_industry:blaze_forger"
+      "id": "minecraft:name_tag"
     },
     "title": {
       "translate": "advancement.create_enchantment_industry.brand_registry"

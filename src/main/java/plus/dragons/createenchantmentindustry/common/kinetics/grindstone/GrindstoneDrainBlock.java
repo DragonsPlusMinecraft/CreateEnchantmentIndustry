@@ -20,12 +20,10 @@ package plus.dragons.createenchantmentindustry.common.kinetics.grindstone;
 
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.AllShapes;
-import com.simibubi.create.api.schematic.requirement.SpecialBlockEntityItemRequirement;
+import com.simibubi.create.api.schematic.requirement.SpecialBlockItemRequirement;
 import com.simibubi.create.content.fluids.pipes.FluidPipeBlock;
 import com.simibubi.create.content.kinetics.base.HorizontalKineticBlock;
 import com.simibubi.create.content.schematics.requirement.ItemRequirement;
-import com.simibubi.create.content.schematics.requirement.ItemRequirement.ItemUseType;
-import com.simibubi.create.content.schematics.requirement.ItemRequirement.StackRequirement;
 import com.simibubi.create.foundation.block.IBE;
 import java.util.List;
 import net.createmod.catnip.data.Iterate;
@@ -41,6 +39,7 @@ import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
@@ -51,11 +50,11 @@ import org.jetbrains.annotations.Nullable;
 import plus.dragons.createdragonsplus.common.advancements.AdvancementBehaviour;
 import plus.dragons.createenchantmentindustry.common.registry.CEIBlockEntities;
 
-public class GrindstoneDrainBlock extends HorizontalKineticBlock implements IBE<GrindstoneDrainBlockEntity>, SpecialBlockEntityItemRequirement {
+public class GrindstoneDrainBlock extends HorizontalKineticBlock implements IBE<GrindstoneDrainBlockEntity>, SpecialBlockItemRequirement {
     protected static VoxelShape SHAPE = new AllShapes.Builder(AllShapes.CASING_13PX.get(Direction.UP))
             .add(3, 3, 3, 13, 13, 13)
             .build();
-    protected final MechanicalGrindstoneBlock grindstone;
+    final MechanicalGrindstoneBlock grindstone;
 
     public GrindstoneDrainBlock(MechanicalGrindstoneBlock grindstone, Properties properties) {
         super(properties);
@@ -115,13 +114,6 @@ public class GrindstoneDrainBlock extends HorizontalKineticBlock implements IBE<
     }
 
     @Override
-    public ItemRequirement getRequiredItems(BlockState state) {
-        return new ItemRequirement(List.of(
-                new StackRequirement(new ItemStack(this.grindstone), ItemUseType.CONSUME),
-                new StackRequirement(AllBlocks.ITEM_DRAIN.asStack(), ItemUseType.CONSUME)));
-    }
-
-    @Override
     public Axis getRotationAxis(BlockState state) {
         return state.getValue(HORIZONTAL_FACING).getAxis();
     }
@@ -134,5 +126,12 @@ public class GrindstoneDrainBlock extends HorizontalKineticBlock implements IBE<
     @Override
     public BlockEntityType<? extends GrindstoneDrainBlockEntity> getBlockEntityType() {
         return CEIBlockEntities.GRINDSTONE_DRAIN.get();
+    }
+
+    @Override
+    public ItemRequirement getRequiredItems(BlockState state, @Nullable BlockEntity blockEntity) {
+        return new ItemRequirement(List.of(
+                new ItemRequirement.StackRequirement(new ItemStack(grindstone), ItemRequirement.ItemUseType.CONSUME),
+                new ItemRequirement.StackRequirement(AllBlocks.ITEM_DRAIN.asStack(), ItemRequirement.ItemUseType.CONSUME)));
     }
 }

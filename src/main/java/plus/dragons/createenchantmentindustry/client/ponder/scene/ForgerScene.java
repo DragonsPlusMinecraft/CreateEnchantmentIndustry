@@ -174,21 +174,20 @@ public class ForgerScene {
         scene.idle(15);
 
         scene.overlay().showText(40)
-                .colored(PonderPalette.RED)
-                .text("Look! SEETHING BLAZE!")
+                .text("Blaze Forger is in Seething mode, or we call it Super Enchanting mode")
                 .placeNearTarget()
                 .pointAt(util.vector().topOf(2, 2, 1));
         scene.idle(45);
 
         scene.overlay().showText(100)
                 .attachKeyFrame()
-                .text("Now it's ready to do something truly fascinating! Your merging can break the enchantment level cap! Conflicting enchantments can be merged together!")
+                .text("Blaze Forger in Super Enchanting mode can break the enchantment level cap by merging 2 identical max-level enchantments, and it can merge conflicting enchantments together")
                 .placeNearTarget()
                 .pointAt(util.vector().topOf(2, 2, 1));
         scene.idle(105);
 
         scene.overlay().showText(60)
-                .text("Oh, as a side note, Super Enchanting Templates require this state to be applied and processed")
+                .text("Blaze Forger in Super Enchanting mode only accepts Super Enchanting Template")
                 .placeNearTarget()
                 .attachKeyFrame()
                 .pointAt(util.vector().topOf(2, 2, 1));
@@ -243,7 +242,7 @@ public class ForgerScene {
         scene.idle(25);
 
         scene.overlay().showText(80)
-                .text("You don't want to do anything? Emmmm okay...")
+                .text("Please be careful! If you do nothing to protect it, a lightning strike will destroy everything")
                 .attachKeyFrame()
                 .independent();
         scene.idle(5);

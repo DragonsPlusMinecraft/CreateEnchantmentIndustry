@@ -25,6 +25,7 @@ public class CEIServerConfig extends ConfigBase {
     public final CEIKineticsConfig kinetics = nested(0, CEIKineticsConfig::new, Comments.kinetics);
     public final CEIFluidsConfig fluids = nested(0, CEIFluidsConfig::new, Comments.fluids);
     public final CEIEnchantmentsConfig enchantments = nested(0, CEIEnchantmentsConfig::new, Comments.enchantments);
+    public final CEIProcessingConfig processing = nested(0, CEIProcessingConfig::new, Comments.processing);
 
     @Override
     public void registerAll(ModConfigSpec.Builder builder) {
@@ -40,5 +41,6 @@ public class CEIServerConfig extends ConfigBase {
         static final String kinetics = "Parameters and abilities of kinetic mechanisms";
         static String fluids = "Parameters and abilities of fluids and fluid operating components";
         static String enchantments = "Parameters and abilities of enchantment operating components";
+        static String processing = "Parameters and abilities of processing mechanisms and appliances";
     }
 }
