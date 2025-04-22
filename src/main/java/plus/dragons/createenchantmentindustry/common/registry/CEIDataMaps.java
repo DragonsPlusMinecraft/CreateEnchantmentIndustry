@@ -115,7 +115,7 @@ public class CEIDataMaps {
                 .add(CEIItems.SUPER_EXPERIENCE_NUGGET, ExperienceFuel.special(3), false)
                 .add(AllBlocks.EXPERIENCE_BLOCK.getId(), ExperienceFuel.normal(27), false)
                 .add(AllItems.EXP_NUGGET, ExperienceFuel.normal(3), false)
-                .add(ResourceLocation.fromNamespaceAndPath("create_sa", "experience_heap"),
+                .add(ResourceLocation.fromNamespaceAndPath("create_sa", "heap_of_experience"),
                         ExperienceFuel.normal(12), false,
                         new ModLoadedCondition("create_sa"))
                 .add(ResourceLocation.fromNamespaceAndPath("ars_nouveau", "experience_gem"),

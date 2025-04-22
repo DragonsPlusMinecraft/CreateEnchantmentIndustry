@@ -42,7 +42,7 @@
       "experience": 3,
       "special": true
     },
-    "create_sa:experience_heap": {
+    "create_sa:heap_of_experience": {
       "neoforge:conditions": [
         {
           "type": "neoforge:mod_loaded",

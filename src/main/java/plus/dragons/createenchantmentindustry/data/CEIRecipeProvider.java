@@ -169,9 +169,9 @@ public class CEIRecipeProvider extends RecipeProvider {
                 .require(SUPER_EXPERIENCE_BLOCK)
                 .output(EXPERIENCE.get(), 27)
                 .build(output);
-        GrindingRecipe.builder(CEICommon.asResource("create_sa/experience_heap"))
+        GrindingRecipe.builder(CEICommon.asResource("create_sa/heap_of_experience"))
                 .whenModLoaded("create_sa")
-                .require(IntegrationIngredient.of("create_sa", "experience_heap"))
+                .require(IntegrationIngredient.of("create_sa", "heap_of_experience"))
                 .output(EXPERIENCE.get(), 12)
                 .build(output);
         GrindingRecipe.builder(CEICommon.asResource("ars_nouveau/experience_gem"))
