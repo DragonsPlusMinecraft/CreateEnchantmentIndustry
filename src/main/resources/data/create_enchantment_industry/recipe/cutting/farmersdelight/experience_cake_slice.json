@@ -13,8 +13,10 @@
   ],
   "result": [
     {
-      "count": 4,
-      "item": "create_enchantment_industry:experience_cake_slice"
+      "item": {
+        "count": 4,
+        "id": "create_enchantment_industry:experience_cake_slice"
+      }
     }
   ],
   "tool": {
