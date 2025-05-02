@@ -71,6 +71,10 @@ public class CEIConfig {
         return SERVER_CONFIG.processing;
     }
 
+    public static CEIPrinterConfig printer() {
+        return SERVER_CONFIG.printer;
+    }
+
     @SubscribeEvent
     public void onLoad(ModConfigEvent.Loading event) {
         var spec = event.getConfig().getSpec();

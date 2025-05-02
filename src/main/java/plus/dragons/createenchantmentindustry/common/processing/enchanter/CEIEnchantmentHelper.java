@@ -19,9 +19,17 @@
 package plus.dragons.createenchantmentindustry.common.processing.enchanter;
 
 import com.google.common.collect.Lists;
+
+import it.unimi.dsi.fastutil.objects.Object2IntMap;
+
+import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Stream;
 import net.minecraft.core.Holder;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.tags.TagKey;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.random.WeightedRandom;
@@ -30,6 +38,7 @@ import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.EnchantmentInstance;
 import net.minecraft.world.item.enchantment.ItemEnchantments;
+import net.neoforged.neoforge.common.CommonHooks;
 import plus.dragons.createenchantmentindustry.common.fluids.experience.ExperienceHelper;
 import plus.dragons.createenchantmentindustry.config.CEIConfig;
 
@@ -57,15 +66,18 @@ public class CEIEnchantmentHelper {
         return level;
     }
 
-    public static List<EnchantmentInstance> getAvailableEnchantmentResults(int level, Stream<Holder<Enchantment>> possibleEnchantments, boolean special) {
+    public static List<EnchantmentInstance> getAvailableEnchantmentResults(int level,
+            Stream<Holder<Enchantment>> possibleEnchantments, boolean special) {
         List<EnchantmentInstance> list = Lists.newArrayList();
         possibleEnchantments.forEach(holder -> {
             Enchantment enchantment = holder.value();
             int maxLevel = enchantment.getMaxLevel();
             // Remove since Blaze Enchanter should not break level cap
-            /*if (maxLevel > 1 && special)
-                maxLevel += CEIConfig.enchantments().enchantmentMaxLevelExtension.get();
-            maxLevel = Math.clamp(maxLevel, 1, 255);*/
+            /*
+             * if (maxLevel > 1 && special)
+             * maxLevel += CEIConfig.enchantments().enchantmentMaxLevelExtension.get();
+             * maxLevel = Math.clamp(maxLevel, 1, 255);
+             */
             for (int i = maxLevel; i >= enchantment.getMinLevel(); i--) {
                 if (level >= enchantment.getMinCost(i) && level <= enchantment.getMaxCost(i)) {
                     list.add(new EnchantmentInstance(holder, i));
@@ -76,7 +88,8 @@ public class CEIEnchantmentHelper {
         return list;
     }
 
-    public static List<EnchantmentInstance> selectEnchantments(RandomSource random, int adjustedLevel, List<EnchantmentInstance> available, boolean special) {
+    public static List<EnchantmentInstance> selectEnchantments(RandomSource random, int adjustedLevel,
+            List<EnchantmentInstance> available, boolean special) {
         List<EnchantmentInstance> list = Lists.newArrayList();
         WeightedRandom.getRandomItem(random, available).ifPresent(list::add);
         while (random.nextInt(50) <= adjustedLevel) {
@@ -92,5 +105,19 @@ public class CEIEnchantmentHelper {
             adjustedLevel /= 2;
         }
         return list;
+    }
+
+    public static boolean hasTag(ItemStack stack, TagKey<Enchantment> tag) {
+        ItemEnchantments itemenchantments = EnchantmentHelper.getEnchantmentsForCrafting(stack);
+        if (itemenchantments.isEmpty()) {
+            return false;
+        }
+
+        for (Object2IntMap.Entry<Holder<Enchantment>> entry : itemenchantments.entrySet()) {
+            if (entry.getKey().is(tag)) {
+                return true;
+            }
+        }
+        return false;
     }
 }

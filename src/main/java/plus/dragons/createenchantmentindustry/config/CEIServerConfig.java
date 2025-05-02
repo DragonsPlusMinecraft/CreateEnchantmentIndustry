@@ -26,6 +26,7 @@ public class CEIServerConfig extends ConfigBase {
     public final CEIFluidsConfig fluids = nested(0, CEIFluidsConfig::new, Comments.fluids);
     public final CEIEnchantmentsConfig enchantments = nested(0, CEIEnchantmentsConfig::new, Comments.enchantments);
     public final CEIProcessingConfig processing = nested(0, CEIProcessingConfig::new, Comments.processing);
+    public final CEIPrinterConfig printer = nested(0, CEIPrinterConfig::new, Comments.printer);
 
     @Override
     public void registerAll(ModConfigSpec.Builder builder) {
@@ -42,5 +43,6 @@ public class CEIServerConfig extends ConfigBase {
         static String fluids = "Parameters and abilities of fluids and fluid operating components";
         static String enchantments = "Parameters and abilities of enchantment operating components";
         static String processing = "Parameters and abilities of processing mechanisms and appliances";
+        static String printer = "Parameters and abilities of printer mechanism";
     }
 }

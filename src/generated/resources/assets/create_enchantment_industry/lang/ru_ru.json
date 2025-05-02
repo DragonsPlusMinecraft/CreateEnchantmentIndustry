@@ -1,4 +1,5 @@
 {
+  "_comment.unlocalized": "Remove this line after finishing localization.",
   "advancement.create_enchantment_industry.a_shower_experience": "Нахлынувшие воспоминания",
   "advancement.create_enchantment_industry.a_shower_experience.desc": "Сломайте жидкостную трубу и верните себе пролившийся опыт\n§7(Скрытое достижение)",
   "advancement.create_enchantment_industry.assembly_aesthetics": "Эстетика сборки",
@@ -88,6 +89,7 @@
   "create_enchantment_industry.gui.goggles.printing.template": "Печать по шаблону:",
   "create_enchantment_industry.gui.printer.copy.invalid": "Содержимое этого предмета не подлежит копированию.",
   "create_enchantment_industry.gui.printer.enchanted_book.invalid": "Никаких чар для копирования из этой книги.",
+  "create_enchantment_industry.gui.printer.enchanted_book.invalid_contains_treasure": "This book contains treasure enchantments, which can not be copied.",
   "create_enchantment_industry.gui.printer.written_book.invalid": "Нет содержимого для копирования из этой книги.",
   "create_enchantment_industry.ponder.blaze_enchanter.automate.header": "Автоматизацией механической рукой",
   "create_enchantment_industry.ponder.blaze_enchanter.automate.text_1": "Всполоха-чародея можно автоматизировать с помощью механической руки",

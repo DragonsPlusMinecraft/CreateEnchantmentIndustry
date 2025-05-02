@@ -1,4 +1,5 @@
 {
+  "_comment.unlocalized": "Remove this line after finishing localization.",
   "advancement.create_enchantment_industry.a_shower_experience": "沐浴“经验”",
   "advancement.create_enchantment_industry.a_shower_experience.desc": "打破管道，沐浴在经验之中\n§7（隐藏进度）",
   "advancement.create_enchantment_industry.assembly_aesthetics": "视觉产线",
@@ -88,6 +89,7 @@
   "create_enchantment_industry.gui.goggles.printing.template": "使用模板：",
   "create_enchantment_industry.gui.printer.copy.invalid": "没有可以从此物品复制的内容",
   "create_enchantment_industry.gui.printer.enchanted_book.invalid": "没有可以从此附魔书复制的附魔",
+  "create_enchantment_industry.gui.printer.enchanted_book.invalid_contains_treasure": "This book contains treasure enchantments, which can not be copied.",
   "create_enchantment_industry.gui.printer.written_book.invalid": "没有可以从此成书复印的内容",
   "create_enchantment_industry.ponder.blaze_enchanter.automate.header": "使用动力臂自动化",
   "create_enchantment_industry.ponder.blaze_enchanter.automate.text_1": "烈焰人附魔室能用动力臂进行自动化",

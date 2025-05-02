@@ -89,6 +89,7 @@
   "create_enchantment_industry.gui.goggles.printing.template": "Drucken mit Vorlage:",
   "create_enchantment_industry.gui.printer.copy.invalid": "Keine kopierbaren Inhalte vorhanden.",
   "create_enchantment_industry.gui.printer.enchanted_book.invalid": "Keine Verzauberungen zum kopieren in dem Buch.",
+  "create_enchantment_industry.gui.printer.enchanted_book.invalid_contains_treasure": "This book contains treasure enchantments, which can not be copied.",
   "create_enchantment_industry.gui.printer.written_book.invalid": "Aus diesem Buch kann nichts kopiert werden.",
   "create_enchantment_industry.ponder.blaze_enchanter.automate.header": "Automating with Mechanical Arm",
   "create_enchantment_industry.ponder.blaze_enchanter.automate.text_1": "Blaze Enchanter can be automated with Mechanical Arm",

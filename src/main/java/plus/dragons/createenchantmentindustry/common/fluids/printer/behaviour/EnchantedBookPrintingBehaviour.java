@@ -57,7 +57,8 @@ public class EnchantedBookPrintingBehaviour implements PrintingBehaviour {
     private final ItemEnchantments enchantments;
     private final int cost;
 
-    private EnchantedBookPrintingBehaviour(Level level, SmartFluidTankBehaviour tank, ItemStack original, ItemEnchantments enchantments) {
+    private EnchantedBookPrintingBehaviour(Level level, SmartFluidTankBehaviour tank, ItemStack original,
+            ItemEnchantments enchantments) {
         this.level = level;
         this.tank = tank;
         this.original = original;
@@ -65,12 +66,20 @@ public class EnchantedBookPrintingBehaviour implements PrintingBehaviour {
         this.cost = CEIEnchantmentHelper.getEnchantmentCost(enchantments);
     }
 
-    public static Optional<DataResult<PrintingBehaviour>> create(Level level, SmartFluidTankBehaviour tank, ItemStack stack) {
+    public static Optional<DataResult<PrintingBehaviour>> create(Level level, SmartFluidTankBehaviour tank,
+            ItemStack stack) {
         if (!stack.is(Items.ENCHANTED_BOOK))
             return Optional.empty();
         var enchantments = EnchantmentHelper.getEnchantmentsForCrafting(stack);
         if (enchantments.isEmpty())
             return Optional.of(DataResult.error(() -> CEICommon.asLocalization("gui.printer.enchanted_book.invalid")));
+
+        if (!CEIConfig.printer().treasureEnchantsPrintable.get()
+                && CEIEnchantmentHelper.hasTag(stack, EnchantmentTags.TREASURE)) {
+            return Optional.of(DataResult
+                    .error(() -> CEICommon.asLocalization("gui.printer.enchanted_book.invalid_contains_treasure")));
+        }
+
         return Optional.of(DataResult.success(new EnchantedBookPrintingBehaviour(level, tank, stack, enchantments)));
     }
 
@@ -79,6 +88,7 @@ public class EnchantedBookPrintingBehaviour implements PrintingBehaviour {
         cost = ExperienceHelper.getFluidFromExperience(fluid, cost);
         if (cost == 0)
             return OptionalInt.empty();
+        cost = (int) Math.ceil(cost * CEIConfig.printer().enchantedBookCostMultiplier.get());
         return OptionalInt.of(cost);
     }
 
