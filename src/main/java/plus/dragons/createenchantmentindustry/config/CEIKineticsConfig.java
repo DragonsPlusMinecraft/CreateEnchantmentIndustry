@@ -40,15 +40,15 @@ public class CEIKineticsConfig extends ConfigBase {
 
     static class Comments {
         static final String stress = "Fine tune the kinetic stats of individual components";
-        static final String deployerKillDropXp = "Whether Deployer killed entities should drop experience.";
-        static final String deployerKillXpScale = "Scale for experience dropped from Deployer killed entities.";
-        static final String deployerMineDropXp = "Whether Deployer mined blocks should drop experience.";
-        static final String deployerMineXpScale = "Scale for experience dropped from Deployer mined blocks.";
-        static final String deployerCollectXp = "Whether Deployer collect dropped experience as Experience Nugget.";
-        static final String deployerMendItem = "Whether Mending enchantment applies to Deployer held item (Needs deployerCollectXp = true).";
-        static final String deployerSweepAttack = "Whether Deployer can perform sweep attack.";
-        static final String crushingWheelKillDropXp = "Whether Crushing Wheel killed entities should drop experience.";
-        static final String crushingWheelKillDropXpChance = "Probability of Crushing Wheel killed entities dropping experience.";
-        static final String crushingWheelKillDropXpScale = "Scale for experience dropped from Crushing Wheel killed entities.";
+        static final String deployerKillDropXp = "Whether Deployer-killed entities should drop experience.";
+        static final String deployerKillXpScale = "Scale for experience dropped from Deployer-killed entities.";
+        static final String deployerMineDropXp = "Whether Deployer-mined blocks should drop experience.";
+        static final String deployerMineXpScale = "Scale for experience dropped from Deployer-mined blocks.";
+        static final String deployerCollectXp = "Whether Deployers collect dropped experience as Nuggets of Experience.";
+        static final String deployerMendItem = "Whether the Mending enchantment applies to Deployer-held items (Needs deployerCollectXp = true).";
+        static final String deployerSweepAttack = "Whether Deployers can perform sweep attacks.";
+        static final String crushingWheelKillDropXp = "Whether Crushing Wheel-killed entities should drop experience.";
+        static final String crushingWheelKillDropXpChance = "Probability of Crushing Wheel-killed entities dropping experience.";
+        static final String crushingWheelKillDropXpScale = "Scale for experience dropped from Crushing Wheel-killed entities.";
     }
 }

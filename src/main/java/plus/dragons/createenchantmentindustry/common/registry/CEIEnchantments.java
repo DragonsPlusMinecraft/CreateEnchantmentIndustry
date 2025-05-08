@@ -51,7 +51,7 @@ public class CEIEnchantments {
                 "Blaze Enchanter Super Enchanting Exclusive Enchantments");
         public final TagKey<Enchantment> printingDeny = tag(
                 "printer/deny",
-                "Printer denied Enchantments");
+                "Printer-Denied Enchantments");
 
         protected ModTags() {
             super(CEICommon.ID, Registries.ENCHANTMENT);

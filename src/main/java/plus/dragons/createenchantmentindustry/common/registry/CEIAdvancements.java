@@ -58,18 +58,18 @@ public class CEIAdvancements implements DataProvider {
 
             EXPERIENCED_ENGINEER = create("experienced_engineer", b -> b.icon(AllItems.EXP_NUGGET)
                     .title("Experienced Engineer")
-                    .description("Get some Nuggets of Experience")
+                    .description("Obtain some Nuggets of Experience")
                     .whenIconCollected()
                     .after(ROOT)),
 
             SPIRIT_TAKING = create("spirit_taking", b -> b.icon(AllItems.EXP_NUGGET)
-                    .title("Spirit Taking")
-                    .description("Store your experience through an experience hatch")
+                    .title("Spirit-Taking")
+                    .description("Store your experience using an Experience Hatch")
                     .after(EXPERIENCED_ENGINEER)),
 
             SPIRITUAL_RETURN = create("spiritual_return", b -> b.icon(AllItems.EXP_NUGGET)
                     .title("Spiritual Return")
-                    .description("Retrieve some experience through an experience hatch")
+                    .description("Retrieve some experience using an Experience Hatch")
                     .after(SPIRIT_TAKING)),
 
             A_SHOWER_EXPERIENCE = create("a_shower_experience", b -> b.icon(AllItems.EXP_NUGGET)
@@ -81,7 +81,7 @@ public class CEIAdvancements implements DataProvider {
             LUMEN_NEXUS = create("lumen_nexus", b -> b.icon(CEIBlocks.EXPERIENCE_LANTERN)
                     .title("Lumen Nexus")
                     .whenIconCollected()
-                    .description("Obtain Experience Lantern")
+                    .description("Obtain an Experience Lantern")
                     .after(SPIRITUAL_RETURN)),
 
             // Mechanical Grindstone
@@ -91,38 +91,38 @@ public class CEIAdvancements implements DataProvider {
                     .after(EXPERIENCED_ENGINEER)),
 
             GRIND_TO_POLISH = create("grind_to_polish", b -> b.icon(AllItems.SAND_PAPER)
-                    .title("Grind To Polish")
-                    .description("Sandpaper? I've gotten better one")
+                    .title("Grind to Polish")
+                    .description("Sandpaper? I've got a better one")
                     .special(CDPAdvancement.TaskType.NOISY)
                     .after(GONE_WITH_THE_FOIL)),
 
             EXPERIENCED_RECYCLER = create("experienced_recycler", b -> b.icon(CEIBlocks.GRINDSTONE_DRAIN)
                     .title("Experienced Recycler")
-                    .description("Get 1,000,000 mB of experience from Mechanical Grindstone")
+                    .description("Obtain 1,000,000 mB of Liquid Experience from Mechanical Grindstones")
                     .special(CDPAdvancement.TaskType.EXPERT)
                     .whenStatReach(Stats.CUSTOM.get(CEIStats.GRINDSTONE_EXPERIENCE.get()), MinMaxBounds.Ints.atLeast(1000000))
                     .after(GONE_WITH_THE_FOIL)),
 
             // Blaze Enchanter
             BLAZE_ENCHANTERY = create("blaze_enchantery", b -> b.icon(CEIBlocks.BLAZE_ENCHANTER)
-                    .title("Blaze Enchantery")
-                    .description("Blaze can do more than boil water. Obtain a Blaze Enchanter")
+                    .title("Blaze Enchantry")
+                    .description("Blazes can do more than boil water. Obtain a Blaze Enchanter")
                     .whenIconCollected()
                     .after(EXPERIENCED_ENGINEER)),
 
             BLAZING_ENCHANTMENT = create("blazing_enchantment", b -> b.icon(Items.GOLDEN_HELMET)
                     .title("Blazing Enchantment")
-                    .description("Add a new enchantment to an unenchanted item using Blaze Enchanter")
+                    .description("Enchant an unenchanted item using a Blaze Enchanter")
                     .after(BLAZE_ENCHANTERY)),
 
             SIGIL_FORGING = create("sigil_forging", b -> b.icon(CEIItems.ENCHANTING_TEMPLATE)
                     .title("Sigil Forging")
-                    .description("Add a new enchantment to an enchanting template using Blaze Enchanter")
+                    .description("Add a new enchantment to an Enchanting Template using a Blaze Enchanter")
                     .after(BLAZING_ENCHANTMENT)),
 
             THOUSAND_RUNES = create("thousand_runes", b -> b.icon(CEIBlocks.BLAZE_ENCHANTER)
                     .title("Thousand Runes")
-                    .description("Blaze Enchanter enchants 1,000 times")
+                    .description("Use a Blaze Enchanter 1,000 times")
                     .whenStatReach(Stats.CUSTOM.get(CEIStats.ENCHANT.get()), MinMaxBounds.Ints.atLeast(1000))
                     .special(CDPAdvancement.TaskType.EXPERT)
                     .after(SIGIL_FORGING)),
@@ -130,28 +130,28 @@ public class CEIAdvancements implements DataProvider {
             // Blaze Forger
             BORN_TALENT_OF_FIRE = create("born_talent_of_fire", b -> b.icon(CEIBlocks.BLAZE_FORGER)
                     .title("Born Talent of Fire")
-                    .description("Blazer is good at this. Obtain a Blaze Forger")
+                    .description("Blazes were born for this. Obtain a Blaze Forger")
                     .whenIconCollected()
                     .after(EXPERIENCED_ENGINEER)),
 
             BLAZING_FUSION = create("blazing_fusion", b -> b.icon(Items.GOLDEN_SWORD)
                     .title("Blazing Fusion")
-                    .description("Combine two items of same kind using Blaze Forger")
+                    .description("Merge two of the same item using a Blaze Forger")
                     .after(BORN_TALENT_OF_FIRE)),
 
             SIGIL_CASTING = create("sigil_casting", b -> b.icon(CEIItems.ENCHANTING_TEMPLATE)
                     .title("Sigil Casting")
-                    .description("Apply an Enchanting Template using Blaze Forger")
+                    .description("Apply an Enchanting Template using a Blaze Forger")
                     .after(BLAZING_FUSION)),
 
             MAGIC_UNBINDING = create("magic_unbinding", b -> b.icon(CEIItems.ENCHANTING_TEMPLATE)
                     .title("Magic Unbinding")
-                    .description("Strip enchantment off item using Blaze Forger")
+                    .description("Strip an item's enchantment off using a Blaze Forger")
                     .after(SIGIL_CASTING)),
 
             BLAZING_CENTURION = create("blazing_centurion", b -> b.icon(CEIBlocks.BLAZE_FORGER)
                     .title("Blazing Centurion")
-                    .description("Blaze Forger forges 1,000 times")
+                    .description("Use a Blaze Forger 1,000 times")
                     .whenStatReach(Stats.CUSTOM.get(CEIStats.FORGE.get()), MinMaxBounds.Ints.atLeast(1000))
                     .special(CDPAdvancement.TaskType.EXPERT)
                     .after(MAGIC_UNBINDING)),
@@ -172,25 +172,25 @@ public class CEIAdvancements implements DataProvider {
 
             TRANSCENDENT_OVERCLOCK = create("transcendent_overclock", b -> b.icon(Items.EMERALD)
                     .title("Transcendent Overclock")
-                    .description("How could it happen? Enchantment Level Cap Didn't exist?")
+                    .description("How is this possible? Enchantment level caps don't exist?")
                     .special(CDPAdvancement.TaskType.EXPERT)
                     .after(PROBABILITY_SPIKE)),
 
             PARADOX_FUSION = create("paradox_fusion", b -> b.icon(Items.REDSTONE)
                     .title("Paradox Fusion")
-                    .description("How could it happen? They should not appear at same time!")
+                    .description("How is this possible? They shouldn't appear at the same time!")
                     .special(CDPAdvancement.TaskType.EXPERT)
                     .after(TRANSCENDENT_OVERCLOCK)),
 
             OSHA_VIOLATION = create("osha_violation", b -> b.icon(Items.BARRIER)
                     .title("OSHA Violation")
-                    .description("You SHOULD NOT let it happen!!!")
+                    .description("You should NOT have let this happen!!!")
                     .special(CDPAdvancement.TaskType.SECRET)
                     .after(LIGHTNING_CATALYSIS)),
 
             OMNI_ENCHANTER = create("omni_enchanter", b -> b.icon(Items.NETHER_STAR)
                     .title("Omni-Enchanter")
-                    .description("Unbelievable! You've super-enchanted 1,000 times! Now the number speaks for itself")
+                    .description("Unbelievable! You've Super Enchanted 1,000 times! Now the number speaks for itself")
                     .whenStatReach(Stats.CUSTOM.get(CEIStats.SUPER_ENCHANT.get()), MinMaxBounds.Ints.atLeast(100))
                     .special(CDPAdvancement.TaskType.EXPERT)
                     .after(PARADOX_FUSION)),
@@ -198,32 +198,32 @@ public class CEIAdvancements implements DataProvider {
             // Printer
             COPIABLE_MASTERPIECE = create("copiable_masterpiece", b -> b.icon(Items.WRITTEN_BOOK)
                     .title("Copiable Masterpiece")
-                    .description("Copy a Written Book using Printer")
+                    .description("Copy a Written Book using a Printer")
                     .after(EXPERIENCED_ENGINEER)),
 
             COPIABLE_MYSTERY = create("copiable_mystery", b -> b.icon(Items.ENCHANTED_BOOK)
                     .title("Copiable Mystery")
-                    .description("Copy a Enchanted Book using Printer")
+                    .description("Copy an Enchanted Book using a Printer")
                     .after(COPIABLE_MASTERPIECE)),
 
             BRAND_REGISTRY = create("brand_registry", b -> b.icon(Items.NAME_TAG)
                     .title("Brand Registry")
-                    .description("Using the printer to name an item")
+                    .description("Use a Printer to rename an item")
                     .after(COPIABLE_MYSTERY)),
 
             SUPPLY_CHAIN_REFACTOR = create("supply_chain_refactor", b -> b.icon(PackageStyles.getDefaultBox())
                     .title("Supply Chain Refactor")
-                    .description("Using the printer to change package address")
+                    .description("Use a Printer to change a package's address")
                     .after(BRAND_REGISTRY)),
 
             ASSEMBLY_AESTHETICS = create("assembly_aesthetics", b -> b.icon(CDPItems.RARE_MARBLE_GATE_PACKAGE)
                     .title("Assembly Aesthetics")
-                    .description("Using the printer to change package pattern")
+                    .description("Use a Printer to change a package's pattern")
                     .after(SUPPLY_CHAIN_REFACTOR)),
 
             GREAT_PUBLISHER = create("great_publisher", b -> b.icon(CEIBlocks.PRINTER)
                     .title("Great Publisher")
-                    .description("Printer prints 1,000 times")
+                    .description("Use a Printer 1,000 times")
                     .whenStatReach(Stats.CUSTOM.get(CEIStats.PRINT.get()), MinMaxBounds.Ints.atLeast(1000))
                     .special(CDPAdvancement.TaskType.EXPERT)
                     .after(BRAND_REGISTRY));

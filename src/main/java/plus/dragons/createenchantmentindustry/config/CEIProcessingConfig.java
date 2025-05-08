@@ -31,6 +31,6 @@ public class CEIProcessingConfig extends ConfigBase {
     }
 
     static class Comments {
-        static final String regularLightningStrikeTransformXpBlockChance = "Probability of regular lightning strike transforming Block of Experience.";
+        static final String regularLightningStrikeTransformXpBlockChance = "Probability of natural lightning strikes transforming Blocks of Experience.";
     }
 }

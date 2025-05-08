@@ -33,7 +33,7 @@ public class CEIStats {
             .register();
 
     public static final RegistryEntry<ResourceLocation, ResourceLocation> SUPER_ENCHANT = create("super_enchant")
-            .lang("Super-Enchant")
+            .lang("Super Enchant")
             .register();
 
     public static final RegistryEntry<ResourceLocation, ResourceLocation> PRINT = create("print")

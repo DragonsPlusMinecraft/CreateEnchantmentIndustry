@@ -88,23 +88,23 @@ public class CEIFluidsConfig extends ConfigBase {
     }
 
     static class Comments {
-        static final String experienceVaporizeOnPlacement = "Whether Liquid Experience vaporize into Experience Orbs upon placement.";
+        static final String experienceVaporizeOnPlacement = "Whether Liquid Experience will vaporize into Experience Orbs upon placement.";
         static final String printerFluidCapacity = "The amount of liquid a Printer can hold (mB).";
-        static final String enableWrittenBookPrinting = "If printing Written Book function of Printer should be enabled.";
-        static final String enableEnchantedBookPrinting = "If printing Enchanted Book function of Printer should be enabled.";
-        static final String enableCreateCopiableItemPrinting = "If printing Create's copiable item of Printer should be enabled.";
-        static final String enablePackagePatternPrinting = "If changing package pattern function of Printer should be enabled.";
-        static final String enablePackageAddressPrinting = "If assigning package address function of Printer should be enabled.";
-        static final String enableCustomNamePrinting = "If assigning custom name function of Printer should be enabled.";
-        static final String printingCustomNameAsItemName = "Whether printing custom name (displayed in italic) as item name (displayed in non-italic).";
-        static final String printingGenerationChange = "The generation change when copy written books, " +
-                "value of 1 will prevent copying copy of copy";
-        static final String printingEnchantedBookCostMultiplier = "The cost multiplier of printing Enchanted Book.";
-        static final String printingEnchantedBookDenylistStopCopying = "Whether Printer denylist prevents enchanted book from being copying." +
-                "Setting false allows copying enchanted book without denied enchantment";
+        static final String enableWrittenBookPrinting = "If the printing of Written Books function of Printers should be enabled.";
+        static final String enableEnchantedBookPrinting = "If the printing of Enchanted Books function of Printers should be enabled.";
+        static final String enableCreateCopiableItemPrinting = "If the printing of Create's copiable items function of Printers should be enabled.";
+        static final String enablePackagePatternPrinting = "If the changing package patterns function of Printers should be enabled.";
+        static final String enablePackageAddressPrinting = "If the assigning package addresses function of Printers should be enabled.";
+        static final String enableCustomNamePrinting = "If the assigning custom names function of Printers should be enabled.";
+        static final String printingCustomNameAsItemName = "Whether printing custom names (displayed in italics) should instead print as as item names (displayed in non-italics).";
+        static final String printingGenerationChange = "The generation change when copying Written Books; " +
+                "a value of 1 will prevent copying copy of copy";
+        static final String printingEnchantedBookCostMultiplier = "The cost multiplier of printing Enchanted Books.";
+        static final String printingEnchantedBookDenylistStopCopying = "Whether the Printer denylist prevents Enchanted Books from being copied." +
+                "Setting this to false allows copying Enchanted Books without denied enchantments";
         static final String blazeEnchanterFluidCapacity = "The amount of liquid a Blaze Enchanter can hold (mB).";
         static final String blazeForgerFluidCapacity = "The amount of liquid a Blaze Forger can hold (mB).";
         static final String experienceLanternFluidCapacity = "The amount of liquid an Experience Lantern can hold (mB).";
-        static final String experienceLanternDrainRate = "The amount of Experience an Experience Lantern can drain from player per 0.5 tick (mB).";
+        static final String experienceLanternDrainRate = "The amount of experience an Experience Lantern can drain from player per 0.5 ticks (mB).";
     }
 }
