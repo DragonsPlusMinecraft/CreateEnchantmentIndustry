@@ -28,6 +28,7 @@ import net.minecraft.world.entity.ExperienceOrb;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import plus.dragons.createenchantmentindustry.common.fluids.experience.ExperienceHelper;
@@ -37,10 +38,16 @@ import plus.dragons.createenchantmentindustry.config.CEIConfig;
 public class ExperienceLanternMovementBehavior implements MovementBehaviour {
     @Override
     public void tick(MovementContext context) {
+        var effectiveAABB = new AABB(context.position.subtract(0.5d, 0.5d, 0.5d), context.position.add(0.5d, 0.5d, 0.5d)).inflate(0.5);
         if (!context.world.isClientSide && context.world.getGameTime() % 10 == 0) {
             drainExp(context.world,
-                    new AABB(context.position.subtract(0.5d, 0.5d, 0.5d), context.position.add(0.5d, 0.5d, 0.5d)).inflate(0.5),
+                    effectiveAABB,
                     context.contraption.getStorage().getFluids());
+        }
+        if (!context.world.isClientSide) {
+            pullExp(context.world,
+                    effectiveAABB,
+                    context.position);
         }
     }
 
@@ -95,6 +102,20 @@ public class ExperienceLanternMovementBehavior implements MovementBehaviour {
                         orb.value -= inserted;
                     }
                     break;
+                }
+            }
+        }
+    }
+
+    protected void pullExp(Level level, AABB effectiveAABB, Vec3 position) {
+        // Pull orbs toward the lantern
+        List<ExperienceOrb> experienceOrbs = level.getEntitiesOfClass(ExperienceOrb.class, effectiveAABB.inflate(CEIConfig.fluids().experienceLanternPullRadius.get()));
+        if (!experienceOrbs.isEmpty()) {
+            for (var orb : experienceOrbs) {
+                if (orb.getDeltaMovement().length() <= .5) {
+                    var pushForce = CEIConfig.fluids().experienceLanternPullForceMultiplier.get() * 1 / orb.position().distanceTo(position);
+                    var directionToLantern = position.subtract(orb.getPosition(1)).normalize().multiply(pushForce, pushForce, pushForce);
+                    orb.push(directionToLantern);
                 }
             }
         }

@@ -67,6 +67,9 @@ public class ExperienceLanternBlockEntity extends SmartBlockEntity implements IH
         if (!level.isClientSide && level.getGameTime() % 10 == 0) {
             drainExp();
         }
+        if (!level.isClientSide) {
+            pullExp();
+        }
     }
 
     public FluidTankBehaviour getTank() {
@@ -123,6 +126,20 @@ public class ExperienceLanternBlockEntity extends SmartBlockEntity implements IH
                         orb.value -= inserted;
                     }
                     break;
+                }
+            }
+        }
+    }
+
+    protected void pullExp() {
+        // Pull orbs toward the lantern
+        List<ExperienceOrb> experienceOrbs = level.getEntitiesOfClass(ExperienceOrb.class, effectiveAABB.inflate(CEIConfig.fluids().experienceLanternPullRadius.get()));
+        if (!experienceOrbs.isEmpty()) {
+            for (var orb : experienceOrbs) {
+                if (orb.getDeltaMovement().length() <= .5) {
+                    var pushForce = CEIConfig.fluids().experienceLanternPullForceMultiplier.get() * 1 / orb.getPosition(lazyTickCounter).distanceTo(getBlockPos().getCenter());
+                    var directionToLantern = getBlockPos().getCenter().subtract(orb.getPosition(lazyTickCounter)).normalize().multiply(pushForce, pushForce, pushForce);
+                    orb.push(directionToLantern);
                 }
             }
         }
