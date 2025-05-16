@@ -44,7 +44,7 @@ public class ExperienceLanternMovementBehavior implements MovementBehaviour {
                     effectiveAABB,
                     context.contraption.getStorage().getFluids());
         }
-        if (!context.world.isClientSide) {
+        if (!context.world.isClientSide && CEIConfig.fluids().experienceLanternPullToggle.get()) {
             pullExp(context.world,
                     effectiveAABB,
                     context.position);
@@ -108,7 +108,6 @@ public class ExperienceLanternMovementBehavior implements MovementBehaviour {
     }
 
     protected void pullExp(Level level, AABB effectiveAABB, Vec3 position) {
-        // Pull orbs toward the lantern
         List<ExperienceOrb> experienceOrbs = level.getEntitiesOfClass(ExperienceOrb.class, effectiveAABB.inflate(CEIConfig.fluids().experienceLanternPullRadius.get()));
         if (!experienceOrbs.isEmpty()) {
             for (var orb : experienceOrbs) {

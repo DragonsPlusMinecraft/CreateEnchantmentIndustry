@@ -67,7 +67,7 @@ public class ExperienceLanternBlockEntity extends SmartBlockEntity implements IH
         if (!level.isClientSide && level.getGameTime() % 10 == 0) {
             drainExp();
         }
-        if (!level.isClientSide) {
+        if (!level.isClientSide && CEIConfig.fluids().experienceLanternPullToggle.get()) {
             pullExp();
         }
     }
@@ -132,7 +132,6 @@ public class ExperienceLanternBlockEntity extends SmartBlockEntity implements IH
     }
 
     protected void pullExp() {
-        // Pull orbs toward the lantern
         List<ExperienceOrb> experienceOrbs = level.getEntitiesOfClass(ExperienceOrb.class, effectiveAABB.inflate(CEIConfig.fluids().experienceLanternPullRadius.get()));
         if (!experienceOrbs.isEmpty()) {
             for (var orb : experienceOrbs) {
