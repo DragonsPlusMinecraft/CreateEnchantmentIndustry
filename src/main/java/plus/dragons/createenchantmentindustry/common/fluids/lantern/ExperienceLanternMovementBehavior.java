@@ -113,7 +113,7 @@ public class ExperienceLanternMovementBehavior implements MovementBehaviour {
             for (var orb : experienceOrbs) {
                 if (orb.getDeltaMovement().length() <= .5) {
                     var pushForce = CEIConfig.fluids().experienceLanternPullForceMultiplier.get() * 1 / orb.position().distanceTo(position);
-                    var directionToLantern = position.subtract(orb.getPosition(1)).normalize().multiply(pushForce, pushForce, pushForce);
+                    var directionToLantern = position.subtract(orb.position()).normalize().multiply(pushForce, pushForce, pushForce);
                     orb.push(directionToLantern);
                 }
             }

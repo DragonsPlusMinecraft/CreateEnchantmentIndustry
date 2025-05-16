@@ -136,8 +136,8 @@ public class ExperienceLanternBlockEntity extends SmartBlockEntity implements IH
         if (!experienceOrbs.isEmpty()) {
             for (var orb : experienceOrbs) {
                 if (orb.getDeltaMovement().length() <= .5) {
-                    var pushForce = CEIConfig.fluids().experienceLanternPullForceMultiplier.get() * 1 / orb.getPosition(lazyTickCounter).distanceTo(getBlockPos().getCenter());
-                    var directionToLantern = getBlockPos().getCenter().subtract(orb.getPosition(lazyTickCounter)).normalize().multiply(pushForce, pushForce, pushForce);
+                    var pushForce = CEIConfig.fluids().experienceLanternPullForceMultiplier.get() * 1 / orb.position().distanceTo(getBlockPos().getCenter());
+                    var directionToLantern = getBlockPos().getCenter().subtract(orb.position()).normalize().multiply(pushForce, pushForce, pushForce);
                     orb.push(directionToLantern);
                 }
             }
