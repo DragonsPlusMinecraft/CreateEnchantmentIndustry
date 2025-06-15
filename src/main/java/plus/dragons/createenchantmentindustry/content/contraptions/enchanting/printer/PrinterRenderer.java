@@ -3,8 +3,8 @@ package plus.dragons.createenchantmentindustry.content.contraptions.enchanting.p
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.simibubi.create.foundation.blockEntity.behaviour.fluid.SmartFluidTankBehaviour;
 import com.simibubi.create.foundation.blockEntity.renderer.SmartBlockEntityRenderer;
-import com.simibubi.create.foundation.fluid.FluidRenderer;
 import dev.engine_room.flywheel.lib.model.baked.PartialModel;
+import net.createmod.catnip.platform.ForgeCatnipServices;
 import net.createmod.catnip.render.CachedBuffers;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -40,7 +40,7 @@ public class PrinterRenderer extends SmartBlockEntityRenderer<PrinterBlockEntity
             float yOffset = (11 / 16f) * level;
             ms.pushPose();
             ms.translate(0, yOffset, 0);
-            FluidRenderer.renderFluidBox(fluidStack.getFluid(), fluidStack.getAmount(), min, min - yOffset, min, max, min, max, buffer, ms, light,
+            ForgeCatnipServices.FLUID_RENDERER.renderFluidBox(fluidStack, min, min - yOffset, min, max, min, max, buffer, ms, light,
                     false,false);
             ms.popPose();
         }
