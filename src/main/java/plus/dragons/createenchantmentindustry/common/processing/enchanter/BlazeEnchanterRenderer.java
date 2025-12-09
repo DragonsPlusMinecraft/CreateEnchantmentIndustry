@@ -54,7 +54,7 @@ public class BlazeEnchanterRenderer extends BlazeBlockRenderer<BlazeEnchanterBlo
         Level level = blockEntity.getLevel();
         assert level != null;
         var blockPos = blockEntity.getBlockPos();
-        float renderTicks = AnimationTickHolder.getTicks(level);
+        float renderTicks = AnimationTickHolder.getTicks(level) + partialTicks;
         float animation = processingTime == -1
                 ? 0
                 : Mth.sin((processingTime + partialTicks) / 20f);

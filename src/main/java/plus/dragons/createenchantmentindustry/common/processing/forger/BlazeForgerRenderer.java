@@ -56,7 +56,7 @@ public class BlazeForgerRenderer extends BlazeBlockRenderer<BlazeForgerBlockEnti
         Level level = blockEntity.getLevel();
         assert level != null;
         var blockPos = blockEntity.getBlockPos();
-        float renderTicks = AnimationTickHolder.getTicks(level);
+        float renderTicks = AnimationTickHolder.getTicks(level) + partialTicks;
         float animation = processingTime == -1
                 ? Mth.sin(slot * Mth.PI / -2f)
                 : Mth.sin((processingTime + partialTicks) / 20f + slot * Mth.PI);
