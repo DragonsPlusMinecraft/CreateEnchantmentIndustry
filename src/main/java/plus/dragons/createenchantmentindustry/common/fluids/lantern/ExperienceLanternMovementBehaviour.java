@@ -34,6 +34,7 @@ import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import plus.dragons.createenchantmentindustry.common.fluids.experience.ExperienceHelper;
 import plus.dragons.createenchantmentindustry.common.registry.CEIFluids;
 import plus.dragons.createenchantmentindustry.config.CEIConfig;
+import plus.dragons.createenchantmentindustry.integration.tlm.TLMCompat;
 
 public class ExperienceLanternMovementBehaviour implements MovementBehaviour {
     @Override
@@ -105,6 +106,11 @@ public class ExperienceLanternMovementBehaviour implements MovementBehaviour {
                     break;
                 }
             }
+        }
+        // Drain experience from Touhou Little Maid's maids if the mod is loaded
+        if (TLMCompat.isLoaded() && CEIConfig.fluids().experienceLanternDrainMaidExperience.get()) {
+            plus.dragons.createenchantmentindustry.integration.tlm.MaidExperienceHandler
+                    .drainMaidExperience(level, effectiveAABB, tank);
         }
     }
 

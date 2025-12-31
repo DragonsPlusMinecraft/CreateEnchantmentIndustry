@@ -44,6 +44,7 @@ import plus.dragons.createdragonsplus.common.fluids.tank.FluidTankBehaviour;
 import plus.dragons.createenchantmentindustry.common.fluids.experience.ExperienceHelper;
 import plus.dragons.createenchantmentindustry.common.registry.CEIFluids;
 import plus.dragons.createenchantmentindustry.config.CEIConfig;
+import plus.dragons.createenchantmentindustry.integration.tlm.TLMCompat;
 
 public class ExperienceLanternBlockEntity extends SmartBlockEntity implements IHaveGoggleInformation {
     protected FluidTankBehaviour tank;
@@ -129,6 +130,19 @@ public class ExperienceLanternBlockEntity extends SmartBlockEntity implements IH
                 }
             }
         }
+        // Drain experience from Touhou Little Maid's maids if the mod is loaded
+        if (TLMCompat.isLoaded() && CEIConfig.fluids().experienceLanternDrainMaidExperience.get()) {
+            drainMaidExp();
+        }
+    }
+
+    /**
+     * Drain experience from nearby Touhou Little Maid's maids.
+     * This method is only called when TLM mod is loaded.
+     */
+    protected void drainMaidExp() {
+        plus.dragons.createenchantmentindustry.integration.tlm.MaidExperienceHandler
+                .drainMaidExperience(level, effectiveAABB, tank.getPrimaryHandler());
     }
 
     protected void pullExp() {

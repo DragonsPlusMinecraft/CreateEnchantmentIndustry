@@ -93,6 +93,9 @@ public class CEIFluidsConfig extends ConfigBase {
     public final ConfigFloat experienceLanternPullForceMultiplier = f(.075f, 0.0f, .5f,
             "experienceLanternPullForceMultiplier",
             Comments.experienceLanternPullForceMultiplier);
+    public final ConfigBool experienceLanternDrainMaidExperience = b(true,
+            "experienceLanternDrainMaidExperience",
+            Comments.experienceLanternDrainMaidExperience);
     public final ConfigInt mechanicalGrindstoneFluidCapacity = i(1000, 5000,
             "mechanicalGrindstoneFluidCapacity",
             Comments.mechanicalGrindstoneFluidCapacity,
@@ -126,6 +129,7 @@ public class CEIFluidsConfig extends ConfigBase {
         static final String experienceLanternPullToggle = "Whether the Experience Lantern will pull in experience orbs from nearby.";
         static final String experienceLanternPullRadius = "The range at which experience orbs will be pulled into the lantern.";
         static final String experienceLanternPullForceMultiplier = "Modifier for the amount of force with which to pull the experience orbs.";
+        static final String experienceLanternDrainMaidExperience = "Whether the Experience Lantern will drain experience from nearby Touhou Little Maid's maids (requires TLM mod).";
         static final String mechanicalGrindstoneFluidCapacity = "The amount of liquid a Grindstone Drain can hold (mB).";
     }
 }

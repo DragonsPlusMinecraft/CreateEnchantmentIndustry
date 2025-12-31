@@ -51,3 +51,10 @@ issueTrackerURL="${mod_github}/issues"
     versionRange="${create_dragons_plus_version_range}"
     ordering="NONE"
     side="BOTH"
+
+[[dependencies.${mod_id}]]
+    modId="touhou_little_maid"
+    type="optional"
+    versionRange="[1.2.0,)"
+    ordering="AFTER"
+    side="BOTH"

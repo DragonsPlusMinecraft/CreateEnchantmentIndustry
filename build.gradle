@@ -102,6 +102,9 @@ dependencies {
 
     compileOnly("top.theillusivec4.curios:curios-neoforge:${curios_version}+${curios_minecraft_version}:api")
     localRuntime("top.theillusivec4.curios:curios-neoforge:${curios_version}+${curios_minecraft_version}")
+
+    // Touhou Little Maid integration (optional)
+    compileOnly("curse.maven:touhou-little-maid-355044:${tlm_file_id}")
 }
 
 var generateModMetadata = tasks.register("generateModMetadata", ProcessResources) {
