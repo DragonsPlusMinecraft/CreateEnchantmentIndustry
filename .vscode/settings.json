@@ -1,0 +1,8 @@
+{
+  "java.import.gradle.enabled": true,
+  "java.import.gradle.wrapper.enabled": true,
+  "java.import.gradle.offline.enabled": false,
+  "java.configuration.updateBuildConfiguration": "automatic",
+  "gradle.autoDetect": "on",
+  "gradle.nestedProjects": true
+}

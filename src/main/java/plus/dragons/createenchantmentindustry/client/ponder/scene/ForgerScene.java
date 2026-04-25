@@ -60,10 +60,10 @@ public class ForgerScene {
         scene.world().setKineticSpeed(util.select().position(3, 2, 3), -128);
         scene.idle(20);
         scene.world().modifyBlockEntity(util.grid().at(1, 1, 3), FluidTankBlockEntity.class,
-                be -> be.getControllerBE().getTankInventory().fill(new FluidStack(CEIFluids.EXPERIENCE.get(), 8000), IFluidHandler.FluidAction.EXECUTE));
+                be -> be.getTankInventory().fill(new FluidStack(CEIFluids.EXPERIENCE.get(), 8000), IFluidHandler.FluidAction.EXECUTE));
         scene.idle(20);
         scene.world().modifyBlockEntity(util.grid().at(1, 1, 3), FluidTankBlockEntity.class,
-                be -> be.getControllerBE().getTankInventory().fill(new FluidStack(CEIFluids.EXPERIENCE.get(), 8000), IFluidHandler.FluidAction.EXECUTE));
+                be -> be.getTankInventory().fill(new FluidStack(CEIFluids.EXPERIENCE.get(), 8000), IFluidHandler.FluidAction.EXECUTE));
         scene.idle(30);
 
         scene.overlay().showText(60)

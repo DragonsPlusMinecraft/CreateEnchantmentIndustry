@@ -94,6 +94,11 @@ repositories {
     maven { url "https://maven.ryanhcode.dev/releases" } // RyanHCode Maven - Sable
 }
 
+def includeOptionalDevMods = providers
+        .gradleProperty("include_optional_dev_mods")
+        .map { it.toBoolean() }
+        .getOrElse(false)
+
 dependencies {
     implementation("plus.dragons.createdragonsplus:create-dragons-plus-${minecraft_version}:${create_dragons_plus_version}")
 
@@ -104,10 +109,12 @@ dependencies {
     compileOnly("top.theillusivec4.curios:curios-neoforge:${curios_version}+${curios_minecraft_version}:api")
     localRuntime("top.theillusivec4.curios:curios-neoforge:${curios_version}+${curios_minecraft_version}")
 
-    localImplementation("dev.ryanhcode.sable:sable-neoforge-${minecraft_version}:${sable_version}")
-    localImplementation("dev.simulated_team.simulated:simulated-neoforge-${minecraft_version}:${create_aeronautics_version}")  { transitive false }
-    localImplementation("dev.eriksonn.aeronautics:aeronautics-neoforge-${minecraft_version}:${create_aeronautics_version}")  { transitive false }
-    localImplementation("dev.ryanhcode.offroad:offroad-neoforge-${minecraft_version}:${create_aeronautics_version}")  { transitive false }
+    if (includeOptionalDevMods) {
+        localRuntime("dev.ryanhcode.sable:sable-neoforge-${minecraft_version}:${sable_version}")
+        localRuntime("dev.simulated_team.simulated:simulated-neoforge-${minecraft_version}:${create_aeronautics_version}") { transitive false }
+        localRuntime("dev.eriksonn.aeronautics:aeronautics-neoforge-${minecraft_version}:${create_aeronautics_version}") { transitive false }
+        localRuntime("dev.ryanhcode.offroad:offroad-neoforge-${minecraft_version}:${create_aeronautics_version}") { transitive false }
+    }
 
     compileOnly("curse.maven:touhou-little-maid-355044:${tlm_file_id}")
 }

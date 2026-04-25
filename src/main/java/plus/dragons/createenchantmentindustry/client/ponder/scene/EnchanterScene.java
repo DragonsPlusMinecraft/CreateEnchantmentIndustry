@@ -58,13 +58,13 @@ public class EnchanterScene {
                 .placeNearTarget()
                 .pointAt(util.vector().topOf(2, 2, 1));
         scene.world().modifyBlockEntity(util.grid().at(3, 1, 3), FluidTankBlockEntity.class,
-                be -> be.getControllerBE().getTankInventory().fill(new FluidStack(CEIFluids.EXPERIENCE.get(), 24000), IFluidHandler.FluidAction.EXECUTE));
+                be -> be.getTankInventory().fill(new FluidStack(CEIFluids.EXPERIENCE.get(), 24000), IFluidHandler.FluidAction.EXECUTE));
         scene.idle(20);
         scene.world().modifyBlockEntity(util.grid().at(1, 1, 3), FluidTankBlockEntity.class,
-                be -> be.getControllerBE().getTankInventory().fill(new FluidStack(CEIFluids.EXPERIENCE.get(), 9000), IFluidHandler.FluidAction.EXECUTE));
+                be -> be.getTankInventory().fill(new FluidStack(CEIFluids.EXPERIENCE.get(), 9000), IFluidHandler.FluidAction.EXECUTE));
         scene.idle(20);
         scene.world().modifyBlockEntity(util.grid().at(2, 1, 3), FluidTankBlockEntity.class,
-                be -> be.getControllerBE().getTankInventory().fill(new FluidStack(CEIFluids.EXPERIENCE.get(), 17000), IFluidHandler.FluidAction.EXECUTE));
+                be -> be.getTankInventory().fill(new FluidStack(CEIFluids.EXPERIENCE.get(), 17000), IFluidHandler.FluidAction.EXECUTE));
         scene.idle(30);
 
         scene.overlay().showText(60)
