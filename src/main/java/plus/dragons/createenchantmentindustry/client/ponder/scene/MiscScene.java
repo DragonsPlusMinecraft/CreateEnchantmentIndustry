@@ -68,7 +68,7 @@ public class MiscScene {
                 .add(-.125, 0, 0);
         scene.overlay().showControls(frontVec, Pointing.UP, 50).rightClick();
         scene.idle(10);
-        scene.world().modifyBlockEntity(util.grid().at(2, 3, 2), FluidTankBlockEntity.class,
+        scene.world().modifyBlockEntity(util.grid().at(2, 2, 2), FluidTankBlockEntity.class,
                 be -> be.getControllerBE().getTankInventory().fill(new FluidStack(CEIFluids.EXPERIENCE.get(), 10000), IFluidHandler.FluidAction.EXECUTE));
         scene.idle(50);
 
@@ -95,7 +95,7 @@ public class MiscScene {
                 .placeNearTarget()
                 .pointAt(util.vector().centerOf(1, 3, 2));
         for (int i = 0; i < 12; i++) {
-            scene.world().modifyBlockEntity(util.grid().at(2, 3, 2), FluidTankBlockEntity.class,
+            scene.world().modifyBlockEntity(util.grid().at(2, 2, 2), FluidTankBlockEntity.class,
                     be -> be.getControllerBE().getTankInventory().fill(new FluidStack(CEIFluids.EXPERIENCE.get(), 1000), IFluidHandler.FluidAction.EXECUTE));
             scene.idle(5);
         }
