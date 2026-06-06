@@ -9,10 +9,8 @@ import net.minecraftforge.network.NetworkEvent.Context;
 import plus.dragons.createenchantmentindustry.entry.CeiItems;
 
 public class EnchantingGuideEditPacket extends SimplePacketBase {
-
     private final int index;
     private final ItemStack itemStack;
-
 
     public EnchantingGuideEditPacket(int index, ItemStack enchantedBook) {
         this.index = index;
@@ -33,18 +31,18 @@ public class EnchantingGuideEditPacket extends SimplePacketBase {
     @Override
     public boolean handle(Context context) {
         context.enqueueWork(() -> {
-                    ServerPlayer sender = context.getSender();
-                    ItemStack mainHandItem = sender.getMainHandItem();
-                    if (!CeiItems.ENCHANTING_GUIDE.isIn(mainHandItem))
-                        return;
+            ServerPlayer sender = context.getSender();
+            ItemStack mainHandItem = sender.getMainHandItem();
+            if (!CeiItems.ENCHANTING_GUIDE.isIn(mainHandItem))
+                return;
 
-                    CompoundTag tag = mainHandItem.getOrCreateTag();
-                    tag.putInt("index", index);
-                    tag.put("target", itemStack.serializeNBT());
+            CompoundTag tag = mainHandItem.getOrCreateTag();
+            tag.putInt("index", index);
+            tag.put("target", itemStack.serializeNBT());
 
-                    sender.getCooldowns()
-                            .addCooldown(mainHandItem.getItem(), 5);
-                });
+            sender.getCooldowns()
+                    .addCooldown(mainHandItem.getItem(), 5);
+        });
         return true;
     }
 }

@@ -14,7 +14,6 @@ import plus.dragons.createenchantmentindustry.foundation.config.CeiConfigs;
 import plus.dragons.createenchantmentindustry.foundation.ponder.CeiPonderPlugin;
 
 public class EnchantmentIndustryClient {
-
     public EnchantmentIndustryClient() {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
         IEventBus forgeEventBus = MinecraftForge.EVENT_BUS;
@@ -24,7 +23,7 @@ public class EnchantmentIndustryClient {
         modEventBus.register(this);
         registerForgeEvents(forgeEventBus);
     }
-    
+
     private void registerForgeEvents(IEventBus forgeEventBus) {
         forgeEventBus.addListener(InkRenderingCamera::handleInkFogColor);
     }
@@ -33,13 +32,11 @@ public class EnchantmentIndustryClient {
     public void setup(final FMLClientSetupEvent event) {
         PonderIndex.addPlugin(new CeiPonderPlugin());
     }
-    
+
     @SubscribeEvent
     public void loadComplete(final FMLLoadCompleteEvent event) {
         BaseConfigScreen.setDefaultActionFor(EnchantmentIndustry.ID, screen -> screen
                 .withButtonLabels(null, null, "Gameplay Settings")
-                .withSpecs(null, null, CeiConfigs.SERVER_SPEC)
-        );
+                .withSpecs(null, null, CeiConfigs.SERVER_SPEC));
     }
-
 }

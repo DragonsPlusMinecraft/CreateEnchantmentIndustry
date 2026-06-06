@@ -39,8 +39,8 @@ abstract public class AbstractFurnaceBlockEntityMixin<T> extends BaseContainerBl
     LazyOptional<IFluidHandler> createEnchantmentIndustry$expExtractor = LazyOptional.of(this::createEnchantmentIndustry$createExpExtractor);
 
     @Unique
-    private IFluidHandler createEnchantmentIndustry$createExpExtractor(){
-        return new FurnaceExpExtractor(recipesUsed,(AbstractFurnaceBlockEntity)(Object)this);
+    private IFluidHandler createEnchantmentIndustry$createExpExtractor() {
+        return new FurnaceExpExtractor(recipesUsed, (AbstractFurnaceBlockEntity) (Object) this);
     }
 
     @Inject(method = "getCapability", at = @At("HEAD"), cancellable = true, remap = false)
@@ -59,5 +59,4 @@ abstract public class AbstractFurnaceBlockEntityMixin<T> extends BaseContainerBl
     private void createEnchantmentIndustry$reviveCaps(CallbackInfo ci) {
         this.createEnchantmentIndustry$expExtractor = LazyOptional.of(this::createEnchantmentIndustry$createExpExtractor);
     }
-
 }

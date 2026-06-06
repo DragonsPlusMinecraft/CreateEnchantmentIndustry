@@ -10,11 +10,10 @@ import org.spongepowered.asm.mixin.injection.ModifyVariable;
 
 @Mixin(Player.class)
 public class PlayerMixin {
-    @ModifyVariable(method = "attack",
-            at = @At("STORE"), ordinal = 3)
-    private boolean enableSweepingEdgeForDeployer(boolean value){
-        var self = (Player)(Object) this;
-        if(self instanceof FakePlayer fakePlayer){
+    @ModifyVariable(method = "attack", at = @At("STORE"), ordinal = 3)
+    private boolean enableSweepingEdgeForDeployer(boolean value) {
+        var self = (Player) (Object) this;
+        if (self instanceof FakePlayer fakePlayer) {
             ItemStack itemstack = fakePlayer.getItemInHand(InteractionHand.MAIN_HAND);
             return itemstack.canPerformAction(net.minecraftforge.common.ToolActions.SWORD_SWEEP);
         }

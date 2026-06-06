@@ -1,6 +1,9 @@
 package plus.dragons.createenchantmentindustry.compat.jei;
 
 import com.simibubi.create.compat.jei.category.CreateRecipeCategory;
+import java.util.ArrayList;
+import java.util.List;
+import javax.annotation.ParametersAreNonnullByDefault;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
 import mezz.jei.api.forge.ForgeTypes;
@@ -22,10 +25,6 @@ import plus.dragons.createenchantmentindustry.content.contraptions.enchanting.di
 import plus.dragons.createenchantmentindustry.entry.CeiBlocks;
 import plus.dragons.createenchantmentindustry.entry.CeiFluids;
 import plus.dragons.createenchantmentindustry.entry.CeiRecipeTypes;
-
-import javax.annotation.ParametersAreNonnullByDefault;
-import java.util.ArrayList;
-import java.util.List;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
@@ -58,13 +57,12 @@ public class CeiJEIPlugin implements IModPlugin {
         allCategories.forEach(c -> c.registerCatalysts(registration));
     }
 
-
     @Override
     public void onRuntimeAvailable(IJeiRuntime jeiRuntime) {
         List<FluidStack> fluidIngredients = new ArrayList<>();
         fluidIngredients.add(new FluidStack(CeiFluids.EXPERIENCE.get().getSource(), FluidType.BUCKET_VOLUME));
         fluidIngredients.add(new FluidStack(CeiFluids.HYPER_EXPERIENCE.get().getSource(), FluidType.BUCKET_VOLUME));
-        jeiRuntime.getIngredientManager().addIngredientsAtRuntime(ForgeTypes.FLUID_STACK,fluidIngredients);
+        jeiRuntime.getIngredientManager().addIngredientsAtRuntime(ForgeTypes.FLUID_STACK, fluidIngredients);
     }
 
     private static <T extends Recipe<?>> RecipeCategoryBuilder<T> builder(Class<T> cls) {
@@ -78,7 +76,6 @@ public class CeiJEIPlugin implements IModPlugin {
                         .addTypedRecipes(CeiRecipeTypes.DISENCHANTING)
                         .catalyst(CeiBlocks.DISENCHANTER::get)
                         .emptyBackground(177, 50)
-                        .build("disenchanting", DisenchantingCategory::new)
-        );
+                        .build("disenchanting", DisenchantingCategory::new));
     }
 }

@@ -29,7 +29,7 @@ public abstract class FluidTankBlockMixin extends Block implements IBE<BasinBloc
     // Support Experience Drop with Block Break
     @Inject(method = "onRemove", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/Level;removeBlockEntity(Lnet/minecraft/core/BlockPos;)V"), cancellable = true)
     private void injected(BlockState state, Level level, BlockPos pos, BlockState newState, boolean var4, CallbackInfo ci) {
-        if(!(level instanceof ServerLevel serverLevel))
+        if (!(level instanceof ServerLevel serverLevel))
             return;
         BlockEntity be = level.getBlockEntity(pos);
         if (!(be instanceof FluidTankBlockEntity tankBE) || be instanceof CreativeFluidTankBlockEntity)
@@ -46,7 +46,7 @@ public abstract class FluidTankBlockMixin extends Block implements IBE<BasinBloc
             } else {
                 var total = maxSize * (FluidTankBlockEntity.getCapacityMultiplier() - 1);
                 var leftover = fluidStackBackup.getAmount() - total;
-                if(leftover > 0) {
+                if (leftover > 0) {
                     expFluid.drop(serverLevel, VecHelper.getCenterOf(pos), leftover);
                 }
             }

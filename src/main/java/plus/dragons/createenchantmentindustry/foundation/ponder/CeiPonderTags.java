@@ -15,11 +15,7 @@ public class CeiPonderTags {
     public CeiPonderTags() {}
 
     public static void register(PonderTagRegistrationHelper<ResourceLocation> helper) {
-        helper.registerTag(EXPERIENCE).
-                addToIndex().
-                item(CeiBlocks.DISENCHANTER.get(), true, false).
-                title("Experience Related").
-                description("Items and Components related to experience").register();
+        helper.registerTag(EXPERIENCE).addToIndex().item(CeiBlocks.DISENCHANTER.get(), true, false).title("Experience Related").description("Items and Components related to experience").register();
 
         PonderTagRegistrationHelper<RegistryEntry<?>> HELPER = helper.withKeyFunction(RegistryEntry::getId);
         HELPER.addToTag(EXPERIENCE)

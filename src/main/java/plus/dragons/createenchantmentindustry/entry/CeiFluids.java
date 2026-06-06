@@ -1,5 +1,7 @@
 package plus.dragons.createenchantmentindustry.entry;
 
+import static plus.dragons.createenchantmentindustry.EnchantmentIndustry.REGISTRATE;
+
 import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.tterrag.registrate.util.entry.FluidEntry;
 import net.minecraft.resources.ResourceLocation;
@@ -9,16 +11,13 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.fluids.ForgeFlowingFluid;
-import plus.dragons.createenchantmentindustry.dragonLibLegacy.fluid.FluidLavaReaction;
-import plus.dragons.createenchantmentindustry.dragonLibLegacy.fluid.NoTintFluidType;
 import plus.dragons.createenchantmentindustry.EnchantmentIndustry;
 import plus.dragons.createenchantmentindustry.content.contraptions.fluids.experience.ExperienceFluid;
 import plus.dragons.createenchantmentindustry.content.contraptions.fluids.experience.HyperExperienceFluid;
-
-import static plus.dragons.createenchantmentindustry.EnchantmentIndustry.REGISTRATE;
+import plus.dragons.createenchantmentindustry.dragonLibLegacy.fluid.FluidLavaReaction;
+import plus.dragons.createenchantmentindustry.dragonLibLegacy.fluid.NoTintFluidType;
 
 public class CeiFluids {
-
     public static final ResourceLocation EXPERIENCE_STILL_RL = EnchantmentIndustry.genRL("fluid/experience_still");
     public static final ResourceLocation EXPERIENCE_FLOW_RL = EnchantmentIndustry.genRL("fluid/experience_flow");
 
@@ -56,8 +55,7 @@ public class CeiFluids {
             .build()
             .register();
 
-    public static void register() {
-    }
+    public static void register() {}
 
     public static void handleInkEffect(LivingEvent.LivingTickEvent event) {
         LivingEntity entity = event.getEntity();
@@ -69,10 +67,8 @@ public class CeiFluids {
 
     public static void registerLavaReaction() {
         FluidLavaReaction.register(INK.getType(),
-            Blocks.OBSIDIAN.defaultBlockState(),
-            Blocks.BLACKSTONE.defaultBlockState(),
-            Blocks.BLACKSTONE.defaultBlockState()
-        );
+                Blocks.OBSIDIAN.defaultBlockState(),
+                Blocks.BLACKSTONE.defaultBlockState(),
+                Blocks.BLACKSTONE.defaultBlockState());
     }
-
 }

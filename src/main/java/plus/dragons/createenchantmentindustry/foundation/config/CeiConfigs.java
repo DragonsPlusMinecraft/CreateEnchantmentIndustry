@@ -10,7 +10,6 @@ import org.apache.commons.lang3.tuple.Pair;
 
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
 public class CeiConfigs {
-
     public static CeiServerConfig SERVER;
     public static ForgeConfigSpec SERVER_SPEC;
 
@@ -36,5 +35,4 @@ public class CeiConfigs {
         if (SERVER_SPEC == event.getConfig().getSpec())
             SERVER.onReload();
     }
-
 }

@@ -1,6 +1,7 @@
 package plus.dragons.createenchantmentindustry.content.contraptions.fluids.experience;
 
 import com.simibubi.create.api.effect.OpenPipeEffectHandler;
+import java.util.List;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.LivingEntity;
@@ -14,10 +15,7 @@ import net.minecraftforge.fluids.FluidStack;
 import plus.dragons.createenchantmentindustry.entry.CeiFluids;
 import plus.dragons.createenchantmentindustry.foundation.advancement.CeiAdvancements;
 
-import java.util.List;
-
 public class ExperienceOpenPipeEffectHandler implements OpenPipeEffectHandler {
-
     public static void register() {
         ExperienceOpenPipeEffectHandler handler = new ExperienceOpenPipeEffectHandler();
         OpenPipeEffectHandler.REGISTRY.register(CeiFluids.EXPERIENCE.getSource(), handler);

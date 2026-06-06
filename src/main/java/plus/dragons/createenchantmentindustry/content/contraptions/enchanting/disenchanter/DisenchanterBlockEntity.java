@@ -8,6 +8,11 @@ import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
 import com.simibubi.create.foundation.blockEntity.behaviour.fluid.SmartFluidTankBehaviour;
 import com.simibubi.create.foundation.utility.BlockHelper;
+import java.util.IdentityHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
+import javax.annotation.Nullable;
 import net.createmod.catnip.data.Iterate;
 import net.createmod.catnip.data.Pair;
 import net.createmod.catnip.math.VecHelper;
@@ -34,7 +39,6 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.items.ItemHandlerHelper;
 import org.antlr.v4.runtime.misc.NotNull;
-import plus.dragons.createenchantmentindustry.content.contraptions.enchanting.enchanter.Enchanting;
 import plus.dragons.createenchantmentindustry.content.contraptions.fluids.experience.ExperienceFluid;
 import plus.dragons.createenchantmentindustry.content.contraptions.fluids.experience.RawExperienceUtil;
 import plus.dragons.createenchantmentindustry.entry.CeiFluids;
@@ -43,14 +47,7 @@ import plus.dragons.createenchantmentindustry.foundation.advancement.CeiTriggers
 import plus.dragons.createenchantmentindustry.foundation.config.CeiConfigs;
 import plus.dragons.createenchantmentindustry.foundation.mixin.dragonLibLegacy.AdvancementBehaviourAccessor;
 
-import javax.annotation.Nullable;
-import java.util.IdentityHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.atomic.AtomicInteger;
-
 public class DisenchanterBlockEntity extends SmartBlockEntity implements IHaveGoggleInformation {
-
     public static final int DISENCHANTER_TIME = 10;
     private static final int ABSORB_AMOUNT = 100;
 
@@ -146,8 +143,7 @@ public class DisenchanterBlockEntity extends SmartBlockEntity implements IHaveGo
             }
 
             BlockPos nextPosition = worldPosition.relative(side);
-            DirectBeltInputBehaviour directBeltInputBehaviour =
-                    BlockEntityBehaviour.get(level, nextPosition, DirectBeltInputBehaviour.TYPE);
+            DirectBeltInputBehaviour directBeltInputBehaviour = BlockEntityBehaviour.get(level, nextPosition, DirectBeltInputBehaviour.TYPE);
             if (directBeltInputBehaviour == null) {
                 if (!BlockHelper.hasBlockSolidSide(level.getBlockState(nextPosition), level, nextPosition,
                         side.getOpposite())) {
@@ -202,7 +198,6 @@ public class DisenchanterBlockEntity extends SmartBlockEntity implements IHaveGo
             processingTicks = DISENCHANTER_TIME;
             sendData();
         }
-
     }
 
     protected void absorbExperienceFromWorld() {
@@ -310,7 +305,6 @@ public class DisenchanterBlockEntity extends SmartBlockEntity implements IHaveGo
         return player instanceof ServerPlayer serverPlayer ? serverPlayer : null;
     }
 
-
     protected boolean continueProcessing() {
         if (level.isClientSide && !isVirtual())
             return true;
@@ -414,11 +408,11 @@ public class DisenchanterBlockEntity extends SmartBlockEntity implements IHaveGo
         super.destroy();
         if (level instanceof ServerLevel serverLevel) {
             ItemStack heldItemStack = getHeldItemStack();
-            if(!heldItemStack.isEmpty())
+            if (!heldItemStack.isEmpty())
                 Containers.dropItemStack(level, getBlockPos().getX(), getBlockPos().getY(), getBlockPos().getZ(), heldItemStack);
             var tank = getInternalTank().getPrimaryHandler();
             var fluidStack = tank.getFluid();
-            if(fluidStack.getFluid() instanceof ExperienceFluid expFluid) {
+            if (fluidStack.getFluid() instanceof ExperienceFluid expFluid) {
                 expFluid.drop(serverLevel, VecHelper.getCenterOf(getBlockPos()), fluidStack.getAmount());
             }
         }

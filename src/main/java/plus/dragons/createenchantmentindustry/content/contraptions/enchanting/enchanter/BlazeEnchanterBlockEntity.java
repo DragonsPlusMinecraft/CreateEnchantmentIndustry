@@ -1,5 +1,7 @@
 package plus.dragons.createenchantmentindustry.content.contraptions.enchanting.enchanter;
 
+import static plus.dragons.createenchantmentindustry.EnchantmentIndustry.LANG;
+
 import com.simibubi.create.api.equipment.goggles.IHaveGoggleInformation;
 import com.simibubi.create.content.kinetics.belt.behaviour.DirectBeltInputBehaviour;
 import com.simibubi.create.content.kinetics.belt.transport.TransportedItemStack;
@@ -8,6 +10,11 @@ import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
 import com.simibubi.create.foundation.blockEntity.behaviour.fluid.SmartFluidTankBehaviour;
 import com.simibubi.create.foundation.utility.BlockHelper;
+import java.util.IdentityHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
+import javax.annotation.Nullable;
 import net.createmod.catnip.animation.LerpedFloat;
 import net.createmod.catnip.data.Iterate;
 import net.createmod.catnip.data.Pair;
@@ -54,16 +61,7 @@ import plus.dragons.createenchantmentindustry.entry.CeiTags;
 import plus.dragons.createenchantmentindustry.foundation.advancement.CeiAdvancements;
 import plus.dragons.createenchantmentindustry.foundation.config.CeiConfigs;
 
-import javax.annotation.Nullable;
-import java.util.IdentityHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
-
-import static plus.dragons.createenchantmentindustry.EnchantmentIndustry.LANG;
-
 public class BlazeEnchanterBlockEntity extends SmartBlockEntity implements IHaveGoggleInformation, MenuProvider {
-
     public static final int ENCHANTING_TIME = 200;
     SmartFluidTankBehaviour internalTank;
     TransportedItemStack heldItem;
@@ -91,8 +89,8 @@ public class BlazeEnchanterBlockEntity extends SmartBlockEntity implements IHave
         headAngle = LerpedFloat.angular();
         headAngle.startWithValue((AngleHelper
                 .horizontalAngle(state.getOptionalValue(BlazeEnchanterBlock.FACING)
-                        .orElse(Direction.SOUTH)) + 180) % 360
-        );
+                        .orElse(Direction.SOUTH))
+                + 180) % 360);
         goggles = false;
     }
 
@@ -103,7 +101,7 @@ public class BlazeEnchanterBlockEntity extends SmartBlockEntity implements IHave
                 .setInsertionHandler(this::tryInsertingFromSide));
         behaviours.add(internalTank = FilteringFluidTankBehaviour
                 .single(fluidStack -> fluidStack.getFluid().is(CeiTags.FluidTag.BLAZE_ENCHANTER_INPUT.tag),
-                    this, CeiConfigs.SERVER.blazeEnchanterTankCapacity.get())
+                        this, CeiConfigs.SERVER.blazeEnchanterTankCapacity.get())
                 .whenFluidUpdates(() -> {
                     var fluid = internalTank.getPrimaryHandler().getFluid().getFluid();
                     if (CeiFluids.EXPERIENCE.is(fluid))
@@ -134,7 +132,6 @@ public class BlazeEnchanterBlockEntity extends SmartBlockEntity implements IHave
             processingTicks = 0;
             return;
         }
-
 
         if (processingTicks > 0) {
             heldItem.prevBeltPosition = .5f;
@@ -184,8 +181,7 @@ public class BlazeEnchanterBlockEntity extends SmartBlockEntity implements IHave
             }
 
             BlockPos nextPosition = worldPosition.relative(side);
-            DirectBeltInputBehaviour directBeltInputBehaviour =
-                    BlockEntityBehaviour.get(level, nextPosition, DirectBeltInputBehaviour.TYPE);
+            DirectBeltInputBehaviour directBeltInputBehaviour = BlockEntityBehaviour.get(level, nextPosition, DirectBeltInputBehaviour.TYPE);
             if (directBeltInputBehaviour == null) {
                 if (!BlockHelper.hasBlockSolidSide(level.getBlockState(nextPosition), level, nextPosition,
                         side.getOpposite())) {
@@ -240,7 +236,6 @@ public class BlazeEnchanterBlockEntity extends SmartBlockEntity implements IHave
             processingTicks = ENCHANTING_TIME;
             sendData();
         }
-
     }
 
     protected void blazeTick() {
@@ -313,9 +308,9 @@ public class BlazeEnchanterBlockEntity extends SmartBlockEntity implements IHave
 
         double yMotion = empty ? .0625f : r.nextDouble() * .0125f;
         Vec3 v2 = c.add(VecHelper.offsetRandomly(Vec3.ZERO, r, .5f)
-                        .multiply(1, .25f, 1)
-                        .normalize()
-                        .scale((empty ? .25f : .5) + r.nextDouble() * .125f))
+                .multiply(1, .25f, 1)
+                .normalize()
+                .scale((empty ? .25f : .5) + r.nextDouble() * .125f))
                 .add(0, .5, 0);
 
         if (heatLevel.isAtLeast(BlazeEnchanterBlock.HeatLevel.SEETHING)) {
@@ -359,9 +354,7 @@ public class BlazeEnchanterBlockEntity extends SmartBlockEntity implements IHave
                 ? CeiFluids.HYPER_EXPERIENCE.get().getSource()
                 : CeiFluids.EXPERIENCE.get().getSource(),
                 (int) (Enchanting.getExperienceConsumption(entry.getFirst(), entry.getSecond()) *
-                        (hyper? CeiConfigs.SERVER.hyperEnchantByBlazeEnchanterCostCoefficient.get():
-                                CeiConfigs.SERVER.enchantByBlazeEnchanterCostCoefficient.get()))
-        );
+                        (hyper ? CeiConfigs.SERVER.hyperEnchantByBlazeEnchanterCostCoefficient.get() : CeiConfigs.SERVER.enchantByBlazeEnchanterCostCoefficient.get())));
 
         if (processingTicks > 5) {
             var tankFluid = internalTank.getPrimaryHandler().getFluid().getFluid();
@@ -440,8 +433,8 @@ public class BlazeEnchanterBlockEntity extends SmartBlockEntity implements IHave
     }
 
     @Override
-    public ItemRequirement getRequiredItems(BlockState state){
-        return new ItemRequirement(ItemRequirement.ItemUseType.CONSUME,targetItem);
+    public ItemRequirement getRequiredItems(BlockState state) {
+        return new ItemRequirement(ItemRequirement.ItemUseType.CONSUME, targetItem);
     }
 
     @Override
@@ -455,7 +448,7 @@ public class BlazeEnchanterBlockEntity extends SmartBlockEntity implements IHave
             Containers.dropItemStack(level, pos.getX(), pos.getY(), pos.getZ(), targetItem);
             var tank = internalTank.getPrimaryHandler();
             var fluidStack = tank.getFluid();
-            if(fluidStack.getFluid() instanceof ExperienceFluid expFluid) {
+            if (fluidStack.getFluid() instanceof ExperienceFluid expFluid) {
                 expFluid.drop(serverLevel, VecHelper.getCenterOf(pos), fluidStack.getAmount());
             }
         }
@@ -529,11 +522,10 @@ public class BlazeEnchanterBlockEntity extends SmartBlockEntity implements IHave
                             .withStyle(ChatFormatting.RED));
                 else {
                     int consumption = (int) (Enchanting.getExperienceConsumption(entry.getFirst(), entry.getSecond()) *
-                            (hyper()? CeiConfigs.SERVER.hyperEnchantByBlazeEnchanterCostCoefficient.get():
-                                    CeiConfigs.SERVER.enchantByBlazeEnchanterCostCoefficient.get()));
+                            (hyper() ? CeiConfigs.SERVER.hyperEnchantByBlazeEnchanterCostCoefficient.get() : CeiConfigs.SERVER.enchantByBlazeEnchanterCostCoefficient.get()));
                     if (consumption > CeiConfigs.SERVER.blazeEnchanterTankCapacity.get())
                         tooltip.add(Component.literal("     ").append(LANG.translate("gui.goggles.too_expensive")
-                                        .component())
+                                .component())
                                 .withStyle(ChatFormatting.RED));
                     else
                         tooltip.add(Component.literal("     ")

@@ -14,38 +14,35 @@ import net.minecraft.world.entity.MobCategory;
 import net.minecraftforge.eventbus.api.IEventBus;
 
 public class SafeRegistrate extends CreateRegistrate {
-    
     public SafeRegistrate(String modid) {
         super(modid);
     }
-    
+
     @Override
     public SafeRegistrate registerEventListeners(IEventBus bus) {
         super.registerEventListeners(bus);
         return this;
     }
-    
+
     public <T extends Entity> CreateEntityBuilder<T, CreateRegistrate> entity(
-        String name,
-        EntityType.EntityFactory<T> factory,
-        NonNullSupplier<NonNullFunction<EntityRendererProvider.Context, EntityRenderer<? super T>>> renderer,
-        MobCategory group,
-        int range, int updateFrequency,
-        boolean sendVelocity, boolean immuneToFire,
-        NonNullConsumer<EntityType.Builder<T>> propertyBuilder)
-    {
+            String name,
+            EntityType.EntityFactory<T> factory,
+            NonNullSupplier<NonNullFunction<EntityRendererProvider.Context, EntityRenderer<? super T>>> renderer,
+            MobCategory group,
+            int range, int updateFrequency,
+            boolean sendVelocity, boolean immuneToFire,
+            NonNullConsumer<EntityType.Builder<T>> propertyBuilder) {
         String id = Lang.asId(name);
         var builder = this.entity(id, factory, group);
         builder.properties(b -> {
-                if (immuneToFire)
-                    b.fireImmune();
-                b.setTrackingRange(range)
+            if (immuneToFire)
+                b.fireImmune();
+            b.setTrackingRange(range)
                     .setUpdateInterval(updateFrequency)
                     .setShouldReceiveVelocityUpdates(sendVelocity);
-                propertyBuilder.accept(b);
-            })
-            .renderer(renderer);
+            propertyBuilder.accept(b);
+        })
+                .renderer(renderer);
         return builder;
     }
-    
 }

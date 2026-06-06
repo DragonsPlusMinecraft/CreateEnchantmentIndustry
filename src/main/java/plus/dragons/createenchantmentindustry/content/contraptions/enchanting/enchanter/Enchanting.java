@@ -1,5 +1,10 @@
 package plus.dragons.createenchantmentindustry.content.contraptions.enchanting.enchanter;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.function.Predicate;
+import javax.annotation.Nullable;
 import net.createmod.catnip.data.Pair;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.tags.TagKey;
@@ -10,16 +15,8 @@ import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import plus.dragons.createenchantmentindustry.EnchantmentIndustry;
 import plus.dragons.createenchantmentindustry.entry.CeiItems;
 
-import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.function.Predicate;
-
 public class Enchanting {
-
-    public static final TagKey<Item> UNENCHANTABLE =
-            TagKey.create(Registries.ITEM, EnchantmentIndustry.genRL("unenchantable"));
+    public static final TagKey<Item> UNENCHANTABLE = TagKey.create(Registries.ITEM, EnchantmentIndustry.genRL("unenchantable"));
     public static final List<Predicate<ItemStack>> UNENCHANTABLE_CONDITIONS = new ArrayList<>();
 
     @Nullable
@@ -36,15 +33,15 @@ public class Enchanting {
         } else
             throw new RuntimeException("TargetItem is not an enchanting guide for blaze!");
     }
-    
+
     @Nullable
     public static EnchantmentEntry getValidEnchantment(ItemStack itemStack, ItemStack targetItem, boolean hyper) {
-
-        if(itemStack.is(UNENCHANTABLE)) return null;
-        if(!UNENCHANTABLE_CONDITIONS.isEmpty()){
-            if(UNENCHANTABLE_CONDITIONS.stream()
+        if (itemStack.is(UNENCHANTABLE)) return null;
+        if (!UNENCHANTABLE_CONDITIONS.isEmpty()) {
+            if (UNENCHANTABLE_CONDITIONS.stream()
                     .map(itemStackPredicate -> itemStackPredicate.test(itemStack))
-                    .reduce((b1,b2)->b1||b2).get()) return null;
+                    .reduce((b1, b2) -> b1 || b2).get())
+                return null;
         }
 
         var entry = getTargetEnchantment(targetItem, hyper);
@@ -77,29 +74,29 @@ public class Enchanting {
         map.put(enchantment.getFirst(), enchantment.getSecond());
         EnchantmentHelper.setEnchantments(map, itemStack);
     }
-    
+
     public static int expPointFromLevel(int level) {
         if (level > 31) {
             return (int) (4.5 * level * level - 162.5 * level + 2220);
         } else {
             return level > 16
-                ? (int) (2.5 * level * level - 40.5 * level + 360)
-                : level * level + 6 * level;
+                    ? (int) (2.5 * level * level - 40.5 * level + 360)
+                    : level * level + 6 * level;
         }
     }
-    
+
     public static int expPointForNextLevel(int level) {
         if (level > 30) {
             return 9 * level - 158;
         } else {
             return level > 15
-                ? 5 * level -38
-                : 2 * level + 7;
+                    ? 5 * level - 38
+                    : 2 * level + 7;
         }
     }
 
     public static int rarityLevel(Enchantment.Rarity rarity) {
-        return switch(rarity) {
+        return switch (rarity) {
             case COMMON -> 1;
             case UNCOMMON -> 2;
             case RARE -> 3;
@@ -111,5 +108,4 @@ public class Enchanting {
         int xpLevel = enchantment.getMinCost(level) + level * rarityLevel(enchantment.getRarity());
         return expPointForNextLevel(xpLevel);
     }
-    
 }

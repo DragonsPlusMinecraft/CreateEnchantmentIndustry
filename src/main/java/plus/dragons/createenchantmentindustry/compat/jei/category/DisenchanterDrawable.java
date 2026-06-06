@@ -9,12 +9,10 @@ import net.minecraft.client.gui.GuiGraphics;
 import plus.dragons.createenchantmentindustry.entry.CeiBlocks;
 
 public class DisenchanterDrawable implements IDrawable {
-
     public static final ILightingSettings DEFAULT_LIGHTING = CustomLightingSettings.builder()
             .firstLightRotation(12.5f, 45.0f)
             .secondLightRotation(-20.0f, 50.0f)
             .build();
-
 
     @Override
     public int getWidth() {

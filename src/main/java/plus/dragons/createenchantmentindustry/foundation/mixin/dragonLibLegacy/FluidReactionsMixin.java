@@ -20,7 +20,6 @@ import plus.dragons.createenchantmentindustry.dragonLibLegacy.fluid.FluidLavaRea
 
 @Mixin(value = FluidReactions.class, remap = false)
 public class FluidReactionsMixin {
-    
     @Inject(method = "handlePipeFlowCollision", at = @At("HEAD"), cancellable = true)
     private static void dragonlibLegacy$$handlePipeFlowCollision(Level world, BlockPos pos, FluidStack fluid, FluidStack fluid2, CallbackInfo ci) {
         FluidType type = fluid.getFluid().getFluidType();
@@ -37,7 +36,7 @@ public class FluidReactionsMixin {
             ci.cancel();
         }
     }
-    
+
     @Inject(method = "handlePipeSpillCollision", at = @At("HEAD"), cancellable = true)
     private static void dragonlibLegacy$$handleSpillCollision(Level world, BlockPos pos, Fluid pipeFluid, FluidState worldFluid, CallbackInfo ci) {
         FluidType typeP = pipeFluid.getFluidType();
@@ -55,5 +54,4 @@ public class FluidReactionsMixin {
             ci.cancel();
         }
     }
-    
 }

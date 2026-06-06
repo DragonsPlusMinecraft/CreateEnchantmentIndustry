@@ -1,5 +1,7 @@
 package plus.dragons.createenchantmentindustry.content.contraptions.enchanting.enchanter;
 
+import static plus.dragons.createenchantmentindustry.content.contraptions.enchanting.enchanter.BlazeEnchanterBlockEntity.ENCHANTING_TIME;
+
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
@@ -31,8 +33,6 @@ import net.minecraftforge.common.util.TransformationHelper;
 import plus.dragons.createenchantmentindustry.EnchantmentIndustry;
 import plus.dragons.createenchantmentindustry.content.contraptions.enchanting.enchanter.BlazeEnchanterBlock.HeatLevel;
 
-import static plus.dragons.createenchantmentindustry.content.contraptions.enchanting.enchanter.BlazeEnchanterBlockEntity.ENCHANTING_TIME;
-
 public class BlazeEnchanterRenderer extends SmartBlockEntityRenderer<BlazeEnchanterBlockEntity> {
     public static final Material BOOK_MATERIAL = ForgeHooksClient.getBlockMaterial(EnchantmentIndustry.genRL("block/blaze_enchanter_book"));
     private static final float PI = 3.14159265358979323846f;
@@ -59,8 +59,8 @@ public class BlazeEnchanterRenderer extends SmartBlockEntityRenderer<BlazeEnchan
     }
 
     protected void renderItem(BlazeEnchanterBlockEntity be,
-                              float partialTicks, float animation,
-                              PoseStack ps, MultiBufferSource buffer) {
+            float partialTicks, float animation,
+            PoseStack ps, MultiBufferSource buffer) {
         TransportedItemStack transported = be.heldItem;
         if (transported == null)
             return;
@@ -102,14 +102,14 @@ public class BlazeEnchanterRenderer extends SmartBlockEntityRenderer<BlazeEnchan
         ps.scale(0.5f, 0.5f, 0.5f);
 
         ItemRenderer itemRenderer = Minecraft.getInstance().getItemRenderer();
-        itemRenderer.renderStatic(transported.stack, ItemDisplayContext.FIXED, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, ps, buffer, be.getLevel(),0);
+        itemRenderer.renderStatic(transported.stack, ItemDisplayContext.FIXED, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, ps, buffer, be.getLevel(), 0);
 
         ps.popPose();
     }
 
     protected void renderBlaze(BlazeEnchanterBlockEntity be,
-                               float horizontalAngle, float animation,
-                               PoseStack ps, MultiBufferSource buffer) {
+            float horizontalAngle, float animation,
+            PoseStack ps, MultiBufferSource buffer) {
         BlockState blockState = be.getBlockState();
         HeatLevel heatLevel = blockState.getValue(BlazeEnchanterBlock.HEAT_LEVEL);
         boolean smouldering = heatLevel == HeatLevel.SMOULDERING;
@@ -138,7 +138,8 @@ public class BlazeEnchanterRenderer extends SmartBlockEntityRenderer<BlazeEnchan
 
         if (be.goggles) {
             PartialModel gogglesModel = blazeModel == AllPartialModels.BLAZE_INERT
-                    ? AllPartialModels.BLAZE_GOGGLES_SMALL : AllPartialModels.BLAZE_GOGGLES;
+                    ? AllPartialModels.BLAZE_GOGGLES_SMALL
+                    : AllPartialModels.BLAZE_GOGGLES;
 
             SuperByteBuffer gogglesBuffer = CachedBuffers.partial(gogglesModel, blockState);
             gogglesBuffer.translate(0, headY + 8 / 16f, 0);
@@ -167,8 +168,8 @@ public class BlazeEnchanterRenderer extends SmartBlockEntityRenderer<BlazeEnchan
     }
 
     protected void renderBook(BlazeEnchanterBlockEntity be,
-                              float partialTicks, float horizontalAngle,
-                              PoseStack ps, MultiBufferSource buffer) {
+            float partialTicks, float horizontalAngle,
+            PoseStack ps, MultiBufferSource buffer) {
         ps.pushPose();
 
         ps.translate(0.5, 0.25, 0.5);
@@ -191,5 +192,4 @@ public class BlazeEnchanterRenderer extends SmartBlockEntityRenderer<BlazeEnchan
                 .light(LightTexture.FULL_BRIGHT)
                 .renderInto(ps, vc);
     }
-
 }

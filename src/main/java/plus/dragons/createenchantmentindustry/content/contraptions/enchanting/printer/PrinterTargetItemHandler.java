@@ -23,10 +23,10 @@ public class PrinterTargetItemHandler implements IItemHandler {
 
     @Override
     public @NotNull ItemStack insertItem(int slot, @NotNull ItemStack stack, boolean simulate) {
-        if(!be.getCopyTarget().isEmpty()) return stack;
-        if(!isItemValid(slot,stack)) return stack; // Prevent strange crash problem from happening. See #170 log. Chute does not check item validity before insertion.
-        else{
-            if(!simulate){
+        if (!be.getCopyTarget().isEmpty()) return stack;
+        if (!isItemValid(slot, stack)) return stack; // Prevent strange crash problem from happening. See #170 log. Chute does not check item validity before insertion.
+        else {
+            if (!simulate) {
                 be.setCopyTarget(stack);
             }
         }
@@ -36,7 +36,7 @@ public class PrinterTargetItemHandler implements IItemHandler {
     @Override
     public @NotNull ItemStack extractItem(int slot, int amount, boolean simulate) {
         var ret = be.getCopyTarget().copy();
-        if(!simulate){
+        if (!simulate) {
             be.setCopyTarget(ItemStack.EMPTY);
         }
         return ret;
@@ -49,6 +49,6 @@ public class PrinterTargetItemHandler implements IItemHandler {
 
     @Override
     public boolean isItemValid(int slot, @NotNull ItemStack stack) {
-        return Printing.match(stack)!=null;
+        return Printing.match(stack) != null;
     }
 }

@@ -6,6 +6,7 @@ import com.simibubi.create.foundation.blockEntity.behaviour.fluid.SmartFluidTank
 import com.simibubi.create.foundation.blockEntity.renderer.SmartBlockEntityRenderer;
 import com.simibubi.create.foundation.render.ShadowRenderHelper;
 import dev.engine_room.flywheel.lib.transform.TransformStack;
+import java.util.Random;
 import net.createmod.catnip.platform.ForgeCatnipServices;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -19,8 +20,6 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.fluids.FluidStack;
 
-import java.util.Random;
-
 public class DisenchanterRenderer extends SmartBlockEntityRenderer<DisenchanterBlockEntity> {
     public DisenchanterRenderer(BlockEntityRendererProvider.Context context) {
         super(context);
@@ -28,14 +27,14 @@ public class DisenchanterRenderer extends SmartBlockEntityRenderer<DisenchanterB
 
     @Override
     protected void renderSafe(DisenchanterBlockEntity be, float partialTicks, PoseStack ps, MultiBufferSource buffer,
-                              int light, int overlay) {
+            int light, int overlay) {
         super.renderSafe(be, partialTicks, ps, buffer, light, overlay);
         renderItem(be, partialTicks, ps, buffer, light, overlay);
         renderFluid(be, partialTicks, ps, buffer, light);
     }
 
     protected void renderItem(DisenchanterBlockEntity be, float partialTicks, PoseStack ps, MultiBufferSource buffer,
-                              int light, int overlay) {
+            int light, int overlay) {
         TransportedItemStack transported = be.heldItem;
         if (transported == null) return;
 
@@ -94,7 +93,7 @@ public class DisenchanterRenderer extends SmartBlockEntityRenderer<DisenchanterB
             }
             ps.scale(.5f, .5f, .5f);
             if (!blockItem) ts.rotateXDegrees(90);
-            itemRenderer.renderStatic(itemStack, ItemDisplayContext.FIXED, light, overlay, ps, buffer, be.getLevel(),0);
+            itemRenderer.renderStatic(itemStack, ItemDisplayContext.FIXED, light, overlay, ps, buffer, be.getLevel(), 0);
             ps.popPose();
 
             if (!blockItem) ts.rotateYDegrees(10);
@@ -105,7 +104,7 @@ public class DisenchanterRenderer extends SmartBlockEntityRenderer<DisenchanterB
     }
 
     protected void renderFluid(DisenchanterBlockEntity be, float partialTicks, PoseStack ps, MultiBufferSource buffer,
-                               int light) {
+            int light) {
         SmartFluidTankBehaviour tank = be.internalTank;
         if (tank == null)
             return;
@@ -138,7 +137,7 @@ public class DisenchanterRenderer extends SmartBlockEntityRenderer<DisenchanterB
         var result = Disenchanting.disenchantResult(transported.stack, be.getLevel());
         if (result == null) return;
         FluidStack xp = result.getFirst();
-        if(xp.isEmpty()) return;
+        if (xp.isEmpty()) return;
 
         int processingTicks = be.processingTicks;
         float processingProgress = processingTicks == 0 ? 0
@@ -158,7 +157,6 @@ public class DisenchanterRenderer extends SmartBlockEntityRenderer<DisenchanterB
         ForgeCatnipServices.FLUID_RENDERER.renderFluidBox(xp,
                 (float) bb.minX, (float) bb.minY, (float) bb.minZ,
                 (float) bb.maxX, (float) bb.maxY, (float) bb.maxZ,
-                buffer, ps, light, true, false
-        );
+                buffer, ps, light, true, false);
     }
 }

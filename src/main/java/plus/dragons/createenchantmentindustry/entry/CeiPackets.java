@@ -1,6 +1,11 @@
 package plus.dragons.createenchantmentindustry.entry;
 
+import static net.minecraftforge.network.NetworkDirection.PLAY_TO_SERVER;
+
 import com.simibubi.create.foundation.networking.SimplePacketBase;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
+import java.util.function.Supplier;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
@@ -13,12 +18,6 @@ import net.minecraftforge.network.simple.SimpleChannel;
 import plus.dragons.createenchantmentindustry.EnchantmentIndustry;
 import plus.dragons.createenchantmentindustry.content.contraptions.enchanting.enchanter.BlazeEnchanterEditPacket;
 import plus.dragons.createenchantmentindustry.content.contraptions.enchanting.enchanter.EnchantingGuideEditPacket;
-
-import java.util.function.BiConsumer;
-import java.util.function.Function;
-import java.util.function.Supplier;
-
-import static net.minecraftforge.network.NetworkDirection.PLAY_TO_SERVER;
 
 public enum CeiPackets {
 
@@ -34,7 +33,7 @@ public enum CeiPackets {
     private final CeiPackets.LoadedPacket<?> packet;
 
     <T extends SimplePacketBase> CeiPackets(Class<T> type, Function<FriendlyByteBuf, T> factory,
-                                            NetworkDirection direction) {
+            NetworkDirection direction) {
         packet = new CeiPackets.LoadedPacket<>(type, factory, direction);
     }
 

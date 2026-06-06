@@ -1,5 +1,9 @@
 package plus.dragons.createenchantmentindustry.content.contraptions.enchanting.printer;
 
+import static com.simibubi.create.content.kinetics.belt.behaviour.BeltProcessingBehaviour.ProcessingResult.HOLD;
+import static com.simibubi.create.content.kinetics.belt.behaviour.BeltProcessingBehaviour.ProcessingResult.PASS;
+import static plus.dragons.createenchantmentindustry.EnchantmentIndustry.LANG;
+
 import com.simibubi.create.api.equipment.goggles.IHaveGoggleInformation;
 import com.simibubi.create.content.kinetics.belt.behaviour.BeltProcessingBehaviour;
 import com.simibubi.create.content.kinetics.belt.behaviour.TransportedItemStackHandlerBehaviour;
@@ -8,6 +12,9 @@ import com.simibubi.create.foundation.advancement.AdvancementBehaviour;
 import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
 import com.simibubi.create.foundation.blockEntity.behaviour.fluid.SmartFluidTankBehaviour;
+import java.util.ArrayList;
+import java.util.List;
+import javax.annotation.Nullable;
 import net.createmod.catnip.math.VecHelper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
@@ -39,16 +46,7 @@ import plus.dragons.createenchantmentindustry.foundation.advancement.CeiTriggers
 import plus.dragons.createenchantmentindustry.foundation.config.CeiConfigs;
 import plus.dragons.createenchantmentindustry.foundation.mixin.dragonLibLegacy.AdvancementBehaviourAccessor;
 
-import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.List;
-
-import static com.simibubi.create.content.kinetics.belt.behaviour.BeltProcessingBehaviour.ProcessingResult.HOLD;
-import static com.simibubi.create.content.kinetics.belt.behaviour.BeltProcessingBehaviour.ProcessingResult.PASS;
-import static plus.dragons.createenchantmentindustry.EnchantmentIndustry.LANG;
-
 public class PrinterBlockEntity extends SmartBlockEntity implements IHaveGoggleInformation {
-
     public static final int COPYING_TIME = 100;
     protected BeltProcessingBehaviour beltProcessing;
     public int processingTicks;
@@ -58,7 +56,7 @@ public class PrinterBlockEntity extends SmartBlockEntity implements IHaveGoggleI
     public PrintEntry printEntry;
     boolean sendParticles;
 
-    LazyOptional<PrinterTargetItemHandler> itemHandler = LazyOptional.of(()->new PrinterTargetItemHandler(this));
+    LazyOptional<PrinterTargetItemHandler> itemHandler = LazyOptional.of(() -> new PrinterTargetItemHandler(this));
 
     public PrinterBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
@@ -71,8 +69,8 @@ public class PrinterBlockEntity extends SmartBlockEntity implements IHaveGoggleI
     @SuppressWarnings("deprecation") //Fluid Tags are still useful for mod interaction
     public void addBehaviours(List<BlockEntityBehaviour> behaviours) {
         behaviours.add(tank = FilteringFluidTankBehaviour
-            .single(fluidStack -> fluidStack.getFluid().is(CeiTags.FluidTag.PRINTER_INPUT.tag),
-                this, CeiConfigs.SERVER.copierTankCapacity.get()));
+                .single(fluidStack -> fluidStack.getFluid().is(CeiTags.FluidTag.PRINTER_INPUT.tag),
+                        this, CeiConfigs.SERVER.copierTankCapacity.get()));
         behaviours.add(beltProcessing = new BeltProcessingBehaviour(this).whenItemEnters(this::onItemReceived)
                 .whileItemHeld(this::whenItemHeld));
         registerAwardables(behaviours,
@@ -91,17 +89,16 @@ public class PrinterBlockEntity extends SmartBlockEntity implements IHaveGoggleI
     }
 
     public ItemStack getCopyTarget() {
-        if(copyTarget==null) return ItemStack.EMPTY;
+        if (copyTarget == null) return ItemStack.EMPTY;
         return copyTarget;
     }
 
     public void setCopyTarget(@NotNull ItemStack copyTarget) {
-        if(copyTarget.isEmpty()) {
+        if (copyTarget.isEmpty()) {
             this.copyTarget = null;
             tooExpensive = false;
             printEntry = null;
-        }
-        else {
+        } else {
             this.copyTarget = copyTarget;
             matchPrintEntry(copyTarget);
             tooExpensive = Printing.isTooExpensive(printEntry, copyTarget, CeiConfigs.SERVER.copierTankCapacity.get());
@@ -110,9 +107,9 @@ public class PrinterBlockEntity extends SmartBlockEntity implements IHaveGoggleI
         notifyUpdate();
     }
 
-    private void matchPrintEntry(ItemStack copyTarget){
+    private void matchPrintEntry(ItemStack copyTarget) {
         var entry = Printing.match(copyTarget);
-        if(entry==null){
+        if (entry == null) {
             // Happen when mod that contains a PrintEntry is removed.
             this.copyTarget = null;
             tooExpensive = false;
@@ -137,27 +134,27 @@ public class PrinterBlockEntity extends SmartBlockEntity implements IHaveGoggleI
     }
 
     protected BeltProcessingBehaviour.ProcessingResult onItemReceived(TransportedItemStack transported,
-                                                                      TransportedItemStackHandlerBehaviour handler) {
+            TransportedItemStackHandlerBehaviour handler) {
         if (handler.blockEntity.isVirtual())
             return PASS;
         if (tooExpensive || copyTarget == null)
             return PASS;
-        if (!Printing.valid(printEntry,copyTarget,transported.stack))
+        if (!Printing.valid(printEntry, copyTarget, transported.stack))
             return PASS;
         if (tank.isEmpty() || Printing.isCorrectInk(printEntry, getCurrentFluidInTank(), copyTarget))
             return HOLD;
-        if (Printing.getRequiredAmountForItem(printEntry,copyTarget) == -1)
+        if (Printing.getRequiredAmountForItem(printEntry, copyTarget) == -1)
             return PASS;
         return HOLD;
     }
 
     protected BeltProcessingBehaviour.ProcessingResult whenItemHeld(TransportedItemStack transported,
-                                                                    TransportedItemStackHandlerBehaviour handler) {
+            TransportedItemStackHandlerBehaviour handler) {
         if (processingTicks != -1 && processingTicks != 10)
             return HOLD;
         if (tooExpensive || copyTarget == null)
             return PASS;
-        if (!Printing.valid(printEntry, copyTarget,transported.stack))
+        if (!Printing.valid(printEntry, copyTarget, transported.stack))
             return PASS;
         if (tank.isEmpty() || !Printing.isCorrectInk(printEntry, getCurrentFluidInTank(), copyTarget))
             return HOLD;
@@ -181,21 +178,21 @@ public class PrinterBlockEntity extends SmartBlockEntity implements IHaveGoggleI
                 award(CeiAdvancements.COPIABLE_MASTERPIECE.asCreateAdvancement());
                 if (item.getOrCreateTag().getInt("generation") == 3)
                     award(CeiAdvancements.RELIC_RESTORATION.asCreateAdvancement());
-            } else if(item.is(Items.ENCHANTED_BOOK))
+            } else if (item.is(Items.ENCHANTED_BOOK))
                 award(CeiAdvancements.COPIABLE_MYSTERY.asCreateAdvancement());
-            else if(item.is(Items.NAME_TAG) && !transported.stack.is(Items.NAME_TAG))
+            else if (item.is(Items.NAME_TAG) && !transported.stack.is(Items.NAME_TAG))
                 award(CeiAdvancements.EMERGING_BRAND.asCreateAdvancement());
             var advancementBehaviour = getBehaviour(AdvancementBehaviour.TYPE);
             var playerId = ((AdvancementBehaviourAccessor) advancementBehaviour).getPlayerId();
             if (playerId != null) {
                 var player = level.getPlayerByUUID(playerId);
-                if(player!=null)
+                if (player != null)
                     CeiTriggers.BOOK_PRINTED.trigger(player, 1);
             }
         }
 
         // Process finished
-        ItemStack copy = Printing.print(printEntry,copyTarget, requiredAmountForItem, transported.stack, fluid);
+        ItemStack copy = Printing.print(printEntry, copyTarget, requiredAmountForItem, transported.stack, fluid);
         List<TransportedItemStack> outList = new ArrayList<>();
         TransportedItemStack held = null;
         TransportedItemStack result = transported.copy();
@@ -221,10 +218,10 @@ public class PrinterBlockEntity extends SmartBlockEntity implements IHaveGoggleI
         if (level instanceof ServerLevel serverLevel) {
             ItemStack heldItemStack = copyTarget;
             var pos = getBlockPos();
-            if(heldItemStack != null)
+            if (heldItemStack != null)
                 Containers.dropItemStack(level, pos.getX(), pos.getY(), pos.getZ(), heldItemStack);
             var fluidStack = tank.getPrimaryHandler().getFluid();
-            if(fluidStack.getFluid() instanceof ExperienceFluid expFluid) {
+            if (fluidStack.getFluid() instanceof ExperienceFluid expFluid) {
                 expFluid.drop(serverLevel, VecHelper.getCenterOf(pos), fluidStack.getAmount());
             }
         }
@@ -255,7 +252,7 @@ public class PrinterBlockEntity extends SmartBlockEntity implements IHaveGoggleI
         copyTarget = null;
         processingTicks = compoundTag.getInt("ProcessingTicks");
         tooExpensive = compoundTag.getBoolean("tooExpensive");
-        if (compoundTag.contains("copyTarget")){
+        if (compoundTag.contains("copyTarget")) {
             copyTarget = ItemStack.of(compoundTag.getCompound("copyTarget"));
             matchPrintEntry(copyTarget);
         }
@@ -263,7 +260,6 @@ public class PrinterBlockEntity extends SmartBlockEntity implements IHaveGoggleI
             return;
         if (compoundTag.contains("SpawnParticles"))
             spawnParticles();
-
     }
 
     @Override
@@ -278,7 +274,7 @@ public class PrinterBlockEntity extends SmartBlockEntity implements IHaveGoggleI
         if (cap == ForgeCapabilities.FLUID_HANDLER && side != Direction.DOWN)
             return tank.getCapability()
                     .cast();
-        else if(cap == ForgeCapabilities.ITEM_HANDLER)
+        else if (cap == ForgeCapabilities.ITEM_HANDLER)
             return itemHandler.cast();
         return super.getCapability(cap, side);
     }
@@ -296,10 +292,9 @@ public class PrinterBlockEntity extends SmartBlockEntity implements IHaveGoggleI
                     .style(ChatFormatting.GRAY)
                     .forGoggles(tooltip, 1);
         } else {
-            printEntry.addToGoggleTooltip(tooltip,isPlayerSneaking,copyTarget);
+            printEntry.addToGoggleTooltip(tooltip, isPlayerSneaking, copyTarget);
         }
         containedFluidTooltip(tooltip, isPlayerSneaking, getCapability(ForgeCapabilities.FLUID_HANDLER));
         return true;
     }
-
 }

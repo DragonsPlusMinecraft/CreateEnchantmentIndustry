@@ -1,17 +1,15 @@
 package plus.dragons.createenchantmentindustry.dragonLibLegacy.advancement.critereon;
 
 import com.google.gson.JsonObject;
+import java.util.List;
+import java.util.function.Supplier;
+import javax.annotation.Nullable;
 import net.minecraft.advancements.critereon.ContextAwarePredicate;
 import net.minecraft.advancements.critereon.DeserializationContext;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 
-import javax.annotation.Nullable;
-import java.util.List;
-import java.util.function.Supplier;
-
 public class SimpleTrigger extends AbstractTrigger<SimpleTrigger.Instance> {
-
     public SimpleTrigger(ResourceLocation id) {
         super(id);
     }
@@ -30,16 +28,13 @@ public class SimpleTrigger extends AbstractTrigger<SimpleTrigger.Instance> {
     }
 
     public static class Instance extends AbstractTrigger.Instance {
-
         public Instance(ResourceLocation idIn) {
             super(idIn, ContextAwarePredicate.ANY);
         }
-        
+
         @Override
         protected boolean test(@Nullable List<Supplier<Object>> suppliers) {
             return true;
         }
-        
     }
-    
 }

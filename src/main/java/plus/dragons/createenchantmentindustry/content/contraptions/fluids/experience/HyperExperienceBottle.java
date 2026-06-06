@@ -26,7 +26,6 @@ public class HyperExperienceBottle extends ThrowableItemProjectile {
         super(CeiEntityTypes.HYPER_EXPERIENCE_BOTTLE.get(), pShooter, pLevel);
     }
 
-
     @Override
     protected Item getDefaultItem() {
         return CeiItems.HYPER_EXP_BOTTLE.get();
@@ -53,9 +52,8 @@ public class HyperExperienceBottle extends ThrowableItemProjectile {
         if (this.level() instanceof ServerLevel) {
             this.level().levelEvent(2002, this.blockPosition(), PotionUtils.getColor(Potions.WATER));
             int amount = 3 + this.level().random.nextInt(5) + this.level().random.nextInt(5);
-            CeiFluids.HYPER_EXPERIENCE.get().drop((ServerLevel)this.level(), this.position(), amount);
+            CeiFluids.HYPER_EXPERIENCE.get().drop((ServerLevel) this.level(), this.position(), amount);
             this.discard();
         }
     }
-    
 }

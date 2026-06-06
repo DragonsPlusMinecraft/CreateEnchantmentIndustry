@@ -1,28 +1,24 @@
 package plus.dragons.createenchantmentindustry.dragonLibLegacy.tag;
 
 /*
-MIT License
-
-Copyright (c) 2019 simibubi
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
-*/
+ * MIT License
+ * Copyright (c) 2019 simibubi
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
 
 import com.simibubi.create.AllTags;
 import com.simibubi.create.foundation.data.recipe.Mods;
@@ -32,6 +28,8 @@ import com.tterrag.registrate.providers.ProviderType;
 import com.tterrag.registrate.providers.RegistrateTagsProvider;
 import com.tterrag.registrate.util.nullness.NonNullConsumer;
 import com.tterrag.registrate.util.nullness.NonNullFunction;
+import java.util.ArrayList;
+import java.util.List;
 import net.minecraft.data.tags.TagsProvider;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.item.BlockItem;
@@ -40,10 +38,8 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.material.Fluid;
 import plus.dragons.createenchantmentindustry.dragonLibLegacy.init.SafeRegistrate;
 
-import java.util.ArrayList;
-import java.util.List;
-
-/** Originated from package com.simibubi.create.foundation.data.TagGen;
+/**
+ * Originated from package com.simibubi.create.foundation.data.TagGen;
  *
  */
 public class TagGen {
@@ -53,6 +49,7 @@ public class TagGen {
     private final List<NonNullConsumer<RegistrateTagsProvider<Block>>> blockTagGen;
     private final List<NonNullConsumer<RegistrateTagsProvider<Fluid>>> fluidTagGen;
     private final List<NonNullConsumer<RegistrateTagsProvider<Item>>> itemTagGen;
+
     private TagGen(SafeRegistrate registrate, List<NonNullConsumer<RegistrateTagsProvider<Block>>> blockTagGen, List<NonNullConsumer<RegistrateTagsProvider<Fluid>>> fluidTagGen, List<NonNullConsumer<RegistrateTagsProvider<Item>>> itemTagGen) {
         this.registrate = registrate;
         this.blockTagGen = blockTagGen;
@@ -60,52 +57,51 @@ public class TagGen {
         this.itemTagGen = itemTagGen;
     }
 
-    public static void genAll(){
-        for(var tagGen:READY_TO_GEN){
-            for(var c:tagGen.blockTagGen){
-                tagGen.registrate.addDataGenerator(ProviderType.BLOCK_TAGS,c);
+    public static void genAll() {
+        for (var tagGen : READY_TO_GEN) {
+            for (var c : tagGen.blockTagGen) {
+                tagGen.registrate.addDataGenerator(ProviderType.BLOCK_TAGS, c);
             }
-            for(var c:tagGen.itemTagGen){
-                tagGen.registrate.addDataGenerator(ProviderType.ITEM_TAGS,c);
+            for (var c : tagGen.itemTagGen) {
+                tagGen.registrate.addDataGenerator(ProviderType.ITEM_TAGS, c);
             }
-            for(var c:tagGen.fluidTagGen){
-                tagGen.registrate.addDataGenerator(ProviderType.FLUID_TAGS,c);
+            for (var c : tagGen.fluidTagGen) {
+                tagGen.registrate.addDataGenerator(ProviderType.FLUID_TAGS, c);
             }
         }
     }
 
-    public void activate(){
+    public void activate() {
         READY_TO_GEN.add(this);
     }
 
-    public static class Builder{
+    public static class Builder {
         private SafeRegistrate registrate;
         private final List<NonNullConsumer<RegistrateTagsProvider<Block>>> blockTagGen = new ArrayList<>();
         private final List<NonNullConsumer<RegistrateTagsProvider<Fluid>>> fluidTagGen = new ArrayList<>();
         private final List<NonNullConsumer<RegistrateTagsProvider<Item>>> itemTagGen = new ArrayList<>();
 
-
         public Builder(SafeRegistrate registrate) {
             this.registrate = registrate;
         }
 
-        public Builder addItemTagFactory(NonNullConsumer<RegistrateTagsProvider<Item>> consumer){
+        public Builder addItemTagFactory(NonNullConsumer<RegistrateTagsProvider<Item>> consumer) {
             itemTagGen.add(consumer);
             return this;
         }
 
-        public Builder addBlockTagFactory(NonNullConsumer<RegistrateTagsProvider<Block>> consumer){
+        public Builder addBlockTagFactory(NonNullConsumer<RegistrateTagsProvider<Block>> consumer) {
             blockTagGen.add(consumer);
             return this;
         }
 
-        public Builder addFluidTagFactory(NonNullConsumer<RegistrateTagsProvider<Fluid>> consumer){
+        public Builder addFluidTagFactory(NonNullConsumer<RegistrateTagsProvider<Fluid>> consumer) {
             fluidTagGen.add(consumer);
             return this;
         }
 
-        public TagGen build(){
-            return new TagGen(registrate,blockTagGen,fluidTagGen,itemTagGen);
+        public TagGen build() {
+            return new TagGen(registrate, blockTagGen, fluidTagGen, itemTagGen);
         }
     }
 

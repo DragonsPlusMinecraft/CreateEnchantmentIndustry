@@ -9,11 +9,9 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.network.NetworkEvent.Context;
 
 public class BlazeEnchanterEditPacket extends SimplePacketBase {
-
     private final int index;
     private final ItemStack itemStack;
     private final BlockPos blockPos;
-
 
     public BlazeEnchanterEditPacket(int index, ItemStack enchantedBook, BlockPos blockPos) {
         this.index = index;
@@ -37,21 +35,21 @@ public class BlazeEnchanterEditPacket extends SimplePacketBase {
     @Override
     public boolean handle(Context context) {
         context.enqueueWork(() -> {
-                    ServerPlayer sender = context.getSender();
-                    if(!(sender.level().getBlockEntity(blockPos) instanceof BlazeEnchanterBlockEntity blazeEnchanter))
-                        return;
+            ServerPlayer sender = context.getSender();
+            if (!(sender.level().getBlockEntity(blockPos) instanceof BlazeEnchanterBlockEntity blazeEnchanter))
+                return;
 
-                    CompoundTag tag = blazeEnchanter.targetItem.getOrCreateTag();
-                    tag.putInt("index", index);
-                    tag.put("target", itemStack.serializeNBT());
-                    tag.remove("blockPos");
+            CompoundTag tag = blazeEnchanter.targetItem.getOrCreateTag();
+            tag.putInt("index", index);
+            tag.put("target", itemStack.serializeNBT());
+            tag.remove("blockPos");
 
-                    if(blazeEnchanter.processingTicks>5){
-                        blazeEnchanter.processingTicks = BlazeEnchanterBlockEntity.ENCHANTING_TIME;
-                    }
+            if (blazeEnchanter.processingTicks > 5) {
+                blazeEnchanter.processingTicks = BlazeEnchanterBlockEntity.ENCHANTING_TIME;
+            }
 
-                    blazeEnchanter.notifyUpdate();
-                });
+            blazeEnchanter.notifyUpdate();
+        });
         return true;
     }
 }

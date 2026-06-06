@@ -7,7 +7,6 @@ import org.spongepowered.asm.mixin.gen.Accessor;
 
 @Mixin(SpoutBlockEntity.class)
 public interface SpoutBlockEntityAccessor {
-
     @Accessor(remap = false)
     SmartFluidTankBehaviour getTank();
 }

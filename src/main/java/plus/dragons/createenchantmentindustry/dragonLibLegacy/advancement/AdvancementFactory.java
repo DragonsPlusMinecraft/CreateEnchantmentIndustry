@@ -15,7 +15,7 @@ public class AdvancementFactory {
         this.advancementGen = new AdvancementGen(name, modid);
         this.preTask = preTask;
     }
-    
+
     public static AdvancementFactory create(String name, String modid, Runnable preTask) {
         return new AdvancementFactory(name, modid, preTask);
     }
@@ -23,11 +23,11 @@ public class AdvancementFactory {
     public AdvancementHolder.Builder builder(String id) {
         return new AdvancementHolder.Builder(modid, id, triggerFactory);
     }
-    
+
     public TriggerFactory getTriggerFactory() {
         return triggerFactory;
     }
-    
+
     public void datagen(final GatherDataEvent event) {
         preTask.run();
         DataGenerator datagen = event.getGenerator();
@@ -38,5 +38,4 @@ public class AdvancementFactory {
     public void register() {
         triggerFactory.register();
     }
-    
 }

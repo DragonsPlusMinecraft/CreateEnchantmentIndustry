@@ -1,7 +1,12 @@
 package plus.dragons.createenchantmentindustry.content.contraptions.enchanting.printer;
 
+import static plus.dragons.createenchantmentindustry.EnchantmentIndustry.LANG;
+
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.AllItems;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -20,33 +25,26 @@ import plus.dragons.createenchantmentindustry.content.contraptions.enchanting.en
 import plus.dragons.createenchantmentindustry.entry.CeiFluids;
 import plus.dragons.createenchantmentindustry.foundation.config.CeiConfigs;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import static plus.dragons.createenchantmentindustry.EnchantmentIndustry.LANG;
-
 public class PrintEntries {
-    public static Map<ResourceLocation,PrintEntry> ENTRIES = new HashMap<>();
+    public static Map<ResourceLocation, PrintEntry> ENTRIES = new HashMap<>();
 
-    static{
+    static {
         var e1 = new EnchantedBook();
         var e2 = new WrittenBook();
         var e3 = new NameTag();
         var e4 = new Schedule();
         var e5 = new ClipBoard();
-        ENTRIES.put(e1.id(),e1);
-        ENTRIES.put(e2.id(),e2);
-        ENTRIES.put(e3.id(),e3);
-        ENTRIES.put(e4.id(),e4);
-        ENTRIES.put(e5.id(),e5);
+        ENTRIES.put(e1.id(), e1);
+        ENTRIES.put(e2.id(), e2);
+        ENTRIES.put(e3.id(), e3);
+        ENTRIES.put(e4.id(), e4);
+        ENTRIES.put(e5.id(), e5);
 
         var event = new PrintEntryRegisterEvent();
         MinecraftForge.EVENT_BUS.post(event);
     }
 
-    static class EnchantedBook implements PrintEntry{
-
+    static class EnchantedBook implements PrintEntry {
         @Override
         public ResourceLocation id() {
             return EnchantmentIndustry.genRL("enchanted_book");
@@ -67,9 +65,7 @@ public class PrintEntries {
             if (hasEnchantmentsAboveConfiguredCap(target))
                 return -1;
             return (int) (getExperienceFromItem(target) *
-                    (requiredInkType(target).isSame(CeiFluids.HYPER_EXPERIENCE.get())?
-                    CeiConfigs.SERVER.copyEnchantedBookWithHyperExperienceCostCoefficient.get():
-                    CeiConfigs.SERVER.copyEnchantedBookCostCoefficient.get()));
+                    (requiredInkType(target).isSame(CeiFluids.HYPER_EXPERIENCE.get()) ? CeiConfigs.SERVER.copyEnchantedBookWithHyperExperienceCostCoefficient.get() : CeiConfigs.SERVER.copyEnchantedBookCostCoefficient.get()));
         }
 
         @Override
@@ -77,17 +73,15 @@ public class PrintEntries {
             return EnchantmentHelper.getEnchantments(target)
                     .entrySet()
                     .stream()
-                    .map(entry -> entry.getValue()>EnchantmentLevelUtil.getMaxLevel(entry.getKey()))
-                    .reduce(false, (a,b)->a||b) ? CeiFluids.HYPER_EXPERIENCE.get(): CeiFluids.EXPERIENCE.get();
+                    .map(entry -> entry.getValue() > EnchantmentLevelUtil.getMaxLevel(entry.getKey()))
+                    .reduce(false, (a, b) -> a || b) ? CeiFluids.HYPER_EXPERIENCE.get() : CeiFluids.EXPERIENCE.get();
         }
 
         @Override
         public boolean isTooExpensive(ItemStack target, int limit) {
             if (hasEnchantmentsAboveConfiguredCap(target))
                 return true;
-            return (int) (getExperienceFromItem(target) * (requiredInkType(target).isSame(CeiFluids.HYPER_EXPERIENCE.get())?
-                    CeiConfigs.SERVER.copyEnchantedBookWithHyperExperienceCostCoefficient.get():
-                    CeiConfigs.SERVER.copyEnchantedBookCostCoefficient.get())) > limit;
+            return (int) (getExperienceFromItem(target) * (requiredInkType(target).isSame(CeiFluids.HYPER_EXPERIENCE.get()) ? CeiConfigs.SERVER.copyEnchantedBookWithHyperExperienceCostCoefficient.get() : CeiConfigs.SERVER.copyEnchantedBookCostCoefficient.get())) > limit;
         }
 
         @Override
@@ -97,20 +91,16 @@ public class PrintEntries {
             boolean tooExpensive = Printing.isTooExpensive(this, target, CeiConfigs.SERVER.copierTankCapacity.get());
             if (tooExpensive)
                 tooltip.add(Component.literal("     ").append(LANG.translate(
-                        "gui.goggles.too_expensive").component()
-                ).withStyle(ChatFormatting.RED));
-            else{
+                        "gui.goggles.too_expensive").component()).withStyle(ChatFormatting.RED));
+            else {
                 var hyper = EnchantmentHelper.getEnchantments(target)
                         .entrySet()
                         .stream()
-                        .map(entry -> entry.getValue()>EnchantmentLevelUtil.getMaxLevel(entry.getKey()))
-                        .reduce(false, (a,a2)->a||a2);
+                        .map(entry -> entry.getValue() > EnchantmentLevelUtil.getMaxLevel(entry.getKey()))
+                        .reduce(false, (a, a2) -> a || a2);
                 tooltip.add(Component.literal("     ").append(LANG.translate(
-                        hyper ? "gui.goggles.hyper_xp_consumption": "gui.goggles.xp_consumption",
-                        String.valueOf((int) (getExperienceFromItem(target) * (requiredInkType(target).isSame(CeiFluids.HYPER_EXPERIENCE.get())?
-                                CeiConfigs.SERVER.copyEnchantedBookWithHyperExperienceCostCoefficient.get():
-                                CeiConfigs.SERVER.copyEnchantedBookCostCoefficient.get())))).component()
-                ).withStyle(hyper? ChatFormatting.AQUA: ChatFormatting.GREEN));
+                        hyper ? "gui.goggles.hyper_xp_consumption" : "gui.goggles.xp_consumption",
+                        String.valueOf((int) (getExperienceFromItem(target) * (requiredInkType(target).isSame(CeiFluids.HYPER_EXPERIENCE.get()) ? CeiConfigs.SERVER.copyEnchantedBookWithHyperExperienceCostCoefficient.get() : CeiConfigs.SERVER.copyEnchantedBookCostCoefficient.get())))).component()).withStyle(hyper ? ChatFormatting.AQUA : ChatFormatting.GREEN));
             }
             var map = EnchantmentHelper.getEnchantments(target);
             for (var e : map.entrySet()) {
@@ -121,7 +111,7 @@ public class PrintEntries {
 
         @Override
         public MutableComponent getDisplaySourceContent(ItemStack target) {
-            var ret = LANG.itemName(target).text( " / ");
+            var ret = LANG.itemName(target).text(" / ");
             var map = EnchantmentHelper.getEnchantments(target);
             for (var e : map.entrySet()) {
                 Component name = e.getKey().getFullname(e.getValue());
@@ -145,8 +135,8 @@ public class PrintEntries {
                     .anyMatch(entry -> EnchantmentLevelCapUtil.exceedsConfiguredCap(entry.getKey(), entry.getValue()));
         }
     }
-    static class WrittenBook implements PrintEntry{
 
+    static class WrittenBook implements PrintEntry {
         @Override
         public ResourceLocation id() {
             return EnchantmentIndustry.genRL("written_book");
@@ -176,11 +166,11 @@ public class PrintEntries {
         public ItemStack print(ItemStack target, ItemStack material) {
             var ret = target.copy();
             if (!CeiConfigs.SERVER.copyingWrittenBookAlwaysGetOriginalVersion.get()) {
-				var tag = ret.getOrCreateTag();
-				int generation = tag.getInt("generation");
-				if (generation <= 1)
-					tag.putInt("generation", generation + 1);
-			}
+                var tag = ret.getOrCreateTag();
+                int generation = tag.getInt("generation");
+                if (generation <= 1)
+                    tag.putInt("generation", generation + 1);
+            }
             return ret;
         }
 
@@ -203,13 +193,11 @@ public class PrintEntries {
             b.forGoggles(tooltip, 1);
             if (Printing.isTooExpensive(this, target, CeiConfigs.SERVER.copierTankCapacity.get()))
                 tooltip.add(Component.literal("     ").append(LANG.translate(
-                        "gui.goggles.too_expensive").component()
-                ).withStyle(ChatFormatting.RED));
+                        "gui.goggles.too_expensive").component()).withStyle(ChatFormatting.RED));
             else
                 tooltip.add(Component.literal("     ").append(LANG.translate(
                         "gui.goggles.ink_consumption",
-                        String.valueOf(CeiConfigs.SERVER.copyWrittenBookCostPerPage.get() * page)).component()
-                ).withStyle(ChatFormatting.DARK_GRAY));
+                        String.valueOf(CeiConfigs.SERVER.copyWrittenBookCostPerPage.get() * page)).component()).withStyle(ChatFormatting.DARK_GRAY));
         }
 
         @Override
@@ -217,15 +205,15 @@ public class PrintEntries {
             var page = WrittenBookItem.getPageCount(target);
             return LANG.builder()
                     .add(LANG.itemName(target))
-                    .text( " / ")
+                    .text(" / ")
                     .add(LANG.number(page)
                             .text(" ")
-                            .add(page == 1 ? LANG.translate("generic.unit.page") : LANG.translate("generic.unit.pages"))).component();
+                            .add(page == 1 ? LANG.translate("generic.unit.page") : LANG.translate("generic.unit.pages")))
+                    .component();
         }
     }
 
-    static class NameTag implements PrintEntry{
-
+    static class NameTag implements PrintEntry {
         @Override
         public ResourceLocation id() {
             return EnchantmentIndustry.genRL("name_tag");
@@ -248,7 +236,7 @@ public class PrintEntries {
 
         @Override
         public ItemStack print(ItemStack target, ItemStack material) {
-            if(material.is(Items.NAME_TAG)) return target.copy();
+            if (material.is(Items.NAME_TAG)) return target.copy();
             material.setHoverName(target.getHoverName());
             return material;
         }
@@ -269,13 +257,11 @@ public class PrintEntries {
             boolean tooExpensive = Printing.isTooExpensive(this, target, CeiConfigs.SERVER.copierTankCapacity.get());
             if (tooExpensive)
                 tooltip.add(Component.literal("     ").append(LANG.translate(
-                        "gui.goggles.too_expensive").component()
-                ).withStyle(ChatFormatting.RED));
+                        "gui.goggles.too_expensive").component()).withStyle(ChatFormatting.RED));
             else
                 tooltip.add(Component.literal("     ").append(LANG.translate(
                         "gui.goggles.xp_consumption",
-                        String.valueOf(CeiConfigs.SERVER.copyNameTagCost.get())).component()
-                ).withStyle(ChatFormatting.GREEN));
+                        String.valueOf(CeiConfigs.SERVER.copyNameTagCost.get())).component()).withStyle(ChatFormatting.GREEN));
         }
 
         @Override
@@ -287,8 +273,7 @@ public class PrintEntries {
         }
     }
 
-    static class Schedule implements PrintEntry{
-
+    static class Schedule implements PrintEntry {
         @Override
         public ResourceLocation id() {
             return EnchantmentIndustry.genRL("schedule");
@@ -326,13 +311,11 @@ public class PrintEntries {
             boolean tooExpensive = Printing.isTooExpensive(this, target, CeiConfigs.SERVER.copierTankCapacity.get());
             if (tooExpensive)
                 tooltip.add(Component.literal("     ").append(LANG.translate(
-                        "gui.goggles.too_expensive").component()
-                ).withStyle(ChatFormatting.RED));
+                        "gui.goggles.too_expensive").component()).withStyle(ChatFormatting.RED));
             else
                 tooltip.add(Component.literal("     ").append(LANG.translate(
                         "gui.goggles.ink_consumption",
-                        String.valueOf(CeiConfigs.SERVER.copyTrainScheduleCost.get())).component()
-                ).withStyle(ChatFormatting.DARK_GRAY));
+                        String.valueOf(CeiConfigs.SERVER.copyTrainScheduleCost.get())).component()).withStyle(ChatFormatting.DARK_GRAY));
         }
 
         @Override
@@ -341,8 +324,7 @@ public class PrintEntries {
         }
     }
 
-    static class ClipBoard implements PrintEntry{
-
+    static class ClipBoard implements PrintEntry {
         @Override
         public ResourceLocation id() {
             return EnchantmentIndustry.genRL("clipboard");
@@ -380,13 +362,11 @@ public class PrintEntries {
             boolean tooExpensive = Printing.isTooExpensive(this, target, CeiConfigs.SERVER.copierTankCapacity.get());
             if (tooExpensive)
                 tooltip.add(Component.literal("     ").append(LANG.translate(
-                        "gui.goggles.too_expensive").component()
-                ).withStyle(ChatFormatting.RED));
+                        "gui.goggles.too_expensive").component()).withStyle(ChatFormatting.RED));
             else
                 tooltip.add(Component.literal("     ").append(LANG.translate(
                         "gui.goggles.ink_consumption",
-                        String.valueOf(CeiConfigs.SERVER.copyClipboardCost.get())).component()
-                ).withStyle(ChatFormatting.DARK_GRAY));
+                        String.valueOf(CeiConfigs.SERVER.copyClipboardCost.get())).component()).withStyle(ChatFormatting.DARK_GRAY));
         }
 
         @Override
@@ -394,5 +374,4 @@ public class PrintEntries {
             return LANG.itemName(target).component();
         }
     }
-
 }

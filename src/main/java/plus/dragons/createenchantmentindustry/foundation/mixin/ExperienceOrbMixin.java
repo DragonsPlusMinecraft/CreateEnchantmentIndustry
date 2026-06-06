@@ -13,7 +13,6 @@ import plus.dragons.createenchantmentindustry.content.contraptions.fluids.experi
 
 @Mixin(ExperienceOrb.class)
 public abstract class ExperienceOrbMixin {
-
     @Shadow
     public int value;
 

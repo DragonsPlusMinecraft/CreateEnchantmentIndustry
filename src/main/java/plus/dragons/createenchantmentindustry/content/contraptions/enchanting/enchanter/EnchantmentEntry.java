@@ -1,5 +1,6 @@
 package plus.dragons.createenchantmentindustry.content.contraptions.enchanting.enchanter;
 
+import java.util.Optional;
 import net.createmod.catnip.data.Pair;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
@@ -11,14 +12,10 @@ import plus.dragons.createenchantmentindustry.content.contraptions.enchanting.En
 import plus.dragons.createenchantmentindustry.content.contraptions.enchanting.EnchantmentLevelUtil;
 import plus.dragons.createenchantmentindustry.foundation.config.CeiConfigs;
 
-import java.util.Optional;
-
 public class EnchantmentEntry extends Pair<Enchantment, Integer> {
-    public static final TagKey<Enchantment> HYPER_ENCHANTABLE =
-        TagKey.create(Registries.ENCHANTMENT, EnchantmentIndustry.genRL("hyper_enchantable"));
-    public static final TagKey<Enchantment> HYPER_ENCHANTABLE_BLACKLIST =
-            TagKey.create(Registries.ENCHANTMENT, EnchantmentIndustry.genRL("hyper_enchantable_blacklist"));
-    
+    public static final TagKey<Enchantment> HYPER_ENCHANTABLE = TagKey.create(Registries.ENCHANTMENT, EnchantmentIndustry.genRL("hyper_enchantable"));
+    public static final TagKey<Enchantment> HYPER_ENCHANTABLE_BLACKLIST = TagKey.create(Registries.ENCHANTMENT, EnchantmentIndustry.genRL("hyper_enchantable_blacklist"));
+
     protected EnchantmentEntry(Enchantment first, Integer second) {
         super(first, second);
     }

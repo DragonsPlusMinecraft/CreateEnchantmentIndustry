@@ -16,7 +16,6 @@ import plus.dragons.createenchantmentindustry.entry.CeiTags;
 @Mixin(Camera.class)
 @Implements(@Interface(iface = InkRenderingCamera.class, prefix = "enchantmentIndustry$"))
 public class CameraMixin {
-
     @Shadow
     private BlockGetter level;
 
@@ -41,5 +40,4 @@ public class CameraMixin {
     public boolean enchantmentIndustry$isInInk() {
         return enchantmentIndustry$inInk;
     }
-
 }

@@ -1,5 +1,8 @@
 package plus.dragons.createenchantmentindustry.content.contraptions.enchanting.disenchanter;
 
+import java.util.Map;
+import java.util.stream.Collectors;
+import javax.annotation.Nullable;
 import net.createmod.catnip.data.Pair;
 import net.minecraft.util.Mth;
 import net.minecraft.world.inventory.AnvilMenu;
@@ -15,12 +18,7 @@ import net.minecraftforge.items.wrapper.RecipeWrapper;
 import plus.dragons.createenchantmentindustry.entry.CeiFluids;
 import plus.dragons.createenchantmentindustry.entry.CeiRecipeTypes;
 
-import javax.annotation.Nullable;
-import java.util.Map;
-import java.util.stream.Collectors;
-
 public class Disenchanting {
-
     private static final RecipeWrapper WRAPPER = new RecipeWrapper(new ItemStackHandler(1));
 
     public static ItemStack disenchantAndInsert(DisenchanterBlockEntity be, ItemStack itemStack, boolean simulate) {
@@ -53,8 +51,7 @@ public class Disenchanting {
     @Nullable
     public static Pair<FluidStack, ItemStack> disenchantResult(ItemStack itemStack, Level level) {
         if (EnchantmentHelper.getEnchantments(itemStack).keySet().stream().anyMatch(enchantment -> !enchantment.isCurse())) {
-            var xp =
-                    new FluidStack(CeiFluids.EXPERIENCE.get().getSource(), getDisenchantExperience(itemStack));
+            var xp = new FluidStack(CeiFluids.EXPERIENCE.get().getSource(), getDisenchantExperience(itemStack));
             ItemStack result = disenchant(itemStack);
             return Pair.of(xp, result);
         }
@@ -101,5 +98,4 @@ public class Disenchanting {
                 .reduce(0, Integer::sum);
         return xp == 0 ? 0 : Mth.ceil(xp * 0.75);
     }
-
 }

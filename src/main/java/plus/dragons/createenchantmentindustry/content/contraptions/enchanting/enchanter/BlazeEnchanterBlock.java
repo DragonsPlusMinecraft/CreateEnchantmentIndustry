@@ -9,6 +9,8 @@ import com.simibubi.create.content.processing.burner.BlazeBurnerBlock;
 import com.simibubi.create.foundation.advancement.AdvancementBehaviour;
 import com.simibubi.create.foundation.block.IBE;
 import com.simibubi.create.foundation.blockEntity.ComparatorUtil;
+import java.util.ArrayList;
+import java.util.List;
 import net.createmod.catnip.lang.Lang;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
@@ -38,13 +40,10 @@ import net.minecraftforge.network.NetworkHooks;
 import plus.dragons.createenchantmentindustry.entry.CeiBlockEntities;
 import plus.dragons.createenchantmentindustry.entry.CeiItems;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @SuppressWarnings("deprecation")
 public class BlazeEnchanterBlock extends HorizontalDirectionalBlock implements IWrenchable, IBE<BlazeEnchanterBlockEntity> {
-
     public static final EnumProperty<HeatLevel> HEAT_LEVEL = EnumProperty.create("blaze", HeatLevel.class);
+
     public BlazeEnchanterBlock(Properties pProperties) {
         super(pProperties);
         registerDefaultState(defaultBlockState().setValue(HEAT_LEVEL, HeatLevel.SMOULDERING));
@@ -59,7 +58,7 @@ public class BlazeEnchanterBlock extends HorizontalDirectionalBlock implements I
     public BlockEntityType<? extends BlazeEnchanterBlockEntity> getBlockEntityType() {
         return CeiBlockEntities.BLAZE_ENCHANTER.get();
     }
-    
+
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         super.createBlockStateDefinition(builder);
@@ -78,14 +77,14 @@ public class BlazeEnchanterBlock extends HorizontalDirectionalBlock implements I
 
     @Override
     public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
-        IBE.onRemove(state,level,pos,newState);
+        IBE.onRemove(state, level, pos, newState);
     }
 
     @Override
     public InteractionResult use(BlockState state, Level worldIn, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hit) {
         ItemStack heldItem;
 
-        if(handIn==InteractionHand.OFF_HAND)
+        if (handIn == InteractionHand.OFF_HAND)
             return InteractionResult.PASS;
 
         if (player.isCreative()) {
@@ -94,9 +93,9 @@ public class BlazeEnchanterBlock extends HorizontalDirectionalBlock implements I
             heldItem = player.getItemInHand(handIn);
         }
 
-        if (player.isShiftKeyDown() && heldItem.isEmpty()){
-            if(!player.level().isClientSide()){
-                if(player.level().getBlockEntity(pos) instanceof BlazeEnchanterBlockEntity blazeEnchanter){
+        if (player.isShiftKeyDown() && heldItem.isEmpty()) {
+            if (!player.level().isClientSide()) {
+                if (player.level().getBlockEntity(pos) instanceof BlazeEnchanterBlockEntity blazeEnchanter) {
                     withBlockEntityDo(player.level(), pos,
                             toolbox -> NetworkHooks.openScreen((ServerPlayer) player,
                                     blazeEnchanter, buf -> {
@@ -108,23 +107,23 @@ public class BlazeEnchanterBlock extends HorizontalDirectionalBlock implements I
             }
             return InteractionResult.SUCCESS;
         }
-        if (!heldItem.isEmpty()){
+        if (!heldItem.isEmpty()) {
             return onBlockEntityUse(worldIn, pos, te -> {
-                if(heldItem.is(CeiItems.ENCHANTING_GUIDE.get())){
+                if (heldItem.is(CeiItems.ENCHANTING_GUIDE.get())) {
                     if (!worldIn.isClientSide) {
                         var target = te.targetItem.copy();
                         te.targetItem = heldItem;
-                        if(!player.getAbilities().instabuild)
+                        if (!player.getAbilities().instabuild)
                             player.setItemInHand(handIn, target);
                         te.notifyUpdate();
                     }
                     return InteractionResult.SUCCESS;
-                } else if(Enchanting.getValidEnchantment(heldItem, te.targetItem, te.hyper()) != null) {
+                } else if (Enchanting.getValidEnchantment(heldItem, te.targetItem, te.hyper()) != null) {
                     ItemStack heldItemStack = te.getHeldItemStack();
                     if (heldItemStack.isEmpty()) {
                         if (!worldIn.isClientSide) {
                             te.heldItem = new TransportedItemStack(heldItem);
-                            if(!player.getAbilities().instabuild)
+                            if (!player.getAbilities().instabuild)
                                 player.setItemInHand(handIn, ItemStack.EMPTY);
                             te.notifyUpdate();
                         }
@@ -137,8 +136,7 @@ public class BlazeEnchanterBlock extends HorizontalDirectionalBlock implements I
                     te.goggles = true;
                     te.notifyUpdate();
                     return InteractionResult.SUCCESS;
-                }
-                else return InteractionResult.PASS;
+                } else return InteractionResult.PASS;
             });
         } else {
             return onBlockEntityUse(worldIn, pos, te -> {
@@ -150,7 +148,8 @@ public class BlazeEnchanterBlock extends HorizontalDirectionalBlock implements I
                         te.notifyUpdate();
                     }
                     return InteractionResult.SUCCESS;
-                } if (!te.goggles)
+                }
+                if (!te.goggles)
                     return InteractionResult.PASS;
                 te.goggles = false;
                 te.notifyUpdate();
@@ -173,7 +172,6 @@ public class BlazeEnchanterBlock extends HorizontalDirectionalBlock implements I
         return InteractionResult.SUCCESS;
     }
 
-
     @Override
     public void setPlacedBy(Level pLevel, BlockPos pPos, BlockState pState, LivingEntity pPlacer, ItemStack pStack) {
         super.setPlacedBy(pLevel, pPos, pState, pPlacer, pStack);
@@ -189,7 +187,6 @@ public class BlazeEnchanterBlock extends HorizontalDirectionalBlock implements I
     public boolean hasAnalogOutputSignal(BlockState state) {
         return true;
     }
-
 
     @Override
     public List<ItemStack> getDrops(BlockState pState, LootParams.Builder pParams) {

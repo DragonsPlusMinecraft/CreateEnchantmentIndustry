@@ -25,11 +25,11 @@ public abstract class ItemDrainBlockMixin extends Block implements IBE<ItemDrain
     // Support Experience Drop with Block Break
     @Inject(method = "onRemove", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/Level;removeBlockEntity(Lnet/minecraft/core/BlockPos;)V"))
     private void injected(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving, CallbackInfo ci) {
-        if(!(level instanceof ServerLevel serverLevel))
+        if (!(level instanceof ServerLevel serverLevel))
             return;
         withBlockEntityDo(level, pos, te -> {
             var fluidStack = ((ItemDrainBlockEntityAccessor) te).getInternalTank().getPrimaryHandler().getFluid();
-            if(fluidStack.getFluid() instanceof ExperienceFluid expFluid) {
+            if (fluidStack.getFluid() instanceof ExperienceFluid expFluid) {
                 expFluid.drop(serverLevel, VecHelper.getCenterOf(pos), fluidStack.getAmount());
             }
         });

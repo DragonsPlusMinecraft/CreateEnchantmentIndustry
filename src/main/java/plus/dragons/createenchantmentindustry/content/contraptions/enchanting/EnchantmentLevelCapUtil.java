@@ -1,15 +1,14 @@
 package plus.dragons.createenchantmentindustry.content.contraptions.enchanting;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.OptionalInt;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraftforge.registries.ForgeRegistries;
 import plus.dragons.createenchantmentindustry.EnchantmentIndustry;
 import plus.dragons.createenchantmentindustry.foundation.config.CeiConfigs;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.OptionalInt;
 
 public class EnchantmentLevelCapUtil {
     private static List<? extends String> cachedEntries = List.of();
@@ -29,8 +28,8 @@ public class EnchantmentLevelCapUtil {
         return getConfiguredCap(enchantment)
                 .orElseGet(() -> EnchantmentLevelUtil.getMaxLevel(enchantment)
                         + (CeiConfigs.SERVER.enableHyperEnchant.get()
-                        ? CeiConfigs.SERVER.maxHyperEnchantingLevelExtension.get()
-                        : 0));
+                                ? CeiConfigs.SERVER.maxHyperEnchantingLevelExtension.get()
+                                : 0));
     }
 
     public static boolean exceedsConfiguredCap(Enchantment enchantment, int level) {

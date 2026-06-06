@@ -9,7 +9,6 @@ import plus.dragons.createenchantmentindustry.entry.CeiBlocks;
 import plus.dragons.createenchantmentindustry.entry.CeiItems;
 
 public class CeiPonderScenes {
-
     public static void register(PonderSceneRegistrationHelper<ResourceLocation> helper) {
         PonderSceneRegistrationHelper<ItemProviderEntry<?>> HELPER = helper.withKeyFunction(RegistryEntry::getId);
 

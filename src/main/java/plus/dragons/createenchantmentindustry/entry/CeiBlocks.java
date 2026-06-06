@@ -1,5 +1,7 @@
 package plus.dragons.createenchantmentindustry.entry;
 
+import static plus.dragons.createenchantmentindustry.EnchantmentIndustry.REGISTRATE;
+
 import com.simibubi.create.api.behaviour.display.DisplaySource;
 import com.simibubi.create.content.processing.AssemblyOperatorBlockItem;
 import com.simibubi.create.foundation.data.AssetLookup;
@@ -9,9 +11,6 @@ import com.tterrag.registrate.util.entry.BlockEntry;
 import plus.dragons.createenchantmentindustry.content.contraptions.enchanting.disenchanter.DisenchanterBlock;
 import plus.dragons.createenchantmentindustry.content.contraptions.enchanting.enchanter.BlazeEnchanterBlock;
 import plus.dragons.createenchantmentindustry.content.contraptions.enchanting.printer.PrinterBlock;
-
-import static plus.dragons.createenchantmentindustry.EnchantmentIndustry.REGISTRATE;
-
 
 public class CeiBlocks {
     public static final BlockEntry<DisenchanterBlock> DISENCHANTER = REGISTRATE
@@ -43,5 +42,4 @@ public class CeiBlocks {
             .register();
 
     public static void register() {}
-    
 }

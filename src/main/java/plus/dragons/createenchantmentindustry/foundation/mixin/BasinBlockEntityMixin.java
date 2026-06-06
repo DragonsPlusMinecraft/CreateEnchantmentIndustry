@@ -19,22 +19,21 @@ import plus.dragons.createenchantmentindustry.content.contraptions.fluids.experi
 
 @Mixin(value = BasinBlockEntity.class)
 public abstract class BasinBlockEntityMixin extends SmartBlockEntity implements IHaveGoggleInformation {
-
     @Shadow(remap = false)
     private Couple<SmartFluidTankBehaviour> tanks;
+
     public BasinBlockEntityMixin(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
     }
 
     // Support Experience Drop with Block Break
-    @Inject(method = "destroy",
-            at = @At(value = "RETURN"), remap = false)
+    @Inject(method = "destroy", at = @At(value = "RETURN"), remap = false)
     private void injected(CallbackInfo ci) {
         if (!(level instanceof ServerLevel serverLevel))
             return;
         for (var tank : tanks) {
             var fluidStack = tank.getPrimaryHandler().getFluid();
-            if(fluidStack.getFluid() instanceof ExperienceFluid expFluid) {
+            if (fluidStack.getFluid() instanceof ExperienceFluid expFluid) {
                 expFluid.drop(serverLevel, VecHelper.getCenterOf(getBlockPos()), fluidStack.getAmount());
             }
         }

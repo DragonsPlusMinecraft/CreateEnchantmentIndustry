@@ -2,6 +2,5 @@
 @MethodsReturnNonnullByDefault
 package plus.dragons.createenchantmentindustry.dragonLibLegacy.advancement.critereon;
 
-import net.minecraft.MethodsReturnNonnullByDefault;
-
 import javax.annotation.ParametersAreNonnullByDefault;
+import net.minecraft.MethodsReturnNonnullByDefault;

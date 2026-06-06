@@ -11,7 +11,7 @@ public class PrinterDisplaySource extends SingleLineDisplaySource {
     protected MutableComponent provideLine(DisplayLinkContext context, DisplayTargetStats stats) {
         if (!(context.getSourceBlockEntity() instanceof PrinterBlockEntity printer))
             return EMPTY_LINE;
-        if(printer.getCopyTarget().isEmpty()){
+        if (printer.getCopyTarget().isEmpty()) {
             return EnchantmentIndustry.LANG.translate("gui.goggles.printer.no_target").component();
         } else {
             return printer.printEntry.getDisplaySourceContent(printer.getCopyTarget());

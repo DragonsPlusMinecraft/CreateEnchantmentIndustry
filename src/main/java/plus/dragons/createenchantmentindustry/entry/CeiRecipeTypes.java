@@ -4,6 +4,9 @@ import com.simibubi.create.Create;
 import com.simibubi.create.content.processing.recipe.ProcessingRecipeBuilder;
 import com.simibubi.create.content.processing.recipe.ProcessingRecipeSerializer;
 import com.simibubi.create.foundation.recipe.IRecipeTypeInfo;
+import java.util.Optional;
+import java.util.function.Supplier;
+import javax.annotation.Nullable;
 import net.createmod.catnip.lang.Lang;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.Container;
@@ -18,10 +21,6 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import plus.dragons.createenchantmentindustry.EnchantmentIndustry;
 import plus.dragons.createenchantmentindustry.content.contraptions.enchanting.disenchanter.DisenchantRecipe;
-
-import javax.annotation.Nullable;
-import java.util.Optional;
-import java.util.function.Supplier;
 
 public enum CeiRecipeTypes implements IRecipeTypeInfo {
     DISENCHANTING(DisenchantRecipe::new);

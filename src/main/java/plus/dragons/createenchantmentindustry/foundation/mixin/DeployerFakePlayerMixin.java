@@ -11,25 +11,23 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import plus.dragons.createenchantmentindustry.content.contraptions.fluids.experience.MendingByDeployer;
 import plus.dragons.createenchantmentindustry.foundation.config.CeiConfigs;
+
 @Mixin(value = DeployerFakePlayer.class, remap = false)
 public class DeployerFakePlayerMixin {
-
     @Inject(method = "deployerKillsDoNotSpawnXP", at = @At(value = "INVOKE", target = "Lnet/minecraftforge/event/entity/living/LivingExperienceDropEvent;setCanceled(Z)V"))
     private static void deployerKillsSpawnXpNuggets(LivingExperienceDropEvent event, CallbackInfo ci) {
-
         DeployerFakePlayer player = (DeployerFakePlayer) event.getAttackingPlayer();
         assert player != null;
         if (player.getRandom().nextFloat() > CeiConfigs.SERVER.deployerXpDropChance.getF())
             return;
 
-
         ItemStack deployerTool = player.getInventory().getItem(0);
         int xp = event.getDroppedExperience();
 
-        if(MendingByDeployer.canItemBeMended(deployerTool)) {
-                player.getInventory().setItem(0, MendingByDeployer.mendItem(xp, deployerTool));
-                xp = MendingByDeployer.getNewXp(xp, deployerTool);
-                event.setDroppedExperience(xp);
+        if (MendingByDeployer.canItemBeMended(deployerTool)) {
+            player.getInventory().setItem(0, MendingByDeployer.mendItem(xp, deployerTool));
+            xp = MendingByDeployer.getNewXp(xp, deployerTool);
+            event.setDroppedExperience(xp);
         }
 
         int amount = xp / 3 + (player.getRandom().nextInt(3) < xp % 3 ? 1 : 0);
@@ -43,5 +41,4 @@ public class DeployerFakePlayerMixin {
         if (amount > 0)
             player.getInventory().placeItemBackInInventory(new ItemStack(nugget, amount));
     }
-
 }

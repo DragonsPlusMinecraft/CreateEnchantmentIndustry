@@ -1,14 +1,13 @@
 package plus.dragons.createenchantmentindustry.content.contraptions.enchanting.enchanter;
 
 import com.simibubi.create.content.kinetics.belt.transport.TransportedItemStack;
+import javax.annotation.ParametersAreNonnullByDefault;
 import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemHandlerHelper;
 import org.antlr.v4.runtime.misc.NotNull;
-
-import javax.annotation.ParametersAreNonnullByDefault;
 
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault

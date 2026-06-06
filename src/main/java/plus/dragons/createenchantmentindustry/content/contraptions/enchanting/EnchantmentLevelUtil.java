@@ -1,15 +1,13 @@
 package plus.dragons.createenchantmentindustry.content.contraptions.enchanting;
 
+import java.lang.invoke.MethodHandle;
+import java.lang.invoke.MethodHandles;
+import java.lang.reflect.Method;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraftforge.fml.util.ObfuscationReflectionHelper;
 import plus.dragons.createenchantmentindustry.EnchantmentIndustry;
 
-import java.lang.invoke.MethodHandle;
-import java.lang.invoke.MethodHandles;
-import java.lang.reflect.Method;
-
 public class EnchantmentLevelUtil {
-
     private static final MethodHandle getMaxLevel;
     static {
         Method method;
@@ -27,7 +25,8 @@ public class EnchantmentLevelUtil {
             throw new RuntimeException("Failed to access Enchantment#getMaxLevel!");
         }
     }
-    public static int getMaxLevel(Enchantment enchantment){
+
+    public static int getMaxLevel(Enchantment enchantment) {
         Integer maxLevel;
         try {
             maxLevel = (Integer) getMaxLevel.invoke(enchantment);

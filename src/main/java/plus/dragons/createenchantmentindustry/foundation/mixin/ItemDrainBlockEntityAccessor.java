@@ -7,7 +7,6 @@ import org.spongepowered.asm.mixin.gen.Accessor;
 
 @Mixin(ItemDrainBlockEntity.class)
 public interface ItemDrainBlockEntityAccessor {
-
     @Accessor(remap = false)
     SmartFluidTankBehaviour getInternalTank();
 }

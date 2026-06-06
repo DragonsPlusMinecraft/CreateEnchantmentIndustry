@@ -1,37 +1,35 @@
 package plus.dragons.createenchantmentindustry.foundation.config;
 
+import java.util.List;
 import net.createmod.catnip.config.ConfigBase;
 import net.createmod.catnip.config.ui.ConfigAnnotations;
 import net.minecraftforge.common.ForgeConfigSpec;
 
-import java.util.List;
-
 public class CeiServerConfig extends ConfigBase {
-    
     public final ConfigBase.ConfigInt disenchanterTankCapacity = i(1000, 0,
-        "disenchanterTankCapacity",
-        Comments.disenchanterTankCapacity,
-        ConfigAnnotations.RequiresRestart.SERVER.asComment());
+            "disenchanterTankCapacity",
+            Comments.disenchanterTankCapacity,
+            ConfigAnnotations.RequiresRestart.SERVER.asComment());
     public final ConfigInt copierTankCapacity = i(4000, 0,
-        "copierTankCapacity",
-        Comments.copierTankCapacity,
-        ConfigAnnotations.RequiresRestart.SERVER.asComment());
+            "copierTankCapacity",
+            Comments.copierTankCapacity,
+            ConfigAnnotations.RequiresRestart.SERVER.asComment());
     public final ConfigInt blazeEnchanterTankCapacity = i(2000, 0,
-        "blazeEnchanterTankCapacity",
-        Comments.blazeEnchanterTankCapacity,
-        ConfigAnnotations.RequiresRestart.SERVER.asComment());
+            "blazeEnchanterTankCapacity",
+            Comments.blazeEnchanterTankCapacity,
+            ConfigAnnotations.RequiresRestart.SERVER.asComment());
     public final ConfigInt maxHyperEnchantingLevelExtension = i(2, 0,
-        "maxHyperEnchantingLevelExtension",
-        Comments.maxHyperEnchantingLevelExtension);
+            "maxHyperEnchantingLevelExtension",
+            Comments.maxHyperEnchantingLevelExtension);
     public final ConfigFloat deployerXpDropChance = f(1, 0, 1,
-        "deployerXpDropChance",
-        Comments.deployerXpDropChance);
+            "deployerXpDropChance",
+            Comments.deployerXpDropChance);
     public final ConfigBool enableHyperEnchant = b(true, "enableHyperEnchant");
-    public final ConfigFloat enchantByBlazeEnchanterCostCoefficient= f(1, 0.01f, 100,
+    public final ConfigFloat enchantByBlazeEnchanterCostCoefficient = f(1, 0.01f, 100,
             "enchantByBlazeEnchanterCostCoefficient");
-    public final ConfigFloat hyperEnchantByBlazeEnchanterCostCoefficient= f(1, 0.01f, 100,
+    public final ConfigFloat hyperEnchantByBlazeEnchanterCostCoefficient = f(1, 0.01f, 100,
             "hyperEnchantByBlazeEnchanterCostCoefficient");
-    public final ConfigFloat copyEnchantedBookCostCoefficient= f(1, 0.01f, 100,
+    public final ConfigFloat copyEnchantedBookCostCoefficient = f(1, 0.01f, 100,
             "copyEnchantedBookCostCoefficient");
     public final ConfigFloat copyEnchantedBookWithHyperExperienceCostCoefficient = f(1, 0.01f, 100,
             "copyEnchantedBookWithHyperExperienceCostCoefficient");
@@ -57,7 +55,7 @@ public class CeiServerConfig extends ConfigBase {
             "copyingWrittenBookAlwaysGetOriginalVersion",
             Comments.copyingWrittenBookAlwaysGetOriginalVersion);
     public ForgeConfigSpec.ConfigValue<List<? extends String>> enchantmentLevelCaps;
-    
+
     @Override
     public void registerAll(ForgeConfigSpec.Builder builder) {
         super.registerAll(builder);
@@ -70,31 +68,20 @@ public class CeiServerConfig extends ConfigBase {
     public String getName() {
         return "server";
     }
-    
+
     private static class Comments {
-    
-        static String disenchanterTankCapacity =
-            "The Tank Capacity of the Disenchanter";
-        static String copierTankCapacity =
-            "The Tank Capacity of the Copier";
-        static String blazeEnchanterTankCapacity =
-            "The Tank Capacity of the Blaze Enchanter";
-        static String maxHyperEnchantingLevelExtension =
-            "The Maximum Extended Levels beyond Enchantment's Max Level that can be reached through Hyper-Enchanting";
-        static String deployerXpDropChance =
-            "The Chance of whether Deployer-killed entities will drop Experience Nugget";
-        static String crushingWheelDropExpScaleScale =
-                "The Scale of Experience Nugget dropped by Crushing-Wheel-killed entities";
+        static String disenchanterTankCapacity = "The Tank Capacity of the Disenchanter";
+        static String copierTankCapacity = "The Tank Capacity of the Copier";
+        static String blazeEnchanterTankCapacity = "The Tank Capacity of the Blaze Enchanter";
+        static String maxHyperEnchantingLevelExtension = "The Maximum Extended Levels beyond Enchantment's Max Level that can be reached through Hyper-Enchanting";
+        static String deployerXpDropChance = "The Chance of whether Deployer-killed entities will drop Experience Nugget";
+        static String crushingWheelDropExpScaleScale = "The Scale of Experience Nugget dropped by Crushing-Wheel-killed entities";
         static String copyWrittenBookCostPerPage = "The amount of ink needed to be consumed by Copying one page of Written Book";
         static String copyNameTagCost = "The amount of liquid experience needed to be consumed by Copying Name Tag";
         static String copyTrainScheduleCost = "The amount of ink needed to be consumed by Copying Train Schedule";
         static String copyClipboardCost = "The amount of ink needed to be consumed by Copying Clipboard";
         static String crushingWheelDropExpRate = "The probability of dropping Experience Nugget after killing a creature on the Crushing Wheel";
-        static String copyingWrittenBookAlwaysGetOriginalVersion =
-                "Whether or not copying a written book always get original version. Setting it to false let you always get copy version of the book.";
-        static String enchantmentLevelCaps =
-                "Per-enchantment hard level caps. Format: \"modid:enchantment=level\". Entries override maxHyperEnchantingLevelExtension and also prevent Printer from copying books above the cap.";
-        
+        static String copyingWrittenBookAlwaysGetOriginalVersion = "Whether or not copying a written book always get original version. Setting it to false let you always get copy version of the book.";
+        static String enchantmentLevelCaps = "Per-enchantment hard level caps. Format: \"modid:enchantment=level\". Entries override maxHyperEnchantingLevelExtension and also prevent Printer from copying books above the cap.";
     }
-
 }

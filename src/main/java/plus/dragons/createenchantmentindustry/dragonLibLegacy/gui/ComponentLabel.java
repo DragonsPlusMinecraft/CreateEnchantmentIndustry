@@ -3,37 +3,35 @@ package plus.dragons.createenchantmentindustry.dragonLibLegacy.gui;
 import com.google.common.collect.AbstractIterator;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.simibubi.create.foundation.gui.widget.Label;
+import java.util.*;
+import javax.annotation.Nullable;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import org.antlr.v4.runtime.misc.NotNull;
 
-import javax.annotation.Nullable;
-import java.util.*;
-
 /**
  * An extension for {@link Label} which renders {@link Component} correctly.
  */
 public class ComponentLabel extends Label {
-    
     public ComponentLabel(int x, int y, Component text) {
         super(x, y, text);
     }
-    
+
     private Iterator<Component> getComponentIterator(Component root) {
         return new AbstractIterator<>() {
             private final Deque<Component> stack = new LinkedList<>(Collections.singleton(root));
-            
+
             @Nullable
             @Override
             protected Component computeNext() {
-                if(stack.isEmpty()) {
+                if (stack.isEmpty()) {
                     return endOfData();
                 } else {
                     Component ret = stack.pop();
                     List<Component> siblings = new ArrayList<>(ret.getSiblings());
                     Collections.reverse(siblings);
-                    for(Component c : siblings) {
+                    for (Component c : siblings) {
                         stack.push(c);
                     }
                     return ret;
@@ -41,19 +39,19 @@ public class ComponentLabel extends Label {
             }
         };
     }
-    
+
     private MutableComponent computeTrimmedText(Component text, boolean trimFront, int maxWidthPx) {
         maxWidthPx -= font.width("...");
         int totalWidthPx = 0;
         Iterator<Component> texts = getComponentIterator(text);
         List<Component> result = new ArrayList<>();
         collect:
-        while(texts.hasNext()) {
+        while (texts.hasNext()) {
             //Add components to list
             Component component = texts.next();
             String content = component.getString();
             int widthPx = font.width(Component.literal(content).setStyle(text.getStyle()));
-            if(totalWidthPx < maxWidthPx) {
+            if (totalWidthPx < maxWidthPx) {
                 result.add(component);
                 totalWidthPx += widthPx;
                 continue;
@@ -64,9 +62,9 @@ public class ComponentLabel extends Label {
             int startIndex = trimFront ? 0 : stringLength - 1;
             int endIndex = !trimFront ? 0 : stringLength - 1;
             int step;
-            if(startIndex > endIndex) {
+            if (startIndex > endIndex) {
                 step = -1;
-            } else if(startIndex < endIndex) {
+            } else if (startIndex < endIndex) {
                 step = 1;
             } else {
                 result.add(Component.literal(content).setStyle(component.getStyle()));
@@ -82,7 +80,7 @@ public class ComponentLabel extends Label {
             }
         }
         //Compute result component
-        if(trimFront) {
+        if (trimFront) {
             var trim = Component.literal("...").setStyle(result.get(0).getStyle());
             result.forEach(trim::append);
             return trim;
@@ -93,13 +91,13 @@ public class ComponentLabel extends Label {
             return ret.append(trim);
         }
     }
-    
+
     @Override
     public void setTextAndTrim(Component newText, boolean trimFront, int maxWidthPx) {
-        if(suffix != null) maxWidthPx -= font.width(suffix);
+        if (suffix != null) maxWidthPx -= font.width(suffix);
         text = font.width(newText) <= maxWidthPx
-            ? newText
-            : computeTrimmedText(newText, trimFront, maxWidthPx);
+                ? newText
+                : computeTrimmedText(newText, trimFront, maxWidthPx);
     }
 
     @Override
@@ -110,7 +108,6 @@ public class ComponentLabel extends Label {
         var textToRender = suffix == null
                 ? text
                 : text.copy().append(suffix);
-        graphics.drawString(font,textToRender,getX(),getY(),color,hasShadow);
+        graphics.drawString(font, textToRender, getX(), getY(), color, hasShadow);
     }
-    
 }

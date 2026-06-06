@@ -1,6 +1,10 @@
 package plus.dragons.createenchantmentindustry.dragonLibLegacy.advancement;
 
 import com.google.common.collect.Sets;
+import java.nio.file.Path;
+import java.util.Set;
+import java.util.concurrent.CompletableFuture;
+import java.util.function.Consumer;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.data.CachedOutput;
 import net.minecraft.data.DataGenerator;
@@ -8,11 +12,6 @@ import net.minecraft.data.DataProvider;
 import net.minecraft.resources.ResourceLocation;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
-import java.nio.file.Path;
-import java.util.Set;
-import java.util.concurrent.CompletableFuture;
-import java.util.function.Consumer;
 
 class AdvancementGen implements DataProvider {
     private static final Logger LOGGER = LogManager.getLogger();
@@ -36,8 +35,7 @@ class AdvancementGen implements DataProvider {
                     throw new IllegalStateException("Duplicate advancement " + advancement.getId());
                 Path advancementPath = path.resolve("data/"
                         + advancement.getId().getNamespace() + "/advancements/"
-                        + advancement.getId().getPath() + ".json"
-                );
+                        + advancement.getId().getPath() + ".json");
                 DataProvider.saveStable(cache, advancement.deconstruct().serializeToJson(), advancementPath);
             };
             var advancements = AdvancementHolder.ENTRIES_MAP.get(modid);
@@ -52,5 +50,4 @@ class AdvancementGen implements DataProvider {
     public String getName() {
         return name + " Advancements";
     }
-
 }

@@ -6,6 +6,9 @@ import com.simibubi.create.content.kinetics.belt.transport.TransportedItemStack;
 import com.simibubi.create.foundation.advancement.AdvancementBehaviour;
 import com.simibubi.create.foundation.block.IBE;
 import com.simibubi.create.foundation.blockEntity.ComparatorUtil;
+import java.util.ArrayList;
+import java.util.List;
+import javax.annotation.Nullable;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionHand;
@@ -26,13 +29,8 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import plus.dragons.createenchantmentindustry.entry.CeiBlockEntities;
 import plus.dragons.createenchantmentindustry.entry.CeiBlocks;
 
-import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.List;
-
 @SuppressWarnings("deprecation")
 public class DisenchanterBlock extends Block implements IWrenchable, IBE<DisenchanterBlockEntity> {
-
     public DisenchanterBlock(Properties pProperties) {
         super(pProperties);
     }
@@ -49,10 +47,10 @@ public class DisenchanterBlock extends Block implements IWrenchable, IBE<Disench
 
     @Override
     public InteractionResult use(BlockState state, Level worldIn, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hit) {
-        if(handIn==InteractionHand.OFF_HAND)
+        if (handIn == InteractionHand.OFF_HAND)
             return InteractionResult.PASS;
         ItemStack heldItem = player.getItemInHand(handIn);
-        if (heldItem.isEmpty()){
+        if (heldItem.isEmpty()) {
             return onBlockEntityUse(worldIn, pos, be -> {
                 if (!be.getHeldItemStack().isEmpty()) {
                     if (!worldIn.isClientSide) {
@@ -65,14 +63,14 @@ public class DisenchanterBlock extends Block implements IWrenchable, IBE<Disench
                 return InteractionResult.PASS;
             });
         }
-        if(hit.getDirection() == Direction.UP){
+        if (hit.getDirection() == Direction.UP) {
             return onBlockEntityUse(worldIn, pos, be -> {
                 if (be.getHeldItemStack().isEmpty()) {
                     var insert = heldItem.copy();
                     insert.setCount(1);
-                    var result = Disenchanting.disenchantResult(insert,worldIn);
-                    if (result!=null) {
-                        if(!worldIn.isClientSide()){
+                    var result = Disenchanting.disenchantResult(insert, worldIn);
+                    if (result != null) {
+                        if (!worldIn.isClientSide()) {
                             be.heldItem = new TransportedItemStack(insert);
                             be.notifyUpdate();
                             heldItem.shrink(1);
@@ -93,7 +91,7 @@ public class DisenchanterBlock extends Block implements IWrenchable, IBE<Disench
 
     @Override
     public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
-        IBE.onRemove(state,level,pos,newState);
+        IBE.onRemove(state, level, pos, newState);
     }
 
     @Override
@@ -122,5 +120,4 @@ public class DisenchanterBlock extends Block implements IWrenchable, IBE<Disench
     public boolean isPathfindable(BlockState state, BlockGetter reader, BlockPos pos, PathComputationType type) {
         return false;
     }
-
 }

@@ -1,5 +1,8 @@
 package plus.dragons.createenchantmentindustry.compat.quark;
 
+import static plus.dragons.createenchantmentindustry.EnchantmentIndustry.LANG;
+
+import java.util.List;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -23,21 +26,17 @@ import plus.dragons.createenchantmentindustry.content.contraptions.enchanting.pr
 import plus.dragons.createenchantmentindustry.entry.CeiFluids;
 import plus.dragons.createenchantmentindustry.foundation.config.CeiConfigs;
 
-import java.util.List;
-
-import static plus.dragons.createenchantmentindustry.EnchantmentIndustry.LANG;
-
 public class QuarkCompat {
-    public static void registerPrintEntry(){
-        if(ModList.get().isLoaded("quark")){
+    public static void registerPrintEntry() {
+        if (ModList.get().isLoaded("quark")) {
             MinecraftForge.EVENT_BUS.addListener(QuarkCompat::register);
         }
     }
 
-    private static void register(PrintEntryRegisterEvent event){
+    private static void register(PrintEntryRegisterEvent event) {
         event.register(new PrintEntry() {
+            private final ResourceLocation id = new ResourceLocation("quark", "ancient_tome");
 
-            private final ResourceLocation id = new ResourceLocation("quark","ancient_tome");
             @Override
             public @NotNull ResourceLocation id() {
                 return EnchantmentIndustry.genRL("ancient_tome");
@@ -58,7 +57,7 @@ public class QuarkCompat {
             @Override
             public int requiredInkAmount(@NotNull ItemStack target) {
                 var enchantment = getTomeEnchantment(target);
-                if(enchantment==null) return 50;
+                if (enchantment == null) return 50;
                 return enchantment.getMinCost(1) + Enchanting.rarityLevel(enchantment.getRarity());
             }
 
@@ -69,7 +68,7 @@ public class QuarkCompat {
 
             @Override
             public boolean isTooExpensive(@NotNull ItemStack target, int limit) {
-                return limit<requiredInkAmount(target);
+                return limit < requiredInkAmount(target);
             }
 
             @Override
@@ -79,15 +78,13 @@ public class QuarkCompat {
                 boolean tooExpensive = Printing.isTooExpensive(this, target, CeiConfigs.SERVER.copierTankCapacity.get());
                 if (tooExpensive)
                     tooltip.add(Component.literal("     ").append(LANG.translate(
-                            "gui.goggles.too_expensive").component()
-                    ).withStyle(ChatFormatting.RED));
+                            "gui.goggles.too_expensive").component()).withStyle(ChatFormatting.RED));
                 else
                     tooltip.add(Component.literal("     ").append(LANG.translate(
                             "gui.goggles.xp_consumption",
-                            String.valueOf(requiredInkAmount(target))).component()
-                    ).withStyle(ChatFormatting.AQUA));
+                            String.valueOf(requiredInkAmount(target))).component()).withStyle(ChatFormatting.AQUA));
                 var e = getTomeEnchantment(target);
-                if(e!=null){
+                if (e != null) {
                     tooltip.add(Component.literal("     ").append(getFullTooltipText(e)).withStyle(ChatFormatting.GRAY));
                 }
             }
@@ -96,16 +93,17 @@ public class QuarkCompat {
             public @NotNull MutableComponent getDisplaySourceContent(@NotNull ItemStack target) {
                 var ret = LANG.itemName(target);
                 var e = getTomeEnchantment(target);
-                if(e!=null){
-                    ret.text( " / ");
+                if (e != null) {
+                    ret.text(" / ");
                     ret.add(getFullTooltipText(e).copy());
                 }
                 return ret.component();
             }
+
             private static Enchantment getTomeEnchantment(ItemStack stack) {
                 ListTag list = EnchantedBookItem.getEnchantments(stack);
 
-                for(int i = 0; i < list.size(); ++i) {
+                for (int i = 0; i < list.size(); ++i) {
                     CompoundTag nbt = list.getCompound(i);
                     Enchantment enchant = ForgeRegistries.ENCHANTMENTS.getValue(ResourceLocation.tryParse(nbt.getString("id")));
                     if (enchant != null)
@@ -120,5 +118,4 @@ public class QuarkCompat {
             }
         });
     }
-
 }

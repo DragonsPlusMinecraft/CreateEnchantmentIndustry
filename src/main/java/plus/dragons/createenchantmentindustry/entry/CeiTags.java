@@ -3,6 +3,8 @@ package plus.dragons.createenchantmentindustry.entry;
 import com.simibubi.create.Create;
 import com.simibubi.create.foundation.data.TagGen;
 import com.tterrag.registrate.providers.RegistrateTagsProvider;
+import java.util.Collections;
+import java.util.Locale;
 import net.createmod.catnip.lang.Lang;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
@@ -20,13 +22,9 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.IForgeRegistry;
 import plus.dragons.createenchantmentindustry.EnchantmentIndustry;
 
-import java.util.Collections;
-import java.util.Locale;
-
-
 public class CeiTags {
     public static <T> TagKey<T> optionalTag(IForgeRegistry<T> registry,
-                                            ResourceLocation id) {
+            ResourceLocation id) {
         return registry.tags()
                 .createOptionalTagKey(id, Collections.emptySet());
     }
@@ -46,6 +44,7 @@ public class CeiTags {
     public static TagKey<Fluid> forgeFluidTag(String path) {
         return forgeTag(ForgeRegistries.FLUIDS, path);
     }
+
     String FORGE = "forge";
     String CREATE = "create";
 
@@ -56,8 +55,7 @@ public class CeiTags {
     public enum NameSpace {
         MOD(EnchantmentIndustry.ID, false, true),
         CREATE(Create.ID, false, true),
-        FORGE("forge")
-        ;
+        FORGE("forge");
 
         public final String id;
         public final boolean optionalDefault;
@@ -76,7 +74,6 @@ public class CeiTags {
 
     public enum BlockTag {
         ;
-
         public final TagKey<Block> tag;
         public final boolean alwaysDatagen;
 
@@ -124,8 +121,7 @@ public class CeiTags {
             return state.is(tag);
         }
 
-        private static void init() {
-        }
+        private static void init() {}
     }
 
     public enum ItemTag {
@@ -179,8 +175,7 @@ public class CeiTags {
             return stack.is(tag);
         }
 
-        private static void init() {
-        }
+        private static void init() {}
     }
 
     public enum FluidTag {
@@ -235,8 +230,7 @@ public class CeiTags {
             return state.is(tag);
         }
 
-        private static void init() {
-        }
+        private static void init() {}
     }
 
     public static void register() {
@@ -245,15 +239,14 @@ public class CeiTags {
         FluidTag.init();
     }
 
-    public static void genFluidTag(RegistrateTagsProvider<Fluid> pov){
+    public static void genFluidTag(RegistrateTagsProvider<Fluid> pov) {
         TagGen.CreateTagsProvider<Fluid> prov = new TagGen.CreateTagsProvider<>(pov, Fluid::builtInRegistryHolder);
         prov.tag(FluidTag.PRINTER_INPUT.tag).addTag(FluidTag.INK.tag);
     }
 
-    public static void genItemTag(RegistrateTagsProvider<Item> pov){
+    public static void genItemTag(RegistrateTagsProvider<Item> pov) {
         TagGen.CreateTagsProvider<Item> prov = new TagGen.CreateTagsProvider<>(pov, Item::builtInRegistryHolder);
         prov.tag(ItemTag.INK_INGREDIENT.tag).add(Items.BLACK_DYE, Items.WITHER_ROSE, Items.INK_SAC);
         prov.tag(ItemTag.UPRIGHT_ON_BELT.tag).add(Items.EXPERIENCE_BOTTLE);
     }
-
 }

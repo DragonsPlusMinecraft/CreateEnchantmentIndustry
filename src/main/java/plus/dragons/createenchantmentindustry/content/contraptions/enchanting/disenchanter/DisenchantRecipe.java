@@ -9,7 +9,6 @@ import plus.dragons.createenchantmentindustry.entry.CeiFluids;
 import plus.dragons.createenchantmentindustry.entry.CeiRecipeTypes;
 
 public class DisenchantRecipe extends ProcessingRecipe<RecipeWrapper> {
-
     private final int experience;
 
     public DisenchantRecipe(ProcessingRecipeBuilder.ProcessingRecipeParams params) {

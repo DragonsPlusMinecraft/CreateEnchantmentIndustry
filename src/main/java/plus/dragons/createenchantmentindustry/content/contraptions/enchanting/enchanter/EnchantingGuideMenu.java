@@ -1,7 +1,10 @@
 package plus.dragons.createenchantmentindustry.content.contraptions.enchanting.enchanter;
 
+import static plus.dragons.createenchantmentindustry.EnchantmentIndustry.LANG;
+
 import com.google.common.collect.ImmutableList;
 import com.simibubi.create.foundation.gui.menu.GhostItemMenu;
+import javax.annotation.Nullable;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.Tag;
@@ -19,10 +22,6 @@ import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.items.SlotItemHandler;
 
-import javax.annotation.Nullable;
-
-import static plus.dragons.createenchantmentindustry.EnchantmentIndustry.LANG;
-
 public class EnchantingGuideMenu extends GhostItemMenu<ItemStack> {
     private static final Component NO_ENCHANTMENT = LANG.translate("gui.enchanting_guide.no_enchantment").component();
     private ImmutableList<Component> previousEnchantments;
@@ -34,14 +33,14 @@ public class EnchantingGuideMenu extends GhostItemMenu<ItemStack> {
     public EnchantingGuideMenu(MenuType<?> type, int id, Inventory inv, FriendlyByteBuf extraData) {
         super(type, id, inv, extraData);
         directItemStackEdit = extraData.readBoolean();
-        if(!directItemStackEdit){
+        if (!directItemStackEdit) {
             blockPos = extraData.readBlockPos();
         }
     }
 
     public EnchantingGuideMenu(MenuType<?> type, int id, Inventory inv, ItemStack contentHolder, @Nullable BlockPos blockPos) {
         super(type, id, inv, contentHolder);
-        if(blockPos!=null){
+        if (blockPos != null) {
             directItemStackEdit = false;
             this.blockPos = blockPos;
         } else {
@@ -58,8 +57,7 @@ public class EnchantingGuideMenu extends GhostItemMenu<ItemStack> {
                     .entrySet()
                     .stream()
                     .map(entry -> entry.getKey().getFullname(entry.getValue()))
-                    .toArray(Component[]::new)
-            );
+                    .toArray(Component[]::new));
         boolean resetIndex = previousEnchantments == null || !previousEnchantments.toString().equals(enchantments.toString());
         previousEnchantments = ImmutableList.copyOf(enchantments);
         DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> {
@@ -102,20 +100,17 @@ public class EnchantingGuideMenu extends GhostItemMenu<ItemStack> {
     }
 
     @Override
-    protected void saveData(ItemStack contentHolder) {
-    }
+    protected void saveData(ItemStack contentHolder) {}
 
     @Override
     public boolean stillValid(Player player) {
-        if(!directItemStackEdit){
+        if (!directItemStackEdit) {
             return super.stillValid(player) && player.level().getBlockEntity(blockPos) instanceof BlazeEnchanterBlockEntity;
         }
         return super.stillValid(player);
     }
 
-
     class EnchantedBookSlot extends SlotItemHandler {
-
         public EnchantedBookSlot(int index, int xPosition, int yPosition) {
             super(ghostInventory, index, xPosition, yPosition);
         }
@@ -130,7 +125,6 @@ public class EnchantingGuideMenu extends GhostItemMenu<ItemStack> {
             super.setChanged();
             updateEnchantments(getItem());
         }
-
     }
 
     @Override

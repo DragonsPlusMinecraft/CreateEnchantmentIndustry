@@ -19,7 +19,7 @@ public class PrinterRenderer extends SmartBlockEntityRenderer<PrinterBlockEntity
         super(context);
     }
 
-    private static final PartialModel[] TUBE = {CeiBlockPartials.PRINTER_TOP, CeiBlockPartials.PRINTER_MIDDLE};
+    private static final PartialModel[] TUBE = { CeiBlockPartials.PRINTER_TOP, CeiBlockPartials.PRINTER_MIDDLE };
 
     @Override
     protected void renderSafe(PrinterBlockEntity be, float partialTicks, PoseStack ms, MultiBufferSource buffer, int light, int overlay) {
@@ -41,7 +41,7 @@ public class PrinterRenderer extends SmartBlockEntityRenderer<PrinterBlockEntity
             ms.pushPose();
             ms.translate(0, yOffset, 0);
             ForgeCatnipServices.FLUID_RENDERER.renderFluidBox(fluidStack, min, min - yOffset, min, max, min, max, buffer, ms, light,
-                    false,false);
+                    false, false);
             ms.popPose();
         }
         //Render partials
@@ -76,6 +76,4 @@ public class PrinterRenderer extends SmartBlockEntityRenderer<PrinterBlockEntity
                 .light(light)
                 .renderInto(ms, buffer.getBuffer(RenderType.solid()));
     }
-
-
 }

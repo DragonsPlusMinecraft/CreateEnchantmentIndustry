@@ -1,6 +1,9 @@
 package plus.dragons.createenchantmentindustry.dragonLibLegacy.advancement.critereon;
 
 import com.google.common.collect.Maps;
+import java.util.*;
+import java.util.function.Supplier;
+import javax.annotation.Nullable;
 import net.minecraft.advancements.CriterionTrigger;
 import net.minecraft.advancements.critereon.AbstractCriterionTriggerInstance;
 import net.minecraft.advancements.critereon.ContextAwarePredicate;
@@ -8,12 +11,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.PlayerAdvancements;
 import net.minecraft.server.level.ServerPlayer;
 
-import javax.annotation.Nullable;
-import java.util.*;
-import java.util.function.Supplier;
-
 public abstract class AbstractTrigger<T extends AbstractTrigger.Instance> implements CriterionTrigger<T> {
-
     public AbstractTrigger(ResourceLocation id) {
         this.id = id;
     }
@@ -66,13 +64,10 @@ public abstract class AbstractTrigger<T extends AbstractTrigger.Instance> implem
     }
 
     public abstract static class Instance extends AbstractCriterionTriggerInstance {
-
         public Instance(ResourceLocation idIn, ContextAwarePredicate player) {
             super(idIn, player);
         }
 
         protected abstract boolean test(@Nullable List<Supplier<Object>> suppliers);
-        
     }
-
 }

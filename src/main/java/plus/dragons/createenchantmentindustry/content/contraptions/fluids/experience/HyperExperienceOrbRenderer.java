@@ -29,7 +29,7 @@ public class HyperExperienceOrbRenderer extends EntityRenderer<HyperExperienceOr
     }
 
     public void render(HyperExperienceOrb orb, float yaw, float partialTicks,
-                       PoseStack ps, MultiBufferSource buffer, int light) {
+            PoseStack ps, MultiBufferSource buffer, int light) {
         ps.pushPose();
         int i = orb.getIcon();
         float u1 = (i % 4 * 16) / 64.0F;
@@ -56,9 +56,9 @@ public class HyperExperienceOrbRenderer extends EntityRenderer<HyperExperienceOr
     }
 
     private void vertex(VertexConsumer buffer, Matrix4f pose, Matrix3f normal,
-                        float x, float y,
-                        int r, int g, int b,
-                        float u, float v, int light) {
+            float x, float y,
+            int r, int g, int b,
+            float u, float v, int light) {
         buffer.vertex(pose, x, y, 0.0F)
                 .color(r, g, b, 128)
                 .uv(u, v)
@@ -72,5 +72,4 @@ public class HyperExperienceOrbRenderer extends EntityRenderer<HyperExperienceOr
     public ResourceLocation getTextureLocation(HyperExperienceOrb pEntity) {
         return HYPER_EXPERIENCE_ORB_LOCATION;
     }
-
 }

@@ -3,6 +3,7 @@ package plus.dragons.createenchantmentindustry.content.contraptions.fluids.exper
 import com.google.common.util.concurrent.AtomicDouble;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
+import java.util.ArrayList;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.AbstractCookingRecipe;
 import net.minecraft.world.item.crafting.Recipe;
@@ -12,9 +13,7 @@ import net.minecraftforge.fluids.capability.IFluidHandler;
 import org.antlr.v4.runtime.misc.NotNull;
 import plus.dragons.createenchantmentindustry.entry.CeiFluids;
 
-import java.util.ArrayList;
-
-public class FurnaceExpExtractor implements IFluidHandler{
+public class FurnaceExpExtractor implements IFluidHandler {
     final Object2IntOpenHashMap<ResourceLocation> recipesUsed;
     final AbstractFurnaceBlockEntity BE;
 
@@ -26,9 +25,7 @@ public class FurnaceExpExtractor implements IFluidHandler{
     int getTotalExp() {
         AtomicDouble result = new AtomicDouble(0);
         for (Object2IntMap.Entry<ResourceLocation> entry : recipesUsed.object2IntEntrySet()) {
-            BE.getLevel().getRecipeManager().byKey(entry.getKey()).ifPresent(recipe ->
-                    result.addAndGet(((AbstractCookingRecipe) recipe).getExperience() * entry.getIntValue())
-            );
+            BE.getLevel().getRecipeManager().byKey(entry.getKey()).ifPresent(recipe -> result.addAndGet(((AbstractCookingRecipe) recipe).getExperience() * entry.getIntValue()));
         }
         return (int) Math.floor(result.floatValue());
     }
@@ -83,14 +80,14 @@ public class FurnaceExpExtractor implements IFluidHandler{
         ArrayList<Recipe<?>> allRecipes = new ArrayList<>();
         for (Object2IntMap.Entry<ResourceLocation> entry : recipesUsed.object2IntEntrySet()) {
             BE.getLevel().getRecipeManager().byKey(entry.getKey()).ifPresent(recipe -> {
-                for(int i=0;i<entry.getIntValue();i++){
+                for (int i = 0; i < entry.getIntValue(); i++) {
                     allRecipes.add(recipe);
                 }
             });
         }
         var done = false;
         var result = 0;
-        for(var recipe: allRecipes){
+        for (var recipe : allRecipes) {
             if (done) {
                 if (action.execute()) {
                     BE.setRecipeUsed(recipe);
@@ -98,7 +95,7 @@ public class FurnaceExpExtractor implements IFluidHandler{
             } else {
                 var exp = ((AbstractCookingRecipe) recipe).getExperience();
                 if (exp <= maxDrain - result) {
-                    result+=exp;
+                    result += exp;
                 } else {
                     done = true;
                     if (action.execute()) {

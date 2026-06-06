@@ -56,8 +56,7 @@ public class RawExperienceUtil {
             serverPlayer.connection.send(new ClientboundSetExperiencePacket(
                     serverPlayer.experienceProgress,
                     serverPlayer.totalExperience,
-                    serverPlayer.experienceLevel
-            ));
+                    serverPlayer.experienceLevel));
         }
     }
 
@@ -79,5 +78,4 @@ public class RawExperienceUtil {
     public static int repairPlayerItems(ExperienceOrb orb, Player player, int value) {
         return orb.repairPlayerItems(player, value);
     }
-
 }

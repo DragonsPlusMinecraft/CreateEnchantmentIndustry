@@ -12,7 +12,7 @@ public class TargetEnchantmentDisplaySource extends SingleLineDisplaySource {
         if (!(context.getSourceBlockEntity() instanceof BlazeEnchanterBlockEntity blazeEnchanter))
             return EMPTY_LINE;
         EnchantmentEntry entry = Enchanting.getTargetEnchantment(blazeEnchanter.targetItem, blazeEnchanter.hyper());
-        if(entry == null || !entry.valid()){
+        if (entry == null || !entry.valid()) {
             return EnchantmentIndustry.LANG.translate("gui.goggles.blaze_enchanter.invalid_target").component();
         } else return (MutableComponent) entry.getFirst().getFullname(entry.getSecond());
     }

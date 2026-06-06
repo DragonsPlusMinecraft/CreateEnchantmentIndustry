@@ -3,6 +3,8 @@ package plus.dragons.createenchantmentindustry.content.contraptions.enchanting.e
 import com.simibubi.create.content.processing.burner.BlazeBurnerBlock;
 import com.simibubi.create.content.processing.burner.BlazeBurnerBlockEntity;
 import com.simibubi.create.foundation.advancement.AdvancementBehaviour;
+import java.util.List;
+import javax.annotation.Nullable;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
@@ -25,9 +27,6 @@ import plus.dragons.createenchantmentindustry.entry.CeiBlocks;
 import plus.dragons.createenchantmentindustry.entry.CeiContainerTypes;
 import plus.dragons.createenchantmentindustry.entry.CeiItems;
 import plus.dragons.createenchantmentindustry.foundation.advancement.CeiAdvancements;
-
-import javax.annotation.Nullable;
-import java.util.List;
 
 public class EnchantingGuideItem extends Item implements MenuProvider {
     public EnchantingGuideItem(Properties pProperties) {
@@ -54,8 +53,7 @@ public class EnchantingGuideItem extends Item implements MenuProvider {
                         blockEntity instanceof BlazeBurnerBlockEntity) {
                     if (!level.isClientSide()) {
                         level.setBlockAndUpdate(blockPos, CeiBlocks.BLAZE_ENCHANTER.getDefaultState()
-                                .setValue(BlazeEnchanterBlock.FACING, level.getBlockState(blockPos).getValue(BlazeBurnerBlock.FACING))
-                        );
+                                .setValue(BlazeEnchanterBlock.FACING, level.getBlockState(blockPos).getValue(BlazeBurnerBlock.FACING)));
                         if (level.getBlockEntity(blockPos) instanceof BlazeEnchanterBlockEntity tileEntity) {
                             var i = itemStack.copy();
                             i.setCount(1);
@@ -123,8 +121,8 @@ public class EnchantingGuideItem extends Item implements MenuProvider {
         if (enchantments.isEmpty())
             return null;
         var index = tag.getInt("index");
-        if(index>=enchantments.size()) // When certain enchantment of the enchantment book has been removed from the game, this works.
-            index=0;
+        if (index >= enchantments.size()) // When certain enchantment of the enchantment book has been removed from the game, this works.
+            index = 0;
         var result = enchantments.get(index);
         return EnchantmentEntry.of(result.getKey(), result.getValue());
     }

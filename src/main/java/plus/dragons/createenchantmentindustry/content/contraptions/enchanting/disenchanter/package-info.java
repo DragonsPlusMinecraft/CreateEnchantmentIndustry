@@ -2,6 +2,5 @@
 @ParametersAreNonnullByDefault
 package plus.dragons.createenchantmentindustry.content.contraptions.enchanting.disenchanter;
 
-import net.minecraft.MethodsReturnNonnullByDefault;
-
 import javax.annotation.ParametersAreNonnullByDefault;
+import net.minecraft.MethodsReturnNonnullByDefault;

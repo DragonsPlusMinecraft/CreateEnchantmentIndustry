@@ -6,6 +6,9 @@ import com.simibubi.create.content.equipment.wrench.IWrenchable;
 import com.simibubi.create.foundation.advancement.AdvancementBehaviour;
 import com.simibubi.create.foundation.block.IBE;
 import com.simibubi.create.foundation.blockEntity.ComparatorUtil;
+import java.util.ArrayList;
+import java.util.List;
+import javax.annotation.Nullable;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -25,10 +28,6 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import plus.dragons.createenchantmentindustry.entry.CeiBlockEntities;
 import plus.dragons.createenchantmentindustry.entry.CeiBlocks;
-
-import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.List;
 
 @SuppressWarnings("deprecation")
 public class PrinterBlock extends Block implements IWrenchable, IBE<PrinterBlockEntity> {
@@ -58,11 +57,11 @@ public class PrinterBlock extends Block implements IWrenchable, IBE<PrinterBlock
     public boolean canSurvive(BlockState state, LevelReader worldIn, BlockPos pos) {
         return !AllBlocks.BASIN.has(worldIn.getBlockState(pos.below()));
     }
-    
+
     @Override
     public InteractionResult use(BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand,
-                                 BlockHitResult blockRayTraceResult) {
-        if(hand==InteractionHand.OFF_HAND)
+            BlockHitResult blockRayTraceResult) {
+        if (hand == InteractionHand.OFF_HAND)
             return InteractionResult.PASS;
         ItemStack heldItem = player.getItemInHand(hand);
         if (heldItem.isEmpty()) {
@@ -76,15 +75,14 @@ public class PrinterBlock extends Block implements IWrenchable, IBE<PrinterBlock
         }
         var copy = heldItem.copy();
         copy.setCount(1);
-        if(Printing.match(copy)!=null){
+        if (Printing.match(copy) != null) {
             return onBlockEntityUse(world, pos, be -> {
                 if (!player.getAbilities().instabuild) heldItem.shrink(1);
                 if (!be.getCopyTarget().isEmpty()) {
-                    if(!player.getAbilities().instabuild && heldItem.isEmpty()){
+                    if (!player.getAbilities().instabuild && heldItem.isEmpty()) {
                         player.setItemInHand(hand, be.getCopyTarget());
-                    }
-                    else {
-                        if(!player.addItem(be.getCopyTarget().copy()))
+                    } else {
+                        if (!player.addItem(be.getCopyTarget().copy()))
                             player.drop(be.getCopyTarget(), false, true);
                     }
                 }
@@ -97,14 +95,13 @@ public class PrinterBlock extends Block implements IWrenchable, IBE<PrinterBlock
 
     @Override
     public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
-        IBE.onRemove(state,level,pos,newState);
+        IBE.onRemove(state, level, pos, newState);
     }
 
     @Override
     public boolean hasAnalogOutputSignal(BlockState state) {
         return true;
     }
-
 
     @Override
     public int getAnalogOutputSignal(BlockState blockState, Level level, BlockPos pos) {
