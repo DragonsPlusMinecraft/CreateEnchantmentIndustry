@@ -36,6 +36,7 @@ import net.minecraftforge.items.ItemHandlerHelper;
 import org.antlr.v4.runtime.misc.NotNull;
 import plus.dragons.createenchantmentindustry.content.contraptions.enchanting.enchanter.Enchanting;
 import plus.dragons.createenchantmentindustry.content.contraptions.fluids.experience.ExperienceFluid;
+import plus.dragons.createenchantmentindustry.content.contraptions.fluids.experience.RawExperienceUtil;
 import plus.dragons.createenchantmentindustry.entry.CeiFluids;
 import plus.dragons.createenchantmentindustry.foundation.advancement.CeiAdvancements;
 import plus.dragons.createenchantmentindustry.foundation.advancement.CeiTriggers;
@@ -225,20 +226,26 @@ public class DisenchanterBlockEntity extends SmartBlockEntity implements IHaveGo
                         var total = getPlayerExperience(player);
                         if (inserted >= ABSORB_AMOUNT) {
                             if (total >= ABSORB_AMOUNT) {
-                                player.giveExperiencePoints(-ABSORB_AMOUNT);
+                                RawExperienceUtil.removeRawExperience(player, ABSORB_AMOUNT);
+                                recordRecycledExperience((ServerPlayer) player, ABSORB_AMOUNT);
                                 inserted -= ABSORB_AMOUNT;
+                                absorbedXp = true;
                             } else if (total != 0) {
                                 inserted -= total;
-                                player.giveExperiencePoints(-total);
+                                RawExperienceUtil.removeRawExperience(player, total);
+                                recordRecycledExperience((ServerPlayer) player, total);
+                                absorbedXp = true;
                             }
                             CeiAdvancements.SPIRIT_TAKING.getTrigger().trigger((ServerPlayer) player);
                         } else if (inserted > 0) {
                             if (total >= inserted) {
-                                player.giveExperiencePoints(-inserted);
+                                RawExperienceUtil.removeRawExperience(player, inserted);
+                                recordRecycledExperience((ServerPlayer) player, inserted);
                                 inserted = 0;
                             } else {
                                 inserted -= total;
-                                player.giveExperiencePoints(-total);
+                                RawExperienceUtil.removeRawExperience(player, total);
+                                recordRecycledExperience((ServerPlayer) player, total);
                             }
                             absorbedXp = true;
                             CeiAdvancements.SPIRIT_TAKING.getTrigger().trigger((ServerPlayer) player);
@@ -259,10 +266,12 @@ public class DisenchanterBlockEntity extends SmartBlockEntity implements IHaveGo
                 var inserted = internalTank.getPrimaryHandler().fill(fluidStack, IFluidHandler.FluidAction.EXECUTE);
                 if (inserted == amount) {
                     absorbedXp = true;
+                    recordRecycledExperience(inserted);
                     orb.remove(Entity.RemovalReason.DISCARDED);
                 } else {
                     if (inserted != 0) {
                         absorbedXp = true;
+                        recordRecycledExperience(inserted);
                         orb.value -= inserted;
                     }
                     break;
@@ -275,12 +284,30 @@ public class DisenchanterBlockEntity extends SmartBlockEntity implements IHaveGo
     }
 
     private int getPlayerExperience(Player player) {
-        var level = player.experienceLevel;
-        if (player.experienceLevel == 0 && player.experienceProgress == 0)
-            return 0;
-        var total = Enchanting.expPointFromLevel(level);
-        var bar = (int) (total + player.experienceProgress * player.getXpNeededForNextLevel());
-        return Math.max(bar, 1);
+        return RawExperienceUtil.getPlayerExperience(player);
+    }
+
+    private void recordRecycledExperience(int amount) {
+        ServerPlayer owner = getAdvancementOwner();
+        if (owner != null)
+            recordRecycledExperience(owner, amount);
+    }
+
+    private void recordRecycledExperience(ServerPlayer player, int amount) {
+        if (amount > 0)
+            CeiTriggers.DISENCHANTED.trigger(player, amount);
+    }
+
+    @Nullable
+    private ServerPlayer getAdvancementOwner() {
+        var advancementBehaviour = getBehaviour(AdvancementBehaviour.TYPE);
+        if (advancementBehaviour == null)
+            return null;
+        var playerId = ((AdvancementBehaviourAccessor) advancementBehaviour).getPlayerId();
+        if (playerId == null)
+            return null;
+        var player = level.getPlayerByUUID(playerId);
+        return player instanceof ServerPlayer serverPlayer ? serverPlayer : null;
     }
 
 
@@ -311,13 +338,7 @@ public class DisenchanterBlockEntity extends SmartBlockEntity implements IHaveGo
         // Advancement
         award(CeiAdvancements.EXPERIMENTAL.asCreateAdvancement());
         award(CeiAdvancements.GONE_WITH_THE_FOIL.asCreateAdvancement());
-        var advancementBehaviour = getBehaviour(AdvancementBehaviour.TYPE);
-        var playerId = ((AdvancementBehaviourAccessor) advancementBehaviour).getPlayerId();
-        if (playerId != null) {
-            var player = level.getPlayerByUUID(playerId);
-            if(player!=null)
-                CeiTriggers.DISENCHANTED.trigger(player, xp.getAmount());
-        }
+        recordRecycledExperience(xp.getAmount());
 
         // Process finished
         var resultItem = result.getSecond();

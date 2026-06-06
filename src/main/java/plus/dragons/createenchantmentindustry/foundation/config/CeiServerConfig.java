@@ -4,6 +4,8 @@ import net.createmod.catnip.config.ConfigBase;
 import net.createmod.catnip.config.ui.ConfigAnnotations;
 import net.minecraftforge.common.ForgeConfigSpec;
 
+import java.util.List;
+
 public class CeiServerConfig extends ConfigBase {
     
     public final ConfigBase.ConfigInt disenchanterTankCapacity = i(1000, 0,
@@ -54,10 +56,14 @@ public class CeiServerConfig extends ConfigBase {
     public final ConfigBool copyingWrittenBookAlwaysGetOriginalVersion = b(true,
             "copyingWrittenBookAlwaysGetOriginalVersion",
             Comments.copyingWrittenBookAlwaysGetOriginalVersion);
+    public ForgeConfigSpec.ConfigValue<List<? extends String>> enchantmentLevelCaps;
     
     @Override
     public void registerAll(ForgeConfigSpec.Builder builder) {
         super.registerAll(builder);
+        enchantmentLevelCaps = builder
+                .comment(Comments.enchantmentLevelCaps)
+                .defineList("enchantmentLevelCaps", List.of(), entry -> entry instanceof String string && string.contains("="));
     }
 
     @Override
@@ -86,6 +92,8 @@ public class CeiServerConfig extends ConfigBase {
         static String crushingWheelDropExpRate = "The probability of dropping Experience Nugget after killing a creature on the Crushing Wheel";
         static String copyingWrittenBookAlwaysGetOriginalVersion =
                 "Whether or not copying a written book always get original version. Setting it to false let you always get copy version of the book.";
+        static String enchantmentLevelCaps =
+                "Per-enchantment hard level caps. Format: \"modid:enchantment=level\". Entries override maxHyperEnchantingLevelExtension and also prevent Printer from copying books above the cap.";
         
     }
 

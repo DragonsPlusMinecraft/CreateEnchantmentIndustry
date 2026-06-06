@@ -13,8 +13,6 @@
     "FluidTankBlockMixin",
     "ItemDrainBlockEntityAccessor",
     "ItemDrainBlockMixin",
-    "OpenEndedPipeInvoker",
-    "OpenEndFluidHandlerMixin",
     "PlayerMixin",
     "SpoutBlockEntityAccessor",
     "SpoutBlockMixin",
@@ -23,7 +21,7 @@
     "dragonLibLegacy.CreateAdvancementConstructor",
     "dragonLibLegacy.CreateAdvancementMixin",
     "dragonLibLegacy.FluidReactionsMixin",
-    "OpenEndedPipeMixin"
+    "ExperienceOrbMixin"
   ],
   "client": [
     "CameraMixin"

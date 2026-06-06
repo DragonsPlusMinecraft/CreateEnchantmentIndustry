@@ -20,6 +20,7 @@ public class HyperExperienceOrb extends ExperienceOrb {
         this.setYRot((float)(this.random.nextDouble() * 360.0D));
         this.setDeltaMovement((this.random.nextDouble() * (double)0.2F - (double)0.1F) * 2.0D, this.random.nextDouble() * 0.2D * 2.0D, (this.random.nextDouble() * (double)0.2F - (double)0.1F) * 2.0D);
         this.value = value;
+        RawExperienceUtil.markRawExperienceOrb(this);
     }
     
     public HyperExperienceOrb(EntityType<? extends HyperExperienceOrb> entityType, Level level) {
@@ -40,13 +41,14 @@ public class HyperExperienceOrb extends ExperienceOrb {
     public void playerTouch(Player player) {
         if (!this.level().isClientSide) {
             if (player.takeXpDelay == 0) {
+                int rawValue = this.value;
                 if (MinecraftForge.EVENT_BUS.post(new PlayerXpEvent.PickupXp(player, this)))
                     return;
                 player.takeXpDelay = 2;
                 player.take(this, 1);
-                int i = this.repairPlayerItems(player, this.value);
+                int i = this.repairPlayerItems(player, rawValue);
                 if (i > 0) {
-                    player.giveExperiencePoints(i);
+                    RawExperienceUtil.addRawExperience(player, i);
                     applyPlayerEffects(player, i);
                 }
                 

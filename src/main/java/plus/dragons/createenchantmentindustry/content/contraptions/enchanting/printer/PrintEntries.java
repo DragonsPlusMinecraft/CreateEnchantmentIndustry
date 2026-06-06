@@ -14,6 +14,7 @@ import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.common.MinecraftForge;
 import plus.dragons.createenchantmentindustry.EnchantmentIndustry;
 import plus.dragons.createenchantmentindustry.api.PrintEntryRegisterEvent;
+import plus.dragons.createenchantmentindustry.content.contraptions.enchanting.EnchantmentLevelCapUtil;
 import plus.dragons.createenchantmentindustry.content.contraptions.enchanting.EnchantmentLevelUtil;
 import plus.dragons.createenchantmentindustry.content.contraptions.enchanting.enchanter.Enchanting;
 import plus.dragons.createenchantmentindustry.entry.CeiFluids;
@@ -63,6 +64,8 @@ public class PrintEntries {
 
         @Override
         public int requiredInkAmount(ItemStack target) {
+            if (hasEnchantmentsAboveConfiguredCap(target))
+                return -1;
             return (int) (getExperienceFromItem(target) *
                     (requiredInkType(target).isSame(CeiFluids.HYPER_EXPERIENCE.get())?
                     CeiConfigs.SERVER.copyEnchantedBookWithHyperExperienceCostCoefficient.get():
@@ -80,6 +83,8 @@ public class PrintEntries {
 
         @Override
         public boolean isTooExpensive(ItemStack target, int limit) {
+            if (hasEnchantmentsAboveConfiguredCap(target))
+                return true;
             return (int) (getExperienceFromItem(target) * (requiredInkType(target).isSame(CeiFluids.HYPER_EXPERIENCE.get())?
                     CeiConfigs.SERVER.copyEnchantedBookWithHyperExperienceCostCoefficient.get():
                     CeiConfigs.SERVER.copyEnchantedBookCostCoefficient.get())) > limit;
@@ -131,6 +136,13 @@ public class PrintEntries {
                     .stream()
                     .map(entry -> Enchanting.getExperienceConsumption(entry.getKey(), entry.getValue()))
                     .reduce(0, Integer::sum);
+        }
+
+        private static boolean hasEnchantmentsAboveConfiguredCap(ItemStack itemStack) {
+            return EnchantmentHelper.getEnchantments(itemStack)
+                    .entrySet()
+                    .stream()
+                    .anyMatch(entry -> EnchantmentLevelCapUtil.exceedsConfiguredCap(entry.getKey(), entry.getValue()));
         }
     }
     static class WrittenBook implements PrintEntry{

@@ -17,6 +17,7 @@ import plus.dragons.createenchantmentindustry.dragonLibLegacy.init.SafeRegistrat
 import plus.dragons.createenchantmentindustry.dragonLibLegacy.lang.Lang;
 import plus.dragons.createenchantmentindustry.compat.apotheosis.ApotheosisCompat;
 import plus.dragons.createenchantmentindustry.compat.quark.QuarkCompat;
+import plus.dragons.createenchantmentindustry.content.contraptions.fluids.experience.ExperienceOpenPipeEffectHandler;
 import plus.dragons.createenchantmentindustry.entry.*;
 import plus.dragons.createenchantmentindustry.foundation.advancement.CeiAdvancements;
 import plus.dragons.createenchantmentindustry.foundation.config.CeiConfigs;
@@ -68,6 +69,7 @@ public class EnchantmentIndustry {
             CeiAdvancements.register();
             CeiPackets.registerPackets();
             CeiFluids.registerLavaReaction();
+            ExperienceOpenPipeEffectHandler.register();
             ApotheosisCompat.addPotionMixingRecipes();
             ApotheosisCompat.banTomeFromEnchanter();
             QuarkCompat.registerPrintEntry();

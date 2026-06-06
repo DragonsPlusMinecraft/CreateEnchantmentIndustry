@@ -7,6 +7,7 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraftforge.registries.ForgeRegistries;
 import plus.dragons.createenchantmentindustry.EnchantmentIndustry;
+import plus.dragons.createenchantmentindustry.content.contraptions.enchanting.EnchantmentLevelCapUtil;
 import plus.dragons.createenchantmentindustry.content.contraptions.enchanting.EnchantmentLevelUtil;
 import plus.dragons.createenchantmentindustry.foundation.config.CeiConfigs;
 
@@ -34,6 +35,9 @@ public class EnchantmentEntry extends Pair<Enchantment, Integer> {
         var enchantment = getFirst();
         int level = getSecond();
         int maxLevel = EnchantmentLevelUtil.getMaxLevel(enchantment);
+        var configuredCap = EnchantmentLevelCapUtil.getConfiguredCap(enchantment);
+        if (configuredCap.isPresent())
+            return level <= configuredCap.getAsInt();
         Optional<Holder<Enchantment>> optional = ForgeRegistries.ENCHANTMENTS.getHolder(enchantment);
         if (optional.isPresent()) {
             Holder<Enchantment> holder = optional.get();

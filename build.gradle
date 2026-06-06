@@ -1,8 +1,9 @@
 plugins {
     id 'idea'
     id 'maven-publish'
-    id "net.neoforged.moddev.legacyforge" version "2.0.74"
-    id "me.modmuss50.mod-publish-plugin" version "0.8.4"
+    id "net.neoforged.moddev.legacyforge" version "2.0.107"
+    id "me.modmuss50.mod-publish-plugin" version "2.0.0-beta.2"
+    id "com.diffplug.spotless" version "7.0.2"
 }
 
 base {
@@ -21,6 +22,18 @@ idea {
         downloadSources = true
     }
 }
+
+spotless {
+    java {
+        endWithNewline()
+        leadingTabsToSpaces()
+        removeUnusedImports()
+        toggleOffOn()
+        importOrder()
+        eclipse().configFile "codeformat/formatter-config.xml"
+    }
+}
+
 
 legacyForge {
     version = "$minecraft_version-$forge_version"
@@ -146,7 +159,7 @@ jar {
 
 publishMods {
     file = reobfJar.archiveFile
-    changelog = new File("changelog/${mod_version}.md").text
+    changelog = project.file("CHANGELOG.md").text
     version = mod_version
     type = STABLE
     displayName = "CEI ${mod_version} for Create ${minecraft_version}-${create_version}"
@@ -157,20 +170,16 @@ publishMods {
         projectId = "688768"
         accessToken = providers.environmentVariable("CURSEFORGE_TOKEN")
         minecraftVersions.add(minecraft_version)
-
-        requires {
-            slug = "create"
-        }
+        requires("create")
+        client = true
+        server = true
     }
 
     modrinth {
         projectId = "JWGBpFUP"
         accessToken = providers.environmentVariable("MODRINTH_TOKEN")
         minecraftVersions.add(minecraft_version)
-
-        requires {
-            slug = "create"
-        }
+        requires("create")
     }
 }
 

@@ -34,30 +34,30 @@ public class ExperienceFluid extends VirtualFluid {
     }
     
     public ExperienceOrb convertToOrb(Level level, double x, double y, double z, int fluidAmount) {
-        return new ExperienceOrb(level, x, y, z, fluidAmount);
+        ExperienceOrb orb = new ExperienceOrb(level, x, y, z, fluidAmount);
+        RawExperienceUtil.markRawExperienceOrb(orb);
+        return orb;
     }
     
     public void drop(ServerLevel level, Vec3 pos, int fluidAmount) {
         while(fluidAmount > 0) {
             int orbSize = ExperienceOrb.getExperienceValue(fluidAmount);
             fluidAmount -= orbSize;
-            if (!ExperienceOrb.tryMergeToExisting(level, pos, orbSize)) {
-                level.addFreshEntity(this.convertToOrb(level, pos.x, pos.y, pos.z, orbSize));
-            }
+            level.addFreshEntity(this.convertToOrb(level, pos.x, pos.y, pos.z, orbSize));
         }
     }
     
     public void awardOrDrop(@Nullable Player player, ServerLevel level, Vec3 pos, Vec3 speed, int amount) {
         var orb = this.convertToOrb(level, pos.x, pos.y, pos.z, amount);
+        int value = orb.value;
         if (player == null || MinecraftForge.EVENT_BUS.post(new PlayerXpEvent.PickupXp(player, orb))) {
-            if (!ExperienceOrb.tryMergeToExisting(level, pos, orb.value)) {
-                orb.setDeltaMovement(speed);
-                level.addFreshEntity(orb);
-            }
+            orb.value = value;
+            orb.setDeltaMovement(speed);
+            level.addFreshEntity(orb);
         } else {
-            int left = orb.repairPlayerItems(player, orb.value);
+            int left = orb.repairPlayerItems(player, value);
             if (left > 0) {
-                player.giveExperiencePoints(left);
+                RawExperienceUtil.addRawExperience(player, left);
                 this.applyAdditionalEffects(player, left);
             }
         }
