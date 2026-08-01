@@ -37,7 +37,7 @@ public class RawExperienceUtil {
         if (player.experienceLevel == 0 && player.experienceProgress == 0)
             return 0;
         int total = Enchanting.expPointFromLevel(player.experienceLevel);
-        int bar = (int) (player.experienceProgress * player.getXpNeededForNextLevel());
+        int bar = Math.round(player.experienceProgress * player.getXpNeededForNextLevel());
         return Math.max(total + bar, 1);
     }
 
