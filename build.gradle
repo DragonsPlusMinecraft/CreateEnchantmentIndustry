@@ -2,7 +2,7 @@ plugins {
     id 'idea'
     id 'maven-publish'
     id "net.neoforged.moddev.legacyforge" version "2.0.107"
-    id "me.modmuss50.mod-publish-plugin" version "2.0.0-beta.2"
+    id "me.modmuss50.mod-publish-plugin" version "2.2.0"
     id "com.diffplug.spotless" version "7.0.2"
 }
 
@@ -139,9 +139,11 @@ mixin {
 }
 
 
+def licenseArchiveName = base.archivesName.get()
+
 jar {
     from('LICENSE') {
-        rename { "${it}_${archivesBaseName}" }
+        rename { "${it}_${licenseArchiveName}" }
     }
     manifest {
         attributes([
@@ -187,13 +189,13 @@ publishMods {
 publishing {
     publications {
         mavenJava(MavenPublication) {
-            artifactId base.archivesName.get()
+            artifactId = base.archivesName.get()
             from components.java
         }
     }
     repositories {
         maven {
-            url "file://${project.projectDir}/mcmodsrepo"
+            url = "file://${project.projectDir}/mcmodsrepo"
         }
     }
 }
