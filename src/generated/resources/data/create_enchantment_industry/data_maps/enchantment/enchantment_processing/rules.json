@@ -1,16 +1,16 @@
 {
-    "values": {
-        "minecraft:infinity": {
-            "level_extension": {
-                "blaze_enchanter": 0,
-                "blaze_forger": 0
-            }
-        },
-        "minecraft:mending": {
-            "level_extension": {
-                "blaze_enchanter": 0,
-                "blaze_forger": 0
-            }
-        }
+  "values": {
+    "minecraft:infinity": {
+      "level_extension": {
+        "blaze_enchanter": 0,
+        "blaze_forger": 0
+      }
+    },
+    "minecraft:mending": {
+      "level_extension": {
+        "blaze_enchanter": 0,
+        "blaze_forger": 0
+      }
     }
+  }
 }

@@ -29,8 +29,7 @@ import java.util.function.Consumer;
 import net.createmod.catnip.lang.LangBuilder;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.core.HolderLookup.Provider;
+import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
@@ -41,8 +40,11 @@ import net.minecraft.world.entity.ai.village.poi.PoiType;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.neoforged.neoforge.fluids.FluidStack;
-import net.neoforged.neoforge.fluids.capability.IFluidHandler.FluidAction;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
+import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
 import org.jetbrains.annotations.Nullable;
 import plus.dragons.createdragonsplus.common.fluids.tank.ConfigurableFluidTank;
 import plus.dragons.createdragonsplus.common.fluids.tank.FluidTankBehaviour;
@@ -92,14 +94,14 @@ public abstract class BlazeExperienceBlockEntity extends BlazeBlockEntity implem
     }
 
     @Override
-    protected void write(CompoundTag compound, Provider registries, boolean clientPacket) {
-        super.write(compound, registries, clientPacket);
+    protected void write(CompoundTag compound, boolean clientPacket) {
+        super.write(compound, clientPacket);
         compound.putBoolean("isCreative", isCreative);
     }
 
     @Override
-    protected void read(CompoundTag compound, HolderLookup.Provider registries, boolean clientPacket) {
-        super.read(compound, registries, clientPacket);
+    protected void read(CompoundTag compound, boolean clientPacket) {
+        super.read(compound, clientPacket);
         isCreative = compound.getBoolean("isCreative");
         if (isCreative)
             setCreativeTanks(getHeatLevelFromBlock());
@@ -125,9 +127,19 @@ public abstract class BlazeExperienceBlockEntity extends BlazeBlockEntity implem
         return getNormalExperience() + getSpecialExperience();
     }
 
+    @Override
+    public <T> LazyOptional<T> getCapability(Capability<T> capability, @Nullable Direction side) {
+        if (capability == ForgeCapabilities.FLUID_HANDLER
+                && tanks != null
+                && !isRemoved()
+                && (side == null || side == Direction.DOWN))
+            return tanks.getCapability().cast();
+        return super.getCapability(capability, side);
+    }
+
     public boolean consumeExperience(int amount, boolean special, boolean simulate) {
-        var fluid = new FluidStack(CEIFluids.EXPERIENCE, amount);
-        var tank = special ? getSpecialTank() : tanks.getCapability();
+        var fluid = new FluidStack(CEIFluids.EXPERIENCE.get(), amount);
+        var tank = special ? getSpecialTank() : getNormalTank();
         var drained = tank.drain(fluid, FluidAction.SIMULATE);
         if (drained.getAmount() != amount)
             return false;
@@ -146,10 +158,10 @@ public abstract class BlazeExperienceBlockEntity extends BlazeBlockEntity implem
             return false;
         }
         var fluid = configurableTank.getFluid();
-        if (!fluid.isEmpty() && !fluid.is(CEIFluids.EXPERIENCE))
+        if (!fluid.isEmpty() && fluid.getFluid() != CEIFluids.EXPERIENCE.get())
             return false;
         int experience = fuel.experience();
-        var experienceFluid = new FluidStack(CEIFluids.EXPERIENCE, experience);
+        var experienceFluid = new FluidStack(CEIFluids.EXPERIENCE.get(), experience);
         int fill = configurableTank.fill(experienceFluid, FluidAction.SIMULATE, true);
         if (fill == 0)
             return false;
@@ -194,12 +206,12 @@ public abstract class BlazeExperienceBlockEntity extends BlazeBlockEntity implem
             case KINDLED -> {
                 int capacity = getNormalTank().getCapacity();
                 tanks.setTank(0, callback -> new CreativeSmartFluidTank(capacity, callback));
-                getNormalTank().setFluid(new FluidStack(CEIFluids.EXPERIENCE, capacity));
+                getNormalTank().setFluid(new FluidStack(CEIFluids.EXPERIENCE.get(), capacity));
             }
             case SEETHING -> {
                 int capacity = getSpecialTank().getCapacity();
                 tanks.setTank(1, callback -> new CreativeSmartFluidTank(capacity, callback));
-                getSpecialTank().setFluid(new FluidStack(CEIFluids.EXPERIENCE, capacity));
+                getSpecialTank().setFluid(new FluidStack(CEIFluids.EXPERIENCE.get(), capacity));
             }
             default -> {
                 tanks.setTank(0, this::createNormalTank);
@@ -239,11 +251,5 @@ public abstract class BlazeExperienceBlockEntity extends BlazeBlockEntity implem
             special = true;
         }
         return true;
-    }
-
-    @Override
-    public void invalidate() {
-        super.invalidate();
-        invalidateCapabilities();
     }
 }

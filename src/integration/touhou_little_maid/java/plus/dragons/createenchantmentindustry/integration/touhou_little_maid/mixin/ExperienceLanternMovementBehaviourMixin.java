@@ -34,7 +34,7 @@ import plus.dragons.createenchantmentindustry.integration.touhou_little_maid.com
 @Mixin(ExperienceLanternMovementBehaviour.class)
 @Restriction(require = @Condition(ModIntegration.Constants.TOUHOU_LITTLE_MAID))
 public class ExperienceLanternMovementBehaviourMixin {
-    @Inject(method = "drainExp", at = @At("TAIL"))
+    @Inject(method = "drainExp", at = @At("TAIL"), remap = false)
     private void create_enchantment_industry$touhouLittleMaid$drainMaidExperience(Level level, AABB effectiveAABB, MountedFluidStorageWrapper tank, CallbackInfo ci) {
         if (level.isClientSide)
             return;

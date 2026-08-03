@@ -27,12 +27,12 @@ import com.simibubi.create.content.processing.recipe.ProcessingInventory;
 import com.simibubi.create.content.processing.sequenced.SequencedAssemblyRecipe;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
 import com.simibubi.create.foundation.blockEntity.behaviour.fluid.SmartFluidTankBehaviour;
+import com.simibubi.create.foundation.fluid.FluidIngredient;
 import java.util.List;
 import java.util.Optional;
 import net.createmod.catnip.math.VecHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleOptions;
@@ -42,22 +42,23 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
 import net.minecraft.world.Clearable;
 import net.minecraft.world.Containers;
+import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.RecipeHolder;
-import net.minecraft.world.item.crafting.SingleRecipeInput;
+import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
-import net.neoforged.neoforge.fluids.FluidStack;
-import net.neoforged.neoforge.fluids.capability.IFluidHandler;
-import net.neoforged.neoforge.fluids.capability.IFluidHandler.FluidAction;
-import net.neoforged.neoforge.fluids.crafting.SizedFluidIngredient;
-import net.neoforged.neoforge.items.IItemHandler;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
+import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
+import net.minecraftforge.items.IItemHandler;
 import org.jetbrains.annotations.Nullable;
 import plus.dragons.createdragonsplus.common.advancements.AdvancementBehaviour;
 import plus.dragons.createdragonsplus.util.FieldsNullabilityUnknownByDefault;
@@ -75,6 +76,7 @@ public class GrindstoneDrainBlockEntity extends KineticBlockEntity implements Cl
     protected SmartFluidTankBehaviour tank;
     private DirectBeltInputBehaviour beltInput;
     private AdvancementBehaviour advancement;
+    private LazyOptional<IItemHandler> itemCapability = LazyOptional.empty();
 
     public GrindstoneDrainBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
@@ -98,6 +100,7 @@ public class GrindstoneDrainBlockEntity extends KineticBlockEntity implements Cl
                 return ItemStack.EMPTY;
             }
         }.withSlotLimit(true);
+        itemCapability = LazyOptional.of(() -> inventory);
     }
 
     @Override
@@ -111,16 +114,28 @@ public class GrindstoneDrainBlockEntity extends KineticBlockEntity implements Cl
         behaviours.add(advancement);
     }
 
-    public @Nullable IItemHandler getItemHandler(@Nullable Direction side) {
-        if (side != Direction.DOWN)
-            return inventory;
-        return null;
+    @Override
+    public <T> LazyOptional<T> getCapability(Capability<T> capability, @Nullable Direction side) {
+        if (capability == ForgeCapabilities.ITEM_HANDLER && side != Direction.DOWN)
+            return itemCapability.cast();
+        if (capability == ForgeCapabilities.FLUID_HANDLER
+                && tank != null
+                && (side == null
+                        || side == getBlockState().getValue(HorizontalKineticBlock.HORIZONTAL_FACING).getOpposite()))
+            return tank.getCapability().cast();
+        return super.getCapability(capability, side);
     }
 
-    public @Nullable IFluidHandler getFluidHandler(@Nullable Direction side) {
-        if (side == getBlockState().getValue(HorizontalKineticBlock.HORIZONTAL_FACING).getOpposite() || side == null)
-            return tank.getCapability();
-        return null;
+    @Override
+    public void invalidateCaps() {
+        super.invalidateCaps();
+        itemCapability.invalidate();
+    }
+
+    @Override
+    public void reviveCaps() {
+        super.reviveCaps();
+        itemCapability = LazyOptional.of(() -> inventory);
     }
 
     private Direction getOutputSide() {
@@ -153,13 +168,14 @@ public class GrindstoneDrainBlockEntity extends KineticBlockEntity implements Cl
     private int getProcessDuration(ItemStack inputStack) {
         assert level != null;
         var recipeManager = level.getRecipeManager();
-        var input = new SingleRecipeInput(inputStack);
+        var input = new SimpleContainer(inputStack);
         var sizeModifier = Math.max(1, (inputStack.getCount() / 5));
-        var grinding = recipeManager.getRecipeFor(CEIRecipes.GRINDING.getType(), input, level);
+        RecipeType<GrindingRecipe> grindingType = CEIRecipes.GRINDING.getType();
+        var grinding = recipeManager.getRecipeFor(grindingType, input, level);
         if (grinding.isPresent()) {
-            return grinding.get().value().getProcessingDuration() * sizeModifier;
+            return grinding.get().getProcessingDuration() * sizeModifier;
         }
-        if (recipeManager.getRecipeFor(AllRecipeTypes.SANDPAPER_POLISHING.getType(), input, level).isPresent()) {
+        if (SandPaperPolishingRecipe.canPolish(level, inputStack)) {
             return 50 * sizeModifier;
         }
         if (GrindstoneHelper.canItemBeGrinded(inputStack, ItemStack.EMPTY)) {
@@ -176,9 +192,9 @@ public class GrindstoneDrainBlockEntity extends KineticBlockEntity implements Cl
         return false;
     }
 
-    private boolean drain(SizedFluidIngredient fluidIngredient) {
+    private boolean drain(FluidIngredient fluidIngredient) {
         FluidStack fluid = tank.getPrimaryHandler().getFluid();
-        int required = fluidIngredient.amount();
+        int required = fluidIngredient.getRequiredAmount();
         if (fluidIngredient.test(fluid) && fluid.getAmount() >= required) {
             fluid.shrink(required);
             tank.getPrimaryHandler().setFluid(fluid);
@@ -190,11 +206,11 @@ public class GrindstoneDrainBlockEntity extends KineticBlockEntity implements Cl
     private boolean applyGrindingFluidOperation(GrindingRecipe recipe) {
         var fluidIngredients = recipe.getFluidIngredients();
         if (!fluidIngredients.isEmpty())
-            return drain(fluidIngredients.getFirst());
+            return drain(fluidIngredients.get(0));
 
         var fluidResults = recipe.getFluidResults();
         if (!fluidResults.isEmpty())
-            return fill(fluidResults.getFirst());
+            return fill(fluidResults.get(0));
 
         return true;
     }
@@ -204,8 +220,8 @@ public class GrindstoneDrainBlockEntity extends KineticBlockEntity implements Cl
         if (fluidResults.isEmpty())
             return;
 
-        var fluidResult = fluidResults.getFirst();
-        if (fluidResult.is(CEIFluids.EXPERIENCE))
+        var fluidResult = fluidResults.get(0);
+        if (fluidResult.getFluid() == CEIFluids.EXPERIENCE.get())
             advancement.awardStat(CEIStats.GRINDSTONE_EXPERIENCE.get(), fluidResult.getAmount());
     }
 
@@ -224,27 +240,32 @@ public class GrindstoneDrainBlockEntity extends KineticBlockEntity implements Cl
         assert level != null;
         var recipeManager = level.getRecipeManager();
         var inputStack = inventory.getStackInSlot(0);
-        var input = new SingleRecipeInput(inputStack);
+        var input = new SimpleContainer(inputStack);
         // Grinding
-        var grinding = SequencedAssemblyRecipe.getRecipe(level, input, CEIRecipes.GRINDING.getType(), GrindingRecipe.class);
+        RecipeType<GrindingRecipe> grindingType = CEIRecipes.GRINDING.getType();
+        var grinding = SequencedAssemblyRecipe.getRecipe(
+                level, input, grindingType, GrindingRecipe.class);
         if (grinding.isEmpty())
-            grinding = recipeManager.getRecipeFor(CEIRecipes.GRINDING.getType(), input, level);
+            grinding = recipeManager.getRecipeFor(grindingType, input, level);
         if (grinding.isPresent()) {
-            var recipe = grinding.get().value();
+            var recipe = grinding.get();
             if (applyGrindingFluidOperation(recipe)) {
                 awardGrindingFluidStats(recipe);
                 inventory.clear();
-                var grinded = recipe.rollResults(level.random);
+                var grinded = recipe.rollResults();
                 for (int i = 0; i < grinded.size(); i++)
                     inventory.setStackInSlot(i + 1, grinded.get(i));
                 return;
             }
         }
         // Sand Paper Polishing
-        Optional<RecipeHolder<SandPaperPolishingRecipe>> polishing = recipeManager
-                .getRecipeFor(AllRecipeTypes.SANDPAPER_POLISHING.getType(), input, level);
+        Optional<SandPaperPolishingRecipe> polishing = recipeManager
+                .getRecipeFor(
+                        AllRecipeTypes.SANDPAPER_POLISHING.getType(),
+                        new SandPaperPolishingRecipe.SandPaperInv(inputStack),
+                        level);
         if (polishing.isPresent() && AllRecipeTypes.CAN_BE_AUTOMATED.test(polishing.get())) {
-            var polished = polishing.get().value().getResultItem(level.registryAccess());
+            var polished = polishing.get().getResultItem(level.registryAccess());
             advancement.trigger(CEIAdvancements.GRIND_TO_POLISH.builtinTrigger());
             inventory.clear();
             inventory.setStackInSlot(1, polished);
@@ -254,7 +275,7 @@ public class GrindstoneDrainBlockEntity extends KineticBlockEntity implements Cl
         var grindstone = GrindstoneHelper.grindItem(level, inputStack, ItemStack.EMPTY);
         if (grindstone.isPresent()) {
             var result = grindstone.get();
-            var fluid = new FluidStack(CEIFluids.EXPERIENCE, result.experience());
+            var fluid = new FluidStack(CEIFluids.EXPERIENCE.get(), result.experience());
             if (fill(fluid)) {
                 advancement.trigger(CEIAdvancements.GONE_WITH_THE_FOIL.builtinTrigger());
                 advancement.awardStat(CEIStats.GRINDSTONE_EXPERIENCE.get(), fluid.getAmount());
@@ -315,21 +336,21 @@ public class GrindstoneDrainBlockEntity extends KineticBlockEntity implements Cl
     }
 
     @Override
-    public void write(CompoundTag compound, HolderLookup.Provider registries, boolean clientPacket) {
-        super.write(compound, registries, clientPacket);
-        compound.put("Inventory", inventory.serializeNBT(registries));
+    protected void write(CompoundTag compound, boolean clientPacket) {
+        super.write(compound, clientPacket);
+        compound.put("Inventory", inventory.serializeNBT());
         if (clientPacket && !processedItem.isEmpty()) {
-            compound.put("ProcessedItem", processedItem.saveOptional(registries));
+            compound.put("ProcessedItem", processedItem.save(new CompoundTag()));
             processedItem = ItemStack.EMPTY;
         }
     }
 
     @Override
-    protected void read(CompoundTag compound, HolderLookup.Provider registries, boolean clientPacket) {
-        super.read(compound, registries, clientPacket);
-        inventory.deserializeNBT(registries, compound.getCompound("Inventory"));
+    protected void read(CompoundTag compound, boolean clientPacket) {
+        super.read(compound, clientPacket);
+        inventory.deserializeNBT(compound.getCompound("Inventory"));
         if (compound.contains("ProcessedItem"))
-            processedItem = ItemStack.parseOptional(registries, compound.getCompound("ProcessedItem"));
+            processedItem = ItemStack.of(compound.getCompound("ProcessedItem"));
     }
 
     @Override
@@ -452,7 +473,7 @@ public class GrindstoneDrainBlockEntity extends KineticBlockEntity implements Cl
     @Override
     public boolean addToGoggleTooltip(List<Component> tooltip, boolean isPlayerSneaking) {
         boolean added = super.addToGoggleTooltip(tooltip, isPlayerSneaking);
-        added |= this.containedFluidTooltip(tooltip, isPlayerSneaking, tank.getCapability());
+        added |= this.containedFluidTooltip(tooltip, isPlayerSneaking, tank.getCapability().cast());
         return added;
     }
 

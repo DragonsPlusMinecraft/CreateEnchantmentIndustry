@@ -22,11 +22,11 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.simibubi.create.compat.jei.category.CreateRecipeCategory;
 import com.simibubi.create.compat.jei.category.sequencedAssembly.SequencedAssemblySubCategory;
 import com.simibubi.create.content.processing.sequenced.SequencedRecipe;
+import com.simibubi.create.foundation.fluid.FluidIngredient;
 import java.util.List;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.recipe.IFocusGroup;
 import net.minecraft.client.gui.GuiGraphics;
-import net.neoforged.neoforge.fluids.crafting.SizedFluidIngredient;
 import plus.dragons.createenchantmentindustry.integration.jei.category.grinding.AnimatedGrindstone;
 
 public class AssemblyGrindingCategory extends SequencedAssemblySubCategory {
@@ -38,9 +38,9 @@ public class AssemblyGrindingCategory extends SequencedAssemblySubCategory {
 
     @Override
     public void setRecipe(IRecipeLayoutBuilder builder, SequencedRecipe<?> recipe, IFocusGroup focuses, int x) {
-        List<SizedFluidIngredient> fluidIngredients = recipe.getRecipe().getFluidIngredients();
+        List<FluidIngredient> fluidIngredients = recipe.getRecipe().getFluidIngredients();
         if (!fluidIngredients.isEmpty())
-            CreateRecipeCategory.addFluidSlot(builder, x + 4, 15, fluidIngredients.getFirst());
+            CreateRecipeCategory.addFluidSlot(builder, x + 4, 15, fluidIngredients.get(0));
     }
 
     @Override

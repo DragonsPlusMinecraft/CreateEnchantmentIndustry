@@ -18,7 +18,6 @@
 
 package plus.dragons.createenchantmentindustry.common.processing.enchanter;
 
-import com.simibubi.create.content.kinetics.mechanicalArm.ArmBlockEntity;
 import com.simibubi.create.content.kinetics.mechanicalArm.ArmInteractionPoint;
 import com.simibubi.create.content.kinetics.mechanicalArm.ArmInteractionPointType;
 import net.minecraft.core.BlockPos;
@@ -38,7 +37,7 @@ public class BlazeEnchanterArmInteractionPoint extends ArmInteractionPoint {
     }
 
     @Override
-    public ItemStack insert(ArmBlockEntity armBlockEntity, ItemStack stack, boolean simulate) {
+    public ItemStack insert(ItemStack stack, boolean simulate) {
         if (!(level.getBlockEntity(pos) instanceof BlazeEnchanterBlockEntity enchanter)) {
             return stack;
         }
@@ -60,7 +59,7 @@ public class BlazeEnchanterArmInteractionPoint extends ArmInteractionPoint {
     }
 
     @Override
-    public ItemStack extract(ArmBlockEntity armBlockEntity, int slot, int amount, boolean simulate) {
+    public ItemStack extract(int slot, int amount, boolean simulate) {
         if (level.getBlockEntity(pos) instanceof BlazeEnchanterBlockEntity enchanter) {
             return enchanter.extractItem(false, simulate);
         }
@@ -68,7 +67,7 @@ public class BlazeEnchanterArmInteractionPoint extends ArmInteractionPoint {
     }
 
     @Override
-    public int getSlotCount(ArmBlockEntity armBlockEntit) {
+    public int getSlotCount() {
         return 1;
     }
 

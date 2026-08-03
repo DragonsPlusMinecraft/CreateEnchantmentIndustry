@@ -18,91 +18,80 @@
 
 package plus.dragons.createenchantmentindustry.integration.apothic_enchanting.common.contraptions.actors.enderWovenBag;
 
-import com.mojang.serialization.Codec;
-import io.netty.buffer.ByteBuf;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import java.util.function.Function;
 import javax.annotation.Nullable;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.NbtOps;
+import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.codec.ByteBufCodecs;
-import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
 import plus.dragons.createenchantmentindustry.integration.apothic_enchanting.config.CEIAConfig;
 
+/** Immutable-on-write collection used by block, contraption, and item persistence. */
 public class StoredEntities {
-    public static final Codec<StoredEntities> CODEC = CompoundTag.CODEC.listOf().xmap(StoredEntities::new, (s) -> s.entityTags);
-    public static final StreamCodec<ByteBuf, StoredEntities> STREAM_CODEC = ByteBufCodecs.COMPOUND_TAG.apply(
-            ByteBufCodecs.list(256)).map(StoredEntities::new, (s) -> s.entityTags);
-
+    private static final String LIST_KEY = "entities";
     private List<CompoundTag> entityTags;
-    private Map<Component, Integer> nameCache = new HashMap<>();
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(this.entityTags, this.nameCache);
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (obj == this) {
-            return true;
-        } else {
-            return obj instanceof StoredEntities ex
-                    && this.entityTags == ex.entityTags
-                    && this.nameCache == ex.nameCache;
-        }
-    }
+    private final Map<Component, Integer> nameCache = new HashMap<>();
 
     public StoredEntities(List<CompoundTag> entityTags) {
-        this.entityTags = entityTags;
+        this.entityTags = entityTags.stream().map(CompoundTag::copy).collect(java.util.stream.Collectors.toCollection(ArrayList::new));
     }
 
     public StoredEntities() {
-        this(new ArrayList<>());
+        this(List.of());
+    }
+
+    public StoredEntities copy() {
+        return new StoredEntities(entityTags);
     }
 
     public Map<Component, Integer> getEntityNames(Level level) {
-        if (entityTags.isEmpty()) return new HashMap<>();
+        if (entityTags.isEmpty()) {
+            return Map.of();
+        }
         if (nameCache.isEmpty()) {
             for (CompoundTag tag : entityTags) {
-                var component = EntityType.loadEntityRecursive(tag, level, Function.identity()).getName();
-                if (nameCache.containsKey(component))
-                    nameCache.put(component, nameCache.get(component) + 1);
-                else nameCache.put(component, 1);
+                Entity entity = EntityType.loadEntityRecursive(tag, level, Function.identity());
+                if (entity != null) {
+                    nameCache.merge(entity.getName(), 1, Integer::sum);
+                }
             }
         }
-        return nameCache;
+        return new LinkedHashMap<>(nameCache);
     }
 
     @Nullable
     public Entity pop(Level level) {
-        if (entityTags.isEmpty()) return null;
-        var tag = entityTags.getLast();
-        entityTags = new ArrayList<>(entityTags);
-        entityTags.removeLast();
+        if (entityTags.isEmpty()) {
+            return null;
+        }
+        CompoundTag tag = entityTags.remove(entityTags.size() - 1);
         nameCache.clear();
         return EntityType.loadEntityRecursive(tag, level, Function.identity());
     }
 
     @Nullable
-    public Entity peak(Level level) {
-        if (entityTags.isEmpty()) return null;
-        var tag = entityTags.getLast();
-        return EntityType.loadEntityRecursive(tag, level, Function.identity());
+    public Entity peek(Level level) {
+        if (entityTags.isEmpty()) {
+            return null;
+        }
+        return EntityType.loadEntityRecursive(entityTags.get(entityTags.size() - 1), level, Function.identity());
     }
 
     public void push(Entity entity) {
         CompoundTag tag = new CompoundTag();
-        entity.save(tag);
-        entityTags = new ArrayList<>(entityTags);
-        entityTags.add(tag);
-        nameCache.clear();
+        if (entity.save(tag)) {
+            entityTags.add(tag);
+            nameCache.clear();
+        }
     }
 
     public int count() {
@@ -113,11 +102,46 @@ public class StoredEntities {
         return count() >= CEIAConfig.server().utility().enderWovenBagCapacity.get();
     }
 
-    public static StoredEntities parse(HolderLookup.Provider lookupProvider, Tag tag) {
-        return CODEC.parse(lookupProvider.createSerializationContext(NbtOps.INSTANCE), tag).result().get();
+    public static StoredEntities parse(@Nullable Tag tag) {
+        if (tag == null) {
+            return new StoredEntities();
+        }
+        ListTag list;
+        if (tag instanceof ListTag directList) {
+            list = directList;
+        } else if (tag instanceof CompoundTag compound) {
+            if (compound.contains(LIST_KEY, Tag.TAG_LIST)) {
+                list = compound.getList(LIST_KEY, Tag.TAG_COMPOUND);
+            } else if (compound.contains("Entities", Tag.TAG_LIST)) {
+                list = compound.getList("Entities", Tag.TAG_COMPOUND);
+            } else {
+                return new StoredEntities();
+            }
+        } else {
+            return new StoredEntities();
+        }
+        List<CompoundTag> tags = new ArrayList<>(Math.min(list.size(), 256));
+        for (int i = 0; i < list.size() && i < 256; i++) {
+            tags.add(list.getCompound(i).copy());
+        }
+        return new StoredEntities(tags);
     }
 
-    public Tag tag(HolderLookup.Provider lookupProvider) {
-        return CODEC.encodeStart(lookupProvider.createSerializationContext(NbtOps.INSTANCE), this).getOrThrow();
+    public CompoundTag tag() {
+        CompoundTag result = new CompoundTag();
+        ListTag list = new ListTag();
+        entityTags.stream().limit(256).map(CompoundTag::copy).forEach(list::add);
+        result.put(LIST_KEY, list);
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return obj == this || obj instanceof StoredEntities other && entityTags.equals(other.entityTags);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(entityTags);
     }
 }

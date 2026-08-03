@@ -19,7 +19,6 @@
 package plus.dragons.createenchantmentindustry.common.processing;
 
 import java.util.List;
-import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
@@ -27,6 +26,7 @@ import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentInstance;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import plus.dragons.createenchantmentindustry.common.processing.enchanter.CEIEnchantmentHelper;
 import plus.dragons.createenchantmentindustry.common.processing.forger.BlazeForgerMode;
 import plus.dragons.createenchantmentindustry.common.registry.CEIDataMaps;
 import plus.dragons.createenchantmentindustry.config.CEIConfig;
@@ -43,12 +43,12 @@ public class EnchantmentProcessingRules {
         int levelExtensions = 0;
         int forgingCosts = 0;
         int splittingCosts = 0;
-        for (var holder : enchantments.holders().toList()) {
-            if (holder.getData(CEIDataMaps.SUPER_ENCHANTING_LEVEL_EXTENSION) != null)
+        for (var enchantment : enchantments) {
+            if (CEIDataMaps.SUPER_ENCHANTING_LEVEL_EXTENSION.get(enchantment) != null)
                 levelExtensions++;
-            if (holder.getData(CEIDataMaps.FORGING_COST_MULTIPLIER) != null)
+            if (CEIDataMaps.FORGING_COST_MULTIPLIER.get(enchantment) != null)
                 forgingCosts++;
-            if (holder.getData(CEIDataMaps.SPLITTING_COST_MULTIPLIER) != null)
+            if (CEIDataMaps.SPLITTING_COST_MULTIPLIER.get(enchantment) != null)
                 splittingCosts++;
         }
         if (levelExtensions > 0)
@@ -59,8 +59,8 @@ public class EnchantmentProcessingRules {
             warnLegacySplittingCost(splittingCosts);
     }
 
-    public static int blazeEnchanterLevelExtension(Holder<Enchantment> enchantment) {
-        var rule = enchantment.getData(CEIDataMaps.ENCHANTMENT_PROCESSING_RULES);
+    public static int blazeEnchanterLevelExtension(Enchantment enchantment) {
+        var rule = CEIDataMaps.ENCHANTMENT_PROCESSING_RULES.get(enchantment);
         if (rule != null) {
             var value = rule.levelExtension().blazeEnchanter();
             if (value.isPresent())
@@ -70,8 +70,8 @@ public class EnchantmentProcessingRules {
         return legacy != null ? legacy : CEIConfig.enchantments().blazeEnchanterMaxLevelExtension.get();
     }
 
-    public static int blazeForgerLevelExtension(Holder<Enchantment> enchantment) {
-        var rule = enchantment.getData(CEIDataMaps.ENCHANTMENT_PROCESSING_RULES);
+    public static int blazeForgerLevelExtension(Enchantment enchantment) {
+        var rule = CEIDataMaps.ENCHANTMENT_PROCESSING_RULES.get(enchantment);
         if (rule != null) {
             var value = rule.levelExtension().blazeForger();
             if (value.isPresent())
@@ -81,7 +81,7 @@ public class EnchantmentProcessingRules {
         return legacy != null ? legacy : CEIConfig.enchantments().blazeForgerMaxLevelExtension.get();
     }
 
-    public static float blazeEnchanterCostMultiplier(Holder<Enchantment> enchantment, boolean special, boolean template) {
+    public static float blazeEnchanterCostMultiplier(Enchantment enchantment, boolean special, boolean template) {
         float multiplier = special
                 ? CEIConfig.processing().blazeEnchanterSuperEnchantingCostMultiplier.getF()
                 : CEIConfig.processing().blazeEnchanterNormalEnchantingCostMultiplier.getF();
@@ -89,7 +89,7 @@ public class EnchantmentProcessingRules {
                 ? CEIConfig.processing().blazeEnchanterTemplateEnchantingCostMultiplier.getF()
                 : CEIConfig.processing().blazeEnchanterDirectEnchantingCostMultiplier.getF();
 
-        var rule = enchantment.getData(CEIDataMaps.ENCHANTMENT_PROCESSING_RULES);
+        var rule = CEIDataMaps.ENCHANTMENT_PROCESSING_RULES.get(enchantment);
         if (rule == null)
             return multiplier;
         var multipliers = rule.costMultiplier().blazeEnchanter();
@@ -109,20 +109,20 @@ public class EnchantmentProcessingRules {
         float weightedMultiplier = 0;
         int totalWeight = 0;
         for (var instance : enchantments) {
-            int weight = Math.max(1, instance.enchantment.value().getAnvilCost()) * Math.max(1, instance.level);
+            int weight = CEIEnchantmentHelper.anvilCost(instance.enchantment) * Math.max(1, instance.level);
             totalWeight += weight;
             weightedMultiplier += weight * blazeEnchanterCostMultiplier(instance.enchantment, special, template);
         }
         return totalWeight == 0 ? 1 : weightedMultiplier / totalWeight;
     }
 
-    public static int blazeForgerLevelCost(Holder<Enchantment> enchantment, BlazeForgerMode mode, boolean special, int anvilCost, int level) {
+    public static int blazeForgerLevelCost(Enchantment enchantment, BlazeForgerMode mode, boolean special, int anvilCost, int level) {
         float cost = Math.max(1, anvilCost / 2) * Math.max(1, level);
         cost *= blazeForgerCostMultiplier(enchantment, mode, special);
         return roundCost(cost);
     }
 
-    public static float blazeForgerCostMultiplier(Holder<Enchantment> enchantment, BlazeForgerMode mode, boolean special) {
+    public static float blazeForgerCostMultiplier(Enchantment enchantment, BlazeForgerMode mode, boolean special) {
         float multiplier = special
                 ? CEIConfig.processing().blazeForgerSuperForgingCostMultiplier.getF()
                 : CEIConfig.processing().blazeForgerNormalForgingCostMultiplier.getF();
@@ -132,7 +132,7 @@ public class EnchantmentProcessingRules {
             case EXTRACT -> CEIConfig.processing().blazeForgerExtractCostMultiplier.getF();
         };
 
-        var rule = enchantment.getData(CEIDataMaps.ENCHANTMENT_PROCESSING_RULES);
+        var rule = CEIDataMaps.ENCHANTMENT_PROCESSING_RULES.get(enchantment);
         if (rule != null) {
             var multipliers = rule.costMultiplier().blazeForger();
             multiplier *= (special ? multipliers.super_() : multipliers.normal()).orElse(1F);
@@ -161,8 +161,8 @@ public class EnchantmentProcessingRules {
         return Math.max(1, Math.round(cost));
     }
 
-    private static Integer legacyLevelExtension(Holder<Enchantment> enchantment) {
-        Integer legacy = enchantment.getData(CEIDataMaps.SUPER_ENCHANTING_LEVEL_EXTENSION);
+    private static Integer legacyLevelExtension(Enchantment enchantment) {
+        Integer legacy = CEIDataMaps.SUPER_ENCHANTING_LEVEL_EXTENSION.get(enchantment);
         if (legacy != null) {
             warnLegacyLevelExtension(1);
             // TODO Remove this legacy data map fallback after modpacks have migrated to enchantment_processing/rules.
@@ -171,16 +171,16 @@ public class EnchantmentProcessingRules {
         return null;
     }
 
-    private static Float legacyForgerCost(Holder<Enchantment> enchantment, BlazeForgerMode mode) {
+    private static Float legacyForgerCost(Enchantment enchantment, BlazeForgerMode mode) {
         if (mode == BlazeForgerMode.EXTRACT) {
-            Float legacy = enchantment.getData(CEIDataMaps.SPLITTING_COST_MULTIPLIER);
+            Float legacy = CEIDataMaps.SPLITTING_COST_MULTIPLIER.get(enchantment);
             if (legacy != null) {
                 warnLegacySplittingCost(1);
                 // TODO Remove this legacy data map fallback after modpacks have migrated to enchantment_processing/rules.
                 return legacy;
             }
         } else {
-            Float legacy = enchantment.getData(CEIDataMaps.FORGING_COST_MULTIPLIER);
+            Float legacy = CEIDataMaps.FORGING_COST_MULTIPLIER.get(enchantment);
             if (legacy != null) {
                 warnLegacyForgingCost(1);
                 // TODO Remove this legacy data map fallback after modpacks have migrated to enchantment_processing/rules.

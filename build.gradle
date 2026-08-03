@@ -1,10 +1,10 @@
 plugins {
     id "java-library"
     id "maven-publish"
-    id 'net.neoforged.moddev' version '2.0.141'
-    id "me.modmuss50.mod-publish-plugin" version "2.0.0-beta.2"
+    id "net.neoforged.moddev.legacyforge" version "2.0.107"
+    id "me.modmuss50.mod-publish-plugin" version "2.2.0"
     id "com.diffplug.spotless" version "7.0.2"
-    id 'idea'
+    id "idea"
 }
 
 tasks.named("wrapper", Wrapper).configure {
@@ -19,15 +19,13 @@ base {
 }
 
 java {
-    toolchain.languageVersion = JavaLanguageVersion.of(21)
+    toolchain.languageVersion = JavaLanguageVersion.of(17)
     withSourcesJar()
 }
 
 def allIntegrationSourceSets = [
         "apothic_enchanting",
         "apotheosis",
-        "sable",
-        "sable_apotheosis",
         "touhou_little_maid",
 ]
 
@@ -38,42 +36,23 @@ def isIntegrationEnabled = { name ->
             .get()
 }
 
-def requestedIntegrationSourceSets = allIntegrationSourceSets.findAll { name ->
-    isIntegrationEnabled(name)
-}
-
-def enabledIntegrationSourceSets = requestedIntegrationSourceSets.findAll { name ->
-    if (name == "sable_apotheosis") {
-        return ["apothic_enchanting", "apotheosis", "sable"].every { requestedIntegrationSourceSets.contains(it) }
-    }
-    return true
-}
-
-def hasIntegration = { name ->
-    enabledIntegrationSourceSets.contains(name)
-}
+def enabledIntegrationSourceSets = allIntegrationSourceSets.findAll(isIntegrationEnabled)
+def hasIntegration = { name -> enabledIntegrationSourceSets.contains(name) }
 
 if (hasIntegration("apotheosis") && !hasIntegration("apothic_enchanting")) {
-    throw new org.gradle.api.GradleException("The apotheosis integration requires the apothic_enchanting integration")
+    throw new GradleException("The Apotheosis integration requires the enchanting integration source set")
 }
 
 sourceSets {
     enabledIntegrationSourceSets.each { name ->
         create(name) {
-            java {
-                srcDir "src/integration/${name}/java"
-            }
-            resources {
-                srcDir "src/integration/${name}/resources"
-            }
+            java.srcDir "src/integration/${name}/java"
+            resources.srcDir "src/integration/${name}/resources"
             compileClasspath += sourceSets.main.output + sourceSets.main.compileClasspath
-            if (name == "apotheosis" && hasIntegration("apothic_enchanting")) {
-                compileClasspath += sourceSets.apothic_enchanting.output + sourceSets.apothic_enchanting.compileClasspath
-            }
-            if (name == "sable_apotheosis") {
-                compileClasspath += sourceSets.apothic_enchanting.output + sourceSets.apothic_enchanting.compileClasspath
-                compileClasspath += sourceSets.apotheosis.output + sourceSets.apotheosis.compileClasspath
-                compileClasspath += sourceSets.sable.output + sourceSets.sable.compileClasspath
+            runtimeClasspath += sourceSets.main.output + sourceSets.main.runtimeClasspath
+            if (name == "apotheosis") {
+                compileClasspath += sourceSets.apothic_enchanting.output
+                runtimeClasspath += sourceSets.apothic_enchanting.output
             }
         }
     }
@@ -84,15 +63,26 @@ sourceSets {
     }
 }
 
-tasks.named("classes") {
+def integrationClasses = tasks.register("integrationClasses") {
+    group = "build"
+    description = "Compiles every enabled optional integration source set."
     enabledIntegrationSourceSets.each { name ->
-        finalizedBy(tasks.named("${name}Classes"))
+        dependsOn(tasks.named("${name}Classes"))
     }
+}
+
+tasks.named("build") {
+    dependsOn(integrationClasses)
 }
 
 tasks.named("jar", Jar) {
     enabledIntegrationSourceSets.each { name ->
         from sourceSets[name].output
+    }
+    from(layout.buildDirectory.dir("mixin")) {
+        enabledIntegrationSourceSets.each { name ->
+            include "${mod_id}.${name}.refmap.json"
+        }
     }
 }
 
@@ -102,35 +92,53 @@ tasks.named("sourcesJar", Jar) {
     }
 }
 
-neoForge {
-    version = project.neo_version
+legacyForge {
+    version = "${minecraft_version}-${forge_version}"
+    validateAccessTransformers = false
+    accessTransformers.from "src/main/resources/META-INF/accesstransformer.cfg"
 
     parchment {
-        mappingsVersion = project.parchment_mappings_version
-        minecraftVersion = project.parchment_minecraft_version
+        minecraftVersion = parchment_minecraft_version
+        mappingsVersion = parchment_mappings_version
     }
 
-    accessTransformers = project.files("src/main/resources/META-INF/accesstransformer.cfg")
+    mods {
+        "${mod_id}" {
+            sourceSet sourceSets.main
+            enabledIntegrationSourceSets.each { name ->
+                sourceSet sourceSets[name]
+            }
+        }
+    }
 
     runs {
+        configureEach {
+            systemProperty "forge.logging.markers", ""
+            systemProperty "forge.logging.console.level", "info"
+            jvmArguments = ["-XX:+IgnoreUnrecognizedVMOptions", "-XX:+AllowEnhancedClassRedefinition"]
+            systemProperty "mixin.debug.export", "true"
+        }
+
         client {
             client()
-            systemProperty "neoforge.enabledGameTestNamespaces", project.mod_id
+            gameDirectory = project.file("run")
         }
 
         server {
             server()
+            gameDirectory = project.file("run/server")
             programArgument "--nogui"
-            systemProperty "neoforge.enabledGameTestNamespaces", project.mod_id
         }
 
         gameTestServer {
             type = "gameTestServer"
-            systemProperty "neoforge.enabledGameTestNamespaces", project.mod_id
+            gameDirectory = project.file("run/gametest")
         }
 
         data {
             data()
+            gameDirectory = project.file("run")
+            systemProperty "forge.logging.markers", "REGISTRIES,REGISTRYDUMP"
             def dataArgs = [
                     "--mod", project.mod_id,
                     "--all",
@@ -138,154 +146,102 @@ neoForge {
                     "--existing", file("src/main/resources/").getAbsolutePath(),
                     "--existing", file("src/main/translations/").getAbsolutePath(),
                     "--existing-mod", "create",
-                    "--existing-mod", "create_dragons_plus"
+                    "--existing-mod", "create_dragons_plus",
             ]
             enabledIntegrationSourceSets.each { name ->
                 dataArgs.addAll("--existing", file("src/integration/${name}/resources/").getAbsolutePath())
             }
-            programArguments.addAll dataArgs
+            programArguments.addAll(dataArgs)
         }
-
-        configureEach {
-            systemProperty "forge.logging.markers", "REGISTRIES"
-
-            logLevel = org.slf4j.event.Level.DEBUG
-        }
-    }
-
-    mods {
-        "${mod_id}" {
-            sourceSet(sourceSets.main)
-            enabledIntegrationSourceSets.each { name ->
-                sourceSet(sourceSets[name])
-            }
-        }
-    }
-}
-
-sourceSets.main.resources { srcDir "src/generated/resources" }
-
-configurations {
-    localImplementation
-    compileClasspath.extendsFrom localImplementation
-    runtimeClasspath.extendsFrom localImplementation
-    runtimeClasspath.extendsFrom localRuntime
-}
-
-enabledIntegrationSourceSets.each { name ->
-    def localConfig = configurations.create("${name}LocalImplementation") {
-        canBeConsumed = false
-        canBeResolved = false
-    }
-
-    configurations.named("${name}CompileClasspath") {
-        extendsFrom localConfig
-    }
-
-    configurations.named("${name}RuntimeClasspath") {
-        extendsFrom localConfig
-    }
-
-    configurations.named("runtimeClasspath") {
-        extendsFrom localConfig
     }
 }
 
 repositories {
     mavenLocal()
-    maven { url "https://maven.dragons.plus/releases" } // Create: Dragons Plus
-    maven { url "https://maven.createmod.net" } // Ponder, Flywheel
-    maven { url "https://mvn.devos.one/snapshots" } // Registrate
-    maven { url "https://maven.blamejared.com" } // JEI
-    maven { url "https://maven.theillusivec4.top/" } // Curios API
-    maven { url 'https://maven.fallenbreath.me/releases' } // Conditional Mixin
+    maven { url "https://maven.dragons.plus/releases" }
+    maven { url "https://maven.createmod.net" }
+    maven { url "https://maven.tterrag.com" }
+    maven { url "https://maven.blamejared.com" }
+    maven { url "https://maven.theillusivec4.top/" }
+    maven { url "https://maven.fallenbreath.me/releases" }
+    maven { url "https://maven.shadowsoffire.dev/releases" }
     maven { url "https://www.cursemaven.com" }
     maven { url "https://api.modrinth.com/maven" }
-    maven { url "https://raw.githubusercontent.com/Fuzss/modresources/main/maven" } // NeoForge config api port, needed by ponder
-    maven { url "https://maven.ryanhcode.dev/releases" } // RyanHCode Maven - Sable
-    maven { url "https://maven.shadowsoffire.dev/releases" } // Apotheosis mods Maven
 }
 
 dependencies {
-    jarJar(implementation("me.fallenbreath:conditional-mixin-neoforge")) {
-        version {
-            strictly "[${conditional_mixin_version},)"
-            prefer conditional_mixin_version
-        }
+    jarJar(implementation("me.fallenbreath:conditional-mixin-forge:${conditional_mixin_version}"))
+
+    modImplementation("com.simibubi.create:create-${minecraft_version}:${create_version}-${create_version_number}:slim") {
+        transitive = false
+    }
+    modImplementation("net.createmod.ponder:Ponder-Forge-${minecraft_version}:${ponder_version}")
+    modCompileOnly("dev.engine-room.flywheel:flywheel-forge-api-${minecraft_version}:${flywheel_version}")
+    modRuntimeOnly("dev.engine-room.flywheel:flywheel-forge-${minecraft_version}:${flywheel_version}")
+    modImplementation("com.tterrag.registrate:Registrate:${registrate_version}")
+    modImplementation("plus.dragons.createdragonsplus:create-dragons-plus-${minecraft_version}:${create_dragons_plus_version}")
+
+    compileOnly(annotationProcessor("io.github.llamalad7:mixinextras-common:0.4.1"))
+    implementation("io.github.llamalad7:mixinextras-forge:0.4.1")
+    annotationProcessor("org.spongepowered:mixin:${mixin_version}:processor")
+    enabledIntegrationSourceSets.each { name ->
+        add("${name}AnnotationProcessor", "org.spongepowered:mixin:${mixin_version}:processor")
     }
 
-    implementation("plus.dragons.createdragonsplus:create-dragons-plus-${minecraft_version}:${create_dragons_plus_version}")
+    modCompileOnly("mezz.jei:jei-${minecraft_version}-common-api:${jei_version}")
+    modCompileOnly("mezz.jei:jei-${minecraft_version}-forge-api:${jei_version}")
+    modRuntimeOnly("mezz.jei:jei-${minecraft_version}-forge:${jei_version}")
 
-    compileOnly("mezz.jei:jei-${jei_minecraft_version}-common-api:${jei_version}")
-    compileOnly("mezz.jei:jei-${jei_minecraft_version}-neoforge-api:${jei_version}")
-    localRuntime("mezz.jei:jei-${jei_minecraft_version}-neoforge:${jei_version}")
+    modCompileOnly("top.theillusivec4.curios:curios-forge:${curios_version}+${minecraft_version}:api")
+    modRuntimeOnly("top.theillusivec4.curios:curios-forge:${curios_version}+${minecraft_version}")
 
-    compileOnly("top.theillusivec4.curios:curios-neoforge:${curios_version}+${curios_minecraft_version}:api")
-    localRuntime("top.theillusivec4.curios:curios-neoforge:${curios_version}+${curios_minecraft_version}")
-
-    if (hasIntegration("apothic_enchanting")) {
-        apothic_enchantingLocalImplementation("dev.shadowsoffire:Placebo:${minecraft_version}-${placebo_version}")
-        apothic_enchantingLocalImplementation("dev.shadowsoffire:ApothicAttributes:${minecraft_version}-${apothic_attributes_version}")
-        apothic_enchantingLocalImplementation("dev.shadowsoffire:ApothicEnchanting:${minecraft_version}-${apothic_enchanting_version}")
-    }
-
-    if (hasIntegration("apotheosis")) {
-        apothic_enchantingLocalImplementation("dev.shadowsoffire:Placebo:${minecraft_version}-${placebo_version}")
-        apothic_enchantingLocalImplementation("dev.shadowsoffire:ApothicAttributes:${minecraft_version}-${apothic_attributes_version}")
-        apothic_enchantingLocalImplementation("dev.shadowsoffire:ApothicEnchanting:${minecraft_version}-${apothic_enchanting_version}")
-        apotheosisLocalImplementation("dev.shadowsoffire:ApothicSpawners:${minecraft_version}-${apothic_spawners_version}")
-        apotheosisLocalImplementation("dev.shadowsoffire:Apotheosis:${minecraft_version}-${apotheosis_version}")
-        apotheosisLocalImplementation("dev.shadowsoffire:GatewaysToEternity:${minecraft_version}-${gateway_to_eternity_version}") // Apotheosis needs this, datagen
-    }
-
-    if (hasIntegration("sable")) {
-        sableLocalImplementation("dev.ryanhcode.sable:sable-neoforge-${minecraft_version}:${sable_version}")
-        localRuntime("dev.simulated_team.simulated:simulated-neoforge-${minecraft_version}:${create_aeronautics_version}")  { transitive false }
-        localRuntime("dev.eriksonn.aeronautics:aeronautics-neoforge-${minecraft_version}:${create_aeronautics_version}")  { transitive false }
-        localRuntime("dev.ryanhcode.offroad:offroad-neoforge-${minecraft_version}:${create_aeronautics_version}")  { transitive false }
+    if (hasIntegration("apothic_enchanting") || hasIntegration("apotheosis")) {
+        modImplementation("dev.shadowsoffire:Placebo:${minecraft_version}-${placebo_version}")
+        modImplementation("dev.shadowsoffire:ApothicAttributes:${minecraft_version}-${apothic_attributes_version}")
+        modImplementation("vazkii.patchouli:Patchouli:${minecraft_version}-${patchouli_version}")
+        modImplementation("dev.shadowsoffire:Apotheosis:${minecraft_version}-${apotheosis_version}")
     }
 
     if (hasIntegration("touhou_little_maid")) {
-        touhou_little_maidLocalImplementation("curse.maven:touhou-little-maid-355044:${tlm_file_id}")
+        modImplementation("curse.maven:touhou-little-maid-355044:${tlm_file_id}")
     }
+}
+
+sourceSets.main.resources {
+    srcDir "src/generated/resources"
+    exclude ".cache"
 }
 
 def integrationMixinConfigs = [
         apothic_enchanting : "${mod_id}.apothic_enchanting.mixins.json",
         apotheosis         : "${mod_id}.apotheosis.mixins.json",
-        sable              : "${mod_id}.sable.mixins.json",
         touhou_little_maid : "${mod_id}.touhou_little_maid.mixins.json",
 ]
 
 def integrationMixinBlocks = enabledIntegrationSourceSets
-        .collect { name -> integrationMixinConfigs[name] }
+        .collect { integrationMixinConfigs[it] }
         .findAll { it != null }
-        .collect { config ->
-            "[[mixins]]\n    config=\"${config}\""
-        }
+        .collect { config -> "[[mixins]]\n    config=\"${config}\"" }
         .join("\n\n")
 
-var generateModMetadata = tasks.register("generateModMetadata", ProcessResources) {
-    var replaceProperties = [
-            minecraft_version           : minecraft_version,
-            minecraft_version_range     : minecraft_version_range,
-            neo_version                 : neo_version,
-            neo_version_range           : neo_version_range,
-            loader_version_range        : loader_version_range,
-            mod_id                      : mod_id,
-            mod_name                    : mod_name,
-            mod_license                 : mod_license,
-            mod_version                 : mod_version,
-            mod_authors                 : mod_authors,
-            mod_description             : mod_description,
-            mod_github                  : mod_github,
-            create_version_range        : create_version_range,
+def generateModMetadata = tasks.register("generateModMetadata", ProcessResources) {
+    def replaceProperties = [
+            minecraft_version                  : minecraft_version,
+            minecraft_version_range            : minecraft_version_range,
+            forge_version_range                : forge_version_range,
+            loader_version_range               : loader_version_range,
+            mod_id                             : mod_id,
+            mod_name                           : mod_name,
+            mod_license                        : mod_license,
+            mod_version                        : mod_version,
+            mod_authors                        : mod_authors,
+            mod_description                    : mod_description,
+            mod_github                         : mod_github,
+            create_version_range               : create_version_range,
             create_dragons_plus_version_range  : create_dragons_plus_version_range,
-            apothic_enchanting_version_range   : apothic_enchanting_version_range,
-            apothic_spawners_version_range     : apothic_spawners_version_range,
-            apotheosis_version_range            : apotheosis_version_range,
-            sable_version_range                 : sable_version_range,
-            integration_mixin_blocks           : integrationMixinBlocks
+            apotheosis_version_range           : apotheosis_version_range,
+            tlm_version_range                  : tlm_version_range,
+            integration_mixin_blocks           : integrationMixinBlocks,
     ]
     inputs.properties replaceProperties
     expand replaceProperties
@@ -294,11 +250,38 @@ var generateModMetadata = tasks.register("generateModMetadata", ProcessResources
 }
 
 sourceSets.main.resources.srcDir generateModMetadata
-neoForge.ideSyncTask generateModMetadata
+legacyForge.ideSyncTask generateModMetadata
 
-tasks.withType(Jar) {
+mixin {
+    add sourceSets.main, "${mod_id}.refmap.json"
+    config "${mod_id}.mixins.json"
+    enabledIntegrationSourceSets.each { name ->
+        def configFile = integrationMixinConfigs[name]
+        if (configFile != null) {
+            add sourceSets[name], "${mod_id}.${name}.refmap.json"
+            config configFile
+        }
+    }
+}
+
+tasks.withType(Jar).configureEach {
     from "LICENSE.txt"
     exclude ".cache"
+}
+
+tasks.named("jar", Jar) {
+    manifest {
+        attributes([
+                "Specification-Title"      : mod_id,
+                "Specification-Vendor"     : mod_authors,
+                "Specification-Version"    : "1",
+                "Implementation-Title"     : project.name,
+                "Implementation-Version"   : project.version,
+                "Implementation-Vendor"    : mod_authors,
+                "Implementation-Timestamp" : new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
+                "MixinConfigs"             : (["${mod_id}.mixins.json"] + enabledIntegrationSourceSets.collect { integrationMixinConfigs[it] }.findAll { it != null }).join(","),
+        ])
+    }
 }
 
 spotless {
@@ -317,8 +300,8 @@ build.dependsOn(spotlessApply)
 
 publishing {
     publications {
-        register('mavenJava', MavenPublication) {
-            artifactId = mod_artifact_id + "-" + minecraft_version
+        register("mavenJava", MavenPublication) {
+            artifactId = "${mod_artifact_id}-${minecraft_version}"
             from components.java
         }
     }
@@ -340,8 +323,8 @@ publishMods {
     changelog = project.file("CHANGELOG.md").text
     version = mod_version
     type = BETA
-    displayName = "Create: Enchantment Industry ${mod_version} for Create ${minecraft_version}-${create_version_production}"
-    modLoaders.add("neoforge")
+    displayName = "Create: Enchantment Industry ${mod_version} for Create ${create_version_production}"
+    modLoaders.add("forge")
 
     curseforge {
         projectId = "688768"
@@ -363,7 +346,8 @@ publishMods {
 }
 
 tasks.withType(JavaCompile).configureEach {
-    options.encoding = "UTF-8" // Use the UTF-8 charset for Java compilation
+    options.encoding = "UTF-8"
+    options.compilerArgs.addAll(["-Xmaxerrs", "5000"])
 }
 
 idea {

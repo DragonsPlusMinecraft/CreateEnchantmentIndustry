@@ -31,7 +31,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.ItemInteractionResult;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
@@ -45,9 +45,9 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.neoforged.neoforge.capabilities.Capabilities;
-import net.neoforged.neoforge.common.util.FakePlayer;
-import net.neoforged.neoforge.items.IItemHandler;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
+import net.minecraftforge.common.util.FakePlayer;
+import net.minecraftforge.items.IItemHandler;
 import plus.dragons.createenchantmentindustry.common.fluids.experience.ExperienceHelper;
 import plus.dragons.createenchantmentindustry.common.registry.*;
 
@@ -61,14 +61,15 @@ public class MechanicalGrindstoneBlock extends RotatedPillarKineticBlock impleme
     }
 
     @Override
-    protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
+    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
+        ItemStack stack = player.getItemInHand(hand);
         var blockEntity = getBlockEntity(level, pos);
         if (blockEntity == null)
-            return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+            return InteractionResult.PASS;
         if (stack.isEmpty()) {
             var be = level.getBlockEntity(pos.below());
             if (be instanceof GrindstoneDrainBlockEntity drain) {
-                IItemHandler capability = blockEntity.getLevel().getCapability(Capabilities.ItemHandler.BLOCK, drain.getBlockPos(), null);
+                IItemHandler capability = drain.getCapability(ForgeCapabilities.ITEM_HANDLER, null).orElse(null);
                 if (capability != null) {
                     ItemStack extractItem = capability
                             .extractItem(3000, 64, false);
@@ -80,23 +81,23 @@ public class MechanicalGrindstoneBlock extends RotatedPillarKineticBlock impleme
                                 player.hurt(CEIDamageSources.grind(level), speed / 32f);
                             }
                         }
-                        return ItemInteractionResult.sidedSuccess(level.isClientSide);
+                        return InteractionResult.sidedSuccess(level.isClientSide);
                     }
                 }
             }
-            return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+            return InteractionResult.PASS;
         }
         if (player.isSecondaryUseActive())
-            return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+            return InteractionResult.PASS;
         if (Math.abs(blockEntity.getSpeed()) < 30)
-            return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+            return InteractionResult.PASS;
         var location = hitResult.getLocation();
         // Sandpaper Polishing
         if (SandPaperPolishingRecipe.canPolish(level, stack)) {
             var item = stack.getItem();
             var fake = player instanceof FakePlayer;
             if (!fake && player.getCooldowns().isOnCooldown(item))
-                return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+                return InteractionResult.PASS;
             var polished = SandPaperPolishingRecipe.applyPolish(level, Vec3.atCenterOf(pos), stack, null);
             if (!fake)
                 player.getCooldowns().addCooldown(item, 10);
@@ -115,7 +116,7 @@ public class MechanicalGrindstoneBlock extends RotatedPillarKineticBlock impleme
             var otherStack = player.getItemInHand(otherHand);
             var optional = GrindstoneHelper.grindItem(level, stack, otherStack);
             if (optional.isEmpty())
-                return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+                return InteractionResult.PASS;
             var result = optional.get();
             if (result.top().isEmpty()) {
                 player.setItemInHand(hand, result.output());
@@ -130,11 +131,11 @@ public class MechanicalGrindstoneBlock extends RotatedPillarKineticBlock impleme
                 ExperienceHelper.award(result.experience(), serverPlayer);
             level.levelEvent(1042, pos, 0);
         }
-        return ItemInteractionResult.sidedSuccess(level.isClientSide);
+        return InteractionResult.sidedSuccess(level.isClientSide);
     }
 
     @Override
-    protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
+    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
         return SHAPE.get(state.getValue(AXIS));
     }
 

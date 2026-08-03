@@ -20,16 +20,16 @@ package plus.dragons.createenchantmentindustry.integration.apotheosis.common.reg
 
 import com.simibubi.create.api.registry.CreateRegistries;
 import com.simibubi.create.content.kinetics.fan.processing.FanProcessingType;
-import net.neoforged.bus.api.IEventBus;
-import net.neoforged.neoforge.registries.DeferredHolder;
-import net.neoforged.neoforge.registries.DeferredRegister;
+import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.registries.RegistryObject;
 import plus.dragons.createenchantmentindustry.integration.apotheosis.common.kinetics.fan.salvaging.SalvagingFanProcessingType;
 import plus.dragons.createenchantmentindustry.integration.apothic_enchanting.common.CEIACommon;
 
 public class CEIAXFanProcessingTypes {
     private static final DeferredRegister<FanProcessingType> TYPES = DeferredRegister
             .create(CreateRegistries.FAN_PROCESSING_TYPE, CEIACommon.ID);
-    public static final DeferredHolder<FanProcessingType, SalvagingFanProcessingType> SALVAGING = TYPES
+    public static final RegistryObject<SalvagingFanProcessingType> SALVAGING = TYPES
             .register("salvaging", SalvagingFanProcessingType::new);
 
     public static void register(IEventBus modBus) {

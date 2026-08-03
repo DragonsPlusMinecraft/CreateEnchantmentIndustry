@@ -21,7 +21,6 @@ package plus.dragons.createenchantmentindustry.common.registry;
 import com.google.common.collect.Sets;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import com.mojang.serialization.JsonOps;
 import com.simibubi.create.AllItems;
 import com.simibubi.create.content.logistics.box.PackageStyles;
 import com.simibubi.create.foundation.advancement.AllTriggers;
@@ -32,11 +31,9 @@ import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.UnaryOperator;
 import net.minecraft.advancements.Advancement;
-import net.minecraft.advancements.AdvancementHolder;
+import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.advancements.critereon.MinMaxBounds;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.core.Registry;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.CachedOutput;
 import net.minecraft.data.DataProvider;
 import net.minecraft.data.PackOutput;
@@ -53,7 +50,7 @@ public class CEIAdvancements implements DataProvider {
     public static final List<CDPAdvancement> ENTRIES = new ArrayList<>();
     public static final CDPAdvancement START = null,
 
-            ROOT = create("root", b -> b.icon(CEIItems.EXPERIENCE_BUCKET)
+            ROOT = create("root", b -> b.icon(CEIItems.EXPERIENCE_BUCKET.get())
                     .title("Welcome to Create: Enchantment Industry")
                     .description("Road to master enchanting begins")
                     .awardedForFree()
@@ -260,23 +257,22 @@ public class CEIAdvancements implements DataProvider {
     @Override
     public CompletableFuture<?> run(CachedOutput cache) {
         return this.registries.thenCompose(provider -> {
-            PackOutput.PathProvider pathProvider = output.createPathProvider(PackOutput.Target.DATA_PACK, "advancement");
+            PackOutput.PathProvider pathProvider = output.createPathProvider(PackOutput.Target.DATA_PACK, "advancements");
             List<CompletableFuture<?>> futures = new ArrayList<>();
 
             Set<ResourceLocation> set = Sets.newHashSet();
-            Consumer<AdvancementHolder> consumer = (advancement) -> {
-                ResourceLocation id = advancement.id();
+            Consumer<Advancement> consumer = (advancement) -> {
+                ResourceLocation id = advancement.getId();
                 if (!set.add(id))
                     throw new IllegalStateException("Duplicate advancement " + id);
                 Path path = pathProvider.json(id);
                 LOGGER.info("Saving advancement {}", id);
                 if (isClassicBlazeEnchanterAdvancement(id)) {
-                    var result = Advancement.CODEC.encodeStart(provider.createSerializationContext(JsonOps.INSTANCE), advancement.value());
-                    var json = result.getOrThrow().getAsJsonObject();
-                    json.add("neoforge:conditions", classicBlazeEnchanterConditions());
+                    var json = advancement.deconstruct().serializeToJson();
+                    json.add("conditions", classicBlazeEnchanterConditions());
                     futures.add(DataProvider.saveStable(cache, json, path));
                 } else {
-                    futures.add(DataProvider.saveStable(cache, provider, Advancement.CODEC, advancement.value(), path));
+                    futures.add(DataProvider.saveStable(cache, advancement.deconstruct().serializeToJson(), path));
                 }
             };
 
@@ -315,18 +311,16 @@ public class CEIAdvancements implements DataProvider {
 
     @CodeReference(value = AllTriggers.class, source = "create", license = "mit")
     public static class BuiltinTriggersQuickDeploy {
-        private static final Map<ResourceLocation, BuiltinTrigger> triggers = new IdentityHashMap<>();
+        private static final Map<ResourceLocation, BuiltinTrigger> triggers = new LinkedHashMap<>();
 
         public static BuiltinTrigger add(ResourceLocation id) {
-            var instance = new BuiltinTrigger();
+            var instance = new BuiltinTrigger(id);
             triggers.put(id, instance);
             return instance;
         }
 
         public static void register() {
-            triggers.entrySet().forEach(set -> {
-                Registry.register(BuiltInRegistries.TRIGGER_TYPES, set.getKey(), set.getValue());
-            });
+            triggers.values().forEach(CriteriaTriggers::register);
         }
     }
 }

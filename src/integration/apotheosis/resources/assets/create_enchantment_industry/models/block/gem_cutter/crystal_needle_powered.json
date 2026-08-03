@@ -15,7 +15,7 @@
         "north": {"uv": [15, 10, 16, 15], "rotation": 90, "texture": "#4"},
         "south": {"uv": [15, 10, 16, 15], "rotation": 90, "texture": "#4"}
       },
-      "neoforge_data": {
+      "forge_data": {
         "block_light": 15,
         "sky_light": 15
       }
@@ -28,7 +28,7 @@
         "up": {"uv": [15, 10, 16, 15], "rotation": 270, "texture": "#4"},
         "down": {"uv": [15, 10, 16, 15], "rotation": 90, "texture": "#4"}
       },
-      "neoforge_data": {
+      "forge_data": {
         "block_light": 15,
         "sky_light": 15
       }

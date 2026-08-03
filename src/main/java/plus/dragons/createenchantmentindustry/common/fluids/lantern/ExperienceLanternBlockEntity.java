@@ -35,9 +35,11 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
-import net.neoforged.neoforge.capabilities.Capabilities;
-import net.neoforged.neoforge.fluids.FluidStack;
-import net.neoforged.neoforge.fluids.capability.IFluidHandler;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
+import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.capability.IFluidHandler;
 import org.jetbrains.annotations.Nullable;
 import plus.dragons.createdragonsplus.common.fluids.tank.ConfigurableFluidTank;
 import plus.dragons.createdragonsplus.common.fluids.tank.FluidTankBehaviour;
@@ -58,7 +60,7 @@ public class ExperienceLanternBlockEntity extends SmartBlockEntity implements IH
 
     protected ConfigurableFluidTank createTank(Consumer<FluidStack> fluidUpdateCallback) {
         return new ConfigurableFluidTank(CEIConfig.fluids().experienceLanternFluidCapacity.get(), fluidUpdateCallback.andThen(this::onFluidStackChanged))
-                .allowInsertion(fluidStack -> fluidStack.is(CEIFluids.EXPERIENCE));
+                .allowInsertion(fluidStack -> fluidStack.getFluid() == CEIFluids.EXPERIENCE.get());
     }
 
     @Override
@@ -86,7 +88,7 @@ public class ExperienceLanternBlockEntity extends SmartBlockEntity implements IH
                 else if (playerExp != 0) sum.addAndGet(playerExp);
             });
             if (sum.get() != 0) {
-                var inserted = tank.getPrimaryHandler().fill(new FluidStack(CEIFluids.EXPERIENCE, sum.get()), IFluidHandler.FluidAction.EXECUTE);
+                var inserted = tank.getPrimaryHandler().fill(new FluidStack(CEIFluids.EXPERIENCE.get(), sum.get()), IFluidHandler.FluidAction.EXECUTE);
                 if (inserted != 0) {
                     for (var player : players) {
                         var total = ExperienceHelper.getExperienceForPlayer(player);
@@ -138,7 +140,7 @@ public class ExperienceLanternBlockEntity extends SmartBlockEntity implements IH
                 if (orb.getDeltaMovement().length() <= .5) {
                     var pushForce = CEIConfig.fluids().experienceLanternPullForceMultiplier.get() * 1 / orb.position().distanceTo(getBlockPos().getCenter());
                     var directionToLantern = getBlockPos().getCenter().subtract(orb.position()).normalize().multiply(pushForce, pushForce, pushForce);
-                    orb.push(directionToLantern);
+                    orb.push(directionToLantern.x, directionToLantern.y, directionToLantern.z);
                 }
             }
         }
@@ -156,14 +158,17 @@ public class ExperienceLanternBlockEntity extends SmartBlockEntity implements IH
         level.setBlockAndUpdate(getBlockPos(), getBlockState().setValue(ExperienceLanternBlock.LIGHT, light));
     }
 
-    public @Nullable IFluidHandler getFluidHandler(@Nullable Direction side) {
-        if (side == null || side.getOpposite() == getBlockState().getValue(FACING))
-            return tank.getCapability();
-        return null;
+    @Override
+    public <T> LazyOptional<T> getCapability(Capability<T> capability, @Nullable Direction side) {
+        if (capability == ForgeCapabilities.FLUID_HANDLER
+                && tank != null
+                && (side == null || side.getOpposite() == getBlockState().getValue(FACING)))
+            return tank.getCapability().cast();
+        return super.getCapability(capability, side);
     }
 
     @Override
     public boolean addToGoggleTooltip(List<Component> tooltip, boolean isPlayerSneaking) {
-        return containedFluidTooltip(tooltip, isPlayerSneaking, level.getCapability(Capabilities.FluidHandler.BLOCK, worldPosition, null));
+        return containedFluidTooltip(tooltip, isPlayerSneaking, tank.getCapability().cast());
     }
 }

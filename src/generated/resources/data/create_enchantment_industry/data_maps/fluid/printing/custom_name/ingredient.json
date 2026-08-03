@@ -1,6 +1,6 @@
 {
-    "values": {
-        "#c:dyes": 250,
-        "create_enchantment_industry:experience": 10
-    }
+  "values": {
+    "#forge:dyes": 250,
+    "create_enchantment_industry:experience": 10
+  }
 }

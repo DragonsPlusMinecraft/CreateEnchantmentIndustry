@@ -18,20 +18,14 @@
 
 package plus.dragons.createenchantmentindustry.common.fluids.experience;
 
-import java.util.Optional;
-import net.minecraft.core.Holder;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.enchantment.EnchantedItemInUse;
-import net.minecraft.world.item.enchantment.EnchantmentEffectComponents;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
-import net.minecraft.world.item.enchantment.ItemEnchantments;
+import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.material.Fluid;
-import net.neoforged.neoforge.common.CommonHooks;
-import net.neoforged.neoforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidStack;
 import plus.dragons.createenchantmentindustry.common.registry.CEIDataMaps;
 import plus.dragons.createenchantmentindustry.common.registry.CEIFluids;
 
@@ -62,26 +56,26 @@ public class ExperienceHelper {
 
     public static int getExperienceFromFluid(FluidStack fluid) {
         if (fluid.isEmpty()) return 0;
-        if (fluid.is(CEIFluids.EXPERIENCE)) return fluid.getAmount();
+        if (fluid.getFluid() == CEIFluids.EXPERIENCE.get()) return fluid.getAmount();
         int amount = fluid.getAmount();
-        Integer unit = fluid.getFluidHolder().getData(CEIDataMaps.FLUID_UNIT_EXPERIENCE);
+        Integer unit = CEIDataMaps.FLUID_UNIT_EXPERIENCE.get(fluid.getFluid());
         if (unit == null)
             return 0;
         return amount / unit;
     }
 
     public static int getFluidFromExperience(FluidStack fluid, int amount) {
-        return getFluidFromExperience(fluid.getFluidHolder(), amount);
+        return getFluidFromExperience(fluid.getFluid(), amount);
     }
 
-    public static int getFluidFromExperience(Holder<Fluid> fluid, int amount) {
+    public static int getFluidFromExperience(Fluid fluid, int amount) {
         return getExperienceFluidUnit(fluid) * amount;
     }
 
-    public static int getExperienceFluidUnit(Holder<Fluid> fluid) {
-        if (fluid.equals(CEIFluids.EXPERIENCE))
+    public static int getExperienceFluidUnit(Fluid fluid) {
+        if (CEIFluids.EXPERIENCE.is(fluid))
             return 1;
-        Integer unit = fluid.getData(CEIDataMaps.FLUID_UNIT_EXPERIENCE);
+        Integer unit = CEIDataMaps.FLUID_UNIT_EXPERIENCE.get(fluid);
         return unit == null ? 0 : unit;
     }
 
@@ -93,19 +87,11 @@ public class ExperienceHelper {
     public static boolean canRepairItem(ItemStack stack) {
         if (!stack.isDamaged())
             return false;
-        var lookup = CommonHooks.resolveLookup(Registries.ENCHANTMENT);
-        if (lookup == null)
-            return false;
-        ItemEnchantments enchantments = stack.getAllEnchantments(lookup);
-        for (var enchantment : enchantments.keySet()) {
-            if (enchantment.value().effects().has(EnchantmentEffectComponents.REPAIR_WITH_XP))
-                return true;
-        }
-        return false;
+        return EnchantmentHelper.getItemEnchantmentLevel(Enchantments.MENDING, stack) > 0;
     }
 
     public static int repairItem(int amount, ServerLevel level, ItemStack stack, boolean simulate) {
-        int repairing = EnchantmentHelper.modifyDurabilityToRepairFromXp(level, stack, (int) (amount * stack.getXpRepairRatio()));
+        int repairing = (int) (amount * stack.getXpRepairRatio());
         int repaired = Math.min(repairing, stack.getDamageValue());
         if (repaired == 0)
             return 0;
@@ -116,9 +102,9 @@ public class ExperienceHelper {
     }
 
     public static int repairPlayerItems(ServerPlayer player, int amount) {
-        Optional<EnchantedItemInUse> optional = EnchantmentHelper.getRandomItemWith(EnchantmentEffectComponents.REPAIR_WITH_XP, player, ItemStack::isDamaged);
-        if (optional.isPresent()) {
-            ItemStack stack = optional.get().itemStack();
+        var entry = EnchantmentHelper.getRandomItemWith(Enchantments.MENDING, player, ItemStack::isDamaged);
+        if (entry != null) {
+            ItemStack stack = entry.getValue();
             int consumed = repairItem(amount, player.serverLevel(), stack, false);
             return amount > consumed
                     ? repairPlayerItems(player, amount - consumed)

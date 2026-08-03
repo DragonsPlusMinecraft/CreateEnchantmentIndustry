@@ -18,7 +18,6 @@
 
 package plus.dragons.createenchantmentindustry.common.processing.classic_enchanter;
 
-import com.simibubi.create.content.kinetics.mechanicalArm.ArmBlockEntity;
 import com.simibubi.create.content.kinetics.mechanicalArm.ArmInteractionPoint;
 import com.simibubi.create.content.kinetics.mechanicalArm.ArmInteractionPointType;
 import net.minecraft.core.BlockPos;
@@ -39,7 +38,7 @@ public class ClassicBlazeEnchanterArmInteractionPoint extends ArmInteractionPoin
     }
 
     @Override
-    public ItemStack insert(ArmBlockEntity armBlockEntity, ItemStack stack, boolean simulate) {
+    public ItemStack insert(ItemStack stack, boolean simulate) {
         if (!CEIConfig.features().classicBlazeEnchanter.get())
             return stack;
         if (!(level.getBlockEntity(pos) instanceof ClassicBlazeEnchanterBlockEntity enchanter)) {
@@ -63,7 +62,7 @@ public class ClassicBlazeEnchanterArmInteractionPoint extends ArmInteractionPoin
     }
 
     @Override
-    public ItemStack extract(ArmBlockEntity armBlockEntity, int slot, int amount, boolean simulate) {
+    public ItemStack extract(int slot, int amount, boolean simulate) {
         if (!CEIConfig.features().classicBlazeEnchanter.get())
             return ItemStack.EMPTY;
         if (level.getBlockEntity(pos) instanceof ClassicBlazeEnchanterBlockEntity enchanter) {
@@ -73,7 +72,7 @@ public class ClassicBlazeEnchanterArmInteractionPoint extends ArmInteractionPoin
     }
 
     @Override
-    public int getSlotCount(ArmBlockEntity armBlockEntity) {
+    public int getSlotCount() {
         return 1;
     }
 

@@ -3,7 +3,8 @@
   "priority": 1100,
   "package": "plus.dragons.createenchantmentindustry.integration.touhou_little_maid.mixin",
   "plugin": "plus.dragons.createdragonsplus.mixin.CDPMixinConfigPlugin",
-  "compatibilityLevel": "JAVA_16",
+  "refmap": "create_enchantment_industry.touhou_little_maid.refmap.json",
+  "compatibilityLevel": "JAVA_17",
   "mixins": [
     "ExperienceLanternBlockEntityMixin",
     "ExperienceLanternMovementBehaviourMixin"

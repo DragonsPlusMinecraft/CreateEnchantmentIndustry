@@ -22,49 +22,49 @@ import com.simibubi.create.AllBlocks;
 import com.simibubi.create.AllRecipeTypes;
 import com.simibubi.create.compat.jei.category.sequencedAssembly.SequencedAssemblySubCategory;
 import com.simibubi.create.content.equipment.sandPaper.SandPaperPolishingRecipe;
-import com.simibubi.create.content.processing.recipe.ProcessingRecipeParams;
-import com.simibubi.create.content.processing.recipe.StandardProcessingRecipe;
+import com.simibubi.create.content.processing.recipe.ProcessingRecipe;
+import com.simibubi.create.content.processing.recipe.ProcessingRecipeBuilder;
+import com.simibubi.create.content.processing.recipe.ProcessingRecipeBuilder.ProcessingRecipeParams;
 import com.simibubi.create.content.processing.sequenced.IAssemblyRecipe;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Supplier;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.Container;
 import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.item.crafting.RecipeHolder;
-import net.minecraft.world.item.crafting.SingleRecipeInput;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.Level;
-import net.neoforged.neoforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidStack;
 import plus.dragons.createenchantmentindustry.common.registry.CEIBlocks;
 import plus.dragons.createenchantmentindustry.common.registry.CEIRecipes;
 import plus.dragons.createenchantmentindustry.integration.jei.category.assembly.AssemblyGrindingCategory;
 import plus.dragons.createenchantmentindustry.util.CEILang;
 
-public class GrindingRecipe extends StandardProcessingRecipe<SingleRecipeInput> implements IAssemblyRecipe {
+public class GrindingRecipe extends ProcessingRecipe<Container> implements IAssemblyRecipe {
     public GrindingRecipe(ProcessingRecipeParams params) {
         super(CEIRecipes.GRINDING, params);
-        if (fluidIngredients.size() + fluidResults.size() > 1)
-            throw new IllegalArgumentException("Grinding recipe can only have either 1 fluid input or 1 fluid result");
-    }
-
-    public static StandardProcessingRecipe.Builder<GrindingRecipe> builder(ResourceLocation id) {
-        return new StandardProcessingRecipe.Builder<>(GrindingRecipe::new, id);
-    }
-
-    public static Optional<RecipeHolder<GrindingRecipe>> fromPolishing(RecipeHolder<SandPaperPolishingRecipe> recipe) {
-        if (AllRecipeTypes.CAN_BE_AUTOMATED.test(recipe)) {
-            var id = recipe.id().withSuffix("_using_grindstone");
-            var polishing = recipe.value();
-            var grinding = builder(id)
-                    .require(polishing.getIngredients().getFirst())
-                    .output(polishing.getRollableResults().getFirst())
-                    .build();
-            return Optional.of(new RecipeHolder<>(id, grinding));
+        if (fluidIngredients.size() + fluidResults.size() > 1) {
+            throw new IllegalArgumentException("Grinding recipe can only have either one fluid input or one fluid result");
         }
-        return Optional.empty();
+    }
+
+    public static ProcessingRecipeBuilder<GrindingRecipe> builder(ResourceLocation id) {
+        return new ProcessingRecipeBuilder<>(GrindingRecipe::new, id);
+    }
+
+    public static Optional<GrindingRecipe> fromPolishing(SandPaperPolishingRecipe recipe) {
+        if (!AllRecipeTypes.CAN_BE_AUTOMATED.test(recipe)) {
+            return Optional.empty();
+        }
+        ResourceLocation id = new ResourceLocation(
+                recipe.getId().getNamespace(), recipe.getId().getPath() + "_using_grindstone");
+        GrindingRecipe grinding = builder(id)
+                .require(recipe.getIngredients().get(0))
+                .output(recipe.getRollableResults().get(0))
+                .build();
+        return Optional.of(grinding);
     }
 
     @Override
@@ -78,6 +78,11 @@ public class GrindingRecipe extends StandardProcessingRecipe<SingleRecipeInput> 
     }
 
     @Override
+    protected int getMaxFluidInputCount() {
+        return 1;
+    }
+
+    @Override
     protected int getMaxFluidOutputCount() {
         return 1;
     }
@@ -88,28 +93,28 @@ public class GrindingRecipe extends StandardProcessingRecipe<SingleRecipeInput> 
     }
 
     @Override
-    public boolean matches(SingleRecipeInput input, Level level) {
-        return ingredients.getFirst().test(input.item());
+    public boolean matches(Container input, Level level) {
+        return !ingredients.isEmpty() && ingredients.get(0).test(input.getItem(0));
     }
 
     @Override
     public Component getDescriptionForAssembly() {
         if (fluidIngredients.isEmpty()) {
             return CEILang.translate("recipe.assembly.grinding").component();
-        } else {
-            List<FluidStack> matchingFluidStacks = Arrays.asList(fluidIngredients.getFirst().getFluids());
-            if (matchingFluidStacks.isEmpty()) {
-                return Component.literal("Invalid");
-            }
-            return CEILang.translate("recipe.assembly.grinding.needs_fluid",
-                    matchingFluidStacks.getFirst().getHoverName()).component();
         }
+        List<FluidStack> matchingFluids = fluidIngredients.get(0).getMatchingFluidStacks();
+        if (matchingFluids.isEmpty()) {
+            return Component.literal("Invalid");
+        }
+        return CEILang.translate(
+                "recipe.assembly.grinding.needs_fluid", matchingFluids.get(0).getDisplayName())
+                .component();
     }
 
     @Override
     public void addRequiredMachines(Set<ItemLike> required) {
-        required.add(CEIBlocks.MECHANICAL_GRINDSTONE);
-        required.add(AllBlocks.ITEM_DRAIN);
+        required.add(CEIBlocks.MECHANICAL_GRINDSTONE.get());
+        required.add(AllBlocks.ITEM_DRAIN.get());
     }
 
     @Override

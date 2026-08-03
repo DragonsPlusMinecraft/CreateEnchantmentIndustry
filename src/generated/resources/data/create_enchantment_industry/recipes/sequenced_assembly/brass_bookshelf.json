@@ -1,0 +1,83 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "apotheosis"
+        },
+        {
+          "type": "create_enchantment_industry:apotheosis_module",
+          "module": "enchantment"
+        }
+      ],
+      "recipe": {
+        "type": "create:sequenced_assembly",
+        "ingredient": {
+          "item": "apotheosis:pearl_endshelf"
+        },
+        "loops": 3,
+        "results": [
+          {
+            "item": "create_enchantment_industry:brass_bookshelf"
+          }
+        ],
+        "sequence": [
+          {
+            "type": "create:deploying",
+            "ingredients": [
+              {
+                "item": "create_enchantment_industry:incomplete_brass_bookshelf"
+              },
+              {
+                "item": "create:brass_ingot"
+              }
+            ],
+            "results": [
+              {
+                "item": "create_enchantment_industry:incomplete_brass_bookshelf"
+              }
+            ]
+          },
+          {
+            "type": "create:filling",
+            "ingredients": [
+              {
+                "item": "create_enchantment_industry:incomplete_brass_bookshelf"
+              },
+              {
+                "amount": 250,
+                "fluidTag": "create_enchantment_industry:infusing/ingredients"
+              }
+            ],
+            "results": [
+              {
+                "item": "create_enchantment_industry:incomplete_brass_bookshelf"
+              }
+            ]
+          },
+          {
+            "type": "create:deploying",
+            "ingredients": [
+              {
+                "item": "create_enchantment_industry:incomplete_brass_bookshelf"
+              },
+              {
+                "item": "create:precision_mechanism"
+              }
+            ],
+            "results": [
+              {
+                "item": "create_enchantment_industry:incomplete_brass_bookshelf"
+              }
+            ]
+          }
+        ],
+        "transitionalItem": {
+          "item": "create_enchantment_industry:incomplete_brass_bookshelf"
+        }
+      }
+    }
+  ]
+}

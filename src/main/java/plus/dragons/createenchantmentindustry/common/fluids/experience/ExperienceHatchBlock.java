@@ -18,7 +18,6 @@
 
 package plus.dragons.createenchantmentindustry.common.fluids.experience;
 
-import com.mojang.serialization.MapCodec;
 import com.simibubi.create.AllShapes;
 import com.simibubi.create.content.equipment.wrench.IWrenchable;
 import com.simibubi.create.foundation.block.IBE;
@@ -27,6 +26,7 @@ import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -44,19 +44,17 @@ import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.neoforged.neoforge.capabilities.Capabilities.FluidHandler;
-import net.neoforged.neoforge.common.util.FakePlayer;
-import net.neoforged.neoforge.fluids.FluidStack;
-import net.neoforged.neoforge.fluids.capability.IFluidHandler;
-import net.neoforged.neoforge.fluids.capability.IFluidHandler.FluidAction;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
+import net.minecraftforge.common.util.FakePlayer;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
 import org.jetbrains.annotations.Nullable;
 import plus.dragons.createenchantmentindustry.common.registry.CEIAdvancements;
 import plus.dragons.createenchantmentindustry.common.registry.CEIBlockEntities;
 
 public class ExperienceHatchBlock extends HorizontalDirectionalBlock
         implements IBE<ExperienceHatchBlockEntity>, IWrenchable, ProperWaterloggedBlock {
-    public static final MapCodec<ExperienceHatchBlock> CODEC = simpleCodec(ExperienceHatchBlock::new);
-
     public ExperienceHatchBlock(Properties properties) {
         super(properties);
         registerDefaultState(defaultBlockState().setValue(WATERLOGGED, false));
@@ -90,7 +88,9 @@ public class ExperienceHatchBlock extends HorizontalDirectionalBlock
     }
 
     @Override
-    protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hitResult) {
+    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
+        if (!player.getItemInHand(hand).isEmpty())
+            return InteractionResult.PASS;
         if (level.isClientSide())
             return InteractionResult.SUCCESS;
 
@@ -101,7 +101,7 @@ public class ExperienceHatchBlock extends HorizontalDirectionalBlock
         if (blockEntity == null)
             return InteractionResult.PASS;
 
-        IFluidHandler tankCapability = level.getCapability(FluidHandler.BLOCK, blockEntity.getBlockPos(), null);
+        IFluidHandler tankCapability = blockEntity.getCapability(ForgeCapabilities.FLUID_HANDLER, null).orElse(null);
         if (tankCapability == null)
             return InteractionResult.PASS;
 
@@ -130,7 +130,9 @@ public class ExperienceHatchBlock extends HorizontalDirectionalBlock
             blockEntity.setChanged();
             if (level instanceof ServerLevel serverLevel)
                 serverLevel.getChunkSource().blockChanged(blockEntity.getBlockPos());
-            experience = ExperienceHelper.getExperienceFromFluid(fluid.copyWithAmount(filled));
+            FluidStack insertedFluid = fluid.copy();
+            insertedFluid.setAmount(filled);
+            experience = ExperienceHelper.getExperienceFromFluid(insertedFluid);
             player.giveExperiencePoints(-experience);
             CEIAdvancements.SPIRIT_TAKING.awardTo(player);
             return InteractionResult.SUCCESS;
@@ -158,12 +160,7 @@ public class ExperienceHatchBlock extends HorizontalDirectionalBlock
     }
 
     @Override
-    protected boolean isPathfindable(BlockState state, PathComputationType pathComputationType) {
+    public boolean isPathfindable(BlockState state, BlockGetter level, BlockPos pos, PathComputationType pathComputationType) {
         return false;
-    }
-
-    @Override
-    protected MapCodec<? extends HorizontalDirectionalBlock> codec() {
-        return CODEC;
     }
 }

@@ -60,7 +60,7 @@ public class AffixAugmentorRenderer extends LowerBeltCopperCasingAndSupportRende
         CachedBuffers.partialFacing(plate, state, facing)
                 .light(light)
                 .translate(0, plateOffset, 0)
-                .renderInto(poseStack, buffer.getBuffer(RenderType.CUTOUT_MIPPED));
+                .renderInto(poseStack, buffer.getBuffer(RenderType.cutoutMipped()));
 
         if (unready <= 0.8) {
             float bColOffset = 0;
@@ -70,7 +70,7 @@ public class AffixAugmentorRenderer extends LowerBeltCopperCasingAndSupportRende
             CachedBuffers.partialFacing(CEIAXPartialModels.AFFIX_AUGMENTOR_BIG_COLUMN, state, facing)
                     .light(light)
                     .translate(0, bColOffset, 0)
-                    .renderInto(poseStack, buffer.getBuffer(RenderType.CUTOUT_MIPPED));
+                    .renderInto(poseStack, buffer.getBuffer(RenderType.cutoutMipped()));
 
             if (unready <= 0.5) {
                 float sColOffset = 0;
@@ -80,7 +80,7 @@ public class AffixAugmentorRenderer extends LowerBeltCopperCasingAndSupportRende
                 CachedBuffers.partialFacing(CEIAXPartialModels.AFFIX_AUGMENTOR_SMALL_COLUMN, state, facing)
                         .light(light)
                         .translate(0, sColOffset, 0)
-                        .renderInto(poseStack, buffer.getBuffer(RenderType.CUTOUT_MIPPED));
+                        .renderInto(poseStack, buffer.getBuffer(RenderType.cutoutMipped()));
 
                 if (unready <= 0.35) {
                     float needleOffset = 0;
@@ -93,7 +93,7 @@ public class AffixAugmentorRenderer extends LowerBeltCopperCasingAndSupportRende
                             .scale(1 - unready)
                             .translate(0, needleOffset, 0)
                             .uncenter()
-                            .renderInto(poseStack, buffer.getBuffer(RenderType.CUTOUT_MIPPED));
+                            .renderInto(poseStack, buffer.getBuffer(RenderType.cutoutMipped()));
 
                 }
             }

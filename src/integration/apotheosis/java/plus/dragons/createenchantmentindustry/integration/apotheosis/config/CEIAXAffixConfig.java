@@ -165,7 +165,7 @@ public class CEIAXAffixConfig extends ConfigBase {
         static final String crystalAffixTemplateCostMultiplier = "Cost multiplier for operations using Crystal Affix Templates.";
         static final String apotheoticAffixTemplateCostMultiplier = "Cost multiplier for operations using Apotheotic Affix Templates.";
         static final String statAffixTypeCostMultiplier = "Cost multiplier for STAT affixes.";
-        static final String basicEffectAffixTypeCostMultiplier = "Cost multiplier for BASIC_EFFECT affixes.";
+        static final String basicEffectAffixTypeCostMultiplier = "Cost multiplier for POTION affixes.";
         static final String abilityAffixTypeCostMultiplier = "Cost multiplier for ABILITY affixes.";
         static final String affixAugmentorCostMultiplier = "Global multiplier for Affix Augmentor costs after Apotheosis upgrade reference, level delta, and datapack rule multipliers are applied.";
         static final String affixAugmentorMaxLevel = "The maximum affix level the Affix Augmentor can reach. Default: 1.0, matching standard Apotheosis Augmenting Table upgrades.";

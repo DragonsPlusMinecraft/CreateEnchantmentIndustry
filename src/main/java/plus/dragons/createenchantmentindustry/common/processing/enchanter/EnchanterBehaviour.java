@@ -34,20 +34,17 @@ import java.util.List;
 import net.createmod.catnip.lang.LangBuilder;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.Direction;
-import net.minecraft.core.HolderLookup.Provider;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.tags.EnchantmentTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.enchantment.Enchantment;
-import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.EnchantmentInstance;
 import net.minecraft.world.phys.BlockHitResult;
+import plus.dragons.createenchantmentindustry.common.item.CEIItemData;
 import plus.dragons.createenchantmentindustry.common.processing.enchanter.behaviour.EnchantingBehaviour;
 import plus.dragons.createenchantmentindustry.common.processing.enchanter.behaviour.TemplateEnchantingBehaviour;
 import plus.dragons.createenchantmentindustry.util.CEILang;
@@ -114,7 +111,7 @@ public class EnchanterBehaviour extends ScrollValueBehaviour implements IHaveGog
         if (stack.isEmpty()) {
             template = ItemStack.EMPTY;
             enchanting = new EnchantingBehaviour();
-        } else if (stack.isEnchantable()) {
+        } else if (stack.getItem() instanceof EnchantingTemplateItem) {
             template = stack;
             enchanting = new TemplateEnchantingBehaviour(template);
         } else return false;
@@ -162,7 +159,9 @@ public class EnchanterBehaviour extends ScrollValueBehaviour implements IHaveGog
             level.playSound(null, pos, SoundEvents.ITEM_FRAME_REMOVE_ITEM, SoundSource.BLOCKS, .25f, .1f);
             return;
         }
-        if (!setTemplate(stack.copyWithCount(1))) {
+        ItemStack template = stack.copy();
+        template.setCount(1);
+        if (!setTemplate(template)) {
             player.displayClientMessage(CEILang.translate("gui.blaze_enchanter.template.invalid").component(), true);
             AllSoundEvents.DENY.playOnServer(player.level(), player.blockPosition(), 1, 1);
             return;
@@ -171,20 +170,20 @@ public class EnchanterBehaviour extends ScrollValueBehaviour implements IHaveGog
     }
 
     @Override
-    public void write(CompoundTag nbt, Provider registries, boolean clientPacket) {
+    public void write(CompoundTag nbt, boolean clientPacket) {
         nbt.putInt(LEVEL, value);
-        nbt.put(TEMPLATE, template.saveOptional(registries));
+        nbt.put(TEMPLATE, template.save(new CompoundTag()));
     }
 
     @Override
-    public void writeSafe(CompoundTag nbt, Provider registries) {
+    public void writeSafe(CompoundTag nbt) {
         nbt.putInt(LEVEL, value);
     }
 
     @Override
-    public void read(CompoundTag nbt, Provider registries, boolean clientPacket) {
-        value = Math.clamp(nbt.getInt(LEVEL), 0, enchanter.getMaxEnchantLevel());
-        loadTemplate(ItemStack.parseOptional(registries, nbt.getCompound(TEMPLATE)));
+    public void read(CompoundTag nbt, boolean clientPacket) {
+        value = Mth.clamp(nbt.getInt(LEVEL), 0, enchanter.getMaxEnchantLevel());
+        loadTemplate(ItemStack.of(nbt.getCompound(TEMPLATE)));
     }
 
     @Override
@@ -225,7 +224,9 @@ public class EnchanterBehaviour extends ScrollValueBehaviour implements IHaveGog
             addModeHelp(tooltip);
             return true;
         }
-        if (enchanter.processingTime == -1 && !EnchantmentHelper.getEnchantmentsForCrafting(enchanter.heldItem).isEmpty()) {
+        if (enchanter.processingTime == -1
+                && (!CEIItemData.getEnchantments(enchanter.heldItem).isEmpty()
+                        || !CEIItemData.getStoredEnchantments(enchanter.heldItem).isEmpty())) {
             CEILang.translate("gui.goggles.enchanting.completed").style(ChatFormatting.GREEN).forGoggles(tooltip);
             return true;
         }
@@ -270,11 +271,11 @@ public class EnchanterBehaviour extends ScrollValueBehaviour implements IHaveGog
         int limit = isPlayerSneaking ? available.size() : Math.min(available.size(), 6);
         for (int i = 0; i < limit; i++) {
             EnchantmentInstance instance = available.get(i);
-            var name = Enchantment.getFullname(instance.enchantment, instance.level).copy();
-            if (instance.enchantment.is(EnchantmentTags.CURSE)) {
+            var name = instance.enchantment.getFullname(instance.level).copy();
+            if (instance.enchantment.isCurse()) {
                 name.append(" ?");
             }
-            ChatFormatting style = instance.enchantment.is(EnchantmentTags.CURSE)
+            ChatFormatting style = instance.enchantment.isCurse()
                     ? ChatFormatting.RED
                     : ChatFormatting.GRAY;
             CEILang.builder().add(name).style(style).forGoggles(tooltip, 1);

@@ -20,10 +20,10 @@ package plus.dragons.createenchantmentindustry.common.processing.enchanter;
 
 import com.google.common.collect.Lists;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Stream;
 import javax.annotation.Nullable;
-import net.minecraft.core.Holder;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.random.WeightedRandom;
@@ -31,26 +31,24 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.EnchantmentInstance;
-import net.minecraft.world.item.enchantment.ItemEnchantments;
 import plus.dragons.createenchantmentindustry.common.fluids.experience.ExperienceHelper;
 import plus.dragons.createenchantmentindustry.common.processing.EnchantmentProcessingRules;
 import plus.dragons.createenchantmentindustry.config.CEIConfig;
 
 public class CEIEnchantmentHelper {
     @Nullable
-    public static Function<Holder<Enchantment>, Integer> alternativeMaxLevel;
+    public static Function<Enchantment, Integer> alternativeMaxLevel;
 
-    public static int getEnchantmentCost(Holder<Enchantment> holder, int level) {
-        var enchantment = holder.value();
+    public static int getEnchantmentCost(Enchantment enchantment, int level) {
         int cost = ExperienceHelper.getExperienceForNextLevel(enchantment.getMinCost(level));
         if (level == 1)
             return cost;
-        return cost + getEnchantmentCost(holder, level - 1);
+        return cost + getEnchantmentCost(enchantment, level - 1);
     }
 
-    public static int getEnchantmentCost(ItemEnchantments enchantments) {
+    public static int getEnchantmentCost(Map<Enchantment, Integer> enchantments) {
         return enchantments.entrySet().stream()
-                .mapToInt(entry -> getEnchantmentCost(entry.getKey(), entry.getIntValue()))
+                .mapToInt(entry -> getEnchantmentCost(entry.getKey(), entry.getValue()))
                 .sum();
     }
 
@@ -63,16 +61,15 @@ public class CEIEnchantmentHelper {
         return level;
     }
 
-    public static List<EnchantmentInstance> getAvailableEnchantmentResults(int level, Stream<Holder<Enchantment>> possibleEnchantments, boolean special) {
+    public static List<EnchantmentInstance> getAvailableEnchantmentResults(int level, Stream<Enchantment> possibleEnchantments, boolean special) {
         List<EnchantmentInstance> list = Lists.newArrayList();
-        possibleEnchantments.forEach(holder -> {
-            Enchantment enchantment = holder.value();
-            int maxLevel = maxLevel(holder);
+        possibleEnchantments.forEach(enchantment -> {
+            int maxLevel = maxLevel(enchantment);
             if (special)
-                maxLevel += EnchantmentProcessingRules.blazeEnchanterLevelExtension(holder);
+                maxLevel += EnchantmentProcessingRules.blazeEnchanterLevelExtension(enchantment);
             for (int i = maxLevel; i >= enchantment.getMinLevel(); i--) {
                 if (level >= enchantment.getMinCost(i) && level <= enchantment.getMaxCost(i)) {
-                    list.add(new EnchantmentInstance(holder, i));
+                    list.add(new EnchantmentInstance(enchantment, i));
                     break;
                 }
             }
@@ -80,15 +77,14 @@ public class CEIEnchantmentHelper {
         return list;
     }
 
-    public static List<EnchantmentInstance> getAvailablePenaltyCurseResults(Stream<Holder<Enchantment>> possibleEnchantments, int maxPenaltyLevel) {
+    public static List<EnchantmentInstance> getAvailablePenaltyCurseResults(Stream<Enchantment> possibleEnchantments, int maxPenaltyLevel) {
         List<EnchantmentInstance> list = Lists.newArrayList();
         if (maxPenaltyLevel <= 0)
             return list;
-        possibleEnchantments.forEach(holder -> {
-            Enchantment enchantment = holder.value();
-            int level = Math.min(maxLevel(holder), maxPenaltyLevel);
+        possibleEnchantments.forEach(enchantment -> {
+            int level = Math.min(maxLevel(enchantment), maxPenaltyLevel);
             if (level >= enchantment.getMinLevel())
-                list.add(new EnchantmentInstance(holder, level));
+                list.add(new EnchantmentInstance(enchantment, level));
         });
         return list;
     }
@@ -100,9 +96,9 @@ public class CEIEnchantmentHelper {
         while (random.nextInt(50) <= adjustedLevel) {
             if (!list.isEmpty())
                 if (special && CEIConfig.enchantments().ignoreEnchantmentCompatibility.get()) {
-                    available.removeIf(instance -> instance.enchantment.equals(list.getLast().enchantment));
+                    available.removeIf(instance -> instance.enchantment.equals(list.get(list.size() - 1).enchantment));
                 } else {
-                    EnchantmentHelper.filterCompatibleEnchantments(available, list.getLast());
+                    EnchantmentHelper.filterCompatibleEnchantments(available, list.get(list.size() - 1));
                 }
             if (available.isEmpty())
                 break;
@@ -112,13 +108,22 @@ public class CEIEnchantmentHelper {
         return list;
     }
 
-    public static int maxLevel(Holder<Enchantment> enchantment) {
-        if (alternativeMaxLevel == null) return enchantment.value().getMaxLevel();
+    public static int maxLevel(Enchantment enchantment) {
+        if (alternativeMaxLevel == null) return enchantment.getMaxLevel();
         return alternativeMaxLevel.apply(enchantment);
     }
 
+    public static int anvilCost(Enchantment enchantment) {
+        return switch (enchantment.getRarity()) {
+            case COMMON -> 1;
+            case UNCOMMON -> 2;
+            case RARE -> 4;
+            case VERY_RARE -> 8;
+        };
+    }
+
     @Deprecated(forRemoval = false)
-    public static int levelExtension(Holder<Enchantment> enchantment) {
+    public static int levelExtension(Enchantment enchantment) {
         // Legacy ABI entry point. New code should call the machine-specific rule helpers directly.
         return EnchantmentProcessingRules.blazeForgerLevelExtension(enchantment);
     }

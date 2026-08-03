@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "-": {
+      "tag": "forge:plates/brass"
+    },
+    "=": {
+      "tag": "forge:storage_blocks/iron"
+    },
+    "o": {
+      "item": "create:spout"
+    }
+  },
+  "pattern": [
+    "-",
+    "o",
+    "="
+  ],
+  "result": {
+    "item": "create_enchantment_industry:printer"
+  },
+  "show_notification": true
+}

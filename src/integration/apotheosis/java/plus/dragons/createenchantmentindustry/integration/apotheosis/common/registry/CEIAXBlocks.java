@@ -19,7 +19,6 @@
 package plus.dragons.createenchantmentindustry.integration.apotheosis.common.registry;
 
 import static com.simibubi.create.foundation.data.ModelGen.customItemModel;
-import static com.simibubi.create.foundation.data.TagGen.pickaxeOnly;
 import static plus.dragons.createenchantmentindustry.integration.apothic_enchanting.common.CEIACommon.REGISTRATE;
 
 import com.simibubi.create.AllTags.AllBlockTags;
@@ -31,16 +30,18 @@ import com.tterrag.registrate.providers.RegistrateTagsProvider;
 import com.tterrag.registrate.util.entry.BlockEntry;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.material.MapColor;
-import net.neoforged.bus.api.IEventBus;
+import net.minecraftforge.eventbus.api.IEventBus;
 import plus.dragons.createdragonsplus.common.processing.blaze.BlazeBlock;
 import plus.dragons.createdragonsplus.common.processing.blaze.BlazeMovementBehaviour;
 import plus.dragons.createdragonsplus.data.tag.IntrinsicTagRegistry;
 import plus.dragons.createenchantmentindustry.integration.apotheosis.common.kinetics.belt.lowerProcessingAppliance.LowerAssemblyOperatorBlockItem;
 import plus.dragons.createenchantmentindustry.integration.apotheosis.common.processing.affix.affixEnhancer.AffixAugmentorBlock;
 import plus.dragons.createenchantmentindustry.integration.apotheosis.common.processing.affix.blazeComposer.BlazeComposerBlock;
+import plus.dragons.createenchantmentindustry.integration.apotheosis.common.processing.affix.blazeComposer.BlazeComposerBlockItem;
 import plus.dragons.createenchantmentindustry.integration.apotheosis.common.processing.socket.gem.gemCutter.GemCutterBlock;
 import plus.dragons.createenchantmentindustry.integration.apothic_enchanting.common.CEIACommon;
 
@@ -48,9 +49,7 @@ import plus.dragons.createenchantmentindustry.integration.apothic_enchanting.com
 public class CEIAXBlocks {
     public static final BlockEntry<GemCutterBlock> GEM_CUTTER = REGISTRATE
             .block("gem_cutter", GemCutterBlock::new)
-            .asOptional()
             .initialProperties(SharedProperties::softMetal)
-            .transform(pickaxeOnly())
             .blockstate((ctx, prov) -> prov.horizontalBlock(ctx.getEntry(), AssetLookup.partialBaseModel(ctx, prov)))
             .item(LowerAssemblyOperatorBlockItem::new)
             .transform(customItemModel())
@@ -58,9 +57,7 @@ public class CEIAXBlocks {
 
     public static final BlockEntry<AffixAugmentorBlock> AFFIX_AUGMENTOR = REGISTRATE
             .block("affix_augmentor", AffixAugmentorBlock::new)
-            .asOptional()
             .initialProperties(SharedProperties::softMetal)
-            .transform(pickaxeOnly())
             .blockstate((ctx, prov) -> prov.horizontalBlock(ctx.getEntry(), AssetLookup.partialBaseModel(ctx, prov)))
             .item(LowerAssemblyOperatorBlockItem::new)
             .transform(customItemModel())
@@ -68,17 +65,14 @@ public class CEIAXBlocks {
 
     public static final BlockEntry<BlazeComposerBlock> BLAZE_COMPOSER = REGISTRATE
             .block("blaze_composer", BlazeComposerBlock::new)
-            .asOptional()
             .initialProperties(SharedProperties::softMetal)
             .properties(p -> p.mapColor(MapColor.COLOR_GRAY).lightLevel(BlazeBlock::getLight))
-            .transform(pickaxeOnly())
             .addLayer(() -> RenderType::cutoutMipped)
             .onRegister(block -> MovementBehaviour.REGISTRY.register(block, new BlazeMovementBehaviour()))
-            .tag(AllBlockTags.FAN_TRANSPARENT.tag, AllBlockTags.FAN_PROCESSING_CATALYSTS_SMOKING.tag)
             .blockstate((ctx, prov) -> prov.horizontalBlock(
                     ctx.getEntry(),
                     prov.models().getExistingFile(Create.asResource("block/blaze_burner/block"))))
-            .item()
+            .item(BlazeComposerBlockItem::new)
             .model((ctx, prov) -> prov.withExistingParent(ctx.getName(),
                     Create.asResource("block/blaze_burner/block_with_blaze")))
             .build()
@@ -95,6 +89,11 @@ public class CEIAXBlocks {
 
         public ModTags() {
             super(CEIACommon.ID, Registries.BLOCK);
+            addOptional(BlockTags.MINEABLE_WITH_PICKAXE, GEM_CUTTER.getId());
+            addOptional(BlockTags.MINEABLE_WITH_PICKAXE, AFFIX_AUGMENTOR.getId());
+            addOptional(BlockTags.MINEABLE_WITH_PICKAXE, BLAZE_COMPOSER.getId());
+            addOptional(AllBlockTags.FAN_TRANSPARENT.tag, BLAZE_COMPOSER.getId());
+            addOptional(AllBlockTags.FAN_PROCESSING_CATALYSTS_SMOKING.tag, BLAZE_COMPOSER.getId());
         }
 
         @Override

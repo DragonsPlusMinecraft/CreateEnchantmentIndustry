@@ -18,50 +18,47 @@
 
 package plus.dragons.createenchantmentindustry.integration.apothic_enchanting.common.processing.infuser;
 
-import com.mojang.serialization.Codec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.simibubi.create.api.equipment.goggles.IHaveGoggleInformation;
 import java.util.List;
 import net.minecraft.ChatFormatting;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.NbtOps;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.codec.ByteBufCodecs;
-import net.minecraft.network.codec.StreamCodec;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import plus.dragons.createenchantmentindustry.integration.apothic_enchanting.util.CEIALang;
 
 public record InfusionStats(float eterna, float quanta, float arcana) implements IHaveGoggleInformation {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(InfusionStats.class);
     public static final InfusionStats EMPTY = new InfusionStats(0f, 15f, 0f);
-
-    public static Codec<InfusionStats> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-            Codec.floatRange(0, 100).fieldOf("eterna").forGetter(InfusionStats::eterna),
-            Codec.floatRange(0, 100).fieldOf("quanta").forGetter(InfusionStats::quanta),
-            Codec.floatRange(0, 100).fieldOf("arcana").forGetter(InfusionStats::arcana)).apply(instance, InfusionStats::new));
-
-    public static StreamCodec<FriendlyByteBuf, InfusionStats> STREAM_CODEC = StreamCodec.composite(
-            ByteBufCodecs.FLOAT, InfusionStats::eterna,
-            ByteBufCodecs.FLOAT, InfusionStats::quanta,
-            ByteBufCodecs.FLOAT, InfusionStats::arcana,
-            InfusionStats::new);
-    public static InfusionStats parse(HolderLookup.Provider lookupProvider, Tag tag) {
-        if (tag == null)
+    public static InfusionStats parse(Tag tag) {
+        if (!(tag instanceof CompoundTag compound))
             return EMPTY;
-        return CODEC.parse(lookupProvider.createSerializationContext(NbtOps.INSTANCE), tag)
-                .resultOrPartial(error -> LOGGER.warn("Failed to read infuser stats: {}", error))
-                .orElse(EMPTY);
+        return new InfusionStats(
+                clamp(compound.getFloat("Eterna")),
+                clamp(compound.getFloat("Quanta")),
+                clamp(compound.getFloat("Arcana")));
     }
 
-    public Tag tag(HolderLookup.Provider lookupProvider) {
-        return CODEC.encodeStart(lookupProvider.createSerializationContext(NbtOps.INSTANCE), this)
-                .resultOrPartial(error -> LOGGER.warn("Failed to write infuser stats: {}", error))
-                .orElseGet(CompoundTag::new);
+    public CompoundTag tag() {
+        CompoundTag tag = new CompoundTag();
+        tag.putFloat("Eterna", eterna);
+        tag.putFloat("Quanta", quanta);
+        tag.putFloat("Arcana", arcana);
+        return tag;
+    }
+
+    public void write(FriendlyByteBuf buffer) {
+        buffer.writeFloat(eterna);
+        buffer.writeFloat(quanta);
+        buffer.writeFloat(arcana);
+    }
+
+    public static InfusionStats read(FriendlyByteBuf buffer) {
+        return new InfusionStats(clamp(buffer.readFloat()), clamp(buffer.readFloat()), clamp(buffer.readFloat()));
+    }
+
+    private static float clamp(float value) {
+        return Math.max(0f, Math.min(100f, value));
     }
 
     public boolean qualified(InfusionStats input) {

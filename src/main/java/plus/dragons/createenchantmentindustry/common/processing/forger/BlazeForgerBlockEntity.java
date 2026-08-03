@@ -35,7 +35,6 @@ import net.createmod.catnip.math.VecHelper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.HolderLookup.Provider;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
@@ -43,25 +42,22 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.Clearable;
-import net.minecraft.world.item.Item.TooltipContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.TooltipFlag;
-import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
-import net.neoforged.neoforge.fluids.FluidStack;
-import net.neoforged.neoforge.fluids.capability.IFluidHandler;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.fluids.FluidStack;
 import org.jetbrains.annotations.Nullable;
 import plus.dragons.createdragonsplus.common.advancements.AdvancementBehaviour;
 import plus.dragons.createdragonsplus.common.fluids.tank.ConfigurableFluidTank;
 import plus.dragons.createdragonsplus.util.FieldsNullabilityUnknownByDefault;
 import plus.dragons.createenchantmentindustry.client.model.CEIPartialModels;
 import plus.dragons.createenchantmentindustry.common.fluids.experience.BlazeExperienceBlockEntity;
+import plus.dragons.createenchantmentindustry.common.item.CEIItemData;
 import plus.dragons.createenchantmentindustry.common.processing.enchanter.EnchantingTemplateItem;
 import plus.dragons.createenchantmentindustry.common.registry.CEIAdvancements;
 import plus.dragons.createenchantmentindustry.common.registry.CEIFluids;
@@ -79,16 +75,11 @@ public class BlazeForgerBlockEntity extends BlazeExperienceBlockEntity implement
     protected final BlazeForgerInventory inventory;
     protected BlazeForgerModeBehaviour modeSelector;
     protected AdvancementBehaviour advancement;
+    protected @Nullable ActiveForging activeForging;
 
     public BlazeForgerBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
         this.inventory = new BlazeForgerInventory(this);
-    }
-
-    public @Nullable IFluidHandler getFluidHandler(@Nullable Direction side) {
-        if ((side == Direction.DOWN || side == null) && !isRemoved())
-            return tanks.getCapability();
-        return null;
     }
 
     @Override
@@ -103,7 +94,7 @@ public class BlazeForgerBlockEntity extends BlazeExperienceBlockEntity implement
     @Override
     protected ConfigurableFluidTank createNormalTank(Consumer<FluidStack> fluidUpdateCallback) {
         return new ConfigurableFluidTank(CEIConfig.fluids().blazeForgerFluidCapacity.get(), fluidUpdateCallback)
-                .allowInsertion(fluidStack -> fluidStack.is(CEIFluids.EXPERIENCE));
+                .allowInsertion(fluidStack -> fluidStack.getFluid() == CEIFluids.EXPERIENCE.get());
     }
 
     @Override
@@ -126,16 +117,18 @@ public class BlazeForgerBlockEntity extends BlazeExperienceBlockEntity implement
     }
 
     @Override
-    public void write(CompoundTag compound, Provider registries, boolean clientPacket) {
-        super.write(compound, registries, clientPacket);
+    protected void write(CompoundTag compound, boolean clientPacket) {
+        super.write(compound, clientPacket);
         compound.putInt("ProcessingTime", processingTime);
         compound.putInt("ForgingMode", mode.ordinal());
-        compound.put("Inventory", inventory.serializeNBT(registries));
+        compound.put("Inventory", inventory.serializeNBT());
+        if (activeForging != null)
+            compound.put("ActiveForging", activeForging.save());
     }
 
     @Override
-    protected void read(CompoundTag compound, Provider registries, boolean clientPacket) {
-        super.read(compound, registries, clientPacket);
+    protected void read(CompoundTag compound, boolean clientPacket) {
+        super.read(compound, clientPacket);
         processingTime = compound.getInt("ProcessingTime");
         if (compound.contains("ForgingMode", Tag.TAG_INT)) {
             mode = BlazeForgerMode.BY_ID.apply(compound.getInt("ForgingMode"));
@@ -145,7 +138,12 @@ public class BlazeForgerBlockEntity extends BlazeExperienceBlockEntity implement
             if (inventoryTag.contains("Mode", Tag.TAG_INT))
                 mode = BlazeForgerMode.fromLegacyOperation(inventoryTag.getInt("Mode"));
         }
-        inventory.deserializeNBT(registries, compound.getCompound("Inventory"));
+        inventory.deserializeNBT(compound.getCompound("Inventory"));
+        activeForging = compound.contains("ActiveForging", Tag.TAG_COMPOUND)
+                ? ActiveForging.load(compound.getCompound("ActiveForging"))
+                : null;
+        if (processingTime >= 0 && activeForging == null)
+            processingTime = -1;
     }
 
     @Override
@@ -181,20 +179,7 @@ public class BlazeForgerBlockEntity extends BlazeExperienceBlockEntity implement
                 inventory.updateResult();
                 notifyUpdate();
             }
-            var cost = inventory.getExperienceCost();
-            if (cost > 0 && consumeExperience(cost, special, true)) {
-                if (processingTime < 0) {
-                    processingTime = FORGING_TIME / 4;
-                    return;
-                }
-                if (processingTime > 0) {
-                    processingTime--;
-                    return;
-                }
-                consumeExperience(cost, special, false);
-                processingTime = -1;
-                inventory.applyResult();
-            } else if (processingTime != -1) processingTime = -1;
+            tickVirtual();
             return;
         }
         if (!(level instanceof ServerLevel serverLevel))
@@ -203,32 +188,100 @@ public class BlazeForgerBlockEntity extends BlazeExperienceBlockEntity implement
             inventory.updateResult();
             notifyUpdate();
         }
-        var cost = inventory.getExperienceCost();
-        if (cost > 0 && consumeExperience(cost, special, true)) {
-            if (processingTime < 0) {
-                processingTime = FORGING_TIME;
-                notifyUpdate();
-                return;
-            }
-            if (processingTime > 0) {
-                processingTime--;
-                notifyUpdate();
-                return;
-            }
-            if (special && !cursed && strikeLightning(serverLevel, strikePos)) {
-                advancement.trigger(CEIAdvancements.OSHA_VIOLATION.builtinTrigger());
-                serverLevel.destroyBlock(worldPosition, false);
-                serverLevel.setBlockAndUpdate(worldPosition, AllBlocks.LIT_BLAZE_BURNER.getDefaultState());
-                this.setRemoved();
-                return;
-            }
-            consumeExperience(cost, special, false);
-            processingTime = -1;
-            inventory.applyResult();
+        if (activeForging == null) {
+            startProcessing(FORGING_TIME, true);
+            return;
+        }
+        ActiveForging active = activeForging;
+        if (!active.matches(inventory.getStackInSlot(0), inventory.getStackInSlot(1))) {
+            cancelProcessing();
+            return;
+        }
+        if (!consumeExperience(active.cost(), active.special(), true))
+            return;
+        if (processingTime > 0) {
+            processingTime--;
             notifyUpdate();
-            level.playSound(null, worldPosition, SoundEvents.ANVIL_USE, SoundSource.BLOCKS, 1.0F, level.random.nextFloat() * 0.1F + 0.9F);
-        } else if (processingTime != -1) {
-            processingTime = -1;
+            return;
+        }
+        if (active.strikeLightning() && strikeLightning(serverLevel, strikePos)) {
+            advancement.trigger(CEIAdvancements.OSHA_VIOLATION.builtinTrigger());
+            serverLevel.destroyBlock(worldPosition, false);
+            serverLevel.setBlockAndUpdate(worldPosition, AllBlocks.LIT_BLAZE_BURNER.getDefaultState());
+            this.setRemoved();
+            return;
+        }
+        if (!consumeExperience(active.cost(), active.special(), false))
+            return;
+        inventory.applyResult(
+                active.primaryOutput(),
+                active.secondaryOutput(),
+                active.operation(),
+                active.conflicting(),
+                active.overCap(),
+                active.special());
+        finishProcessing();
+        notifyUpdate();
+        level.playSound(null, worldPosition, SoundEvents.ANVIL_USE, SoundSource.BLOCKS, 1.0F, level.random.nextFloat() * 0.1F + 0.9F);
+    }
+
+    private void tickVirtual() {
+        if (activeForging == null) {
+            startProcessing(FORGING_TIME / 4, false);
+            return;
+        }
+        ActiveForging active = activeForging;
+        if (!active.matches(inventory.getStackInSlot(0), inventory.getStackInSlot(1))) {
+            cancelProcessing();
+            return;
+        }
+        if (processingTime > 0) {
+            processingTime--;
+            return;
+        }
+        consumeExperience(active.cost(), active.special(), false);
+        inventory.applyResult(
+                active.primaryOutput(),
+                active.secondaryOutput(),
+                active.operation(),
+                active.conflicting(),
+                active.overCap(),
+                active.special());
+        finishProcessing();
+    }
+
+    private boolean startProcessing(int duration, boolean requireExperience) {
+        BlazeForgerInventory.Result result = inventory.getLastResult();
+        int cost = result.experienceCost();
+        if (!result.valid()
+                || inventory.hasRemainingOutput()
+                || cost <= 0
+                || requireExperience && !consumeExperience(cost, special, true))
+            return false;
+        activeForging = new ActiveForging(
+                inventory.getStackInSlot(0).copy(),
+                inventory.getStackInSlot(1).copy(),
+                result.primaryOutput().copy(),
+                result.secondaryOutput().copy(),
+                cost,
+                result.operation(),
+                result.conflicting(),
+                result.overCap(),
+                special,
+                special && !cursed);
+        processingTime = duration;
+        notifyUpdate();
+        return true;
+    }
+
+    private void finishProcessing() {
+        processingTime = -1;
+        activeForging = null;
+    }
+
+    private void cancelProcessing() {
+        if (processingTime != -1 || activeForging != null) {
+            finishProcessing();
             notifyUpdate();
         }
     }
@@ -241,7 +294,7 @@ public class BlazeForgerBlockEntity extends BlazeExperienceBlockEntity implement
         if (this.mode == mode)
             return;
         this.mode = mode;
-        processingTime = -1;
+        finishProcessing();
         inventory.updateResult();
         notifyUpdate();
     }
@@ -253,7 +306,7 @@ public class BlazeForgerBlockEntity extends BlazeExperienceBlockEntity implement
             stack = inventory.insertItem(0, stack, simulate);
         if (!stack.isEmpty())
             stack = inventory.insertItem(1, stack, simulate);
-        if (!simulate && (original.getCount() != stack.getCount() || !ItemStack.isSameItemSameComponents(original, stack))) {
+        if (!simulate && (original.getCount() != stack.getCount() || !ItemStack.isSameItemSameTags(original, stack))) {
             inventory.updateResult();
             notifyUpdate();
         }
@@ -399,12 +452,12 @@ public class BlazeForgerBlockEntity extends BlazeExperienceBlockEntity implement
     }
 
     private static boolean hasEnchantments(ItemStack stack) {
-        return !EnchantmentHelper.getEnchantmentsForCrafting(stack).isEmpty();
+        return !CEIItemData.getEnchantmentsForCrafting(stack).isEmpty();
     }
 
     private static boolean insertedAny(ItemStack original, ItemStack remainder) {
         return original.getCount() != remainder.getCount()
-                || !ItemStack.isSameItemSameComponents(original, remainder);
+                || !ItemStack.isSameItemSameTags(original, remainder);
     }
 
     @Override
@@ -509,18 +562,72 @@ public class BlazeForgerBlockEntity extends BlazeExperienceBlockEntity implement
         if (stack.isEmpty())
             return;
         CEILang.item(stack).style(ChatFormatting.GRAY).forGoggles(tooltip, 1);
-        var enchantments = EnchantmentHelper.getEnchantmentsForCrafting(stack);
-        if (!enchantments.isEmpty()) {
-            enchantments.addToTooltip(
-                    TooltipContext.of(level),
-                    component -> CEILang.builder().add(component).forGoggles(tooltip, 2),
-                    TooltipFlag.NORMAL);
-        }
+        CEIItemData.getEnchantmentsForCrafting(stack).forEach((enchantment, enchantmentLevel) -> CEILang.builder().add(enchantment.getFullname(enchantmentLevel)).forGoggles(tooltip, 2));
     }
 
     @Override
     public void clearContent() {
         inventory.clear();
+        finishProcessing();
+    }
+
+    protected record ActiveForging(
+            ItemStack firstInput,
+            ItemStack secondInput,
+            ItemStack primaryOutput,
+            ItemStack secondaryOutput,
+            int cost,
+            BlazeForgerMode operation,
+            boolean conflicting,
+            boolean overCap,
+            boolean special,
+            boolean strikeLightning) {
+        CompoundTag save() {
+            CompoundTag tag = new CompoundTag();
+            tag.put("FirstInput", firstInput.save(new CompoundTag()));
+            tag.put("SecondInput", secondInput.save(new CompoundTag()));
+            tag.put("PrimaryOutput", primaryOutput.save(new CompoundTag()));
+            tag.put("SecondaryOutput", secondaryOutput.save(new CompoundTag()));
+            tag.putInt("Cost", cost);
+            tag.putInt("Operation", operation.ordinal());
+            tag.putBoolean("Conflicting", conflicting);
+            tag.putBoolean("OverCap", overCap);
+            tag.putBoolean("Special", special);
+            tag.putBoolean("StrikeLightning", strikeLightning);
+            return tag;
+        }
+
+        static @Nullable ActiveForging load(CompoundTag tag) {
+            ItemStack firstInput = ItemStack.of(tag.getCompound("FirstInput"));
+            ItemStack secondInput = ItemStack.of(tag.getCompound("SecondInput"));
+            ItemStack primaryOutput = ItemStack.of(tag.getCompound("PrimaryOutput"));
+            ItemStack secondaryOutput = ItemStack.of(tag.getCompound("SecondaryOutput"));
+            int cost = tag.getInt("Cost");
+            if (firstInput.isEmpty()
+                    || secondInput.isEmpty()
+                    || primaryOutput.isEmpty() && secondaryOutput.isEmpty()
+                    || cost <= 0)
+                return null;
+            return new ActiveForging(
+                    firstInput,
+                    secondInput,
+                    primaryOutput,
+                    secondaryOutput,
+                    cost,
+                    BlazeForgerMode.BY_ID.apply(tag.getInt("Operation")),
+                    tag.getBoolean("Conflicting"),
+                    tag.getBoolean("OverCap"),
+                    tag.getBoolean("Special"),
+                    tag.getBoolean("StrikeLightning"));
+        }
+
+        boolean matches(ItemStack first, ItemStack second) {
+            return same(firstInput, first) && same(secondInput, second);
+        }
+
+        private static boolean same(ItemStack expected, ItemStack actual) {
+            return expected.getCount() == actual.getCount() && ItemStack.isSameItemSameTags(expected, actual);
+        }
     }
 
     private static class ModeTransform extends ValueBoxTransform.Sided {

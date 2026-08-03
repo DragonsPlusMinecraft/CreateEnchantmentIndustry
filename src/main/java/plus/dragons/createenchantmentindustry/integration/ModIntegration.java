@@ -19,14 +19,13 @@
 package plus.dragons.createenchantmentindustry.integration;
 
 import net.minecraft.resources.ResourceLocation;
-import net.neoforged.fml.ModList;
-import net.neoforged.neoforge.common.conditions.ModLoadedCondition;
+import net.minecraftforge.common.crafting.conditions.ModLoadedCondition;
+import net.minecraftforge.fml.ModList;
 
 public enum ModIntegration {
     APOTHIC_ENCHANTING(Constants.APOTHIC_ENCHANTING),
     APOTHEOSIS(Constants.APOTHEOSIS),
-    TOUHOU_LITTLE_MAID(Constants.TOUHOU_LITTLE_MAID),
-    SABLE(Constants.SABLE),;
+    TOUHOU_LITTLE_MAID(Constants.TOUHOU_LITTLE_MAID),;
 
     private final String id;
 
@@ -51,9 +50,9 @@ public enum ModIntegration {
     }
 
     public static class Constants {
-        public static final String APOTHIC_ENCHANTING = "apothic_enchanting";
+        // In 1.20.1 the enchanting module is built into Apotheosis 7 rather than a standalone mod.
+        public static final String APOTHIC_ENCHANTING = "apotheosis";
         public static final String APOTHEOSIS = "apotheosis";
         public static final String TOUHOU_LITTLE_MAID = "touhou_little_maid";
-        public static final String SABLE = "sable";
     }
 }

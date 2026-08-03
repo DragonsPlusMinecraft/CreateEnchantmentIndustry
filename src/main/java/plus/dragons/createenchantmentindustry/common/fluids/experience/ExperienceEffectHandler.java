@@ -24,7 +24,8 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.ExperienceOrb;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
-import net.neoforged.neoforge.fluids.FluidStack;
+import net.minecraftforge.common.util.FakePlayer;
+import net.minecraftforge.fluids.FluidStack;
 import plus.dragons.createdragonsplus.common.fluids.pipe.ConsumingOpenPipeEffectHandler;
 import plus.dragons.createenchantmentindustry.common.registry.CEIAdvancements;
 
@@ -34,7 +35,8 @@ public class ExperienceEffectHandler implements ConsumingOpenPipeEffectHandler {
         if (!(level instanceof ServerLevel serverLevel))
             return 0;
         int amount = contained.getAmount();
-        List<ServerPlayer> players = level.getEntitiesOfClass(ServerPlayer.class, area, player -> !player.isFakePlayer());
+        List<ServerPlayer> players = level.getEntitiesOfClass(
+                ServerPlayer.class, area, player -> !(player instanceof FakePlayer));
         if (players.isEmpty()) {
             ExperienceOrb.award(serverLevel, area.getCenter(), ExperienceHelper.getExperienceFromFluid(contained));
         } else {

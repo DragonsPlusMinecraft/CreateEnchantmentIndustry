@@ -1,9 +1,20 @@
 {
-    "values": [
-        "#minecraft:in_enchanting_table",
-        "#minecraft:tradeable",
-        "#minecraft:on_mob_spawn_equipment",
-        "#minecraft:on_traded_equipment",
-        "#minecraft:on_random_loot"
-    ]
+  "values": [
+    {
+      "id": "minecraft:binding_curse",
+      "required": false
+    },
+    {
+      "id": "minecraft:vanishing_curse",
+      "required": false
+    },
+    {
+      "id": "apotheosis:berserkers_fury",
+      "required": false
+    },
+    {
+      "id": "apotheosis:life_mending",
+      "required": false
+    }
+  ]
 }

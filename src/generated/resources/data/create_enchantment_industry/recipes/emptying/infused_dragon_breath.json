@@ -1,0 +1,27 @@
+{
+  "type": "create:emptying",
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "apotheosis"
+    },
+    {
+      "type": "create_enchantment_industry:apotheosis_module",
+      "module": "enchantment"
+    }
+  ],
+  "ingredients": [
+    {
+      "item": "apotheosis:infused_breath"
+    }
+  ],
+  "results": [
+    {
+      "item": "minecraft:glass_bottle"
+    },
+    {
+      "amount": 250,
+      "fluid": "create_enchantment_industry:infused_dragon_breath"
+    }
+  ]
+}

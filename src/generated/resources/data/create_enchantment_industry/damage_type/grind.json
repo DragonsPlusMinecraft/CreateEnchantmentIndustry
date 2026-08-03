@@ -1,5 +1,5 @@
 {
-    "exhaustion": 0.0,
-    "message_id": "create_enchantment_industry.grind",
-    "scaling": "always"
+  "exhaustion": 0.0,
+  "message_id": "create_enchantment_industry.grind",
+  "scaling": "always"
 }

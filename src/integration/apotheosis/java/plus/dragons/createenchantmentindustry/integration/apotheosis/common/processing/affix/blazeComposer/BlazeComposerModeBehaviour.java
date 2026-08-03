@@ -24,7 +24,6 @@ import com.simibubi.create.foundation.blockEntity.behaviour.ValueSettingsBoard;
 import com.simibubi.create.foundation.blockEntity.behaviour.ValueSettingsFormatter;
 import com.simibubi.create.foundation.blockEntity.behaviour.scrollValue.ScrollValueBehaviour;
 import java.util.Arrays;
-import net.minecraft.core.HolderLookup.Provider;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -55,12 +54,12 @@ public class BlazeComposerModeBehaviour extends ScrollValueBehaviour {
     }
 
     @Override
-    public void write(CompoundTag nbt, Provider registries, boolean clientPacket) {
+    public void write(CompoundTag nbt, boolean clientPacket) {
         nbt.putInt("BlazeComposerMode", getValue());
     }
 
     @Override
-    public void read(CompoundTag nbt, Provider registries, boolean clientPacket) {
+    public void read(CompoundTag nbt, boolean clientPacket) {
         if (nbt.contains("BlazeComposerMode"))
             composer.mode = BlazeComposerMode.BY_ID.apply(nbt.getInt("BlazeComposerMode"));
     }

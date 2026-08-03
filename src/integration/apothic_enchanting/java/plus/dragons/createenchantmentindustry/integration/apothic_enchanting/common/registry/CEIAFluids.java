@@ -25,56 +25,52 @@ import com.simibubi.create.api.effect.OpenPipeEffectHandler;
 import com.simibubi.create.api.event.PipeCollisionEvent;
 import com.simibubi.create.content.fluids.transfer.EmptyingRecipe;
 import com.simibubi.create.content.fluids.transfer.FillingRecipe;
-import com.simibubi.create.content.processing.recipe.StandardProcessingRecipe;
+import com.simibubi.create.content.processing.recipe.ProcessingRecipeBuilder;
 import com.tterrag.registrate.providers.ProviderType;
 import com.tterrag.registrate.providers.RegistrateTagsProvider;
 import com.tterrag.registrate.util.entry.FluidEntry;
-import dev.shadowsoffire.apothic_enchanting.Ench;
-import net.minecraft.core.BlockPos;
-import net.minecraft.core.dispenser.BlockSource;
-import net.minecraft.core.dispenser.DefaultDispenseItemBehavior;
-import net.minecraft.core.dispenser.DispenseItemBehavior;
+import dev.shadowsoffire.apotheosis.Apotheosis;
+import dev.shadowsoffire.apotheosis.ench.Ench;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.TagKey;
-import net.minecraft.world.item.DispensibleContainerItem;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.Rarity;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.DispenserBlock;
 import net.minecraft.world.level.material.Fluid;
-import net.minecraft.world.level.pathfinder.PathType;
-import net.neoforged.bus.api.IEventBus;
-import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.neoforged.neoforge.common.NeoForgeMod;
-import net.neoforged.neoforge.common.SoundActions;
-import net.neoforged.neoforge.fluids.BaseFlowingFluid;
-import net.neoforged.neoforge.fluids.FluidInteractionRegistry;
-import net.neoforged.neoforge.fluids.FluidType;
-import net.neoforged.neoforge.registries.DeferredHolder;
+import net.minecraft.world.level.pathfinder.BlockPathTypes;
+import net.minecraftforge.common.ForgeMod;
+import net.minecraftforge.common.SoundActions;
+import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fluids.FluidInteractionRegistry;
+import net.minecraftforge.fluids.FluidType;
+import net.minecraftforge.fluids.ForgeFlowingFluid;
+import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.RegistryObject;
+import plus.dragons.createdragonsplus.common.fluids.StandardDispenserBehaviour;
 import plus.dragons.createdragonsplus.common.fluids.dragonBreath.DragonBreathFluidType;
 import plus.dragons.createdragonsplus.common.fluids.dragonBreath.DragondBreathLiquidBlock;
 import plus.dragons.createdragonsplus.common.fluids.dragonBreath.DragonsBreathOpenPipeEffect;
 import plus.dragons.createdragonsplus.common.registry.CDPFluids;
 import plus.dragons.createdragonsplus.data.tag.IntrinsicTagRegistry;
 import plus.dragons.createenchantmentindustry.common.CEICommon;
+import plus.dragons.createenchantmentindustry.common.crafting.CEIApotheosisModuleCondition;
 import plus.dragons.createenchantmentindustry.common.registry.CEIFluids;
 import plus.dragons.createenchantmentindustry.integration.ModIntegration;
 import plus.dragons.createenchantmentindustry.integration.apothic_enchanting.common.CEIACommon;
 
 public class CEIAFluids {
     public static final ModTags MOD_TAGS = new ModTags();
-    public static final FluidEntry<BaseFlowingFluid.Source> INFUSED_DRAGON_BREATH = new FluidEntry<>(CEIACommon.REGISTRATE,
-            DeferredHolder.create(Registries.FLUID, CEIACommon.REGISTRATE.asResource("infused_dragon_breath")));
-    public static final FluidEntry<BaseFlowingFluid.Flowing> INFUSED_DRAGON_BREATH_FLOWING = REGISTRATE
+    public static final FluidEntry<ForgeFlowingFluid.Source> INFUSED_DRAGON_BREATH = new FluidEntry<>(CEIACommon.REGISTRATE,
+            RegistryObject.create(CEIACommon.REGISTRATE.asResource("infused_dragon_breath"), ForgeRegistries.FLUIDS));
+    public static final FluidEntry<ForgeFlowingFluid.Flowing> INFUSED_DRAGON_BREATH_FLOWING = REGISTRATE
             .fluid("infused_dragon_breath",
                     CEIACommon.REGISTRATE.asResource("fluid/infused_dragon_breath_still"), // TODO texture update. Also need texture of bucket.
                     CEIACommon.REGISTRATE.asResource("fluid/infused_dragon_breath_flow"),
                     DragonBreathFluidType.create()) // TODO need redesign fluid effect
-            .asOptional()
             .lang("Infused Dragon's Breath")
             .properties(properties -> properties
                     .rarity(Rarity.EPIC)
@@ -85,7 +81,7 @@ public class CEIAFluids {
                     .supportsBoating(true)
                     .canSwim(false)
                     .canDrown(false)
-                    .pathType(PathType.DAMAGE_OTHER)
+                    .pathType(BlockPathTypes.DAMAGE_OTHER)
                     .adjacentPathType(null)
                     .sound(SoundActions.FLUID_VAPORIZE, SoundEvents.DRAGON_FIREBALL_EXPLODE)
                     .sound(SoundActions.BUCKET_EMPTY, SoundEvents.BUCKET_EMPTY_LAVA)
@@ -95,7 +91,7 @@ public class CEIAFluids {
                     .levelDecreasePerBlock(2)
                     .slopeFindDistance(2)
                     .tickRate(10))
-            .source(BaseFlowingFluid.Source::new)
+            .source(ForgeFlowingFluid.Source::new)
             .block(DragondBreathLiquidBlock::new)
             .lang("Infused Dragon's Breath")
             .build()
@@ -104,17 +100,19 @@ public class CEIAFluids {
             .lang("Infused Dragon's Breath Bucket")
             .build()
             .setData(ProviderType.RECIPE, (ctx, prov) -> {
-                new StandardProcessingRecipe.Builder<>(EmptyingRecipe::new, ctx.getId().withPath("infused_dragon_breath"))
+                new ProcessingRecipeBuilder<>(EmptyingRecipe::new, ctx.getId().withPath("infused_dragon_breath"))
                         .withCondition(ModIntegration.APOTHIC_ENCHANTING.condition())
-                        .require(Ench.Items.INFUSED_BREATH.value())
+                        .withCondition(CEIApotheosisModuleCondition.ENCHANTMENT)
+                        .require(Ench.Items.INFUSED_BREATH.get())
                         .output(ctx.get(), 250)
                         .output(Items.GLASS_BOTTLE)
                         .build(prov);
-                new StandardProcessingRecipe.Builder<>(FillingRecipe::new, ctx.getId().withPath("infused_dragon_breath"))
+                new ProcessingRecipeBuilder<>(FillingRecipe::new, ctx.getId().withPath("infused_dragon_breath"))
                         .withCondition(ModIntegration.APOTHIC_ENCHANTING.condition())
+                        .withCondition(CEIApotheosisModuleCondition.ENCHANTMENT)
                         .require(ctx.get(), 250)
                         .require(Items.GLASS_BOTTLE)
-                        .output(Ench.Items.INFUSED_BREATH.value())
+                        .output(Ench.Items.INFUSED_BREATH.get())
                         .build(prov);
             })
             .register();
@@ -145,28 +143,16 @@ public class CEIAFluids {
 
     @SubscribeEvent
     public static void setup(final FMLCommonSetupEvent event) {
+        if (!Apotheosis.enableEnch)
+            return;
         event.enqueueWork(CEIAFluids::registerFluidInteractions);
         event.enqueueWork(CEIAFluids::registerOpenPipeEffects);
         event.enqueueWork(CEIAFluids::registerDispenserBehavior);
     }
 
     public static void registerDispenserBehavior() {
-        DispenseItemBehavior fluidDispenserBehavior = new DefaultDispenseItemBehavior() {
-            private final DefaultDispenseItemBehavior defaultDispenseItemBehavior = new DefaultDispenseItemBehavior();
-
-            public ItemStack execute(BlockSource source, ItemStack itemStack) {
-                DispensibleContainerItem dispensiblecontaineritem = (DispensibleContainerItem) itemStack.getItem();
-                BlockPos blockpos = source.pos().relative(source.state().getValue(DispenserBlock.FACING));
-                Level level = source.level();
-                if (dispensiblecontaineritem.emptyContents(null, level, blockpos, null, itemStack)) {
-                    dispensiblecontaineritem.checkExtraContent(null, level, itemStack, blockpos);
-                    return this.consumeWithRemainder(source, itemStack, new ItemStack(Items.BUCKET));
-                } else {
-                    return this.defaultDispenseItemBehavior.dispense(source, itemStack);
-                }
-            }
-        };
-        DispenserBlock.registerBehavior(INFUSED_DRAGON_BREATH.getBucket().get(), fluidDispenserBehavior);
+        DispenserBlock.registerBehavior(
+                INFUSED_DRAGON_BREATH.getBucket().get(), StandardDispenserBehaviour.INSTANCE);
     }
 
     public static class Events {
@@ -174,9 +160,9 @@ public class CEIAFluids {
         public static void onPipeCollisionFlow(final PipeCollisionEvent.Flow event) {
             FluidType first = event.getFirstFluid().getFluidType();
             FluidType second = event.getSecondFluid().getFluidType();
-            if (first == NeoForgeMod.LAVA_TYPE.value() && second == INFUSED_DRAGON_BREATH.getType()) {
+            if (first == ForgeMod.LAVA_TYPE.get() && second == INFUSED_DRAGON_BREATH.getType()) {
                 event.setState(Blocks.END_STONE.defaultBlockState());
-            } else if (second == NeoForgeMod.LAVA_TYPE.value() && first == INFUSED_DRAGON_BREATH.getType()) {
+            } else if (second == ForgeMod.LAVA_TYPE.get() && first == INFUSED_DRAGON_BREATH.getType()) {
                 event.setState(Blocks.END_STONE.defaultBlockState());
             }
         }
@@ -187,13 +173,13 @@ public class CEIAFluids {
             Fluid pipe = event.getPipeFluid();
             FluidType worldType = world.getFluidType();
             FluidType pipeType = pipe.getFluidType();
-            if (worldType == NeoForgeMod.LAVA_TYPE.value() && pipeType == INFUSED_DRAGON_BREATH.getType()) {
+            if (worldType == ForgeMod.LAVA_TYPE.get() && pipeType == INFUSED_DRAGON_BREATH.getType()) {
                 if (world.isSource(world.defaultFluidState())) {
                     event.setState(Blocks.OBSIDIAN.defaultBlockState());
                 } else {
                     event.setState(Blocks.END_STONE.defaultBlockState());
                 }
-            } else if (pipeType == NeoForgeMod.LAVA_TYPE.value() && worldType == INFUSED_DRAGON_BREATH.getType()) {
+            } else if (pipeType == ForgeMod.LAVA_TYPE.get() && worldType == INFUSED_DRAGON_BREATH.getType()) {
                 if (pipe.isSource(pipe.defaultFluidState())) {
                     event.setState(Blocks.OBSIDIAN.defaultBlockState());
                 } else {
@@ -204,7 +190,7 @@ public class CEIAFluids {
     }
 
     static void registerFluidInteractions() {
-        FluidInteractionRegistry.addInteraction(NeoForgeMod.LAVA_TYPE.value(), new FluidInteractionRegistry.InteractionInformation(
+        FluidInteractionRegistry.addInteraction(ForgeMod.LAVA_TYPE.get(), new FluidInteractionRegistry.InteractionInformation(
                 INFUSED_DRAGON_BREATH.getType(), fluidState -> fluidState.isSource() ? Blocks.CRYING_OBSIDIAN.defaultBlockState() : Blocks.END_STONE.defaultBlockState()));
         FluidInteractionRegistry.addInteraction(CDPFluids.DRAGON_BREATH.getType(), new FluidInteractionRegistry.InteractionInformation(
                 INFUSED_DRAGON_BREATH.getType(), fluidState -> fluidState.isSource() ? Blocks.OBSIDIAN.defaultBlockState() : Blocks.END_STONE.defaultBlockState()));

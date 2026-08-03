@@ -18,33 +18,22 @@
 
 package plus.dragons.createenchantmentindustry.integration.jei.category.printing;
 
-import com.google.common.collect.BiMap;
-import com.google.common.collect.HashBiMap;
-import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import mezz.jei.api.gui.builder.IRecipeSlotBuilder;
 import mezz.jei.api.gui.ingredient.IRecipeSlotDrawable;
-import mezz.jei.api.helpers.ICodecHelper;
 import mezz.jei.api.recipe.IFocusGroup;
-import mezz.jei.api.recipe.IRecipeManager;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.ApiStatus.Internal;
 
 public interface PrintingRecipeJEI {
     @Internal
-    BiMap<ResourceLocation, Type> TYPE_BY_ID = HashBiMap.create();
-    @Internal
-    BiMap<Type, ResourceLocation> ID_BY_TYPE = TYPE_BY_ID.inverse();
-    Codec<Type> TYPE_CODEC = ResourceLocation.CODEC.xmap(TYPE_BY_ID::get, ID_BY_TYPE::get);
-
-    static Type register(ResourceLocation id, Type type) {
-        TYPE_BY_ID.put(id.withPrefix("printing/"), type);
+    static Type register(ResourceLocation id) {
+        Type type = new Type(id.withPrefix("printing/"));
         return type;
     }
 
     static Type register(ResourceLocation id, MapCodec<? extends PrintingRecipeJEI> codec) {
-        Type type = (codecHelper, recipeManager) -> codec;
-        return register(id.withPrefix("printing/"), type);
+        return register(id);
     }
 
     void setBase(IRecipeSlotBuilder slot);
@@ -58,16 +47,10 @@ public interface PrintingRecipeJEI {
     Type getType();
 
     default ResourceLocation getRegistryName() {
-        var id = ID_BY_TYPE.get(getType());
-        if (id == null)
-            throw new IllegalStateException(this.getClass() + " does not have its type registered");
-        return id;
+        return getType().id();
     }
 
     default void onDisplayedIngredientsUpdate(IRecipeSlotDrawable baseSlot, IRecipeSlotDrawable templateSlot, IRecipeSlotDrawable fluidSlot, IRecipeSlotDrawable outputSlot, IFocusGroup focuses) {}
 
-    @FunctionalInterface
-    interface Type {
-        MapCodec<? extends PrintingRecipeJEI> codec(ICodecHelper codecHelper, IRecipeManager recipeManager);
-    }
+    record Type(ResourceLocation id) {}
 }

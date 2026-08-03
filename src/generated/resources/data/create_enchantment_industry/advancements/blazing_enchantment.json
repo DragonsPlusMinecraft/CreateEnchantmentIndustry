@@ -1,0 +1,31 @@
+{
+  "parent": "create_enchantment_industry:blaze_enchantery",
+  "criteria": {
+    "0": {
+      "trigger": "create_enchantment_industry:blazing_enchantment"
+    }
+  },
+  "display": {
+    "announce_to_chat": false,
+    "description": {
+      "color": "#DBA213",
+      "translate": "advancement.create_enchantment_industry.blazing_enchantment.desc"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "minecraft:golden_helmet",
+      "nbt": "{Damage:0}"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancement.create_enchantment_industry.blazing_enchantment"
+    }
+  },
+  "requirements": [
+    [
+      "0"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

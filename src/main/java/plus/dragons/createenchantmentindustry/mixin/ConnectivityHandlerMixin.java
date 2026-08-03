@@ -24,7 +24,7 @@ import com.simibubi.create.content.fluids.tank.CreativeFluidTankBlockEntity;
 import com.simibubi.create.foundation.blockEntity.IMultiBlockEntityContainer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.neoforged.neoforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidStack;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Coerce;
@@ -33,9 +33,9 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import plus.dragons.createenchantmentindustry.common.fluids.experience.ExperienceFluidDropContext;
 import plus.dragons.createenchantmentindustry.common.fluids.experience.ExperienceHelper;
 
-@Mixin(ConnectivityHandler.class)
+@Mixin(value = ConnectivityHandler.class, remap = false)
 public class ConnectivityHandlerMixin {
-    @Inject(method = "splitMultiAndInvalidate", at = @At(value = "RETURN", ordinal = 2))
+    @Inject(method = "splitMultiAndInvalidate", at = @At(value = "RETURN", ordinal = 2), remap = false)
     private static <T extends BlockEntity & IMultiBlockEntityContainer> void splitMulti$dropExperienceFluidSingle(T be, @Coerce Object cache, boolean tryReconnect, CallbackInfo ci) {
         if (!(be.getLevel() instanceof ServerLevel level && be.isRemoved()))
             return;
@@ -48,7 +48,7 @@ public class ConnectivityHandlerMixin {
         ExperienceFluidDropContext.dropExperience(level, be.getBlockState(), be.getBlockPos(), experience);
     }
 
-    @Inject(method = "splitMultiAndInvalidate", at = @At("TAIL"))
+    @Inject(method = "splitMultiAndInvalidate", at = @At("TAIL"), remap = false)
     private static <T extends BlockEntity & IMultiBlockEntityContainer> void splitMulti$dropExperienceFluidMulti(T be, @Coerce Object cache, boolean tryReconnect, CallbackInfo ci, @Local FluidStack dropped) {
         if (!(be.getLevel() instanceof ServerLevel level))
             return;

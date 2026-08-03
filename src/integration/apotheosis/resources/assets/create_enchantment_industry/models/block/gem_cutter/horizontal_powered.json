@@ -15,7 +15,7 @@
         "east": {"uv": [0.5, 3.5, 7.5, 4.5], "texture": "#4"},
         "west": {"uv": [0.5, 3.5, 7.5, 4.5], "texture": "#4"}
       },
-      "neoforge_data": {
+      "forge_data": {
         "block_light": 15,
         "sky_light": 15
       }
@@ -28,7 +28,7 @@
         "north": {"uv": [0.5, 3.5, 7.5, 4.5], "texture": "#4"},
         "south": {"uv": [0.5, 3.5, 7.5, 4.5], "texture": "#4"}
       },
-      "neoforge_data": {
+      "forge_data": {
         "block_light": 15,
         "sky_light": 15
       }
@@ -41,7 +41,7 @@
         "east": {"uv": [0.5, 3.5, 7.5, 4.5], "texture": "#4"},
         "west": {"uv": [0.5, 3.5, 7.5, 4.5], "texture": "#4"}
       },
-      "neoforge_data": {
+      "forge_data": {
         "block_light": 15,
         "sky_light": 15
       }
@@ -54,7 +54,7 @@
         "north": {"uv": [0.5, 3.5, 7.5, 4.5], "texture": "#4"},
         "south": {"uv": [0.5, 3.5, 7.5, 4.5], "texture": "#4"}
       },
-      "neoforge_data": {
+      "forge_data": {
         "block_light": 15,
         "sky_light": 15
       }

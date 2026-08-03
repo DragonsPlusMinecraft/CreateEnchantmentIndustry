@@ -18,34 +18,32 @@
 
 package plus.dragons.createenchantmentindustry.integration.apotheosis.common;
 
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.bus.api.EventPriority;
-import net.neoforged.bus.api.IEventBus;
-import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.ModContainer;
-import net.neoforged.fml.common.Mod;
-import net.neoforged.fml.event.lifecycle.FMLConstructModEvent;
-import net.neoforged.fml.loading.FMLLoader;
-import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent;
-import net.neoforged.neoforge.common.NeoForge;
-import net.neoforged.neoforge.data.event.GatherDataEvent;
-import net.neoforged.neoforge.event.AddReloadListenerEvent;
-import plus.dragons.createenchantmentindustry.common.CEICommon;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.data.event.GatherDataEvent;
+import net.minecraftforge.event.AddReloadListenerEvent;
+import net.minecraftforge.eventbus.api.EventPriority;
+import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.ModLoadingContext;
+import net.minecraftforge.fml.event.lifecycle.FMLConstructModEvent;
+import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.fml.loading.FMLLoader;
+import plus.dragons.createenchantmentindustry.data.CEINamedDataProvider;
 import plus.dragons.createenchantmentindustry.integration.ModIntegration;
 import plus.dragons.createenchantmentindustry.integration.apotheosis.client.ponder.CEIAXPonderPlugin;
 import plus.dragons.createenchantmentindustry.integration.apotheosis.client.registry.CEIAXPartialModels;
 import plus.dragons.createenchantmentindustry.integration.apotheosis.common.processing.affix.blazeComposer.AffixComposingRules;
-import plus.dragons.createenchantmentindustry.integration.apotheosis.common.processing.affix.blazeComposer.BlazeComposerItemRenderer;
 import plus.dragons.createenchantmentindustry.integration.apotheosis.common.registry.*;
 import plus.dragons.createenchantmentindustry.integration.apotheosis.config.CEIAXConfig;
 import plus.dragons.createenchantmentindustry.integration.apotheosis.data.CEIAXConditionalLootTableProvider;
 import plus.dragons.createenchantmentindustry.integration.apotheosis.data.CEIAXRecipeProvider;
 
-@Mod(CEICommon.ID)
 public class CEIAXCommon {
-    public CEIAXCommon(IEventBus modBus, ModContainer modContainer) {
-        if (ModIntegration.APOTHEOSIS.enabled() && ModIntegration.APOTHIC_ENCHANTING.enabled()) {
-            modBus.register(new Common(modBus, modContainer));
+    public CEIAXCommon() {
+        IEventBus modBus = FMLJavaModLoadingContext.get().getModEventBus();
+        if (ModIntegration.APOTHEOSIS.enabled()) {
+            modBus.register(new Common(modBus, ModLoadingContext.get()));
             if (FMLLoader.getDist() == Dist.CLIENT)
                 modBus.register(new Client());
         }
@@ -53,17 +51,16 @@ public class CEIAXCommon {
 
     public static class Common {
         IEventBus modBus;
-        ModContainer modContainer;
+        ModLoadingContext modLoadingContext;
 
-        Common(IEventBus modBus, ModContainer modContainer) {
+        Common(IEventBus modBus, ModLoadingContext modLoadingContext) {
             this.modBus = modBus;
-            this.modContainer = modContainer;
+            this.modLoadingContext = modLoadingContext;
         }
 
         @SubscribeEvent
         public void construct(final FMLConstructModEvent event) {
             CEIAXItems.register();
-            CEIAXDataComponents.register(modBus);
             CEIAXBlocks.register(modBus);
             CEIAXBlockEntities.register(modBus);
             CEIAXFluids.register(modBus);
@@ -73,8 +70,8 @@ public class CEIAXCommon {
             CEIAXFanProcessingTypes.register(modBus);
             CEIAXArmInteractionPoints.register(modBus);
             CEIAXStats.register(modBus);
-            modBus.register(new CEIAXConfig(modContainer));
-            NeoForge.EVENT_BUS.addListener(Common::addReloadListeners);
+            modBus.register(new CEIAXConfig(modLoadingContext));
+            MinecraftForge.EVENT_BUS.addListener(Common::addReloadListeners);
         }
 
         @SubscribeEvent(priority = EventPriority.LOWEST)
@@ -85,7 +82,8 @@ public class CEIAXCommon {
             var output = generator.getPackOutput();
             var client = event.includeClient();
             var server = event.includeServer();
-            generator.addProvider(server, new CEIAXRecipeProvider(output, lookupProvider));
+            generator.addProvider(server, new CEINamedDataProvider(
+                    "Create Enchantment Industry Apotheosis Recipes", new CEIAXRecipeProvider(output)));
             generator.addProvider(server, new CEIAXConditionalLootTableProvider(output, lookupProvider));
         }
 
@@ -99,11 +97,6 @@ public class CEIAXCommon {
         public void construct(final FMLConstructModEvent event) {
             CEIAXPartialModels.register();
             CEIAXPonderPlugin.register();
-        }
-
-        @SubscribeEvent
-        public void registerClientExtensions(final RegisterClientExtensionsEvent event) {
-            BlazeComposerItemRenderer.register(event);
         }
     }
 }

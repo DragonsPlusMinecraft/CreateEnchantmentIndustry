@@ -88,7 +88,7 @@ public class SalvagingFanProcessingType implements FanProcessingType {
         if (level.isClientSide)
             return;
         if (entity instanceof LivingEntity livingEntity) {
-            SalvagingHelper.salvageEquippedItems(livingEntity, level, entity.getRandom(), CEIAXConfig.server().utility().bulkSalvagingSalvageEquippedItemProbability.getF(), 1);
+            SalvagingHelper.salvageEquippedItems(livingEntity, level, livingEntity.getRandom(), CEIAXConfig.server().utility().bulkSalvagingSalvageEquippedItemProbability.getF(), 1);
             if (livingEntity.isAffectedByPotions() && entity.tickCount % 5 == 0) {
                 livingEntity.addEffect(new MobEffectInstance(MobEffects.HARM, 1, 1));
             }

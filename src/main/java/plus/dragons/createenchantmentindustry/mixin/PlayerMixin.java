@@ -18,17 +18,16 @@
 
 package plus.dragons.createenchantmentindustry.mixin;
 
-import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.simibubi.create.content.kinetics.deployer.DeployerFakePlayer;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
-import net.neoforged.neoforge.common.ItemAbilities;
-import net.neoforged.neoforge.event.entity.player.SweepAttackEvent;
+import net.minecraftforge.common.ToolActions;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.ModifyArg;
+import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import plus.dragons.createenchantmentindustry.config.CEIConfig;
 
 @Mixin(Player.class)
@@ -37,24 +36,12 @@ public abstract class PlayerMixin extends LivingEntity {
         super(entityType, level);
     }
 
-    /**
-     * Inject before posting {@link SweepAttackEvent}, so subscribers get that the deployer's sweep attack is "vanilla".
-     */
-    @ModifyArg(method = "attack", at = @At(value = "INVOKE", target = "Lnet/neoforged/neoforge/common/CommonHooks;fireSweepAttack(Lnet/minecraft/world/entity/player/Player;Lnet/minecraft/world/entity/Entity;Z)Lnet/neoforged/neoforge/event/entity/player/SweepAttackEvent;"))
+    @ModifyVariable(method = "attack", at = @At("STORE"), ordinal = 3)
     private boolean attack$allowDeployerSweepAttack(boolean flag) {
         //noinspection ConstantValue
         if (((Object) this) instanceof DeployerFakePlayer && CEIConfig.kinetics().deployerSweepAttack.get()) {
-            return this.getMainHandItem().canPerformAction(ItemAbilities.SWORD_SWEEP);
+            return this.getItemInHand(InteractionHand.MAIN_HAND).canPerformAction(ToolActions.SWORD_SWEEP);
         }
         return flag;
-    }
-
-    @ModifyExpressionValue(method = "attack", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/player/Player;isAutoSpinAttack()Z"))
-    private boolean attack$notAutoSpinAttack(boolean original) {
-        //noinspection ConstantValue
-        if (((Object) this) instanceof DeployerFakePlayer && CEIConfig.kinetics().deployerSweepAttack.get()) {
-            return false;
-        }
-        return original;
     }
 }

@@ -28,10 +28,11 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.level.material.Fluid;
-import net.minecraft.world.level.pathfinder.PathType;
-import net.neoforged.bus.api.IEventBus;
-import net.neoforged.neoforge.fluids.BaseFlowingFluid;
-import net.neoforged.neoforge.registries.DeferredHolder;
+import net.minecraft.world.level.pathfinder.BlockPathTypes;
+import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.fluids.ForgeFlowingFluid;
+import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.RegistryObject;
 import plus.dragons.createdragonsplus.common.fluids.SolidRenderFluidType;
 import plus.dragons.createdragonsplus.data.tag.IntrinsicTagRegistry;
 import plus.dragons.createenchantmentindustry.common.CEICommon;
@@ -39,18 +40,17 @@ import plus.dragons.createenchantmentindustry.integration.apothic_enchanting.com
 
 public class CEIAXFluids {
     public static final ModTags MOD_TAGS = new ModTags();
-    public static final FluidEntry<BaseFlowingFluid.Source> APOTHEOTIC_ESSENCE = new FluidEntry<>(REGISTRATE,
-            DeferredHolder.create(Registries.FLUID, REGISTRATE.asResource("apotheotic_essence")));
-    public static final FluidEntry<BaseFlowingFluid.Flowing> APOTHEOTIC_ESSENCE_FLOWING = REGISTRATE
+    public static final FluidEntry<ForgeFlowingFluid.Source> APOTHEOTIC_ESSENCE = new FluidEntry<>(REGISTRATE,
+            RegistryObject.create(REGISTRATE.asResource("apotheotic_essence"), ForgeRegistries.FLUIDS));
+    public static final FluidEntry<ForgeFlowingFluid.Flowing> APOTHEOTIC_ESSENCE_FLOWING = REGISTRATE
             .fluid("apotheotic_essence", SolidRenderFluidType.create(new Color(0xf56f22).asVectorF(), () -> 1f)) // TODO need adjust
-            .asOptional()
             .properties(builder -> builder
                     .rarity(Rarity.EPIC)
                     .lightLevel(15)
-                    .pathType(PathType.BLOCKED)
-                    .adjacentPathType(PathType.BLOCKED))
+                    .pathType(BlockPathTypes.BLOCKED)
+                    .adjacentPathType(BlockPathTypes.BLOCKED))
             .fluidProperties(p -> p.levelDecreasePerBlock(2).explosionResistance(100f))
-            .source(BaseFlowingFluid.Source::new)
+            .source(ForgeFlowingFluid.Source::new)
             .block()
             .properties(properties -> properties
                     .lightLevel((b) -> 15))
@@ -61,18 +61,17 @@ public class CEIAXFluids {
             .build()
             .register();
 
-    public static final FluidEntry<BaseFlowingFluid.Source> CRYSTAL_ESSENCE = new FluidEntry<>(REGISTRATE,
-            DeferredHolder.create(Registries.FLUID, REGISTRATE.asResource("crystal_essence")));
-    public static final FluidEntry<BaseFlowingFluid.Flowing> CRYSTAL_ESSENCE_FLOWING = REGISTRATE
+    public static final FluidEntry<ForgeFlowingFluid.Source> CRYSTAL_ESSENCE = new FluidEntry<>(REGISTRATE,
+            RegistryObject.create(REGISTRATE.asResource("crystal_essence"), ForgeRegistries.FLUIDS));
+    public static final FluidEntry<ForgeFlowingFluid.Flowing> CRYSTAL_ESSENCE_FLOWING = REGISTRATE
             .fluid("crystal_essence", SolidRenderFluidType.create(new Color(0x8778fa).asVectorF(), () -> 1f)) // TODO need adjust
-            .asOptional()
             .properties(builder -> builder
                     .rarity(Rarity.RARE)
                     .lightLevel(8)
-                    .pathType(PathType.BLOCKED)
-                    .adjacentPathType(PathType.BLOCKED))
+                    .pathType(BlockPathTypes.BLOCKED)
+                    .adjacentPathType(BlockPathTypes.BLOCKED))
             .fluidProperties(p -> p.levelDecreasePerBlock(2).explosionResistance(100f))
-            .source(BaseFlowingFluid.Source::new)
+            .source(ForgeFlowingFluid.Source::new)
             .block()
             .properties(properties -> properties
                     .lightLevel((b) -> 8))

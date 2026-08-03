@@ -1,0 +1,37 @@
+{
+  "parent": "create_enchantment_industry:magic_unbinding",
+  "criteria": {
+    "0": {
+      "conditions": {
+        "type": "minecraft:custom",
+        "bounds": {
+          "min": 1000
+        },
+        "value": "create_enchantment_industry:forge"
+      },
+      "trigger": "create_dragons_plus:stat"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "color": "#DBA213",
+      "translate": "advancement.create_enchantment_industry.blazing_centurion.desc"
+    },
+    "frame": "goal",
+    "hidden": false,
+    "icon": {
+      "item": "create_enchantment_industry:blaze_forger"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancement.create_enchantment_industry.blazing_centurion"
+    }
+  },
+  "requirements": [
+    [
+      "0"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

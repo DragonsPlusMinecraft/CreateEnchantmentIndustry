@@ -26,7 +26,6 @@ import com.mojang.math.Axis;
 import com.simibubi.create.foundation.item.render.CustomRenderedItemModel;
 import com.simibubi.create.foundation.item.render.CustomRenderedItemModelRenderer;
 import com.simibubi.create.foundation.item.render.PartialItemModelRenderer;
-import com.simibubi.create.foundation.item.render.SimpleCustomRenderer;
 import java.util.function.Supplier;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.BookModel;
@@ -38,27 +37,13 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent;
-import plus.dragons.createenchantmentindustry.common.CEICommon;
-import plus.dragons.createenchantmentindustry.common.registry.CEIBlocks;
 
-@EventBusSubscriber(value = Dist.CLIENT, modid = CEICommon.ID)
 public class ClassicBlazeEnchanterItemRenderer extends CustomRenderedItemModelRenderer {
     private final Supplier<BookModel> bookModelSupplier;
     private BookModel bookModel;
 
     public ClassicBlazeEnchanterItemRenderer() {
         this.bookModelSupplier = () -> new BookModel(Minecraft.getInstance().getEntityModels().bakeLayer(ModelLayers.BOOK));
-    }
-
-    @SubscribeEvent
-    public static void register(RegisterClientExtensionsEvent event) {
-        event.registerItem(
-                SimpleCustomRenderer.create(CEIBlocks.CLASSIC_BLAZE_ENCHANTER.asItem(), new ClassicBlazeEnchanterItemRenderer()),
-                CEIBlocks.CLASSIC_BLAZE_ENCHANTER.asItem());
     }
 
     @Override
@@ -77,7 +62,8 @@ public class ClassicBlazeEnchanterItemRenderer extends CustomRenderedItemModelRe
             float page1 = Mth.frac(0.75f) * 1.6f - 0.3f;
             bookModel.setupAnim(0, Mth.clamp(page0, 0.0f, 1.0f), Mth.clamp(page1, 0.0f, 1.0f), 1);
         }
-        this.bookModel.render(poseStack, vertexconsumer, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, -1);
+        this.bookModel.render(
+                poseStack, vertexconsumer, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, 1, 1, 1, 1);
         poseStack.popPose();
     }
 }

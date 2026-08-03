@@ -18,35 +18,31 @@
 
 package plus.dragons.createenchantmentindustry.integration.apothic_enchanting.common.contraptions.actors.enderWovenBag;
 
-import io.netty.buffer.ByteBuf;
+import java.util.function.Supplier;
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.codec.ByteBufCodecs;
-import net.minecraft.network.codec.StreamCodec;
-import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.fml.loading.FMLLoader;
-import net.neoforged.neoforge.network.handling.IPayloadContext;
-import plus.dragons.createenchantmentindustry.common.CEICommon;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.fml.DistExecutor;
+import net.minecraftforge.network.NetworkEvent;
 import plus.dragons.createenchantmentindustry.integration.apothic_enchanting.client.contraptions.actors.enderWovenBag.EnderWovenBagClientPacketHandler;
 
-public record ContraptionEnderWovenBagPocketChangePacket(int entityId, BlockPos localPos, boolean open) implements CustomPacketPayload {
-
-    public static final StreamCodec<ByteBuf, ContraptionEnderWovenBagPocketChangePacket> STREAM_CODEC = StreamCodec.composite(
-            ByteBufCodecs.INT, ContraptionEnderWovenBagPocketChangePacket::entityId,
-            BlockPos.STREAM_CODEC, ContraptionEnderWovenBagPocketChangePacket::localPos,
-            ByteBufCodecs.BOOL, ContraptionEnderWovenBagPocketChangePacket::open,
-            ContraptionEnderWovenBagPocketChangePacket::new);
-
-    public static final CustomPacketPayload.Type<ContraptionEnderWovenBagPocketChangePacket> TYPE = new CustomPacketPayload.Type<>(CEICommon.asResource("contraption_ewb_change"));
-    public static void handle(ContraptionEnderWovenBagPocketChangePacket packet, IPayloadContext context) {
-        context.enqueueWork(() -> {
-            if (FMLLoader.getDist() == Dist.CLIENT)
-                EnderWovenBagClientPacketHandler.handle(packet);
-        });
+public record ContraptionEnderWovenBagPocketChangePacket(int entityId, BlockPos localPos, boolean open) {
+    public static void encode(ContraptionEnderWovenBagPocketChangePacket packet, FriendlyByteBuf buffer) {
+        buffer.writeVarInt(packet.entityId);
+        buffer.writeBlockPos(packet.localPos);
+        buffer.writeBoolean(packet.open);
     }
 
-    @Override
-    public CustomPacketPayload.Type<? extends CustomPacketPayload> type() {
-        return TYPE;
+    public static ContraptionEnderWovenBagPocketChangePacket decode(FriendlyByteBuf buffer) {
+        return new ContraptionEnderWovenBagPocketChangePacket(
+                buffer.readVarInt(), buffer.readBlockPos(), buffer.readBoolean());
+    }
+
+    public static void handle(
+            ContraptionEnderWovenBagPocketChangePacket packet, Supplier<NetworkEvent.Context> contextSupplier) {
+        NetworkEvent.Context context = contextSupplier.get();
+        context.enqueueWork(() -> DistExecutor.unsafeRunWhenOn(
+                Dist.CLIENT, () -> () -> EnderWovenBagClientPacketHandler.handle(packet)));
+        context.setPacketHandled(true);
     }
 }

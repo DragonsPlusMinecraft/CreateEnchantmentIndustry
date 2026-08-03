@@ -25,7 +25,7 @@ import com.simibubi.create.AllBlocks;
 import com.tterrag.registrate.util.entry.RegistryEntry;
 import net.createmod.ponder.api.registration.PonderTagRegistrationHelper;
 import net.minecraft.resources.ResourceLocation;
-import net.neoforged.neoforge.data.loading.DatagenModLoader;
+import net.minecraftforge.data.loading.DatagenModLoader;
 import plus.dragons.createdragonsplus.common.registry.CDPBlockEntities;
 import plus.dragons.createenchantmentindustry.common.CEICommon;
 import plus.dragons.createenchantmentindustry.common.registry.CEIBlocks;
@@ -36,7 +36,7 @@ public class CEIPonderTags {
     public static final ResourceLocation SUPER_EXPERIENCE_APPLIANCES = CEICommon.asResource("super_experience_related");
 
     public static void register(PonderTagRegistrationHelper<ResourceLocation> helper) {
-        PonderTagRegistrationHelper<RegistryEntry<?, ?>> entryHelper = helper.withKeyFunction(RegistryEntry::getId);
+        PonderTagRegistrationHelper<RegistryEntry<?>> entryHelper = helper.withKeyFunction(RegistryEntry::getId);
 
         helper.registerTag(EXPERIENCE_APPLIANCES)
                 .addToIndex()

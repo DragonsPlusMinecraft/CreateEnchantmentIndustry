@@ -37,10 +37,10 @@ public class BlazeLightningHelper {
     public static final String LIGHTNING_BOLT_EXPERIENCE_CHARGE_KEY = "ExperienceCharge";
     public static final TagKey<Block> LIGHTNING_ROD_BLOCKS = TagKey.create(
             Registries.BLOCK,
-            ResourceLocation.fromNamespaceAndPath("c", "lightning_rods"));
+            ResourceLocation.fromNamespaceAndPath("forge", "lightning_rods"));
     public static final TagKey<PoiType> LIGHTNING_ROD_POINT_OF_INTEREST_TYPES = TagKey.create(
             Registries.POINT_OF_INTEREST_TYPE,
-            ResourceLocation.fromNamespaceAndPath("c", "lightning_rods"));
+            ResourceLocation.fromNamespaceAndPath("forge", "lightning_rods"));
 
     private BlazeLightningHelper() {}
 

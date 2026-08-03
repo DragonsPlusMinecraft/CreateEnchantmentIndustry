@@ -104,7 +104,8 @@ public class ClassicBlazeEnchanterRenderer extends BlazeBlockRenderer<ClassicBla
         float page1 = Mth.frac(flip + 0.75f) * 1.6f - 0.3f;
         this.bookModel.setupAnim(time, Mth.clamp(page0, 0.0f, 1.0f), Mth.clamp(page1, 0.0f, 1.0f), 1);
         VertexConsumer vertexconsumer = BOOK_MATERIAL.buffer(buffer, RenderType::entitySolid);
-        this.bookModel.render(ps, vertexconsumer, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, -1);
+        this.bookModel.render(
+                ps, vertexconsumer, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, 1, 1, 1, 1);
         ps.popPose();
     }
 }

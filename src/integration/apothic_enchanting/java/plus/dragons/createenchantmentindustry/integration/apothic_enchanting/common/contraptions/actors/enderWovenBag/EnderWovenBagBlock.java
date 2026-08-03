@@ -18,7 +18,6 @@
 
 package plus.dragons.createenchantmentindustry.integration.apothic_enchanting.common.contraptions.actors.enderWovenBag;
 
-import com.mojang.serialization.MapCodec;
 import com.simibubi.create.foundation.block.IBE;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -36,7 +35,6 @@ import org.jetbrains.annotations.Nullable;
 import plus.dragons.createenchantmentindustry.integration.apothic_enchanting.common.registry.CEIABlockEntities;
 
 public class EnderWovenBagBlock extends HorizontalDirectionalBlock implements IBE<EnderWovenBagBlockEntity> {
-    public static final MapCodec<EnderWovenBagBlock> CODEC = simpleCodec(EnderWovenBagBlock::new);
     public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
 
     public EnderWovenBagBlock(Properties properties) {
@@ -81,10 +79,5 @@ public class EnderWovenBagBlock extends HorizontalDirectionalBlock implements IB
     @Override
     public BlockEntityType<? extends EnderWovenBagBlockEntity> getBlockEntityType() {
         return CEIABlockEntities.ENDER_WOVEN_BAG.get();
-    }
-
-    @Override
-    protected MapCodec<? extends HorizontalDirectionalBlock> codec() {
-        return CODEC;
     }
 }

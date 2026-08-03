@@ -18,11 +18,10 @@
 
 package plus.dragons.createenchantmentindustry.integration.apothic_enchanting.common.kinetics.bookshelf.brass;
 
-import com.mojang.serialization.MapCodec;
 import com.simibubi.create.content.kinetics.base.IRotate;
 import com.simibubi.create.content.kinetics.base.KineticBlock;
 import com.simibubi.create.foundation.block.IBE;
-import dev.shadowsoffire.apothic_enchanting.api.EnchantmentStatBlock;
+import dev.shadowsoffire.apotheosis.ench.api.IEnchantingBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -39,8 +38,7 @@ import org.jetbrains.annotations.Nullable;
 import plus.dragons.createenchantmentindustry.integration.apothic_enchanting.common.registry.CEIABlockEntities;
 import plus.dragons.createenchantmentindustry.integration.apothic_enchanting.config.CEIAConfig;
 
-public class BrassBookshelfBlock extends KineticBlock implements EnchantmentStatBlock, IBE<BrassBookshelfBlockEntity> {
-    public static final MapCodec<BrassBookshelfBlock> CODEC = simpleCodec(BrassBookshelfBlock::new);
+public class BrassBookshelfBlock extends KineticBlock implements IEnchantingBlock, IBE<BrassBookshelfBlockEntity> {
     public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
 
     public BrassBookshelfBlock(Properties props) {
@@ -58,11 +56,6 @@ public class BrassBookshelfBlock extends KineticBlock implements EnchantmentStat
     public BlockState getStateForPlacement(BlockPlaceContext context) {
         return defaultBlockState()
                 .setValue(FACING, context.getHorizontalDirection().getOpposite());
-    }
-
-    @Override
-    protected MapCodec<BrassBookshelfBlock> codec() {
-        return CODEC;
     }
 
     @Override
@@ -110,11 +103,11 @@ public class BrassBookshelfBlock extends KineticBlock implements EnchantmentStat
         return face == Direction.DOWN;
     }
 
-    protected BlockState rotate(BlockState state, Rotation rot) {
+    public BlockState rotate(BlockState state, Rotation rot) {
         return state.setValue(FACING, rot.rotate(state.getValue(FACING)));
     }
 
-    protected BlockState mirror(BlockState state, Mirror mirror) {
+    public BlockState mirror(BlockState state, Mirror mirror) {
         return state.rotate(mirror.getRotation(state.getValue(FACING)));
     }
 

@@ -27,9 +27,8 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.level.Level;
-import net.neoforged.neoforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidStack;
 import org.jetbrains.annotations.Nullable;
 import plus.dragons.createenchantmentindustry.common.fluids.printer.PrinterBlockEntity;
 import plus.dragons.createenchantmentindustry.common.fluids.printer.PrintingInput;
@@ -41,7 +40,7 @@ import plus.dragons.createenchantmentindustry.util.CEILang;
 public class RecipePrintingBehaviour implements PrintingBehaviour {
     public static final RecipePrintingBehaviour EMPTY = new RecipePrintingBehaviour(ItemStack.EMPTY);
     private final ItemStack template;
-    private @Nullable RecipeHolder<PrintingRecipe> lastRecipe;
+    private @Nullable PrintingRecipe lastRecipe;
 
     public RecipePrintingBehaviour(ItemStack template) {
         this.template = template;
@@ -49,15 +48,17 @@ public class RecipePrintingBehaviour implements PrintingBehaviour {
 
     private Optional<PrintingRecipe> findRecipe(Level level, ItemStack stack, FluidStack fluidStack) {
         var input = new PrintingInput(stack, template, fluidStack);
-        var holder = SequencedAssemblyRecipe.getRecipe(level, input, CEIRecipes.PRINTING.getType(), PrintingRecipe.class);
-        if (holder.isPresent()) {
-            lastRecipe = holder.get();
-            return holder.map(RecipeHolder::value);
+        if (lastRecipe != null && lastRecipe.matches(input, level)) {
+            return Optional.of(lastRecipe);
         }
-        holder = level.getRecipeManager().getRecipeFor(CEIRecipes.PRINTING.getType(), input, level, lastRecipe);
-        if (holder.isPresent()) {
-            lastRecipe = holder.get();
-            return holder.map(RecipeHolder::value);
+        var recipe = SequencedAssemblyRecipe.getRecipe(
+                level, input, CEIRecipes.PRINTING.getType(), PrintingRecipe.class);
+        if (recipe.isEmpty()) {
+            recipe = level.getRecipeManager().getRecipeFor(CEIRecipes.PRINTING.getType(), input, level);
+        }
+        if (recipe.isPresent()) {
+            lastRecipe = recipe.get();
+            return recipe;
         }
         lastRecipe = null;
         return Optional.empty();
@@ -76,21 +77,21 @@ public class RecipePrintingBehaviour implements PrintingBehaviour {
     @Override
     public int getRequiredFluidAmount(Level level, ItemStack stack, FluidStack fluidStack) {
         return findRecipe(level, stack, fluidStack)
-                .map(recipe -> recipe.getFluidIngredients().getFirst().amount())
+                .map(recipe -> recipe.getFluidIngredients().get(0).getRequiredAmount())
                 .orElse(0);
     }
 
     @Override
     public ItemStack getResult(Level level, ItemStack stack, FluidStack fluidStack) {
         return findRecipe(level, stack, fluidStack)
-                .map(recipe -> recipe.getRollableResults().getFirst().getStack())
+                .map(recipe -> recipe.getRollableResults().get(0).getStack())
                 .orElse(ItemStack.EMPTY);
     }
 
     @Override
     public void onFinished(Level level, BlockPos pos, PrinterBlockEntity printer) {
         if (lastRecipe != null)
-            lastRecipe.value().playSound(level, pos.below(), SoundSource.BLOCKS);
+            lastRecipe.playSound(level, pos.below(), SoundSource.BLOCKS);
     }
 
     @Override
@@ -100,9 +101,9 @@ public class RecipePrintingBehaviour implements PrintingBehaviour {
         CEILang.translate("gui.goggles.printing.template").forGoggles(tooltip);
         CEILang.item(template).style(ChatFormatting.GRAY).forGoggles(tooltip, 1);
         if (lastRecipe != null) {
-            var cost = lastRecipe.value().getFluidIngredients().size();
+            var cost = lastRecipe.getFluidIngredients().get(0).getRequiredAmount();
             CEILang.translate("gui.goggles.printing.cost",
-                    CEILang.number(lastRecipe.value().getFluidIngredients().size())
+                    CEILang.number(cost)
                             .add(CreateLang.translate("generic.unit.millibuckets"))
                             .style(cost <= CEIConfig.fluids().printerFluidCapacity.get()
                                     ? ChatFormatting.GREEN

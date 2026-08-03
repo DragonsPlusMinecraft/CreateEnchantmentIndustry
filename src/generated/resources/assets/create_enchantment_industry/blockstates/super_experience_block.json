@@ -1,7 +1,7 @@
 {
-    "variants": {
-        "": {
-            "model": "create_enchantment_industry:block/super_experience_block"
-        }
+  "variants": {
+    "": {
+      "model": "create_enchantment_industry:block/super_experience_block"
     }
+  }
 }

@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "create_enchantment_industry:super_experience_block"
+    }
+  ],
+  "result": {
+    "count": 9,
+    "item": "create_enchantment_industry:super_experience_nugget"
+  }
+}

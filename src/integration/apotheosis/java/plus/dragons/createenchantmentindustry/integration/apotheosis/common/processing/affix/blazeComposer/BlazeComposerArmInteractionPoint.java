@@ -18,7 +18,6 @@
 
 package plus.dragons.createenchantmentindustry.integration.apotheosis.common.processing.affix.blazeComposer;
 
-import com.simibubi.create.content.kinetics.mechanicalArm.ArmBlockEntity;
 import com.simibubi.create.content.kinetics.mechanicalArm.ArmInteractionPoint;
 import com.simibubi.create.content.kinetics.mechanicalArm.ArmInteractionPointType;
 import net.minecraft.core.BlockPos;
@@ -34,14 +33,14 @@ public class BlazeComposerArmInteractionPoint extends ArmInteractionPoint {
     }
 
     @Override
-    public ItemStack insert(ArmBlockEntity armBlockEntity, ItemStack stack, boolean simulate) {
+    public ItemStack insert(ItemStack stack, boolean simulate) {
         if (level.getBlockEntity(pos) instanceof BlazeComposerBlockEntity composer)
             return composer.insertAutomationItem(stack.copy(), simulate);
         return stack;
     }
 
     @Override
-    public ItemStack extract(ArmBlockEntity armBlockEntity, int slot, int amount, boolean simulate) {
+    public ItemStack extract(int slot, int amount, boolean simulate) {
         if (level.getBlockEntity(pos) instanceof BlazeComposerBlockEntity composer) {
             return composer.extractAutomationItem(slot, amount, simulate);
         }
@@ -49,7 +48,7 @@ public class BlazeComposerArmInteractionPoint extends ArmInteractionPoint {
     }
 
     @Override
-    public int getSlotCount(ArmBlockEntity armBlockEntity) {
+    public int getSlotCount() {
         if (level.getBlockEntity(pos) instanceof BlazeComposerBlockEntity composer)
             return composer.getAutomationSlotCount();
         return 0;

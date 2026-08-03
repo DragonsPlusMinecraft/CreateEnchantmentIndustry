@@ -18,11 +18,11 @@
 
 package plus.dragons.createenchantmentindustry.integration.apothic_enchanting.integration;
 
-import dev.shadowsoffire.apothic_enchanting.asm.EnchHooks;
+import dev.shadowsoffire.apotheosis.ench.asm.EnchHooks;
 import plus.dragons.createenchantmentindustry.common.processing.enchanter.CEIEnchantmentHelper;
 
 public class CEIMaxEnchantmentLevel {
     public static void register() {
-        CEIEnchantmentHelper.alternativeMaxLevel = enchantment -> EnchHooks.getMaxLevel(enchantment.value());
+        CEIEnchantmentHelper.alternativeMaxLevel = EnchHooks::getMaxLevel;
     }
 }

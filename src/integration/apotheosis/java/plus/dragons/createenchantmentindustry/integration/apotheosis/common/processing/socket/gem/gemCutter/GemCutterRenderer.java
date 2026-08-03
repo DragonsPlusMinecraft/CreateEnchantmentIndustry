@@ -52,7 +52,7 @@ public class GemCutterRenderer extends LowerBeltCopperCasingAndSupportRenderer<G
 
         CachedBuffers.partialFacing(needle, state, facing)
                 .light(light)
-                .renderInto(poseStack, buffer.getBuffer(RenderType.CUTOUT_MIPPED));
+                .renderInto(poseStack, buffer.getBuffer(RenderType.cutoutMipped()));
 
         float unready;
         if (cutter.powered) {
@@ -73,7 +73,7 @@ public class GemCutterRenderer extends LowerBeltCopperCasingAndSupportRenderer<G
                 .center()
                 .rotate(facing.getClockWise().getAxis(), radIniVertAli - radProg)
                 .uncenter()
-                .renderInto(poseStack, buffer.getBuffer(RenderType.CUTOUT_MIPPED));
+                .renderInto(poseStack, buffer.getBuffer(RenderType.cutoutMipped()));
         CachedBuffers.partialFacing(vert, state, facing)
                 .light(light)
                 .center()
@@ -81,7 +81,7 @@ public class GemCutterRenderer extends LowerBeltCopperCasingAndSupportRenderer<G
                 .rotate(facing.getAxis(), radIniVertAli - radProg)
                 .rotate(Direction.Axis.Y, radIniVert + radProg)
                 .uncenter()
-                .renderInto(poseStack, buffer.getBuffer(RenderType.CUTOUT_MIPPED));
+                .renderInto(poseStack, buffer.getBuffer(RenderType.cutoutMipped()));
         CachedBuffers.partialFacing(hori, state, facing)
                 .light(light)
                 .center()
@@ -90,7 +90,7 @@ public class GemCutterRenderer extends LowerBeltCopperCasingAndSupportRenderer<G
                 .rotate(Direction.Axis.Y, radIniVert + radProg)
                 .rotate(facing.getAxis(), radIniHori - radProg)
                 .uncenter()
-                .renderInto(poseStack, buffer.getBuffer(RenderType.CUTOUT_MIPPED));
+                .renderInto(poseStack, buffer.getBuffer(RenderType.cutoutMipped()));
     }
 
     // -1 to 1 = 2PI to -2PI

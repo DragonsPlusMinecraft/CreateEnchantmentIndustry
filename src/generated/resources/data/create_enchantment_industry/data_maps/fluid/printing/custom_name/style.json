@@ -1,52 +1,52 @@
 {
-    "values": {
-        "#c:dyes/black": {
-            "color": "#000000"
-        },
-        "#c:dyes/blue": {
-            "color": "#0000FF"
-        },
-        "#c:dyes/brown": {
-            "color": "#8B4513"
-        },
-        "#c:dyes/cyan": {
-            "color": "#00FFFF"
-        },
-        "#c:dyes/gray": {
-            "color": "#808080"
-        },
-        "#c:dyes/green": {
-            "color": "#00FF00"
-        },
-        "#c:dyes/light_blue": {
-            "color": "#9AC0CD"
-        },
-        "#c:dyes/light_gray": {
-            "color": "#D3D3D3"
-        },
-        "#c:dyes/lime": {
-            "color": "#BFFF00"
-        },
-        "#c:dyes/magenta": {
-            "color": "#FF00FF"
-        },
-        "#c:dyes/orange": {
-            "color": "#FF681F"
-        },
-        "#c:dyes/pink": {
-            "color": "#FF69B4"
-        },
-        "#c:dyes/purple": {
-            "color": "#A020F0"
-        },
-        "#c:dyes/red": {
-            "color": "#FF0000"
-        },
-        "#c:dyes/white": {
-            "color": "#FFFFFF"
-        },
-        "#c:dyes/yellow": {
-            "color": "#FFFF00"
-        }
+  "values": {
+    "#forge:dyes/black": {
+      "color": "#000000"
+    },
+    "#forge:dyes/blue": {
+      "color": "#0000FF"
+    },
+    "#forge:dyes/brown": {
+      "color": "#8B4513"
+    },
+    "#forge:dyes/cyan": {
+      "color": "#00FFFF"
+    },
+    "#forge:dyes/gray": {
+      "color": "#808080"
+    },
+    "#forge:dyes/green": {
+      "color": "#00FF00"
+    },
+    "#forge:dyes/light_blue": {
+      "color": "#9AC0CD"
+    },
+    "#forge:dyes/light_gray": {
+      "color": "#D3D3D3"
+    },
+    "#forge:dyes/lime": {
+      "color": "#BFFF00"
+    },
+    "#forge:dyes/magenta": {
+      "color": "#FF00FF"
+    },
+    "#forge:dyes/orange": {
+      "color": "#FF681F"
+    },
+    "#forge:dyes/pink": {
+      "color": "#FF69B4"
+    },
+    "#forge:dyes/purple": {
+      "color": "#A020F0"
+    },
+    "#forge:dyes/red": {
+      "color": "#FF0000"
+    },
+    "#forge:dyes/white": {
+      "color": "#FFFFFF"
+    },
+    "#forge:dyes/yellow": {
+      "color": "#FFFF00"
     }
+  }
 }

@@ -18,6 +18,7 @@
 
 package plus.dragons.createenchantmentindustry.integration.apothic_enchanting.client.ponder;
 
+import dev.shadowsoffire.apotheosis.Apotheosis;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
@@ -38,14 +39,16 @@ public class CEIAPonderPlugin implements PonderPlugin {
 
     @Override
     public void registerScenes(PonderSceneRegistrationHelper<ResourceLocation> helper) {
-        CEIAPonderScenes.register(helper);
+        if (Apotheosis.enableEnch)
+            CEIAPonderScenes.register(helper);
         for (var scene : SCENES)
             scene.accept(helper);
     }
 
     @Override
     public void registerTags(PonderTagRegistrationHelper<ResourceLocation> helper) {
-        CEIAPonderTags.register(helper);
+        if (Apotheosis.enableEnch)
+            CEIAPonderTags.register(helper);
         for (var tag : TAGS)
             tag.accept(helper);
     }

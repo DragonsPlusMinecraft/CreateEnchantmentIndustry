@@ -1,7 +1,7 @@
 {
-    "variants": {
-        "": {
-            "model": "create_enchantment_industry:block/infused_dragon_breath"
-        }
+  "variants": {
+    "": {
+      "model": "create_enchantment_industry:block/infused_dragon_breath"
     }
+  }
 }

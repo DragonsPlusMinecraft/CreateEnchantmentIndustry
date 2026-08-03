@@ -1,0 +1,41 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "apotheosis"
+        },
+        {
+          "type": "create_enchantment_industry:apotheosis_module",
+          "module": "adventure"
+        }
+      ],
+      "recipe": {
+        "type": "minecraft:crafting_shaped",
+        "category": "misc",
+        "key": {
+          "S": {
+            "item": "apotheosis:gem_dust"
+          },
+          "o": {
+            "item": "create:brass_ingot"
+          },
+          "x": {
+            "item": "minecraft:amethyst_shard"
+          }
+        },
+        "pattern": [
+          "xxx",
+          "oSo",
+          "xxx"
+        ],
+        "result": {
+          "item": "create_enchantment_industry:gem_cutter"
+        },
+        "show_notification": true
+      }
+    }
+  ]
+}

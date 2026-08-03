@@ -1,0 +1,51 @@
+{
+  "advancements": [
+    {
+      "advancement": {
+        "parent": "minecraft:recipes/root",
+        "criteria": {
+          "has_the_recipe": {
+            "conditions": {
+              "recipe": "create_enchantment_industry:crafting/affix_augmentor"
+            },
+            "trigger": "minecraft:recipe_unlocked"
+          },
+          "nether_star": {
+            "conditions": {
+              "items": [
+                {
+                  "items": [
+                    "minecraft:nether_star"
+                  ]
+                }
+              ]
+            },
+            "trigger": "minecraft:inventory_changed"
+          }
+        },
+        "requirements": [
+          [
+            "nether_star",
+            "has_the_recipe"
+          ]
+        ],
+        "rewards": {
+          "recipes": [
+            "create_enchantment_industry:crafting/affix_augmentor"
+          ]
+        },
+        "sends_telemetry_event": false
+      },
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "apotheosis"
+        },
+        {
+          "type": "create_enchantment_industry:apotheosis_module",
+          "module": "adventure"
+        }
+      ]
+    }
+  ]
+}

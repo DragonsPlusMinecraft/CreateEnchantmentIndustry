@@ -20,16 +20,13 @@ package plus.dragons.createenchantmentindustry.data;
 
 import static plus.dragons.createenchantmentindustry.common.CEICommon.REGISTRATE;
 
-import net.neoforged.bus.api.IEventBus;
-import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.common.Mod;
-import net.neoforged.neoforge.data.event.GatherDataEvent;
-import net.neoforged.neoforge.data.loading.DatagenModLoader;
+import net.minecraftforge.data.event.GatherDataEvent;
+import net.minecraftforge.data.loading.DatagenModLoader;
+import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 import plus.dragons.createenchantmentindustry.client.ponder.CEIPonderPlugin;
-import plus.dragons.createenchantmentindustry.common.CEICommon;
 import plus.dragons.createenchantmentindustry.common.registry.CEIAdvancements;
 
-@Mod(CEICommon.ID)
 public class CEIData {
     public CEIData(IEventBus modBus) {
         if (!DatagenModLoader.isRunningDataGen())
@@ -54,7 +51,9 @@ public class CEIData {
         lookupProvider = generatedEntriesProvider.getRegistryProvider();
 
         generator.addProvider(event.includeServer(), generatedEntriesProvider);
-        generator.addProvider(server, new CEIRecipeProvider(output, lookupProvider));
+        generator.addProvider(server, new CEIDataMapProvider(output));
+        generator.addProvider(server, new CEIRecipeProvider(output));
         generator.addProvider(server, new CEIAdvancements(output, lookupProvider));
+        generator.addProvider(server, new CEIEnchantmentTagsProvider(output, lookupProvider, existingFileHelper));
     }
 }

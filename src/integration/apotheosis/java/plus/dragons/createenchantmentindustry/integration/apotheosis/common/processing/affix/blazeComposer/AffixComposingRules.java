@@ -21,9 +21,9 @@ package plus.dragons.createenchantmentindustry.integration.apotheosis.common.pro
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.mojang.serialization.JsonOps;
-import dev.shadowsoffire.apotheosis.affix.Affix;
-import dev.shadowsoffire.apotheosis.affix.AffixInstance;
-import dev.shadowsoffire.apotheosis.loot.LootRarity;
+import dev.shadowsoffire.apotheosis.adventure.affix.Affix;
+import dev.shadowsoffire.apotheosis.adventure.affix.AffixInstance;
+import dev.shadowsoffire.apotheosis.adventure.loot.LootRarity;
 import dev.shadowsoffire.placebo.reload.DynamicHolder;
 import java.util.HashMap;
 import java.util.Map;
@@ -126,7 +126,7 @@ public class AffixComposingRules extends SimplePreparableReloadListener<AffixCom
             rarities = Map.copyOf(rarities);
         }
 
-        private AffixComposingRule affix(DynamicHolder<Affix> affix) {
+        private AffixComposingRule affix(DynamicHolder<? extends Affix> affix) {
             return affixes.getOrDefault(affix.getId(), AffixComposingRule.DEFAULT);
         }
 

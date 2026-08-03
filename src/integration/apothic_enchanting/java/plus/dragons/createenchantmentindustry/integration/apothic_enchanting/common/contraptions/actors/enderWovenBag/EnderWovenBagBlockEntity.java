@@ -23,11 +23,11 @@ import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
 import java.util.List;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.component.DataComponentMap;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import plus.dragons.createenchantmentindustry.integration.apothic_enchanting.common.registry.CEIADataComponents;
+import plus.dragons.createenchantmentindustry.common.item.CEIItemData;
 import plus.dragons.createenchantmentindustry.integration.apothic_enchanting.util.CEIALang;
 
 public class EnderWovenBagBlockEntity extends SmartBlockEntity implements IHaveGoggleInformation {
@@ -73,15 +73,18 @@ public class EnderWovenBagBlockEntity extends SmartBlockEntity implements IHaveG
         return entities.addToGoggleTooltip(tooltip, isPlayerSneaking);
     }
 
-    @Override
-    protected void applyImplicitComponents(DataComponentInput componentInput) {
-        var d = componentInput.get(CEIADataComponents.STORED_ENTITIES);
-        if (d != null)
-            this.entities.entities = d;
+    public StoredEntities getStoredEntities() {
+        return entities.entities.copy();
+    }
+
+    public void setStoredEntities(StoredEntities storedEntities) {
+        entities.entities = storedEntities.copy();
+        setChanged();
+        sendData();
     }
 
     @Override
-    protected void collectImplicitComponents(DataComponentMap.Builder components) {
-        components.set(CEIADataComponents.STORED_ENTITIES, entities.entities);
+    public void saveToItem(ItemStack stack) {
+        CEIItemData.setOwnedData(stack, CEIItemData.STORED_ENTITIES_TAG, entities.entities.tag());
     }
 }

@@ -28,7 +28,7 @@ import plus.dragons.createenchantmentindustry.integration.apothic_enchanting.com
 
 public class CEIAPonderScenes {
     public static void register(PonderSceneRegistrationHelper<ResourceLocation> helper) {
-        PonderSceneRegistrationHelper<ItemProviderEntry<?, ?>> itemHelper = helper.withKeyFunction(RegistryEntry::getId);
+        PonderSceneRegistrationHelper<ItemProviderEntry<?>> itemHelper = helper.withKeyFunction(RegistryEntry::getId);
 
         itemHelper.forComponents(CEIABlocks.INFUSER)
                 .addStoryBoard("infuser", ApothicEnchantingScene::infuser,

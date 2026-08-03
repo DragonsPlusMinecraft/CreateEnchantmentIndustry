@@ -20,13 +20,12 @@ package plus.dragons.createenchantmentindustry.common.registry;
 
 import static plus.dragons.createenchantmentindustry.common.CEICommon.REGISTRATE;
 
-import com.simibubi.create.api.contraption.storage.fluid.MountedFluidStorageType;
 import com.tterrag.registrate.util.entry.RegistryEntry;
-import net.neoforged.bus.api.IEventBus;
+import net.minecraftforge.eventbus.api.IEventBus;
 import plus.dragons.createenchantmentindustry.common.fluids.lantern.ExperienceLanternMountedFluidStorageType;
 
 public class CEIMountedStorageTypes {
-    public static final RegistryEntry<MountedFluidStorageType<?>, ExperienceLanternMountedFluidStorageType> EXPERIENCE_LANTERN = REGISTRATE
+    public static final RegistryEntry<ExperienceLanternMountedFluidStorageType> EXPERIENCE_LANTERN = REGISTRATE
             .mountedFluidStorage("experience_lantern", ExperienceLanternMountedFluidStorageType::new)
             .register();
 

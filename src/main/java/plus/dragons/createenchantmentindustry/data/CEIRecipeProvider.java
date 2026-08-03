@@ -21,8 +21,8 @@ package plus.dragons.createenchantmentindustry.data;
 import static com.simibubi.create.AllBlocks.*;
 import static com.simibubi.create.AllItems.*;
 import static net.minecraft.world.item.Items.*;
-import static net.neoforged.neoforge.common.Tags.Items.EGGS;
-import static net.neoforged.neoforge.common.Tags.Items.STORAGE_BLOCKS_IRON;
+import static net.minecraftforge.common.Tags.Items.EGGS;
+import static net.minecraftforge.common.Tags.Items.STORAGE_BLOCKS_IRON;
 import static plus.dragons.createdragonsplus.common.registry.CDPBlocks.FLUID_HATCH;
 import static plus.dragons.createdragonsplus.common.registry.CDPItems.BLAZE_UPGRADE_SMITHING_TEMPLATE;
 import static plus.dragons.createdragonsplus.data.recipe.CreateRecipeBuilders.*;
@@ -33,21 +33,15 @@ import static plus.dragons.createenchantmentindustry.common.registry.CEIFluids.E
 import static plus.dragons.createenchantmentindustry.common.registry.CEIItems.*;
 
 import com.simibubi.create.foundation.data.recipe.CommonMetal;
-import java.util.concurrent.CompletableFuture;
-import net.minecraft.advancements.Advancement;
-import net.minecraft.advancements.AdvancementHolder;
-import net.minecraft.core.HolderLookup.Provider;
+import java.util.function.Consumer;
 import net.minecraft.data.PackOutput;
+import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.data.recipes.RecipeCategory;
-import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.data.recipes.RecipeProvider;
 import net.minecraft.data.recipes.SmithingTransformRecipeBuilder;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.level.block.Blocks;
-import net.neoforged.neoforge.common.conditions.ICondition;
-import org.jetbrains.annotations.Nullable;
+import net.minecraftforge.common.crafting.ConditionalRecipe;
 import plus.dragons.createdragonsplus.data.recipe.integration.IntegrationIngredient;
 import plus.dragons.createenchantmentindustry.common.CEICommon;
 import plus.dragons.createenchantmentindustry.common.kinetics.grindstone.GrindingRecipe;
@@ -59,18 +53,18 @@ public class CEIRecipeProvider extends RecipeProvider {
     private static final String BRASS = "brass";
     private static final String TRAIN = "train";
 
-    public CEIRecipeProvider(PackOutput output, CompletableFuture<Provider> registries) {
-        super(output, registries);
+    public CEIRecipeProvider(PackOutput output) {
+        super(output);
     }
 
     @Override
-    protected void buildRecipes(RecipeOutput output) {
+    protected void buildRecipes(Consumer<FinishedRecipe> output) {
         buildMachineRecipes(output);
         buildMaterialRecipes(output);
         buildExperienceRecipes(output);
     }
 
-    private void buildMachineRecipes(RecipeOutput output) {
+    private void buildMachineRecipes(Consumer<FinishedRecipe> output) {
         shaped().define('a', ANDESITE_ALLOY)
                 .define('s', SHAFT)
                 .pattern("aaa")
@@ -118,25 +112,32 @@ public class CEIRecipeProvider extends RecipeProvider {
                 BLAZE_FORGER.asItem())
                 .unlocks("has_blaze_burner", has(BLAZE_BURNER))
                 .save(output, BLAZE_FORGER.getId().withPrefix("smithing/"));
-        SmithingTransformRecipeBuilder.smithing(
-                Ingredient.of(BLAZE_UPGRADE_SMITHING_TEMPLATE),
-                Ingredient.of(BLAZE_BURNER),
-                Ingredient.of(BLAZES_ENCHANTING_HANDBOOK),
-                RecipeCategory.MISC,
-                CLASSIC_BLAZE_ENCHANTER.asItem())
-                .unlocks("has_blaze_burner", has(BLAZE_BURNER))
-                .save(withClassicBlazeEnchanterCondition(output), CLASSIC_BLAZE_ENCHANTER.getId().withPrefix("smithing/"));
+        var classicId = CLASSIC_BLAZE_ENCHANTER.getId().withPrefix("smithing/");
+        ConditionalRecipe.builder()
+                .addCondition(CEIConfig.features().classicBlazeEnchanter)
+                .addRecipe(consumer -> SmithingTransformRecipeBuilder.smithing(
+                        Ingredient.of(BLAZE_UPGRADE_SMITHING_TEMPLATE),
+                        Ingredient.of(BLAZE_BURNER),
+                        Ingredient.of(BLAZES_ENCHANTING_HANDBOOK),
+                        RecipeCategory.MISC,
+                        CLASSIC_BLAZE_ENCHANTER.asItem())
+                        .unlocks("has_blaze_burner", has(BLAZE_BURNER))
+                        .save(consumer, classicId))
+                .generateAdvancement()
+                .build(output, classicId);
     }
 
-    private void buildMaterialRecipes(RecipeOutput output) {
+    private void buildMaterialRecipes(Consumer<FinishedRecipe> output) {
         shapeless().output(SUPER_EXPERIENCE_NUGGET, 9)
                 .require(SUPER_EXPERIENCE_BLOCK)
+                .unlockedBy("has_super_experience_block", has(SUPER_EXPERIENCE_BLOCK))
                 .accept(output);
         shaped().output(SUPER_EXPERIENCE_BLOCK)
                 .define('n', SUPER_EXPERIENCE_NUGGET)
                 .pattern("nnn")
                 .pattern("nnn")
                 .pattern("nnn")
+                .unlockedBy("has_super_experience_nugget", has(SUPER_EXPERIENCE_NUGGET))
                 .accept(output);
         pressing(ENCHANTING_TEMPLATE.getId())
                 .require(EXPERIENCE_BLOCK)
@@ -173,7 +174,7 @@ public class CEIRecipeProvider extends RecipeProvider {
                 .build(output);
     }
 
-    private void buildExperienceRecipes(RecipeOutput output) {
+    private void buildExperienceRecipes(Consumer<FinishedRecipe> output) {
         compacting(CEICommon.asResource("experience_block"))
                 .require(EXPERIENCE.get(), 27)
                 .output(EXPERIENCE_BLOCK)
@@ -235,23 +236,5 @@ public class CEIRecipeProvider extends RecipeProvider {
                 .require(IntegrationIngredient.of("mysticalagriculture", "experience_droplet"))
                 .output(EXPERIENCE.get(), 10)
                 .build(output);
-    }
-
-    private static RecipeOutput withClassicBlazeEnchanterCondition(RecipeOutput output) {
-        return new RecipeOutput() {
-            @Override
-            public Advancement.Builder advancement() {
-                return output.advancement();
-            }
-
-            @Override
-            public void accept(ResourceLocation id, Recipe<?> recipe, @Nullable AdvancementHolder advancement, ICondition... conditions) {
-                var feature = CEIConfig.features().classicBlazeEnchanter;
-                var merged = new ICondition[conditions.length + 1];
-                merged[0] = feature;
-                System.arraycopy(conditions, 0, merged, 1, conditions.length);
-                output.accept(id, recipe, advancement, merged);
-            }
-        };
     }
 }

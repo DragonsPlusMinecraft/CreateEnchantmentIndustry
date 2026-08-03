@@ -26,7 +26,6 @@ import com.simibubi.create.foundation.blockEntity.behaviour.ValueSettingsBoard;
 import com.simibubi.create.foundation.blockEntity.behaviour.ValueSettingsFormatter;
 import com.simibubi.create.foundation.blockEntity.behaviour.scrollValue.ScrollValueBehaviour;
 import java.util.function.Function;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
@@ -80,14 +79,14 @@ public class StatValueBehaviour extends ScrollValueBehaviour {
     }
 
     @Override
-    public void write(CompoundTag nbt, HolderLookup.Provider registries, boolean clientPacket) {
+    public void write(CompoundTag nbt, boolean clientPacket) {
         nbt.putInt("StatValueEterna", this.eterna);
         nbt.putInt("StatValueQuanta", this.quanta);
         nbt.putInt("StatValueArcana", this.arcana);
     }
 
     @Override
-    public void read(CompoundTag nbt, HolderLookup.Provider registries, boolean clientPacket) {
+    public void read(CompoundTag nbt, boolean clientPacket) {
         if (nbt.contains("StatValue")) return; // prevent crash from loading 0.1.0 version
         quanta = nbt.getInt("StatValueQuanta");
         arcana = nbt.getInt("StatValueArcana");

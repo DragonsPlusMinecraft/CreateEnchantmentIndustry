@@ -21,15 +21,14 @@ package plus.dragons.createenchantmentindustry.common.kinetics.grindstone;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.content.kinetics.base.HorizontalKineticBlock;
 import com.simibubi.create.content.kinetics.deployer.ManualApplicationRecipe;
+import com.simibubi.create.content.processing.recipe.ProcessingRecipeBuilder;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.item.context.UseOnContext;
-import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
-import plus.dragons.createenchantmentindustry.common.CEICommon;
 import plus.dragons.createenchantmentindustry.common.registry.CEIBlocks;
 
 public class MechanicalGrindStoneItem extends BlockItem {
@@ -37,13 +36,12 @@ public class MechanicalGrindStoneItem extends BlockItem {
         super(block, properties);
     }
 
-    public static RecipeHolder<ManualApplicationRecipe> createRecipe() {
-        return new RecipeHolder<>(CEICommon.asResource("mechanical_grindstone"),
-                new ManualApplicationRecipe.Builder<>(ManualApplicationRecipe::new, CEIBlocks.GRINDSTONE_DRAIN.getId())
-                        .require(AllBlocks.ITEM_DRAIN)
-                        .require(CEIBlocks.MECHANICAL_GRINDSTONE)
-                        .output(CEIBlocks.GRINDSTONE_DRAIN)
-                        .build());
+    public static ManualApplicationRecipe createRecipe() {
+        return new ProcessingRecipeBuilder<>(ManualApplicationRecipe::new, CEIBlocks.GRINDSTONE_DRAIN.getId())
+                .require(AllBlocks.ITEM_DRAIN)
+                .require(CEIBlocks.MECHANICAL_GRINDSTONE)
+                .output(CEIBlocks.GRINDSTONE_DRAIN)
+                .build();
     }
 
     @Override
@@ -66,7 +64,7 @@ public class MechanicalGrindStoneItem extends BlockItem {
             super(context);
             var clickedPos = context.getClickedPos();
             var clickedState = context.getLevel().getBlockState(clickedPos);
-            this.clickedDrain = clickedState.is(AllBlocks.ITEM_DRAIN);
+            this.clickedDrain = clickedState.is(AllBlocks.ITEM_DRAIN.get());
             this.replaceClicked |= this.clickedDrain;
         }
 

@@ -1,7 +1,0 @@
-{
-  "selector": "#create_enchantment_industry:sable/light_machines",
-  "properties": {
-    "sable:mass": 0.5,
-    "sable:volume": 0.5
-  }
-}

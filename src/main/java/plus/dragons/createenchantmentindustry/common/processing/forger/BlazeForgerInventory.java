@@ -18,28 +18,23 @@
 
 package plus.dragons.createenchantmentindustry.common.processing.forger;
 
-import it.unimi.dsi.fastutil.objects.Object2IntMap.Entry;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
-import net.minecraft.core.Holder;
-import net.minecraft.core.HolderLookup.Provider;
-import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.tags.EnchantmentTags;
 import net.minecraft.world.inventory.AnvilMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.Enchantment;
-import net.minecraft.world.item.enchantment.EnchantmentHelper;
-import net.minecraft.world.item.enchantment.ItemEnchantments;
-import net.minecraft.world.item.enchantment.ItemEnchantments.Mutable;
-import net.neoforged.neoforge.items.ItemStackHandler;
+import net.minecraftforge.items.ItemStackHandler;
 import plus.dragons.createenchantmentindustry.common.fluids.experience.ExperienceHelper;
+import plus.dragons.createenchantmentindustry.common.item.CEIItemData;
 import plus.dragons.createenchantmentindustry.common.processing.EnchantmentProcessingRules;
 import plus.dragons.createenchantmentindustry.common.processing.enchanter.CEIEnchantmentHelper;
 import plus.dragons.createenchantmentindustry.common.processing.enchanter.EnchantingTemplateItem;
@@ -97,8 +92,8 @@ public class BlazeForgerInventory extends ItemStackHandler {
     }
 
     @Override
-    public void deserializeNBT(Provider provider, CompoundTag nbt) {
-        super.deserializeNBT(provider, nbt);
+    public void deserializeNBT(CompoundTag nbt) {
+        super.deserializeNBT(nbt);
         cost = nbt.getInt("Cost");
         if (nbt.contains("Operation", Tag.TAG_INT)) {
             operation = BlazeForgerMode.BY_ID.apply(nbt.getInt("Operation"));
@@ -112,8 +107,8 @@ public class BlazeForgerInventory extends ItemStackHandler {
     }
 
     @Override
-    public CompoundTag serializeNBT(Provider provider) {
-        var nbt = super.serializeNBT(provider);
+    public CompoundTag serializeNBT() {
+        var nbt = super.serializeNBT();
         nbt.putInt("Cost", cost);
         nbt.putInt("Operation", operation.ordinal());
         nbt.putBoolean("Conflicting", conflicting);
@@ -167,20 +162,21 @@ public class BlazeForgerInventory extends ItemStackHandler {
         result = Result.emptyInput();
     }
 
-    protected void applyResult() {
-        Result finalResult = calculateResult(stacks.get(0), stacks.get(1));
-        if (!finalResult.valid())
+    protected void applyResult(
+            ItemStack primaryOutput,
+            ItemStack secondaryOutput,
+            BlazeForgerMode completedOperation,
+            boolean completedConflicting,
+            boolean completedOverCap,
+            boolean completedSpecial) {
+        if (primaryOutput.isEmpty() && secondaryOutput.isEmpty())
             return;
-        BlazeForgerMode completedOperation = finalResult.operation();
-        boolean completedConflicting = finalResult.conflicting();
-        boolean completedOverCap = finalResult.overCap();
-
-        stacks.set(2, finalResult.primaryOutput().copy());
-        stacks.set(3, finalResult.secondaryOutput().copy());
+        stacks.set(2, primaryOutput.copy());
+        stacks.set(3, secondaryOutput.copy());
         clearInput();
 
         forger.advancement.awardStat(CEIStats.FORGE.get(), 1);
-        if (forger.special) {
+        if (completedSpecial) {
             forger.advancement.awardStat(CEIStats.SUPER_ENCHANT.get(), 1);
             if (completedOverCap)
                 forger.advancement.trigger(CEIAdvancements.TRANSCENDENT_OVERCLOCK.builtinTrigger());
@@ -238,9 +234,9 @@ public class BlazeForgerInventory extends ItemStackHandler {
 
         ItemStack primaryOutput = modeResult.primaryOutput().copy();
         ItemStack secondaryOutput = modeResult.secondaryOutput().copy();
-        int repairCostBefore = primaryOutput.getOrDefault(DataComponents.REPAIR_COST, 0);
+        int repairCostBefore = CEIItemData.getRepairCost(primaryOutput);
         applyRepairCost(primaryOutput, secondaryOutput);
-        int repairCostAfter = primaryOutput.getOrDefault(DataComponents.REPAIR_COST, 0);
+        int repairCostAfter = CEIItemData.getRepairCost(primaryOutput);
         return Result.ready(
                 mode,
                 primaryOutput,
@@ -255,8 +251,8 @@ public class BlazeForgerInventory extends ItemStackHandler {
     }
 
     private Result calculateMerge(ItemStack base, ItemStack addition) {
-        ItemEnchantments baseEnchantments = getEnchantments(base);
-        ItemEnchantments additionEnchantments = getEnchantments(addition);
+        Map<Enchantment, Integer> baseEnchantments = getEnchantments(base);
+        Map<Enchantment, Integer> additionEnchantments = getEnchantments(addition);
         if (isTemplate(base) || isTemplate(addition)) {
             if (!isFilledTemplate(base) || !isFilledTemplate(addition))
                 return invalid(BlazeForgerMode.MERGE, FailureReason.MERGE_REQUIRES_FILLED_TEMPLATES);
@@ -275,8 +271,8 @@ public class BlazeForgerInventory extends ItemStackHandler {
     }
 
     private Result calculateApply(ItemStack base, ItemStack addition) {
-        ItemEnchantments baseEnchantments = getEnchantments(base);
-        ItemEnchantments additionEnchantments = getEnchantments(addition);
+        Map<Enchantment, Integer> baseEnchantments = getEnchantments(base);
+        Map<Enchantment, Integer> additionEnchantments = getEnchantments(addition);
         if (addition.getItem() instanceof EnchantingTemplateItem) {
             if (!isFilledTemplate(addition))
                 return invalid(BlazeForgerMode.APPLY, FailureReason.REQUIRES_FILLED_TEMPLATE);
@@ -307,26 +303,24 @@ public class BlazeForgerInventory extends ItemStackHandler {
     }
 
     private Result calculateExtract(ItemStack base, ItemStack addition) {
-        ItemEnchantments baseEnchantments = getEnchantments(base);
-        ItemEnchantments additionEnchantments = getEnchantments(addition);
+        Map<Enchantment, Integer> baseEnchantments = getEnchantments(base);
+        Map<Enchantment, Integer> additionEnchantments = getEnchantments(addition);
         if (!isTemplate(addition) || !additionEnchantments.isEmpty())
             return invalid(BlazeForgerMode.EXTRACT, FailureReason.REQUIRES_BLANK_TEMPLATE);
         if (baseEnchantments.isEmpty())
             return invalid(BlazeForgerMode.EXTRACT, FailureReason.SOURCE_HAS_NO_ENCHANTMENTS);
-        if (!forger.special && baseEnchantments.keySet().stream().allMatch(holder -> holder.is(EnchantmentTags.CURSE)))
+        if (!forger.special && baseEnchantments.keySet().stream().allMatch(Enchantment::isCurse))
             return invalid(BlazeForgerMode.EXTRACT, FailureReason.CURSE_EXTRACTION_REQUIRES_SUPER_MODE);
         if (base.is(Items.ENCHANTED_BOOK) && baseEnchantments.size() == 1) {
             ItemStack book = Items.BOOK.getDefaultInstance();
             var enchantment = baseEnchantments.entrySet().stream().findFirst().get();
             int level = getExtractLevel(enchantment.getKey(), baseEnchantments);
-            var extractedEnchantments = new ItemEnchantments.Mutable(ItemEnchantments.EMPTY);
-            extractedEnchantments.set(enchantment.getKey(), level);
-            EnchantmentHelper.setEnchantments(addition, extractedEnchantments.toImmutable());
+            setEnchantments(addition, Map.of(enchantment.getKey(), level));
             cost += EnchantmentProcessingRules.blazeForgerLevelCost(
                     enchantment.getKey(),
                     BlazeForgerMode.EXTRACT,
                     forger.special,
-                    enchantment.getKey().value().getAnvilCost(),
+                    CEIEnchantmentHelper.anvilCost(enchantment.getKey()),
                     level);
             return Result.ready(BlazeForgerMode.EXTRACT, book, addition, cost, conflicting, overCap, false, 0, 0);
         }
@@ -335,34 +329,34 @@ public class BlazeForgerInventory extends ItemStackHandler {
         return Result.ready(BlazeForgerMode.EXTRACT, base, addition, cost, conflicting, overCap, false, 0, 0);
     }
 
-    protected boolean extractEnchantments(ItemStack base, ItemStack addition, ItemEnchantments baseEnchantments) {
+    protected boolean extractEnchantments(ItemStack base, ItemStack addition, Map<Enchantment, Integer> baseEnchantments) {
         if (baseEnchantments.isEmpty())
             return false;
         var registry = Objects.requireNonNull(forger.getLevel()).registryAccess().registryOrThrow(Registries.ENCHANTMENT);
-        var stream = baseEnchantments.keySet().stream().sorted(Comparator.comparingInt(holder -> registry.getId(holder.value())));
+        var stream = baseEnchantments.keySet().stream().sorted(Comparator.comparingInt(registry::getId));
         if (!forger.special) {
-            stream = stream.filter(holder -> !holder.is(EnchantmentTags.CURSE));
+            stream = stream.filter(enchantment -> !enchantment.isCurse());
         }
         var optional = stream.findFirst();
         if (optional.isEmpty())
             return false;
         var enchantment = optional.get();
-        var removedEnchantments = new ItemEnchantments.Mutable(baseEnchantments);
-        removedEnchantments.set(enchantment, 0);
-        EnchantmentHelper.setEnchantments(base, removedEnchantments.toImmutable());
+        var removedEnchantments = new LinkedHashMap<>(baseEnchantments);
+        removedEnchantments.remove(enchantment);
+        setEnchantments(base, removedEnchantments);
         int level = getExtractLevel(enchantment, baseEnchantments);
-        addition.enchant(enchantment, level);
+        setEnchantments(addition, Map.of(enchantment, level));
         cost += EnchantmentProcessingRules.blazeForgerLevelCost(
                 enchantment,
                 BlazeForgerMode.EXTRACT,
                 forger.special,
-                enchantment.value().getAnvilCost(),
+                CEIEnchantmentHelper.anvilCost(enchantment),
                 level);
         return true;
     }
 
-    private int getExtractLevel(Holder<Enchantment> enchantment, ItemEnchantments enchantments) {
-        int level = enchantments.getLevel(enchantment);
+    private int getExtractLevel(Enchantment enchantment, Map<Enchantment, Integer> enchantments) {
+        int level = enchantments.getOrDefault(enchantment, 0);
         if (forger.special)
             return level;
         int maxLevel = CEIEnchantmentHelper.maxLevel(enchantment);
@@ -371,38 +365,37 @@ public class BlazeForgerInventory extends ItemStackHandler {
         return Math.min(level, maxLevel);
     }
 
-    protected EnchantmentApplicationResult applyEnchantments(ItemStack base, ItemEnchantments baseEnchantments, ItemEnchantments additionEnchantments) {
+    protected EnchantmentApplicationResult applyEnchantments(ItemStack base, Map<Enchantment, Integer> baseEnchantments, Map<Enchantment, Integer> additionEnchantments) {
         int cost = 0;
-        var resultEnchantments = new Mutable(baseEnchantments);
+        var resultEnchantments = new LinkedHashMap<>(baseEnchantments);
         boolean changed = false;
         List<RejectedEnchantment> rejected = new ArrayList<>();
-        for (Entry<Holder<Enchantment>> entry : additionEnchantments.entrySet()) {
-            Holder<Enchantment> holder = entry.getKey();
-            int baseLevel = resultEnchantments.getLevel(holder);
-            int additionLevel = entry.getIntValue();
+        for (var entry : additionEnchantments.entrySet()) {
+            Enchantment enchantment = entry.getKey();
+            int baseLevel = resultEnchantments.getOrDefault(enchantment, 0);
+            int additionLevel = entry.getValue();
             int resultLevel = baseLevel == additionLevel ? additionLevel + 1 : Math.max(additionLevel, baseLevel);
-            Enchantment enchantment = holder.value();
-            if (!base.supportsEnchantment(holder)) {
-                rejected.add(RejectedEnchantment.of(holder, additionLevel, RejectionReason.CANNOT_APPLY_TO_ITEM.message(base.getHoverName())));
+            if (!enchantment.canApplyAtEnchantingTable(base)) {
+                rejected.add(RejectedEnchantment.of(enchantment, additionLevel, RejectionReason.CANNOT_APPLY_TO_ITEM.message(base.getHoverName())));
                 continue;
             }
 
-            List<Holder<Enchantment>> incompatibleEnchantments = incompatibleEnchantments(holder, resultEnchantments);
+            List<Enchantment> incompatibleEnchantments = incompatibleEnchantments(enchantment, resultEnchantments);
             if (!incompatibleEnchantments.isEmpty()) {
                 if (forger.special && CEIConfig.enchantments().ignoreEnchantmentCompatibility.get()) {
                     conflicting = true;
                 } else {
-                    Holder<Enchantment> incompatible = incompatibleEnchantments.getFirst();
+                    Enchantment incompatible = incompatibleEnchantments.get(0);
                     rejected.add(RejectedEnchantment.of(
-                            holder,
+                            enchantment,
                             additionLevel,
-                            RejectionReason.INCOMPATIBLE_WITH_OUTPUT.message(Enchantment.getFullname(incompatible, resultEnchantments.getLevel(incompatible)))));
+                            RejectionReason.INCOMPATIBLE_WITH_OUTPUT.message(incompatible.getFullname(resultEnchantments.getOrDefault(incompatible, 0)))));
                     continue;
                 }
             }
 
-            int maxLevel = CEIEnchantmentHelper.maxLevel(holder);
-            int extendedMaxLevel = maxLevel + EnchantmentProcessingRules.blazeForgerLevelExtension(holder);
+            int maxLevel = CEIEnchantmentHelper.maxLevel(enchantment);
+            int extendedMaxLevel = maxLevel + EnchantmentProcessingRules.blazeForgerLevelExtension(enchantment);
 
             if (resultLevel > extendedMaxLevel) {
                 resultLevel = extendedMaxLevel;
@@ -410,7 +403,7 @@ public class BlazeForgerInventory extends ItemStackHandler {
                 resultLevel = maxLevel;
             }
             if (resultLevel <= baseLevel) {
-                rejected.add(RejectedEnchantment.of(holder, additionLevel, RejectionReason.WOULD_NOT_IMPROVE.message()));
+                rejected.add(RejectedEnchantment.of(enchantment, additionLevel, RejectionReason.WOULD_NOT_IMPROVE.message()));
                 continue;
             }
             if (resultLevel > maxLevel)
@@ -418,11 +411,11 @@ public class BlazeForgerInventory extends ItemStackHandler {
 
             changed = true;
             cost += EnchantmentProcessingRules.conflictExtraLevelCost() * incompatibleEnchantments.size();
-            resultEnchantments.set(holder, resultLevel);
-            int anvilCost = enchantment.getAnvilCost();
+            resultEnchantments.put(enchantment, resultLevel);
+            int anvilCost = CEIEnchantmentHelper.anvilCost(enchantment);
 
             cost += EnchantmentProcessingRules.blazeForgerLevelCost(
-                    holder,
+                    enchantment,
                     forger.getMode(),
                     forger.special,
                     anvilCost,
@@ -430,52 +423,51 @@ public class BlazeForgerInventory extends ItemStackHandler {
         }
         if (!changed)
             return new EnchantmentApplicationResult(false, rejected);
-        EnchantmentHelper.setEnchantments(base, resultEnchantments.toImmutable());
+        setEnchantments(base, resultEnchantments);
         this.cost += cost;
         return new EnchantmentApplicationResult(true, rejected);
     }
 
-    protected EnchantmentBookApplicationResult applyEnchantmentsToBook(ItemEnchantments additionEnchantments) {
+    protected EnchantmentBookApplicationResult applyEnchantmentsToBook(Map<Enchantment, Integer> additionEnchantments) {
         int cost = 0;
-        var resultEnchantments = new Mutable(ItemEnchantments.EMPTY);
+        var resultEnchantments = new LinkedHashMap<Enchantment, Integer>();
         boolean changed = false;
         List<RejectedEnchantment> rejected = new ArrayList<>();
-        for (Entry<Holder<Enchantment>> entry : additionEnchantments.entrySet()) {
-            Holder<Enchantment> holder = entry.getKey();
-            Enchantment enchantment = holder.value();
-            List<Holder<Enchantment>> incompatibleEnchantments = incompatibleEnchantments(holder, resultEnchantments);
+        for (var entry : additionEnchantments.entrySet()) {
+            Enchantment enchantment = entry.getKey();
+            List<Enchantment> incompatibleEnchantments = incompatibleEnchantments(enchantment, resultEnchantments);
             if (!incompatibleEnchantments.isEmpty()) {
                 if (forger.special && CEIConfig.enchantments().ignoreEnchantmentCompatibility.get()) {
                     conflicting = true;
                     cost += EnchantmentProcessingRules.conflictExtraLevelCost() * incompatibleEnchantments.size();
                 } else {
-                    Holder<Enchantment> incompatible = incompatibleEnchantments.getFirst();
+                    Enchantment incompatible = incompatibleEnchantments.get(0);
                     rejected.add(RejectedEnchantment.of(
-                            holder,
-                            entry.getIntValue(),
-                            RejectionReason.INCOMPATIBLE_WITH_OUTPUT.message(Enchantment.getFullname(incompatible, resultEnchantments.getLevel(incompatible)))));
+                            enchantment,
+                            entry.getValue(),
+                            RejectionReason.INCOMPATIBLE_WITH_OUTPUT.message(incompatible.getFullname(resultEnchantments.getOrDefault(incompatible, 0)))));
                     continue;
                 }
             }
             changed = true;
-            resultEnchantments.set(holder, entry.getIntValue());
-            int anvilCost = enchantment.getAnvilCost();
+            resultEnchantments.put(enchantment, entry.getValue());
+            int anvilCost = CEIEnchantmentHelper.anvilCost(enchantment);
             cost += EnchantmentProcessingRules.blazeForgerLevelCost(
-                    holder,
+                    enchantment,
                     forger.getMode(),
                     forger.special,
                     anvilCost,
-                    entry.getIntValue());
+                    entry.getValue());
         }
         if (!changed)
             return new EnchantmentBookApplicationResult(ItemStack.EMPTY, rejected);
         ItemStack book = Items.ENCHANTED_BOOK.getDefaultInstance();
-        EnchantmentHelper.setEnchantments(book, resultEnchantments.toImmutable());
+        setEnchantments(book, resultEnchantments);
         this.cost += cost;
         return new EnchantmentBookApplicationResult(book, rejected);
     }
 
-    protected EnchantmentCombinationResult combineEnchantments(ItemStack base, ItemStack addition, ItemEnchantments baseEnchantments, ItemEnchantments additionEnchantments) {
+    protected EnchantmentCombinationResult combineEnchantments(ItemStack base, ItemStack addition, Map<Enchantment, Integer> baseEnchantments, Map<Enchantment, Integer> additionEnchantments) {
         boolean changed = false;
         if (base.isDamaged()) {
             int baseDurability = base.getMaxDamage() - base.getDamageValue();
@@ -497,20 +489,20 @@ public class BlazeForgerInventory extends ItemStackHandler {
         return new EnchantmentCombinationResult(changed || enchantments.changed(), enchantments.rejectedEnchantments());
     }
 
-    private List<Holder<Enchantment>> incompatibleEnchantments(Holder<Enchantment> holder, Mutable enchantments) {
+    private List<Enchantment> incompatibleEnchantments(Enchantment enchantment, Map<Enchantment, Integer> enchantments) {
         return enchantments.keySet().stream()
-                .filter(existing -> !existing.equals(holder))
-                .filter(existing -> !Enchantment.areCompatible(holder, existing))
+                .filter(existing -> !existing.equals(enchantment))
+                .filter(existing -> !enchantment.isCompatibleWith(existing))
                 .toList();
     }
 
     protected void applyRepairCost(ItemStack base, ItemStack addition) {
         if (!forger.cursed)
             return;
-        int baseCost = base.getOrDefault(DataComponents.REPAIR_COST, 0);
-        int additionCost = addition.getOrDefault(DataComponents.REPAIR_COST, 0);
+        int baseCost = CEIItemData.getRepairCost(base);
+        int additionCost = CEIItemData.getRepairCost(addition);
         int resultCost = AnvilMenu.calculateIncreasedRepairCost(Math.max(baseCost, additionCost));
-        base.set(DataComponents.REPAIR_COST, resultCost);
+        CEIItemData.setRepairCost(base, resultCost);
     }
 
     private Result validateTemplateMode(ItemStack stack, BlazeForgerMode mode) {
@@ -530,8 +522,15 @@ public class BlazeForgerInventory extends ItemStackHandler {
         overCap = false;
     }
 
-    private static ItemEnchantments getEnchantments(ItemStack stack) {
-        return stack.getOrDefault(EnchantmentHelper.getComponentType(stack), ItemEnchantments.EMPTY);
+    private static Map<Enchantment, Integer> getEnchantments(ItemStack stack) {
+        return CEIItemData.getEnchantmentsForCrafting(stack);
+    }
+
+    private static void setEnchantments(ItemStack stack, Map<Enchantment, Integer> enchantments) {
+        if (isTemplate(stack))
+            CEIItemData.setStoredEnchantments(stack, enchantments);
+        else
+            CEIItemData.setEnchantments(stack, enchantments);
     }
 
     private static boolean isTemplate(ItemStack stack) {
@@ -679,22 +678,22 @@ public class BlazeForgerInventory extends ItemStackHandler {
         }
     }
 
-    private record RejectedEnchantment(Holder<Enchantment> enchantment, int level, Component reason) {
-        private static RejectedEnchantment of(Holder<Enchantment> enchantment, int level, Component reason) {
+    private record RejectedEnchantment(Enchantment enchantment, int level, Component reason) {
+        private static RejectedEnchantment of(Enchantment enchantment, int level, Component reason) {
             return new RejectedEnchantment(enchantment, level, reason);
         }
 
         private Component lostDescription() {
             return Component.translatable(
                     "create_enchantment_industry.gui.goggles.forging.result.lost_enchantment",
-                    Enchantment.getFullname(enchantment, level),
+                    enchantment.getFullname(level),
                     reason);
         }
 
         private Component rejectedDescription() {
             return Component.translatable(
                     "create_enchantment_industry.gui.goggles.forging.result.rejected_enchantment",
-                    Enchantment.getFullname(enchantment, level),
+                    enchantment.getFullname(level),
                     reason);
         }
     }

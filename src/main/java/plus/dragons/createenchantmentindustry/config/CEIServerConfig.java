@@ -19,7 +19,7 @@
 package plus.dragons.createenchantmentindustry.config;
 
 import net.createmod.catnip.config.ConfigBase;
-import net.neoforged.neoforge.common.ModConfigSpec;
+import net.minecraftforge.common.ForgeConfigSpec;
 
 public class CEIServerConfig extends ConfigBase {
     public final CEIKineticsConfig kinetics = nested(0, CEIKineticsConfig::new, Comments.kinetics);
@@ -28,7 +28,7 @@ public class CEIServerConfig extends ConfigBase {
     public final CEIProcessingConfig processing = nested(0, CEIProcessingConfig::new, Comments.processing);
 
     @Override
-    public void registerAll(ModConfigSpec.Builder builder) {
+    public void registerAll(ForgeConfigSpec.Builder builder) {
         super.registerAll(builder);
     }
 

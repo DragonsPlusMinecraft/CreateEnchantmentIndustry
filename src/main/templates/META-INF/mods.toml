@@ -1,0 +1,66 @@
+modLoader="javafml"
+loaderVersion="${loader_version_range}"
+license="${mod_license}"
+issueTrackerURL="${mod_github}/issues"
+
+[[mods]]
+    modId="${mod_id}"
+    version="${mod_version}"
+    displayName="${mod_name}"
+    displayURL="${mod_github}"
+    logoFile="icon.png"
+    authors="${mod_authors}"
+    description='''${mod_description}'''
+
+[[mixins]]
+    config="${mod_id}.mixins.json"
+
+${integration_mixin_blocks}
+
+[modproperties.${mod_id}]
+    "create_dragons_plus:fluid/dye"=true
+    "create_dragons_plus:block/fluid_hatch"=true
+    "create_dragons_plus:item/blaze_upgrade_smithing_template"=true
+    "create_dragons_plus:fluid/dragon_breath"=true
+
+[[dependencies.${mod_id}]]
+    modId="forge"
+    mandatory=true
+    versionRange="${forge_version_range}"
+    ordering="NONE"
+    side="BOTH"
+
+[[dependencies.${mod_id}]]
+    modId="minecraft"
+    mandatory=true
+    versionRange="${minecraft_version_range}"
+    ordering="NONE"
+    side="BOTH"
+
+[[dependencies.${mod_id}]]
+    modId="create"
+    mandatory=true
+    versionRange="${create_version_range}"
+    ordering="NONE"
+    side="BOTH"
+
+[[dependencies.${mod_id}]]
+    modId="create_dragons_plus"
+    mandatory=true
+    versionRange="${create_dragons_plus_version_range}"
+    ordering="AFTER"
+    side="BOTH"
+
+[[dependencies.${mod_id}]]
+    modId="apotheosis"
+    mandatory=false
+    versionRange="${apotheosis_version_range}"
+    ordering="AFTER"
+    side="BOTH"
+
+[[dependencies.${mod_id}]]
+    modId="touhou_little_maid"
+    mandatory=false
+    versionRange="${tlm_version_range}"
+    ordering="AFTER"
+    side="BOTH"

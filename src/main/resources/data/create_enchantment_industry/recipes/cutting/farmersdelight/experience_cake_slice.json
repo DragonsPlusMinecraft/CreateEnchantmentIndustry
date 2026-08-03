@@ -1,0 +1,23 @@
+{
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "farmersdelight"
+    }
+  ],
+  "type": "farmersdelight:cutting",
+  "ingredients": [
+    {
+      "item": "create_enchantment_industry:experience_cake"
+    }
+  ],
+  "result": [
+    {
+      "item": "create_enchantment_industry:experience_cake_slice",
+      "count": 4
+    }
+  ],
+  "tool": {
+    "tag": "forge:tools/knives"
+  }
+}

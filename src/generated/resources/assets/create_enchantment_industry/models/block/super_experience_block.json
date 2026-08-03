@@ -1,7 +1,7 @@
 {
-    "parent": "create:block/experience_block",
-    "textures": {
-        "all": "create_enchantment_industry:block/super_experience_block",
-        "particle": "create_enchantment_industry:block/super_experience_block"
-    }
+  "parent": "create:block/experience_block",
+  "textures": {
+    "all": "create_enchantment_industry:block/super_experience_block",
+    "particle": "create_enchantment_industry:block/super_experience_block"
+  }
 }

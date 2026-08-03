@@ -24,7 +24,7 @@ import com.simibubi.create.AllRecipeTypes;
 import com.simibubi.create.Create;
 import com.simibubi.create.compat.jei.ConversionRecipe;
 import com.simibubi.create.content.equipment.sandPaper.SandPaperPolishingRecipe;
-import com.simibubi.create.content.kinetics.deployer.ManualApplicationRecipe;
+import com.simibubi.create.content.kinetics.deployer.ItemApplicationRecipe;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -36,14 +36,14 @@ import mezz.jei.api.registration.IRecipeCategoryRegistration;
 import mezz.jei.api.registration.IRecipeRegistration;
 import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.item.crafting.RecipeType;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.fml.loading.FMLLoader;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.fml.loading.FMLLoader;
 import org.jetbrains.annotations.ApiStatus.Internal;
 import plus.dragons.createdragonsplus.util.ErrorMessages;
 import plus.dragons.createenchantmentindustry.common.CEICommon;
+import plus.dragons.createenchantmentindustry.common.fluids.printer.PrintingRecipe;
 import plus.dragons.createenchantmentindustry.common.kinetics.grindstone.GrindingRecipe;
 import plus.dragons.createenchantmentindustry.common.kinetics.grindstone.MechanicalGrindStoneItem;
 import plus.dragons.createenchantmentindustry.common.registry.CEIBlocks;
@@ -71,8 +71,9 @@ public class CEIJeiPlugin implements IModPlugin {
     @Override
     public void registerRecipes(IRecipeRegistration registration) {
         var recipeManager = getRecipeManager();
+        RecipeType<PrintingRecipe> printingType = CEIRecipes.PRINTING.getType();
         registration.addRecipes(PrintingCategory.TYPE, recipeManager
-                .getAllRecipesFor(CEIRecipes.PRINTING.getType())
+                .getAllRecipesFor(printingType)
                 .stream()
                 .map(StandardPrintingRecipeJEI::new)
                 .collect(Collectors.toList()));
@@ -87,9 +88,11 @@ public class CEIJeiPlugin implements IModPlugin {
             registration.addRecipes(PrintingCategory.TYPE, builtinPrinting);
         if (CEIConfig.fluids().enableEnchantedBookPrinting.get())
             registration.addRecipes(PrintingCategory.TYPE, EnchantedBookPrintingRecipeJEI.listAll());
-        mezz.jei.api.recipe.RecipeType<RecipeHolder<ManualApplicationRecipe>> manualApplication = mezz.jei.api.recipe.RecipeType.createRecipeHolderType(Create.asResource("item_application"));
-        registration.addRecipes(manualApplication, List.of(MechanicalGrindStoneItem.createRecipe()));
-        mezz.jei.api.recipe.RecipeType<RecipeHolder<ConversionRecipe>> mysteriousConversion = mezz.jei.api.recipe.RecipeType.createRecipeHolderType(Create.asResource("mystery_conversion"));
+        mezz.jei.api.recipe.RecipeType<ItemApplicationRecipe> manualApplication = new mezz.jei.api.recipe.RecipeType<>(
+                Create.asResource("item_application"), ItemApplicationRecipe.class);
+        registration.addRecipes(manualApplication, List.<ItemApplicationRecipe>of(MechanicalGrindStoneItem.createRecipe()));
+        mezz.jei.api.recipe.RecipeType<ConversionRecipe> mysteriousConversion = new mezz.jei.api.recipe.RecipeType<>(
+                Create.asResource("mystery_conversion"), ConversionRecipe.class);
         registration.addRecipes(mysteriousConversion, List.of(ConversionRecipe.create(
                 AllBlocks.EXPERIENCE_BLOCK.asStack(),
                 CEIBlocks.SUPER_EXPERIENCE_BLOCK.asStack())));

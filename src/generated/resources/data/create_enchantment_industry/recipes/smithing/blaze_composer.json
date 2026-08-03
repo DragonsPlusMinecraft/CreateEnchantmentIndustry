@@ -1,0 +1,32 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "apotheosis"
+        },
+        {
+          "type": "create_enchantment_industry:apotheosis_module",
+          "module": "adventure"
+        }
+      ],
+      "recipe": {
+        "type": "minecraft:smithing_transform",
+        "addition": {
+          "item": "create_enchantment_industry:affix_augmentor"
+        },
+        "base": {
+          "item": "create:blaze_burner"
+        },
+        "result": {
+          "item": "create_enchantment_industry:blaze_composer"
+        },
+        "template": {
+          "item": "create_dragons_plus:blaze_upgrade_smithing_template"
+        }
+      }
+    }
+  ]
+}

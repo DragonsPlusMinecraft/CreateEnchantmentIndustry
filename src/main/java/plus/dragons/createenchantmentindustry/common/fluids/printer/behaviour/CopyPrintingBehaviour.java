@@ -27,11 +27,10 @@ import java.util.List;
 import java.util.Optional;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.component.DataComponentType;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.neoforged.neoforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidStack;
 import plus.dragons.createenchantmentindustry.common.CEICommon;
 import plus.dragons.createenchantmentindustry.common.fluids.printer.PrinterBlockEntity;
 import plus.dragons.createenchantmentindustry.common.registry.CEIDataMaps;
@@ -54,7 +53,7 @@ public class CopyPrintingBehaviour implements PrintingBehaviour {
             return Optional.of(copiable.canCopyFromItem(stack)
                     ? DataResult.success(new CopyPrintingBehaviour(copiable, stack, tank))
                     : DataResult.error(() -> CEICommon.asLocalization("gui.printer.copy.invalid")));
-        else if (stack.is(AllItems.SCHEMATIC))
+        else if (stack.is(AllItems.SCHEMATIC.get()))
             return Optional.of(DataResult.success(new CopyPrintingBehaviour(SchematicItemCopying.INSTANCE, stack, tank)));
         return Optional.empty();
     }
@@ -62,7 +61,7 @@ public class CopyPrintingBehaviour implements PrintingBehaviour {
     @Override
     public int getRequiredItemCount(Level level, ItemStack stack) {
         if (itemCopying == SchematicItemCopying.INSTANCE) {
-            if (stack.is(AllItems.EMPTY_SCHEMATIC)) return 1;
+            if (stack.is(AllItems.EMPTY_SCHEMATIC.get())) return 1;
             else return 0;
         }
         if (ItemStack.isSameItem(original, stack) && itemCopying.canCopyToItem(stack))
@@ -77,7 +76,7 @@ public class CopyPrintingBehaviour implements PrintingBehaviour {
 
     @Override
     public int getRequiredFluidAmount(Level level, ItemStack stack, FluidStack fluidStack) {
-        var amount = fluidStack.getFluidHolder().getData(CEIDataMaps.PRINTING_COPY_INGREDIENT);
+        var amount = CEIDataMaps.PRINTING_COPY_INGREDIENT.get(fluidStack.getFluid());
         return amount == null ? 0 : amount;
     }
 
@@ -96,7 +95,7 @@ public class CopyPrintingBehaviour implements PrintingBehaviour {
     public boolean addToGoggleTooltip(List<Component> tooltip, boolean isPlayerSneaking) {
         CEILang.translate("gui.goggles.printing.copy").forGoggles(tooltip);
         CEILang.item(original).style(ChatFormatting.GRAY).forGoggles(tooltip, 1);
-        var amount = tank.getPrimaryHandler().getFluid().getFluidHolder().getData(CEIDataMaps.PRINTING_COPY_INGREDIENT);
+        var amount = CEIDataMaps.PRINTING_COPY_INGREDIENT.get(tank.getPrimaryHandler().getFluid().getFluid());
         if (amount != null)
             CEILang.translate("gui.goggles.printing.cost",
                     CEILang.number(amount)
@@ -126,11 +125,6 @@ public class CopyPrintingBehaviour implements PrintingBehaviour {
 
         @Override
         public boolean canCopyToItem(ItemStack item) {
-            throw new UnsupportedOperationException("this method should not be called!");
-        }
-
-        @Override
-        public DataComponentType<?> getComponentType() {
             throw new UnsupportedOperationException("this method should not be called!");
         }
     }

@@ -1,5 +1,252 @@
 {
-    "values": [
-        "#minecraft:in_enchanting_table"
-    ]
+  "values": [
+    {
+      "id": "minecraft:protection",
+      "required": false
+    },
+    {
+      "id": "minecraft:fire_protection",
+      "required": false
+    },
+    {
+      "id": "minecraft:feather_falling",
+      "required": false
+    },
+    {
+      "id": "minecraft:blast_protection",
+      "required": false
+    },
+    {
+      "id": "minecraft:projectile_protection",
+      "required": false
+    },
+    {
+      "id": "minecraft:respiration",
+      "required": false
+    },
+    {
+      "id": "minecraft:aqua_affinity",
+      "required": false
+    },
+    {
+      "id": "minecraft:thorns",
+      "required": false
+    },
+    {
+      "id": "minecraft:depth_strider",
+      "required": false
+    },
+    {
+      "id": "minecraft:sharpness",
+      "required": false
+    },
+    {
+      "id": "minecraft:smite",
+      "required": false
+    },
+    {
+      "id": "minecraft:bane_of_arthropods",
+      "required": false
+    },
+    {
+      "id": "minecraft:knockback",
+      "required": false
+    },
+    {
+      "id": "minecraft:fire_aspect",
+      "required": false
+    },
+    {
+      "id": "minecraft:looting",
+      "required": false
+    },
+    {
+      "id": "minecraft:sweeping",
+      "required": false
+    },
+    {
+      "id": "minecraft:efficiency",
+      "required": false
+    },
+    {
+      "id": "minecraft:silk_touch",
+      "required": false
+    },
+    {
+      "id": "minecraft:unbreaking",
+      "required": false
+    },
+    {
+      "id": "minecraft:fortune",
+      "required": false
+    },
+    {
+      "id": "minecraft:power",
+      "required": false
+    },
+    {
+      "id": "minecraft:punch",
+      "required": false
+    },
+    {
+      "id": "minecraft:flame",
+      "required": false
+    },
+    {
+      "id": "minecraft:infinity",
+      "required": false
+    },
+    {
+      "id": "minecraft:luck_of_the_sea",
+      "required": false
+    },
+    {
+      "id": "minecraft:lure",
+      "required": false
+    },
+    {
+      "id": "minecraft:loyalty",
+      "required": false
+    },
+    {
+      "id": "minecraft:impaling",
+      "required": false
+    },
+    {
+      "id": "minecraft:riptide",
+      "required": false
+    },
+    {
+      "id": "minecraft:channeling",
+      "required": false
+    },
+    {
+      "id": "minecraft:multishot",
+      "required": false
+    },
+    {
+      "id": "minecraft:quick_charge",
+      "required": false
+    },
+    {
+      "id": "minecraft:piercing",
+      "required": false
+    },
+    {
+      "id": "apotheosis:berserkers_fury",
+      "required": false
+    },
+    {
+      "id": "apotheosis:chainsaw",
+      "required": false
+    },
+    {
+      "id": "apotheosis:chromatic",
+      "required": false
+    },
+    {
+      "id": "apotheosis:crescendo",
+      "required": false
+    },
+    {
+      "id": "apotheosis:earths_boon",
+      "required": false
+    },
+    {
+      "id": "apotheosis:endless_quiver",
+      "required": false
+    },
+    {
+      "id": "apotheosis:exploitation",
+      "required": false
+    },
+    {
+      "id": "apotheosis:growth_serum",
+      "required": false
+    },
+    {
+      "id": "apotheosis:icy_thorns",
+      "required": false
+    },
+    {
+      "id": "apotheosis:knowledge",
+      "required": false
+    },
+    {
+      "id": "apotheosis:life_mending",
+      "required": false
+    },
+    {
+      "id": "apotheosis:miners_fervor",
+      "required": false
+    },
+    {
+      "id": "apotheosis:natures_blessing",
+      "required": false
+    },
+    {
+      "id": "apotheosis:obliteration",
+      "required": false
+    },
+    {
+      "id": "apotheosis:rebounding",
+      "required": false
+    },
+    {
+      "id": "apotheosis:reflective",
+      "required": false
+    },
+    {
+      "id": "apotheosis:scavenger",
+      "required": false
+    },
+    {
+      "id": "apotheosis:shield_bash",
+      "required": false
+    },
+    {
+      "id": "apotheosis:spearfishing",
+      "required": false
+    },
+    {
+      "id": "apotheosis:splitting",
+      "required": false
+    },
+    {
+      "id": "apotheosis:stable_footing",
+      "required": false
+    },
+    {
+      "id": "apotheosis:tempting",
+      "required": false
+    },
+    {
+      "id": "touhou_little_maid:impeding",
+      "required": false
+    },
+    {
+      "id": "touhou_little_maid:speedy",
+      "required": false
+    },
+    {
+      "id": "touhou_little_maid:enders_ender",
+      "required": false
+    },
+    {
+      "id": "create:potato_recovery",
+      "required": false
+    },
+    {
+      "id": "create:capacity",
+      "required": false
+    },
+    {
+      "id": "apotheosis:bane_of_illagers",
+      "required": false
+    },
+    {
+      "id": "apotheosis:capturing",
+      "required": false
+    }
+  ]
 }

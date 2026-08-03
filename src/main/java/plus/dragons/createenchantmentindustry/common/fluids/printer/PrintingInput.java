@@ -18,22 +18,79 @@
 
 package plus.dragons.createenchantmentindustry.common.fluids.printer;
 
+import net.minecraft.world.Container;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.RecipeInput;
-import net.neoforged.neoforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidStack;
 
-public record PrintingInput(ItemStack base, ItemStack template, FluidStack fluid) implements RecipeInput {
-    @Override
-    public ItemStack getItem(int index) {
-        if (index == 0)
-            return base;
-        if (index == 1)
-            return template;
-        throw new IllegalArgumentException("No item for index " + index);
+/** Immutable two-item recipe input with an additional fluid stack. */
+public final class PrintingInput implements Container {
+    private final ItemStack base;
+    private final ItemStack template;
+    private final FluidStack fluid;
+
+    public PrintingInput(ItemStack base, ItemStack template, FluidStack fluid) {
+        this.base = base;
+        this.template = template;
+        this.fluid = fluid;
+    }
+
+    public ItemStack base() {
+        return base;
+    }
+
+    public ItemStack template() {
+        return template;
+    }
+
+    public FluidStack fluid() {
+        return fluid;
     }
 
     @Override
-    public int size() {
+    public int getContainerSize() {
         return 2;
+    }
+
+    @Override
+    public boolean isEmpty() {
+        return base.isEmpty() && template.isEmpty();
+    }
+
+    @Override
+    public ItemStack getItem(int slot) {
+        return switch (slot) {
+            case 0 -> base;
+            case 1 -> template;
+            default -> ItemStack.EMPTY;
+        };
+    }
+
+    @Override
+    public ItemStack removeItem(int slot, int amount) {
+        return ItemStack.EMPTY;
+    }
+
+    @Override
+    public ItemStack removeItemNoUpdate(int slot) {
+        return ItemStack.EMPTY;
+    }
+
+    @Override
+    public void setItem(int slot, ItemStack stack) {
+        throw new UnsupportedOperationException("PrintingInput is immutable");
+    }
+
+    @Override
+    public void setChanged() {}
+
+    @Override
+    public boolean stillValid(Player player) {
+        return true;
+    }
+
+    @Override
+    public void clearContent() {
+        throw new UnsupportedOperationException("PrintingInput is immutable");
     }
 }

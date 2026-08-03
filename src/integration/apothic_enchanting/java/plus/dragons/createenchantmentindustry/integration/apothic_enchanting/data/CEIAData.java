@@ -20,16 +20,14 @@ package plus.dragons.createenchantmentindustry.integration.apothic_enchanting.da
 
 import static plus.dragons.createenchantmentindustry.integration.apothic_enchanting.common.CEIACommon.REGISTRATE;
 
-import net.neoforged.bus.api.EventPriority;
-import net.neoforged.bus.api.IEventBus;
-import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.common.Mod;
-import net.neoforged.neoforge.data.event.GatherDataEvent;
-import net.neoforged.neoforge.data.loading.DatagenModLoader;
-import plus.dragons.createenchantmentindustry.common.CEICommon;
+import net.minecraftforge.data.event.GatherDataEvent;
+import net.minecraftforge.data.loading.DatagenModLoader;
+import net.minecraftforge.eventbus.api.EventPriority;
+import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import plus.dragons.createenchantmentindustry.data.CEINamedDataProvider;
 import plus.dragons.createenchantmentindustry.integration.apothic_enchanting.client.ponder.CEIAPonderPlugin;
 
-@Mod(CEICommon.ID)
 public class CEIAData {
     public CEIAData(IEventBus modBus) {
         if (!DatagenModLoader.isRunningDataGen())
@@ -46,7 +44,8 @@ public class CEIAData {
         var output = generator.getPackOutput();
         var client = event.includeClient();
         var server = event.includeServer();
-        generator.addProvider(server, new CEIARecipeProvider(output, lookupProvider));
+        generator.addProvider(server, new CEINamedDataProvider(
+                "Create Enchantment Industry Apothic Enchanting Recipes", new CEIARecipeProvider(output)));
         generator.addProvider(server, new CEIAConditionalLootTableProvider(output, lookupProvider));
     }
 }

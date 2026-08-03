@@ -18,17 +18,16 @@
 
 package plus.dragons.createenchantmentindustry.integration.touhou_little_maid.common;
 
-import net.neoforged.bus.api.IEventBus;
-import net.neoforged.fml.ModContainer;
-import net.neoforged.fml.common.Mod;
-import plus.dragons.createenchantmentindustry.common.CEICommon;
+import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.fml.ModLoadingContext;
+import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import plus.dragons.createenchantmentindustry.integration.ModIntegration;
 import plus.dragons.createenchantmentindustry.integration.touhou_little_maid.config.CEITouhouLittleMaidConfig;
 
-@Mod(CEICommon.ID)
 public class CEITouhouLittleMaidCommon {
-    public CEITouhouLittleMaidCommon(IEventBus modBus, ModContainer modContainer) {
+    public CEITouhouLittleMaidCommon() {
+        IEventBus modBus = FMLJavaModLoadingContext.get().getModEventBus();
         if (ModIntegration.TOUHOU_LITTLE_MAID.enabled())
-            modBus.register(new CEITouhouLittleMaidConfig(modContainer));
+            modBus.register(new CEITouhouLittleMaidConfig(ModLoadingContext.get()));
     }
 }

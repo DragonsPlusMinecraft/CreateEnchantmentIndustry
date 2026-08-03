@@ -18,13 +18,14 @@
 
 package plus.dragons.createenchantmentindustry.integration.apothic_enchanting.integration.jei;
 
+import dev.shadowsoffire.apotheosis.Apotheosis;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
 import mezz.jei.api.registration.IRecipeCatalystRegistration;
 import mezz.jei.api.registration.IRecipeCategoryRegistration;
 import mezz.jei.api.registration.IRecipeRegistration;
 import net.minecraft.resources.ResourceLocation;
-import net.neoforged.fml.ModList;
+import net.minecraftforge.fml.ModList;
 import plus.dragons.createenchantmentindustry.common.CEICommon;
 
 @JeiPlugin
@@ -38,19 +39,19 @@ public class CEIAJeiPlugin implements IModPlugin {
 
     @Override
     public void registerCategories(IRecipeCategoryRegistration registration) {
-        if (ModList.get().isLoaded("apothic_enchanting"))
+        if (ModList.get().isLoaded("apotheosis") && Apotheosis.enableEnch)
             CEIAJeiRuntime.registerCategories(registration);
     }
 
     @Override
     public void registerRecipes(IRecipeRegistration registration) {
-        if (ModList.get().isLoaded("apothic_enchanting"))
+        if (ModList.get().isLoaded("apotheosis") && Apotheosis.enableEnch)
             CEIAJeiRuntime.registerRecipes(registration);
     }
 
     @Override
     public void registerRecipeCatalysts(IRecipeCatalystRegistration registration) {
-        if (ModList.get().isLoaded("apothic_enchanting"))
+        if (ModList.get().isLoaded("apotheosis") && Apotheosis.enableEnch)
             CEIAJeiRuntime.registerRecipeCatalysts(registration);
     }
 }

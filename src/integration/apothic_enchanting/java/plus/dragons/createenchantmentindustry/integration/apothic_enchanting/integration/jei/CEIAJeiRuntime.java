@@ -20,15 +20,15 @@ package plus.dragons.createenchantmentindustry.integration.apothic_enchanting.in
 
 import com.google.common.base.Preconditions;
 import com.simibubi.create.AllBlocks;
-import dev.shadowsoffire.apothic_enchanting.Ench;
+import dev.shadowsoffire.apotheosis.Apoth;
 import java.util.stream.Collectors;
 import mezz.jei.api.registration.IRecipeCatalystRegistration;
 import mezz.jei.api.registration.IRecipeCategoryRegistration;
 import mezz.jei.api.registration.IRecipeRegistration;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.item.crafting.RecipeManager;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.fml.loading.FMLLoader;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.fml.loading.FMLLoader;
 import org.jetbrains.annotations.ApiStatus;
 import plus.dragons.createdragonsplus.util.ErrorMessages;
 import plus.dragons.createenchantmentindustry.integration.apothic_enchanting.common.processing.infuser.InfusingRecipe;
@@ -45,7 +45,7 @@ public class CEIAJeiRuntime {
         var recipeManager = getRecipeManager();
         registration.addRecipes(InfusingCategory.TYPE, recipeManager.getAllRecipesFor(CEIARecipes.INFUSING.getType()));
         registration.addRecipes(InfusingCategory.TYPE, recipeManager
-                .getAllRecipesFor(Ench.RecipeTypes.INFUSION)
+                .getAllRecipesFor(Apoth.RecipeTypes.INFUSION)
                 .stream()
                 .map(InfusingRecipe::createDisplayRecipe)
                 .collect(Collectors.toList()));

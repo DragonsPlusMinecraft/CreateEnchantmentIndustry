@@ -20,12 +20,12 @@ package plus.dragons.createenchantmentindustry.util;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.item.enchantment.EnchantmentInstance;
 
 public class CEICodecs {
     public static final Codec<EnchantmentInstance> ENCHANTMENT_INSTANCE = RecordCodecBuilder
             .create(instance -> instance.group(
-                    Enchantment.CODEC.fieldOf("id").forGetter(it -> it.enchantment),
+                    BuiltInRegistries.ENCHANTMENT.byNameCodec().fieldOf("id").forGetter(it -> it.enchantment),
                     Codec.intRange(0, 255).fieldOf("level").forGetter(it -> it.level)).apply(instance, EnchantmentInstance::new));
 }

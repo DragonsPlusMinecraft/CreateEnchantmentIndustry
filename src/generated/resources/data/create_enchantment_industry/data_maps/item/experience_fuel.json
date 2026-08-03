@@ -1,64 +1,65 @@
 {
-    "values": {
-        "ars_nouveau:experience_gem": {
-            "neoforge:conditions": [
-                {
-                    "type": "neoforge:mod_loaded",
-                    "modid": "ars_nouveau"
-                }
-            ],
-            "neoforge:value": 3
-        },
-        "ars_nouveau:greater_experience_gem": {
-            "neoforge:conditions": [
-                {
-                    "type": "neoforge:mod_loaded",
-                    "modid": "ars_nouveau"
-                }
-            ],
-            "neoforge:value": 12
-        },
-        "create:experience_block": 27,
-        "create:experience_nugget": 3,
-        "create_enchantment_industry:experience_bucket": {
-            "experience": 1000,
-            "using_convert_to": {
-                "id": "minecraft:bucket"
-            }
-        },
-        "create_enchantment_industry:experience_cake": {
-            "experience": 1000,
-            "special": true
-        },
-        "create_enchantment_industry:experience_cake_slice": {
-            "experience": 250,
-            "special": true
-        },
-        "create_enchantment_industry:super_experience_block": {
-            "experience": 27,
-            "special": true
-        },
-        "create_enchantment_industry:super_experience_nugget": {
-            "experience": 3,
-            "special": true
-        },
-        "create_sa:heap_of_experience": {
-            "neoforge:conditions": [
-                {
-                    "type": "neoforge:mod_loaded",
-                    "modid": "create_sa"
-                }
-            ],
-            "neoforge:value": 12
-        },
-        "mysticalagriculture:experience_droplet": {
-            "neoforge:conditions": [
-                {
-                    "type": "neoforge:mod_loaded",
-                    "modid": "mysticalagriculture"
-                }
-            ],
-            "neoforge:value": 10
+  "values": {
+    "ars_nouveau:experience_gem": {
+      "forge:conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "ars_nouveau"
         }
+      ],
+      "forge:value": 3
+    },
+    "ars_nouveau:greater_experience_gem": {
+      "forge:conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "ars_nouveau"
+        }
+      ],
+      "forge:value": 12
+    },
+    "create:experience_block": 27,
+    "create:experience_nugget": 3,
+    "create_enchantment_industry:experience_bucket": {
+      "experience": 1000,
+      "using_convert_to": {
+        "Count": 1,
+        "id": "minecraft:bucket"
+      }
+    },
+    "create_enchantment_industry:experience_cake": {
+      "experience": 1000,
+      "special": true
+    },
+    "create_enchantment_industry:experience_cake_slice": {
+      "experience": 250,
+      "special": true
+    },
+    "create_enchantment_industry:super_experience_block": {
+      "experience": 27,
+      "special": true
+    },
+    "create_enchantment_industry:super_experience_nugget": {
+      "experience": 3,
+      "special": true
+    },
+    "create_sa:heap_of_experience": {
+      "forge:conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "create_sa"
+        }
+      ],
+      "forge:value": 12
+    },
+    "mysticalagriculture:experience_droplet": {
+      "forge:conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "mysticalagriculture"
+        }
+      ],
+      "forge:value": 10
     }
+  }
 }

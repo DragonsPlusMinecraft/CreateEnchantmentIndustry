@@ -23,21 +23,20 @@ import com.simibubi.create.content.contraptions.behaviour.MovementContext;
 import com.simibubi.create.content.contraptions.render.ContraptionMatrices;
 import com.simibubi.create.foundation.virtualWorld.VirtualRenderWorld;
 import net.createmod.catnip.math.VecHelper;
-import net.createmod.catnip.nbt.NBTHelper;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
-import net.neoforged.neoforge.network.PacketDistributor;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.network.PacketDistributor;
+import plus.dragons.createenchantmentindustry.common.network.CEINetwork;
 import plus.dragons.createenchantmentindustry.integration.apothic_enchanting.config.CEIAConfig;
 
 public class EnderWovenBagMovementBehaviour implements MovementBehaviour {
@@ -49,14 +48,16 @@ public class EnderWovenBagMovementBehaviour implements MovementBehaviour {
         var realPosition = getRealPosition(context);
 
         if (context.data.contains("AnchorPos")) {
-            BlockPos pos = NBTHelper.readBlockPos(context.data, "AnchorPos");
+            BlockPos pos = NbtUtils.readBlockPos(context.data.getCompound("AnchorPos"));
             Vec3 target = VecHelper.getCenterOf(pos);
 
             if (!context.stall && context.position.closerThan(target, target.distanceTo(context.position.add(context.motion)))) {
                 context.stall = true;
                 context.data.remove("AnchorPos");
                 var contraption = context.contraption.entity;
-                PacketDistributor.sendToPlayersTrackingChunk((ServerLevel) context.world, new ChunkPos(context.contraption.entity.blockPosition()),
+                CEINetwork.CHANNEL.send(
+                        PacketDistributor.TRACKING_CHUNK.with(
+                                () -> ((ServerLevel) context.world).getChunkAt(context.contraption.entity.blockPosition())),
                         new ContraptionEnderWovenBagPocketChangePacket(contraption.getId(), context.localPos, true));
                 return;
             }
@@ -94,7 +95,9 @@ public class EnderWovenBagMovementBehaviour implements MovementBehaviour {
                         entity.remove(Entity.RemovalReason.DISCARDED);
                         if (entities.full()) {
                             var contraption = context.contraption.entity;
-                            PacketDistributor.sendToPlayersTrackingChunk((ServerLevel) context.world, new ChunkPos(context.contraption.entity.blockPosition()),
+                            CEINetwork.CHANNEL.send(
+                                    PacketDistributor.TRACKING_CHUNK.with(
+                                            () -> ((ServerLevel) context.world).getChunkAt(context.contraption.entity.blockPosition())),
                                     new ContraptionEnderWovenBagPocketChangePacket(contraption.getId(), context.localPos, false));
                             break;
                         }
@@ -109,7 +112,7 @@ public class EnderWovenBagMovementBehaviour implements MovementBehaviour {
                     for (var entity : targets) {
                         var pushForce = CEIAConfig.server().utility().enderWovenBagPullForceMultiplier.get() * 1 / entity.position().distanceTo(realPosition);
                         var direction = realPosition.subtract(entity.position()).normalize().multiply(pushForce, pushForce, pushForce);
-                        entity.push(direction);
+                        entity.push(direction.x, direction.y, direction.z);
                     }
                 }
             }
@@ -164,12 +167,12 @@ public class EnderWovenBagMovementBehaviour implements MovementBehaviour {
 
     @Override
     public void writeExtraData(MovementContext context) {
-        context.blockEntityData.put("Entities", getEntities(context).tag(context.world.registryAccess()));
+        context.blockEntityData.put("Entities", getEntities(context).tag());
     }
 
     private static StoredEntities getEntities(MovementContext context) {
         if (!(context.temporaryData instanceof StoredEntities)) {
-            context.temporaryData = StoredEntities.parse(context.world.registryAccess(), context.blockEntityData.get("Entities"));
+            context.temporaryData = StoredEntities.parse(context.blockEntityData.get("Entities"));
         }
         return (StoredEntities) context.temporaryData;
     }

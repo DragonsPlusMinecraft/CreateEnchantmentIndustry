@@ -25,8 +25,8 @@ import net.minecraft.network.chat.Component;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Invoker;
 
-@Mixin(CreateRecipeCategory.class)
+@Mixin(value = CreateRecipeCategory.class, remap = false)
 public interface CreateRecipeCategoryAccessor {
-    @Invoker // Too lazy to copy the implementation myself XD
+    @Invoker(remap = false)
     static void invokeAddPotionTooltip(IRecipeSlotView view, List<Component> tooltip) {}
 }

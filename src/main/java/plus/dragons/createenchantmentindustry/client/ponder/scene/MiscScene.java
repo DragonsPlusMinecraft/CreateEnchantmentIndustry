@@ -23,24 +23,23 @@ import com.simibubi.create.content.logistics.box.PackageStyles;
 import com.simibubi.create.content.logistics.depot.DepotBlockEntity;
 import com.simibubi.create.content.processing.basin.BasinBlockEntity;
 import com.simibubi.create.foundation.ponder.CreateSceneBuilder;
-import java.util.List;
 import net.createmod.catnip.math.Pointing;
 import net.createmod.ponder.api.element.ElementLink;
 import net.createmod.ponder.api.element.WorldSectionElement;
 import net.createmod.ponder.api.scene.SceneBuilder;
 import net.createmod.ponder.api.scene.SceneBuildingUtil;
 import net.minecraft.core.Direction;
-import net.minecraft.core.component.DataComponents;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.StringTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.server.network.Filterable;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.component.WrittenBookContent;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.fluids.FluidStack;
-import net.neoforged.neoforge.fluids.capability.IFluidHandler;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.capability.IFluidHandler;
 import plus.dragons.createdragonsplus.common.registry.CDPItems;
 import plus.dragons.createenchantmentindustry.client.ponder.CEIPonderScenes;
 import plus.dragons.createenchantmentindustry.common.fluids.printer.PrinterBehaviour;
@@ -168,7 +167,14 @@ public class MiscScene {
                 .attachKeyFrame()
                 .pointAt(util.vector().blockSurface(util.grid().at(2, 3, 2), Direction.WEST));
         var writtenBook = Items.WRITTEN_BOOK.getDefaultInstance();
-        writtenBook.set(DataComponents.WRITTEN_BOOK_CONTENT, new WrittenBookContent(Filterable.passThrough("1"), "1", 1, List.of(Filterable.passThrough(Component.literal("1"))), true));
+        var writtenBookTag = writtenBook.getOrCreateTag();
+        writtenBookTag.putString("title", "1");
+        writtenBookTag.putString("author", "1");
+        writtenBookTag.putInt("generation", 1);
+        writtenBookTag.putBoolean("resolved", true);
+        var pages = new ListTag();
+        pages.add(StringTag.valueOf(Component.Serializer.toJson(Component.literal("1"))));
+        writtenBookTag.put("pages", pages);
         scene.world().modifyBlockEntity(util.grid().at(2, 3, 2), PrinterBlockEntity.class, be -> {
             var printer = be.getBehaviour(PrinterBehaviour.TYPE);
             printer.setFilter(writtenBook);
@@ -188,7 +194,7 @@ public class MiscScene {
         scene.world().setKineticSpeed(util.select().position(3, 3, 2), 128f);
         scene.idle(20);
         scene.world().modifyBlockEntity(util.grid().at(2, 3, 2), PrinterBlockEntity.class,
-                be -> be.getFluidHandler(null).fill(new FluidStack(CEIDyeFluids.get(DyeColor.BLACK), 3000), IFluidHandler.FluidAction.EXECUTE));
+                be -> be.getCapability(ForgeCapabilities.FLUID_HANDLER).ifPresent(handler -> handler.fill(new FluidStack(CEIDyeFluids.get(DyeColor.BLACK), 3000), IFluidHandler.FluidAction.EXECUTE)));
         scene.idle(40);
 
         scene.overlay().showText(80)
@@ -235,8 +241,10 @@ public class MiscScene {
             printer.setFilter(enchantedBook);
         });
         scene.world().modifyBlockEntity(util.grid().at(2, 3, 2), PrinterBlockEntity.class, be -> {
-            be.getFluidHandler(null).drain(3000, IFluidHandler.FluidAction.EXECUTE);
-            be.getFluidHandler(null).fill(new FluidStack(CEIFluids.EXPERIENCE, 3000), IFluidHandler.FluidAction.EXECUTE);
+            be.getCapability(ForgeCapabilities.FLUID_HANDLER).ifPresent(handler -> {
+                handler.drain(3000, IFluidHandler.FluidAction.EXECUTE);
+                handler.fill(new FluidStack(CEIFluids.EXPERIENCE.get(), 3000), IFluidHandler.FluidAction.EXECUTE);
+            });
         });
         scene.idle(10);
         scene.world().modifyBlockEntity(util.grid().at(2, 1, 2), DepotBlockEntity.class,

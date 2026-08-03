@@ -20,33 +20,33 @@ package plus.dragons.createenchantmentindustry.config;
 
 import net.minecraft.Util;
 import net.minecraft.util.Unit;
-import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.ModContainer;
-import net.neoforged.fml.config.ModConfig.Type;
-import net.neoforged.fml.event.config.ModConfigEvent;
-import net.neoforged.neoforge.common.ModConfigSpec;
+import net.minecraftforge.common.ForgeConfigSpec;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.ModLoadingContext;
+import net.minecraftforge.fml.config.ModConfig.Type;
+import net.minecraftforge.fml.event.config.ModConfigEvent;
 
 public class CEIConfig {
     private static final CEICommonConfig COMMON_CONFIG = new CEICommonConfig();
     private static final CEIClientConfig CLIENT_CONFIG = new CEIClientConfig();
     private static final CEIServerConfig SERVER_CONFIG = new CEIServerConfig();
-    private static ModConfigSpec COMMON_SPEC;
-    private static ModConfigSpec CLIENT_SPEC;
-    private static ModConfigSpec SERVER_SPEC;
+    private static ForgeConfigSpec COMMON_SPEC;
+    private static ForgeConfigSpec CLIENT_SPEC;
+    private static ForgeConfigSpec SERVER_SPEC;
 
-    public CEIConfig(ModContainer modContainer) {
-        COMMON_SPEC = Util.make(new ModConfigSpec.Builder().configure(builder -> {
+    public CEIConfig(ModLoadingContext modLoadingContext) {
+        COMMON_SPEC = Util.make(new ForgeConfigSpec.Builder().configure(builder -> {
             COMMON_CONFIG.registerAll(builder);
             return Unit.INSTANCE;
-        }).getValue(), spec -> modContainer.registerConfig(Type.COMMON, spec));
-        CLIENT_SPEC = Util.make(new ModConfigSpec.Builder().configure(builder -> {
+        }).getValue(), spec -> modLoadingContext.registerConfig(Type.COMMON, spec));
+        CLIENT_SPEC = Util.make(new ForgeConfigSpec.Builder().configure(builder -> {
             CLIENT_CONFIG.registerAll(builder);
             return Unit.INSTANCE;
-        }).getValue(), spec -> modContainer.registerConfig(Type.CLIENT, spec));
-        SERVER_SPEC = Util.make(new ModConfigSpec.Builder().configure(builder -> {
+        }).getValue(), spec -> modLoadingContext.registerConfig(Type.CLIENT, spec));
+        SERVER_SPEC = Util.make(new ForgeConfigSpec.Builder().configure(builder -> {
             SERVER_CONFIG.registerAll(builder);
             return Unit.INSTANCE;
-        }).getValue(), spec -> modContainer.registerConfig(Type.SERVER, spec));
+        }).getValue(), spec -> modLoadingContext.registerConfig(Type.SERVER, spec));
     }
 
     public static CEICommonConfig common() {

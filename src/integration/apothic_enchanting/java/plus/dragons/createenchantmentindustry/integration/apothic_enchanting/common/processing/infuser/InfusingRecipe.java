@@ -18,36 +18,44 @@
 
 package plus.dragons.createenchantmentindustry.integration.apothic_enchanting.common.processing.infuser;
 
-import com.mojang.serialization.MapCodec;
+import com.google.gson.JsonObject;
 import com.simibubi.create.content.processing.basin.BasinBlockEntity;
 import com.simibubi.create.content.processing.recipe.ProcessingRecipe;
 import com.simibubi.create.content.processing.recipe.ProcessingRecipeBuilder;
+import com.simibubi.create.content.processing.recipe.ProcessingRecipeBuilder.ProcessingRecipeParams;
+import com.simibubi.create.content.processing.recipe.ProcessingRecipeSerializer;
 import com.simibubi.create.foundation.blockEntity.behaviour.filtering.FilteringBehaviour;
-import dev.shadowsoffire.apothic_enchanting.table.infusion.InfusionRecipe;
-import dev.shadowsoffire.apothic_enchanting.util.MiscUtil;
+import com.simibubi.create.foundation.fluid.FluidIngredient;
+import dev.shadowsoffire.apotheosis.ench.table.EnchantingRecipe;
+import dev.shadowsoffire.apotheosis.util.ApothMiscUtil;
 import java.util.ArrayList;
 import java.util.List;
-import net.minecraft.network.RegistryFriendlyByteBuf;
-import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.GsonHelper;
+import net.minecraft.world.Container;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.Recipe;
-import net.minecraft.world.item.crafting.RecipeHolder;
-import net.minecraft.world.item.crafting.RecipeSerializer;
-import net.minecraft.world.item.crafting.SingleRecipeInput;
 import net.minecraft.world.level.Level;
-import net.neoforged.neoforge.capabilities.Capabilities;
-import net.neoforged.neoforge.fluids.FluidStack;
-import net.neoforged.neoforge.fluids.capability.IFluidHandler;
-import net.neoforged.neoforge.fluids.crafting.SizedFluidIngredient;
-import net.neoforged.neoforge.items.IItemHandler;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.minecraftforge.items.IItemHandler;
+import org.jetbrains.annotations.Nullable;
 import plus.dragons.createenchantmentindustry.integration.apothic_enchanting.common.registry.CEIAFluids;
 import plus.dragons.createenchantmentindustry.integration.apothic_enchanting.common.registry.CEIARecipes;
 
-public class InfusingRecipe extends ProcessingRecipe<SingleRecipeInput, InfusingRecipeParams> {
-    public InfusingRecipe(InfusingRecipeParams params) {
+/** Create processing wrapper for native CEI recipes and Apotheosis 7 enchanting recipes. */
+public class InfusingRecipe extends ProcessingRecipe<Container> {
+    private InfusionStats stats = InfusionStats.EMPTY;
+
+    public InfusingRecipe(ProcessingRecipeParams params) {
         super(CEIARecipes.INFUSING, params);
+    }
+
+    public InfusionStats getStats() {
+        return stats;
     }
 
     @Override
@@ -78,142 +86,197 @@ public class InfusingRecipe extends ProcessingRecipe<SingleRecipeInput, Infusing
         return process(infuser, basin, recipe, false);
     }
 
-    private static boolean process(InfuserBlockEntity infuser, BasinBlockEntity basin, Recipe<?> recipe, boolean simulateOnly) {
-        if (recipe instanceof InfusingRecipe infusingRecipe)
+    private static boolean process(
+            InfuserBlockEntity infuser, BasinBlockEntity basin, Recipe<?> recipe, boolean simulateOnly) {
+        if (recipe instanceof InfusingRecipe infusingRecipe) {
             return processNative(infuser, basin, infusingRecipe, simulateOnly);
-        if (recipe instanceof InfusionRecipe infusionRecipe)
-            return processApothic(infuser, basin, infusionRecipe, simulateOnly);
+        }
+        if (recipe instanceof EnchantingRecipe enchantingRecipe) {
+            return processApotheosis(infuser, basin, enchantingRecipe, simulateOnly);
+        }
         return false;
     }
 
-    private static boolean processNative(InfuserBlockEntity infuser, BasinBlockEntity basin, InfusingRecipe recipe, boolean simulateOnly) {
-        if (!recipe.params.stats.qualified(infuser.infusionStats))
+    private static boolean processNative(
+            InfuserBlockEntity infuser, BasinBlockEntity basin, InfusingRecipe recipe, boolean simulateOnly) {
+        if (!recipe.stats.qualified(infuser.infusionStats)) {
             return false;
+        }
 
-        var level = infuser.getLevel();
-        IItemHandler availableItems = level.getCapability(Capabilities.ItemHandler.BLOCK, basin.getBlockPos(), null);
-        IFluidHandler availableFluids = level.getCapability(Capabilities.FluidHandler.BLOCK, basin.getBlockPos(), null);
-        IFluidHandler infusingIngredient = level.getCapability(Capabilities.FluidHandler.BLOCK, infuser.getBlockPos(), null);
-        if (infusingIngredient == null)
+        IItemHandler availableItems = getItemHandler(basin);
+        IFluidHandler availableFluids = getFluidHandler(basin);
+        IFluidHandler reagentTank = infuser.getFluidHandler(null);
+        if (reagentTank == null) {
             return false;
+        }
 
         int inputSlot = -1;
         FluidStack fluidInput = FluidStack.EMPTY;
         if (!recipe.ingredients.isEmpty()) {
-            if (availableItems == null)
+            if (availableItems == null) {
                 return false;
-            inputSlot = findMatchingItemSlot(availableItems, recipe.ingredients.getFirst());
-            if (inputSlot < 0)
+            }
+            inputSlot = findMatchingItemSlot(availableItems, recipe.ingredients.get(0));
+            if (inputSlot < 0) {
                 return false;
+            }
         } else if (!recipe.fluidIngredients.isEmpty()) {
-            if (availableFluids == null)
+            if (availableFluids == null) {
                 return false;
-            fluidInput = findMatchingFluid(availableFluids, recipe.fluidIngredients.getFirst());
-            if (fluidInput.isEmpty())
+            }
+            fluidInput = findMatchingFluid(availableFluids, recipe.fluidIngredients.get(0));
+            if (fluidInput.isEmpty()) {
                 return false;
+            }
         } else {
             return false;
         }
 
-        List<ItemStack> outputItems = new ArrayList<>(recipe.rollResults(level.random));
+        List<ItemStack> outputItems = new ArrayList<>(recipe.rollResults());
         List<FluidStack> outputFluids = recipe.getFluidResults().stream()
                 .filter(stack -> !stack.isEmpty())
                 .map(FluidStack::copy)
                 .toList();
-        if (!matchesFilter(basin.getFilter(), outputItems, outputFluids))
+        if (!matchesFilter(basin.getFilter(), outputItems, outputFluids)
+                || !basin.acceptOutputs(outputItems, outputFluids, true)) {
             return false;
-        if (!basin.acceptOutputs(outputItems, outputFluids, true))
-            return false;
-
-        int requiredAmount = MiscUtil.getExpCostForSlot((int) recipe.params.stats.eterna(), 0);
-        FluidStack reagent = findInfusingIngredient(infusingIngredient, requiredAmount);
-        if (reagent.isEmpty())
-            return false;
-        if (simulateOnly)
-            return true;
-
-        if (inputSlot >= 0) {
-            ItemStack extracted = availableItems.extractItem(inputSlot, 1, false);
-            if (!recipe.ingredients.getFirst().test(extracted))
-                return false;
-        } else {
-            FluidStack drained = availableFluids.drain(fluidInput, IFluidHandler.FluidAction.EXECUTE);
-            if (!sameFluidAndAmount(fluidInput, drained))
-                return false;
         }
-        if (!drainInfusingIngredient(infusingIngredient, reagent))
+
+        int requiredAmount = ApothMiscUtil.getExpCostForSlot((int) recipe.stats.eterna(), 0);
+        FluidStack reagent = findInfusingIngredient(reagentTank, requiredAmount);
+        if (reagent.isEmpty() || simulateOnly) {
+            return !reagent.isEmpty();
+        }
+
+        ItemStack extractedItem = ItemStack.EMPTY;
+        FluidStack drainedInput = FluidStack.EMPTY;
+        if (inputSlot >= 0) {
+            extractedItem = availableItems.extractItem(inputSlot, 1, false);
+            if (!recipe.ingredients.get(0).test(extractedItem)) {
+                rollbackItem(availableItems, inputSlot, extractedItem);
+                return false;
+            }
+        } else {
+            drainedInput = availableFluids.drain(fluidInput, IFluidHandler.FluidAction.EXECUTE);
+            if (!sameFluidAndAmount(fluidInput, drainedInput)) {
+                rollbackFluid(availableFluids, drainedInput);
+                return false;
+            }
+        }
+
+        FluidStack drainedReagent = reagentTank.drain(reagent, IFluidHandler.FluidAction.EXECUTE);
+        if (!sameFluidAndAmount(reagent, drainedReagent)) {
+            rollbackItem(availableItems, inputSlot, extractedItem);
+            rollbackFluid(availableFluids, drainedInput);
+            rollbackFluid(reagentTank, drainedReagent);
             return false;
-        return basin.acceptOutputs(outputItems, outputFluids, false);
+        }
+        if (basin.acceptOutputs(outputItems, outputFluids, false)) {
+            return true;
+        }
+
+        rollbackItem(availableItems, inputSlot, extractedItem);
+        rollbackFluid(availableFluids, drainedInput);
+        rollbackFluid(reagentTank, drainedReagent);
+        return false;
     }
 
-    private static boolean processApothic(InfuserBlockEntity infuser, BasinBlockEntity basin, InfusionRecipe recipe, boolean simulateOnly) {
-        var level = infuser.getLevel();
-        IItemHandler availableItems = level.getCapability(Capabilities.ItemHandler.BLOCK, basin.getBlockPos(), null);
-        IFluidHandler infusingIngredient = level.getCapability(Capabilities.FluidHandler.BLOCK, infuser.getBlockPos(), null);
-        if (availableItems == null || infusingIngredient == null)
+    private static boolean processApotheosis(
+            InfuserBlockEntity infuser, BasinBlockEntity basin, EnchantingRecipe recipe, boolean simulateOnly) {
+        IItemHandler availableItems = getItemHandler(basin);
+        IFluidHandler reagentTank = infuser.getFluidHandler(null);
+        if (availableItems == null || reagentTank == null) {
             return false;
+        }
 
         int inputSlot = findMatchingItemSlot(availableItems, recipe, infuser.infusionStats);
-        if (inputSlot < 0)
+        if (inputSlot < 0) {
             return false;
+        }
         ItemStack input = availableItems.extractItem(inputSlot, 1, true);
         ItemStack output = recipe.assemble(
                 input,
                 infuser.infusionStats.eterna(),
                 infuser.infusionStats.quanta(),
                 infuser.infusionStats.arcana());
-        if (output.isEmpty() || !matchesFilter(basin.getFilter(), List.of(output), List.of()))
+        if (output.isEmpty()
+                || !matchesFilter(basin.getFilter(), List.of(output), List.of())
+                || !basin.acceptOutputs(List.of(output), List.of(), true)) {
             return false;
-        if (!basin.acceptOutputs(List.of(output), List.of(), true))
-            return false;
+        }
 
-        int requiredAmount = MiscUtil.getExpCostForSlot((int) recipe.getRequirements().eterna(), 0);
-        FluidStack reagent = findInfusingIngredient(infusingIngredient, requiredAmount);
-        if (reagent.isEmpty())
-            return false;
-        if (simulateOnly)
-            return true;
+        int requiredAmount = ApothMiscUtil.getExpCostForSlot((int) recipe.getRequirements().eterna(), 0);
+        FluidStack reagent = findInfusingIngredient(reagentTank, requiredAmount);
+        if (reagent.isEmpty() || simulateOnly) {
+            return !reagent.isEmpty();
+        }
 
         ItemStack extracted = availableItems.extractItem(inputSlot, 1, false);
         if (!recipe.matches(
                 extracted,
                 infuser.infusionStats.eterna(),
                 infuser.infusionStats.quanta(),
-                infuser.infusionStats.arcana()))
+                infuser.infusionStats.arcana())) {
+            rollbackItem(availableItems, inputSlot, extracted);
             return false;
-        if (!drainInfusingIngredient(infusingIngredient, reagent))
+        }
+        FluidStack drainedReagent = reagentTank.drain(reagent, IFluidHandler.FluidAction.EXECUTE);
+        if (!sameFluidAndAmount(reagent, drainedReagent)) {
+            rollbackItem(availableItems, inputSlot, extracted);
+            rollbackFluid(reagentTank, drainedReagent);
             return false;
-        return basin.acceptOutputs(List.of(output), List.of(), false);
+        }
+        if (basin.acceptOutputs(List.of(output), List.of(), false)) {
+            return true;
+        }
+
+        rollbackItem(availableItems, inputSlot, extracted);
+        rollbackFluid(reagentTank, drainedReagent);
+        return false;
+    }
+
+    private static @Nullable IItemHandler getItemHandler(BasinBlockEntity basin) {
+        return basin.getCapability(ForgeCapabilities.ITEM_HANDLER).orElse(null);
+    }
+
+    private static @Nullable IFluidHandler getFluidHandler(BasinBlockEntity basin) {
+        return basin.getCapability(ForgeCapabilities.FLUID_HANDLER).orElse(null);
     }
 
     private static int findMatchingItemSlot(IItemHandler items, Ingredient ingredient) {
         for (int slot = 0; slot < items.getSlots(); slot++) {
-            if (ingredient.test(items.extractItem(slot, 1, true)))
+            if (ingredient.test(items.extractItem(slot, 1, true))) {
                 return slot;
+            }
         }
         return -1;
     }
 
-    private static int findMatchingItemSlot(IItemHandler items, InfusionRecipe recipe, InfusionStats stats) {
+    private static int findMatchingItemSlot(IItemHandler items, EnchantingRecipe recipe, InfusionStats stats) {
         for (int slot = 0; slot < items.getSlots(); slot++) {
             ItemStack input = items.extractItem(slot, 1, true);
-            if (recipe.matches(input, stats.eterna(), stats.quanta(), stats.arcana()))
+            if (recipe.matches(input, stats.eterna(), stats.quanta(), stats.arcana())) {
                 return slot;
+            }
         }
         return -1;
     }
 
-    private static FluidStack findMatchingFluid(IFluidHandler fluids, SizedFluidIngredient ingredient) {
+    private static FluidStack findMatchingFluid(IFluidHandler fluids, FluidIngredient ingredient) {
         for (int tank = 0; tank < fluids.getTanks(); tank++) {
             FluidStack available = fluids.getFluidInTank(tank);
-            if (available.isEmpty())
+            if (available.isEmpty()) {
                 continue;
-            FluidStack requested = available.copyWithAmount(ingredient.amount());
-            if (!ingredient.test(requested))
+            }
+            FluidStack requested = available.copy();
+            requested.setAmount(ingredient.getRequiredAmount());
+            if (!ingredient.test(requested)) {
                 continue;
+            }
             FluidStack drained = fluids.drain(requested, IFluidHandler.FluidAction.SIMULATE);
-            if (sameFluidAndAmount(requested, drained))
+            if (sameFluidAndAmount(requested, drained)) {
                 return requested;
+            }
         }
         return FluidStack.EMPTY;
     }
@@ -221,89 +284,121 @@ public class InfusingRecipe extends ProcessingRecipe<SingleRecipeInput, Infusing
     private static FluidStack findInfusingIngredient(IFluidHandler fluids, int amount) {
         for (int tank = 0; tank < fluids.getTanks(); tank++) {
             FluidStack available = fluids.getFluidInTank(tank);
-            if (!available.is(CEIAFluids.MOD_TAGS.infusing_ingredients))
+            if (!available.getFluid().is(CEIAFluids.MOD_TAGS.infusing_ingredients)) {
                 continue;
-            FluidStack requested = available.copyWithAmount(amount);
+            }
+            FluidStack requested = available.copy();
+            requested.setAmount(amount);
             FluidStack drained = fluids.drain(requested, IFluidHandler.FluidAction.SIMULATE);
-            if (sameFluidAndAmount(requested, drained))
+            if (sameFluidAndAmount(requested, drained)) {
                 return requested;
+            }
         }
         return FluidStack.EMPTY;
     }
 
-    private static boolean drainInfusingIngredient(IFluidHandler fluids, FluidStack requested) {
-        return sameFluidAndAmount(requested, fluids.drain(requested, IFluidHandler.FluidAction.EXECUTE));
-    }
-
     private static boolean sameFluidAndAmount(FluidStack expected, FluidStack actual) {
-        return actual.getAmount() == expected.getAmount() && FluidStack.isSameFluidSameComponents(expected, actual);
+        return !actual.isEmpty() && expected.isFluidStackIdentical(actual);
     }
 
-    private static boolean matchesFilter(FilteringBehaviour filter, List<ItemStack> itemOutputs, List<FluidStack> fluidOutputs) {
-        if (filter == null)
+    private static void rollbackItem(@Nullable IItemHandler handler, int preferredSlot, ItemStack stack) {
+        if (handler == null || stack.isEmpty()) {
+            return;
+        }
+        ItemStack remainder = preferredSlot >= 0 ? handler.insertItem(preferredSlot, stack, false) : stack;
+        for (int slot = 0; !remainder.isEmpty() && slot < handler.getSlots(); slot++) {
+            remainder = handler.insertItem(slot, remainder, false);
+        }
+    }
+
+    private static void rollbackFluid(@Nullable IFluidHandler handler, FluidStack stack) {
+        if (handler != null && !stack.isEmpty()) {
+            handler.fill(stack, IFluidHandler.FluidAction.EXECUTE);
+        }
+    }
+
+    private static boolean matchesFilter(
+            FilteringBehaviour filter, List<ItemStack> itemOutputs, List<FluidStack> fluidOutputs) {
+        if (filter == null) {
             return false;
-        if (!itemOutputs.isEmpty())
-            return filter.test(itemOutputs.getFirst());
-        if (!fluidOutputs.isEmpty())
-            return filter.test(fluidOutputs.getFirst());
+        }
+        if (!itemOutputs.isEmpty()) {
+            return filter.test(itemOutputs.get(0));
+        }
+        if (!fluidOutputs.isEmpty()) {
+            return filter.test(fluidOutputs.get(0));
+        }
         return false;
     }
 
     public static boolean canProcessInput(Recipe<?> recipe, ItemStack stack) {
-        if (recipe instanceof InfusionRecipe infusionRecipe)
-            return infusionRecipe.getInput().test(stack);
-        return !recipe.getIngredients().isEmpty() && recipe.getIngredients().getFirst().test(stack);
+        if (recipe instanceof EnchantingRecipe enchantingRecipe) {
+            return enchantingRecipe.getInput().test(stack);
+        }
+        return !recipe.getIngredients().isEmpty() && recipe.getIngredients().get(0).test(stack);
     }
 
     @Override
-    public boolean matches(SingleRecipeInput basin, Level level) {
+    public boolean matches(Container container, Level level) {
         return false;
     }
 
-    public static class Builder extends ProcessingRecipeBuilder<InfusingRecipeParams, InfusingRecipe, InfusingRecipe.Builder> {
+    @Override
+    public void readAdditional(JsonObject json) {
+        JsonObject statsJson = GsonHelper.getAsJsonObject(json, "stats");
+        stats = new InfusionStats(
+                GsonHelper.getAsFloat(statsJson, "eterna"),
+                GsonHelper.getAsFloat(statsJson, "quanta"),
+                GsonHelper.getAsFloat(statsJson, "arcana"));
+    }
+
+    @Override
+    public void writeAdditional(JsonObject json) {
+        JsonObject statsJson = new JsonObject();
+        statsJson.addProperty("eterna", stats.eterna());
+        statsJson.addProperty("quanta", stats.quanta());
+        statsJson.addProperty("arcana", stats.arcana());
+        json.add("stats", statsJson);
+    }
+
+    @Override
+    public void readAdditional(FriendlyByteBuf buffer) {
+        stats = InfusionStats.read(buffer);
+    }
+
+    @Override
+    public void writeAdditional(FriendlyByteBuf buffer) {
+        stats.write(buffer);
+    }
+
+    public static class Builder extends ProcessingRecipeBuilder<InfusingRecipe> {
+        private final InfusionStats stats;
+
         public Builder(ResourceLocation recipeId, InfusionStats stats) {
             super(InfusingRecipe::new, recipeId);
-            this.params.stats = stats;
+            this.stats = stats;
         }
 
         @Override
-        protected InfusingRecipeParams createParams() {
-            return new InfusingRecipeParams();
-        }
-
-        @Override
-        public InfusingRecipe.Builder self() {
-            return this;
+        public InfusingRecipe build() {
+            InfusingRecipe recipe = super.build();
+            recipe.stats = stats;
+            return recipe;
         }
     }
 
-    public static class Serializer<R extends InfusingRecipe> implements RecipeSerializer<R> {
-        private final MapCodec<R> codec;
-        private final StreamCodec<RegistryFriendlyByteBuf, R> streamCodec;
-
-        public Serializer(ProcessingRecipe.Factory<InfusingRecipeParams, R> factory) {
-            this.codec = ProcessingRecipe.codec(factory, InfusingRecipeParams.CODEC);
-            this.streamCodec = ProcessingRecipe.streamCodec(factory, InfusingRecipeParams.STREAM_CODEC);
-        }
-
-        @Override
-        public MapCodec<R> codec() {
-            return codec;
-        }
-
-        @Override
-        public StreamCodec<RegistryFriendlyByteBuf, R> streamCodec() {
-            return streamCodec;
+    public static class Serializer<R extends InfusingRecipe> extends ProcessingRecipeSerializer<R> {
+        public Serializer(ProcessingRecipeBuilder.ProcessingRecipeFactory<R> factory) {
+            super(factory);
         }
     }
 
-    public static RecipeHolder<InfusingRecipe> createDisplayRecipe(RecipeHolder<?> recipe) {
-        InfusionRecipe infusionRecipe = (InfusionRecipe) recipe.value();
-        var requirements = infusionRecipe.getRequirements();
-        var stats = new InfusionStats(requirements.eterna(), requirements.quanta(), requirements.arcana());
-        InfusingRecipe infusingRecipe = new InfusingRecipe.Builder(recipe.id(), stats).withItemIngredients(infusionRecipe.getInput())
-                .withSingleItemOutput(infusionRecipe.getOutput())
+    public static InfusingRecipe createDisplayRecipe(EnchantingRecipe recipe) {
+        var requirements = recipe.getRequirements();
+        InfusionStats stats = new InfusionStats(requirements.eterna(), requirements.quanta(), requirements.arcana());
+        return new Builder(recipe.getId(), stats)
+                .withItemIngredients(recipe.getInput())
+                .withSingleItemOutput(recipe.getOutput())
                 .build();
-        return new RecipeHolder<>(recipe.id(), infusingRecipe);
     }
 }

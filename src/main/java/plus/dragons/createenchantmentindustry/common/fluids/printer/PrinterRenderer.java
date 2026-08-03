@@ -24,14 +24,14 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.simibubi.create.foundation.blockEntity.behaviour.fluid.SmartFluidTankBehaviour.TankSegment;
 import com.simibubi.create.foundation.blockEntity.renderer.SmartBlockEntityRenderer;
 import dev.engine_room.flywheel.lib.model.baked.PartialModel;
-import net.createmod.catnip.platform.NeoForgeCatnipServices;
+import net.createmod.catnip.platform.ForgeCatnipServices;
 import net.createmod.catnip.render.CachedBuffers;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider.Context;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.block.state.BlockState;
-import net.neoforged.neoforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidStack;
 import plus.dragons.createenchantmentindustry.client.model.CEIPartialModels;
 
 public class PrinterRenderer extends SmartBlockEntityRenderer<PrinterBlockEntity> {
@@ -58,7 +58,7 @@ public class PrinterRenderer extends SmartBlockEntityRenderer<PrinterBlockEntity
             float max = min + (11 / 16f);
             float minY = top ? (max - fluidLevel) : min;
             float maxY = top ? max : (min + fluidLevel);
-            NeoForgeCatnipServices.FLUID_RENDERER.renderFluidBox(fluidStack,
+            ForgeCatnipServices.FLUID_RENDERER.renderFluidBox(fluidStack,
                     min, minY, min,
                     max, maxY, max,
                     buffer, poseStack, light,

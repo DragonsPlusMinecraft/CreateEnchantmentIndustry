@@ -25,14 +25,14 @@ import java.util.List;
 import java.util.Optional;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
-import net.neoforged.neoforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidStack;
 import plus.dragons.createenchantmentindustry.common.fluids.printer.PrinterBlockEntity;
+import plus.dragons.createenchantmentindustry.common.item.CEIItemData;
 import plus.dragons.createenchantmentindustry.common.registry.CEIDataMaps;
 import plus.dragons.createenchantmentindustry.config.CEIConfig;
 import plus.dragons.createenchantmentindustry.util.CEIDyeFluids;
@@ -49,7 +49,7 @@ public class CustomNamePrintingBehaviour implements PrintingBehaviour {
 
     public static Optional<DataResult<PrintingBehaviour>> create(Level level, SmartFluidTankBehaviour tank, ItemStack stack) {
         if (stack.is(Items.NAME_TAG)) {
-            var name = stack.get(DataComponents.CUSTOM_NAME);
+            var name = CEIItemData.getCustomName(stack);
             if (name == null)
                 return Optional.empty();
             return Optional.of(DataResult.success(new CustomNamePrintingBehaviour(tank, name.copy())));
@@ -61,10 +61,10 @@ public class CustomNamePrintingBehaviour implements PrintingBehaviour {
     public int getRequiredItemCount(Level level, ItemStack stack) {
         var name = getCustomName(tank.getPrimaryHandler().getFluid());
         if (CEIConfig.fluids().printingCustomNameAsItemName.get()) {
-            var n = stack.get(DataComponents.ITEM_NAME);
+            var n = CEIItemData.getCustomName(stack);
             if (n != null && n.equals(name)) return 0;
         } else {
-            var n = stack.get(DataComponents.CUSTOM_NAME);
+            var n = CEIItemData.getCustomName(stack);
             if (n != null && n.equals(name)) return 0;
         }
         return 1;
@@ -72,7 +72,7 @@ public class CustomNamePrintingBehaviour implements PrintingBehaviour {
 
     @Override
     public int getRequiredFluidAmount(Level level, ItemStack stack, FluidStack fluidStack) {
-        var amount = fluidStack.getFluidHolder().getData(CEIDataMaps.PRINTING_CUSTOM_NAME_INGREDIENT);
+        var amount = CEIDataMaps.PRINTING_CUSTOM_NAME_INGREDIENT.get(fluidStack.getFluid());
         return amount == null ? 0 : amount;
     }
 
@@ -80,11 +80,7 @@ public class CustomNamePrintingBehaviour implements PrintingBehaviour {
     public ItemStack getResult(Level level, ItemStack stack, FluidStack fluidStack) {
         var result = stack.copy();
         var name = getCustomName(fluidStack);
-        if (CEIConfig.fluids().printingCustomNameAsItemName.get()) {
-            result.set(DataComponents.ITEM_NAME, name);
-        } else {
-            result.set(DataComponents.CUSTOM_NAME, name);
-        }
+        CEIItemData.setCustomName(result, name);
         return result;
     }
 
@@ -102,7 +98,7 @@ public class CustomNamePrintingBehaviour implements PrintingBehaviour {
             name.withStyle(ChatFormatting.ITALIC);
         CEILang.translate("gui.goggles.printing.custom_name").forGoggles(tooltip);
         CEILang.builder().add(name).forGoggles(tooltip, 1);
-        var cost = tank.getPrimaryHandler().getFluid().getFluidHolder().getData(CEIDataMaps.PRINTING_CUSTOM_NAME_INGREDIENT);
+        var cost = CEIDataMaps.PRINTING_CUSTOM_NAME_INGREDIENT.get(tank.getPrimaryHandler().getFluid().getFluid());
         if (cost != null)
             CEILang.translate("gui.goggles.printing.cost",
                     CEILang.number(cost)
@@ -119,7 +115,7 @@ public class CustomNamePrintingBehaviour implements PrintingBehaviour {
 
     private MutableComponent getCustomName(FluidStack fluidStack) {
         var name = this.name.copy();
-        var style = fluidStack.getFluidHolder().getData(CEIDataMaps.PRINTING_CUSTOM_NAME_STYLE);
+        var style = CEIDataMaps.PRINTING_CUSTOM_NAME_STYLE.get(fluidStack.getFluid());
         if (style == null)
             style = CEIDyeFluids.style(fluidStack).orElse(null);
         if (style != null)

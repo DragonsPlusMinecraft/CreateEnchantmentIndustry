@@ -20,27 +20,27 @@ package plus.dragons.createenchantmentindustry.integration.apotheosis.config;
 
 import net.minecraft.Util;
 import net.minecraft.util.Unit;
-import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.ModContainer;
-import net.neoforged.fml.config.ModConfig.Type;
-import net.neoforged.fml.event.config.ModConfigEvent;
-import net.neoforged.neoforge.common.ModConfigSpec;
+import net.minecraftforge.common.ForgeConfigSpec;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.ModLoadingContext;
+import net.minecraftforge.fml.config.ModConfig.Type;
+import net.minecraftforge.fml.event.config.ModConfigEvent;
 
 public class CEIAXConfig {
     private static final CEIAXClientConfig CLIENT_CONFIG = new CEIAXClientConfig();
     private static final CEIAXServerConfig SERVER_CONFIG = new CEIAXServerConfig();
-    private static ModConfigSpec CLIENT_SPEC;
-    private static ModConfigSpec SERVER_SPEC;
+    private static ForgeConfigSpec CLIENT_SPEC;
+    private static ForgeConfigSpec SERVER_SPEC;
 
-    public CEIAXConfig(ModContainer modContainer) {
-        CLIENT_SPEC = Util.make(new ModConfigSpec.Builder().configure(builder -> {
+    public CEIAXConfig(ModLoadingContext modLoadingContext) {
+        CLIENT_SPEC = Util.make(new ForgeConfigSpec.Builder().configure(builder -> {
             CLIENT_CONFIG.registerAll(builder);
             return Unit.INSTANCE;
-        }).getValue(), spec -> modContainer.registerConfig(Type.CLIENT, spec, "create_enchantment_industry-apotheosis-client.toml"));
-        SERVER_SPEC = Util.make(new ModConfigSpec.Builder().configure(builder -> {
+        }).getValue(), spec -> modLoadingContext.registerConfig(Type.CLIENT, spec, "create_enchantment_industry-apotheosis-client.toml"));
+        SERVER_SPEC = Util.make(new ForgeConfigSpec.Builder().configure(builder -> {
             SERVER_CONFIG.registerAll(builder);
             return Unit.INSTANCE;
-        }).getValue(), spec -> modContainer.registerConfig(Type.SERVER, spec, "create_enchantment_industry-apotheosis-server.toml"));
+        }).getValue(), spec -> modLoadingContext.registerConfig(Type.SERVER, spec, "create_enchantment_industry-apotheosis-server.toml"));
     }
 
     public static CEIAXClientConfig client() {

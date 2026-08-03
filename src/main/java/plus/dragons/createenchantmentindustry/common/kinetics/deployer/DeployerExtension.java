@@ -21,13 +21,11 @@ package plus.dragons.createenchantmentindustry.common.kinetics.deployer;
 import com.simibubi.create.AllItems;
 import com.simibubi.create.content.kinetics.deployer.DeployerFakePlayer;
 import net.minecraft.util.Mth;
-import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
-import net.neoforged.bus.api.EventPriority;
-import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.neoforge.event.entity.living.LivingExperienceDropEvent;
-import net.neoforged.neoforge.event.level.BlockDropsEvent;
+import net.minecraftforge.event.entity.living.LivingExperienceDropEvent;
+import net.minecraftforge.eventbus.api.EventPriority;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import plus.dragons.createenchantmentindustry.common.fluids.experience.ExperienceHelper;
 import plus.dragons.createenchantmentindustry.config.CEIConfig;
 
@@ -47,25 +45,16 @@ public class DeployerExtension {
         }
     }
 
-    @SubscribeEvent(priority = EventPriority.LOWEST)
-    public static void onBlockDrops(final BlockDropsEvent event) {
-        if (!(event.getBreaker() instanceof DeployerFakePlayer deployer))
-            return;
+    public static int handleBlockExperience(DeployerFakePlayer deployer, int droppedExperience) {
         boolean dropXp = CEIConfig.kinetics().deployerMineDropXp.get();
         int experience = dropXp
-                ? Mth.ceil(event.getDroppedExperience() * CEIConfig.kinetics().deployerMineXpScale.getF())
+                ? Mth.ceil(droppedExperience * CEIConfig.kinetics().deployerMineXpScale.getF())
                 : 0;
         if (experience > 0 && CEIConfig.kinetics().deployerCollectXp.get()) {
             collectExperience(deployer, experience);
-            experience = 0;
+            return 0;
         }
-        if (experience > 0) {
-            event.getState().getBlock().popExperience(event.getLevel(), event.getPos(), experience);
-        }
-        event.getDrops().stream()
-                .map(ItemEntity::getItem)
-                .forEach(deployer.getInventory()::placeItemBackInInventory);
-        event.setCanceled(true);
+        return experience;
     }
 
     public static void collectExperience(DeployerFakePlayer deployer, int experience) {

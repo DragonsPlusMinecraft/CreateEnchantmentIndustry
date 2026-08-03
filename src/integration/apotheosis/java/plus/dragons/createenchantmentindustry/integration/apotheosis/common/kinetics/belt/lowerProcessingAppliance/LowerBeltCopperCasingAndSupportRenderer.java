@@ -51,7 +51,7 @@ public abstract class LowerBeltCopperCasingAndSupportRenderer<T extends SmartBlo
                 CachedBuffers.partialFacing(shift == BeltPart.MIDDLE ? CEIAXPartialModels.SPECIAL_CASING : CEIAXPartialModels.SPECIAL_CASING_WITH_SHAFT,
                         belowState, facing)
                         .light(light)
-                        .renderInto(poseStack, buffer.getBuffer(RenderType.CUTOUT_MIPPED));
+                        .renderInto(poseStack, buffer.getBuffer(RenderType.cutoutMipped()));
                 poseStack.popPose();
             }
         } else if (AllBlocks.DEPOT.has(belowState)) {
@@ -59,7 +59,7 @@ public abstract class LowerBeltCopperCasingAndSupportRenderer<T extends SmartBlo
             poseStack.translate(0, -1, 0);
             CachedBuffers.partial(CEIAXPartialModels.SPECIAL_CASING_TOP_ONLY, belowState)
                     .light(light)
-                    .renderInto(poseStack, buffer.getBuffer(RenderType.CUTOUT_MIPPED));
+                    .renderInto(poseStack, buffer.getBuffer(RenderType.cutoutMipped()));
             poseStack.popPose();
         }
     }

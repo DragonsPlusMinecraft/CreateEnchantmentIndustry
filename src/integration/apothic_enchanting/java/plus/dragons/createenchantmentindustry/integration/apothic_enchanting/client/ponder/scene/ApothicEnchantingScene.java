@@ -40,8 +40,8 @@ import net.minecraft.world.entity.animal.Sheep;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.fluids.FluidStack;
-import net.neoforged.neoforge.fluids.capability.IFluidHandler;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.capability.IFluidHandler;
 import plus.dragons.createenchantmentindustry.common.registry.CEIFluids;
 import plus.dragons.createenchantmentindustry.integration.apothic_enchanting.common.contraptions.actors.enderWovenBag.EnderWovenBagBlockEntity;
 import plus.dragons.createenchantmentindustry.integration.apothic_enchanting.common.processing.infuser.InfuserBlockEntity;
@@ -129,7 +129,7 @@ public class ApothicEnchantingScene {
                 .pointAt(infuserVec);
         scene.idle(10);
         scene.world().modifyBlockEntity(infuserPos, InfuserBlockEntity.class,
-                be -> be.getFluidHandler(null).fill(new FluidStack(CEIFluids.EXPERIENCE, 3000), IFluidHandler.FluidAction.EXECUTE));
+                be -> be.getFluidHandler(null).fill(new FluidStack(CEIFluids.EXPERIENCE.get(), 3000), IFluidHandler.FluidAction.EXECUTE));
         scene.idle(80);
 
         var carrot = Items.CARROT.getDefaultInstance();
@@ -142,7 +142,9 @@ public class ApothicEnchantingScene {
         scene.idle(80);
         scene.world().modifyBlockEntityNBT(util.select().position(basin), BasinBlockEntity.class, nbt -> {
             nbt.put("VisualizedItems",
-                    NBTHelper.writeCompoundList(ImmutableList.of(IntAttached.with(1, goldCarrot)), ia -> (CompoundTag) ia.getValue().saveOptional(scene.world().getHolderLookupProvider())));
+                    NBTHelper.writeCompoundList(
+                            ImmutableList.of(IntAttached.with(1, goldCarrot)),
+                            ia -> ia.getValue().save(new CompoundTag())));
         });  // Does this really necessary?
         scene.idle(4);
         scene.world().createItemOnBeltLike(util.grid().at(2, 0, 1), Direction.UP, goldCarrot);
@@ -312,7 +314,7 @@ public class ApothicEnchantingScene {
                 .attachKeyFrame()
                 .pointAt(util.vector().centerOf(1, 1, 3));
         scene.idle(10);
-        var pos = util.grid().at(3, 1, 1).getBottomCenter();
+        var pos = Vec3.atBottomCenterOf(util.grid().at(3, 1, 1));
         var sheep = scene.world().createEntity(level -> {
             Sheep s = new Sheep(EntityType.SHEEP, level);
             s.setColor(DyeColor.WHITE);
@@ -366,7 +368,7 @@ public class ApothicEnchantingScene {
         scene.world().createEntity(level -> {
             Sheep s = new Sheep(EntityType.SHEEP, level);
             s.setColor(DyeColor.WHITE);
-            Vec3 p = util.grid().at(2, 1, 1).getBottomCenter();
+            Vec3 p = Vec3.atBottomCenterOf(util.grid().at(2, 1, 1));
             s.setPos(p.x, p.y, p.z);
             s.xo = p.x;
             s.yo = p.y;
@@ -409,7 +411,7 @@ public class ApothicEnchantingScene {
         scene.idle(10);
         var panda = scene.world().createEntity(level -> {
             Panda entity = new Panda(EntityType.PANDA, level);
-            Vec3 p = util.grid().at(5, 1, 1).getBottomCenter();
+            Vec3 p = Vec3.atBottomCenterOf(util.grid().at(5, 1, 1));
             entity.setPos(p.x, p.y, p.z);
             entity.xo = p.x;
             entity.yo = p.y;
@@ -450,7 +452,7 @@ public class ApothicEnchantingScene {
         scene.world().setKineticSpeed(gantry, 64);
         scene.world().createEntity(level -> {
             Panda entity = new Panda(EntityType.PANDA, level);
-            Vec3 p = util.grid().at(5, 1, 1).getBottomCenter();
+            Vec3 p = Vec3.atBottomCenterOf(util.grid().at(5, 1, 1));
             entity.setPos(p.x, p.y, p.z);
             entity.xo = p.x;
             entity.yo = p.y;

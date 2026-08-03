@@ -1,0 +1,25 @@
+{
+  "type": "create:mixing",
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "apotheosis"
+    },
+    {
+      "type": "create_enchantment_industry:apotheosis_module",
+      "module": "adventure"
+    }
+  ],
+  "ingredients": [
+    {
+      "item": "apotheosis:rare_material"
+    }
+  ],
+  "processingTime": 7,
+  "results": [
+    {
+      "amount": 9,
+      "fluid": "create_enchantment_industry:apotheotic_essence"
+    }
+  ]
+}

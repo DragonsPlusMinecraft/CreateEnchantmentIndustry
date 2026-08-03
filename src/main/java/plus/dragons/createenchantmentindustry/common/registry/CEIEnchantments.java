@@ -18,73 +18,28 @@
 
 package plus.dragons.createenchantmentindustry.common.registry;
 
-import static plus.dragons.createenchantmentindustry.common.CEICommon.REGISTRATE;
-
-import com.tterrag.registrate.providers.RegistrateTagsProvider;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.tags.EnchantmentTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.enchantment.Enchantment;
-import net.neoforged.bus.api.IEventBus;
-import plus.dragons.createdragonsplus.data.tag.TagRegistry;
+import net.minecraftforge.eventbus.api.IEventBus;
 import plus.dragons.createenchantmentindustry.common.CEICommon;
 
 public class CEIEnchantments {
     public static final ModTags MOD_TAGS = new ModTags();
 
-    public static void register(IEventBus modBus) {
-        REGISTRATE.registerEnchantmentTags(MOD_TAGS);
-    }
+    public static void register(IEventBus modBus) {}
 
-    public static class ModTags extends TagRegistry<Enchantment, RegistrateTagsProvider<Enchantment>> {
-        public final TagKey<Enchantment> enchanting = tag(
-                "blaze_enchanter/enchanting",
-                "Blaze Enchanter Normal Enchanting Enchantments");
-        public final TagKey<Enchantment> enchantingExclusive = tag(
-                "blaze_enchanter/enchanting_exclusive",
-                "Blaze Enchanter Normal Enchanting Exclusive Enchantments");
-        public final TagKey<Enchantment> superEnchanting = tag(
-                "blaze_enchanter/super_enchanting",
-                "Blaze Enchanter Super Enchanting Enchantments");
-        public final TagKey<Enchantment> superEnchantingExclusive = tag(
-                "blaze_enchanter/super_enchanting_exclusive",
-                "Blaze Enchanter Super Enchanting Exclusive Enchantments");
-        public final TagKey<Enchantment> penaltyCurses = tag(
-                "blaze_enchanter/penalty_curses",
-                "Blaze Enchanter Penalty Curses");
-        public final TagKey<Enchantment> penaltyCursesDeny = tag(
-                "blaze_enchanter/penalty_curses_deny",
-                "Blaze Enchanter Denied Penalty Curses");
-        public final TagKey<Enchantment> printingDeny = tag(
-                "printer/deny",
-                "Printer-Denied Enchantments");
+    public static class ModTags {
+        public final TagKey<Enchantment> enchanting = tag("blaze_enchanter/enchanting");
+        public final TagKey<Enchantment> enchantingExclusive = tag("blaze_enchanter/enchanting_exclusive");
+        public final TagKey<Enchantment> superEnchanting = tag("blaze_enchanter/super_enchanting");
+        public final TagKey<Enchantment> superEnchantingExclusive = tag("blaze_enchanter/super_enchanting_exclusive");
+        public final TagKey<Enchantment> penaltyCurses = tag("blaze_enchanter/penalty_curses");
+        public final TagKey<Enchantment> penaltyCursesDeny = tag("blaze_enchanter/penalty_curses_deny");
+        public final TagKey<Enchantment> printingDeny = tag("printer/deny");
 
-        protected ModTags() {
-            super(CEICommon.ID, Registries.ENCHANTMENT);
-        }
-
-        @Override
-        public void generate(RegistrateTagsProvider<Enchantment> provider) {
-            super.generate(provider);
-            provider.addTag(enchanting)
-                    .addTag(EnchantmentTags.IN_ENCHANTING_TABLE);
-            provider.addTag(enchantingExclusive);
-            provider.addTag(superEnchanting)
-                    .addTag(enchanting)
-                    .remove(enchantingExclusive)
-                    .addTag(superEnchantingExclusive);
-            provider.addTag(superEnchantingExclusive)
-                    .addTag(EnchantmentTags.TREASURE)
-                    .remove(EnchantmentTags.CURSE);
-            provider.addTag(enchantingExclusive);
-            provider.addTag(penaltyCurses)
-                    .addTag(EnchantmentTags.IN_ENCHANTING_TABLE)
-                    .addTag(EnchantmentTags.TRADEABLE)
-                    .addTag(EnchantmentTags.ON_MOB_SPAWN_EQUIPMENT)
-                    .addTag(EnchantmentTags.ON_TRADED_EQUIPMENT)
-                    .addTag(EnchantmentTags.ON_RANDOM_LOOT);
-            provider.addTag(penaltyCursesDeny);
-            provider.addTag(printingDeny);
+        private static TagKey<Enchantment> tag(String path) {
+            return TagKey.create(Registries.ENCHANTMENT, CEICommon.asResource(path));
         }
     }
 }

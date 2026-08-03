@@ -18,83 +18,116 @@
 
 package plus.dragons.createenchantmentindustry.integration.apotheosis.common.processing.affix.blazeComposer;
 
-import dev.shadowsoffire.apotheosis.Apoth;
-import dev.shadowsoffire.apotheosis.affix.Affix;
-import dev.shadowsoffire.apotheosis.affix.AffixInstance;
-import dev.shadowsoffire.apotheosis.affix.ItemAffixes;
+import dev.shadowsoffire.apotheosis.adventure.affix.Affix;
+import dev.shadowsoffire.apotheosis.adventure.affix.AffixHelper;
+import dev.shadowsoffire.apotheosis.adventure.affix.AffixInstance;
+import dev.shadowsoffire.apotheosis.adventure.affix.AffixRegistry;
 import dev.shadowsoffire.placebo.reload.DynamicHolder;
 import java.util.HashMap;
 import java.util.Map;
 import net.minecraft.world.item.ItemStack;
-import plus.dragons.createenchantmentindustry.integration.apotheosis.common.registry.CEIAXDataComponents;
+import org.jetbrains.annotations.Nullable;
+import plus.dragons.createenchantmentindustry.common.item.CEIItemData;
+import plus.dragons.createenchantmentindustry.integration.apotheosis.common.processing.affix.AffixLevelLimits;
 
-public class OverlimitAffixHelper {
-    public static Map<DynamicHolder<Affix>, AffixInstance> applyTrueLevels(ItemStack stack, Map<DynamicHolder<Affix>, AffixInstance> affixes) {
-        OverlimitAffixes overlimit = stack.get(CEIAXDataComponents.OVERLIMIT_AFFIXES.get());
+/** Keeps 1.20's native {@code affix_data} valid while layering CEI levels above Apotheosis' level-one cap. */
+public final class OverlimitAffixHelper {
+    private OverlimitAffixHelper() {}
+
+    public static Map<DynamicHolder<? extends Affix>, AffixInstance> applyTrueLevels(
+            ItemStack stack, Map<DynamicHolder<? extends Affix>, AffixInstance> affixes) {
+        OverlimitAffixes overlimit = get(stack);
         if (overlimit == null || overlimit.isEmpty() || affixes.isEmpty())
             return affixes;
-        Map<DynamicHolder<Affix>, AffixInstance> result = null;
+        Map<DynamicHolder<? extends Affix>, AffixInstance> result = null;
         for (var entry : affixes.entrySet()) {
             float trueLevel = overlimit.getLevel(entry.getKey());
             if (trueLevel > entry.getValue().level()) {
                 if (result == null)
                     result = new HashMap<>(affixes);
                 var instance = entry.getValue();
-                result.put(entry.getKey(), new AffixInstance(instance.affix(), trueLevel, instance.rarity(), instance.stack()));
+                result.put(
+                        entry.getKey(),
+                        new AffixInstance(instance.affix(), instance.stack(), instance.rarity(), trueLevel));
             }
         }
         return result == null ? affixes : Map.copyOf(result);
     }
 
-    public static float getTrueLevel(ItemStack stack, DynamicHolder<Affix> affix, float fallback) {
-        OverlimitAffixes overlimit = stack.get(CEIAXDataComponents.OVERLIMIT_AFFIXES.get());
+    public static float getTrueLevel(
+            ItemStack stack, DynamicHolder<? extends Affix> affix, float fallback) {
+        OverlimitAffixes overlimit = get(stack);
         return overlimit == null ? fallback : Math.max(fallback, overlimit.getLevel(affix));
     }
 
-    public static void setAffixLevel(ItemStack stack, DynamicHolder<Affix> affix, float level) {
+    public static void setAffixLevel(
+            ItemStack stack, DynamicHolder<? extends Affix> affix, float level) {
         setAffixLevels(stack, Map.of(affix, level));
     }
 
-    public static void setAffixLevels(ItemStack stack, Map<DynamicHolder<Affix>, Float> changedLevels) {
-        ItemAffixes.Builder nativeBuilder = stack.getOrDefault(Apoth.Components.AFFIXES, ItemAffixes.EMPTY).toBuilder();
+    public static void setAffixLevels(
+            ItemStack stack, Map<? extends DynamicHolder<? extends Affix>, Float> changedLevels) {
+        Map<DynamicHolder<? extends Affix>, AffixInstance> nativeAffixes = new HashMap<>();
+        AffixHelper.getAffixes(stack).forEach((holder, instance) -> nativeAffixes.put(
+                holder,
+                instance.withNewLevel(Math.min(
+                        instance.level(), AffixLevelLimits.NATIVE_STORAGE_MAX_LEVEL))));
+
+        var rarity = AffixHelper.getRarity(stack);
         for (var entry : changedLevels.entrySet()) {
-            DynamicHolder<Affix> affix = entry.getKey();
+            DynamicHolder<Affix> affix = normalize(entry.getKey());
             float level = entry.getValue();
             if (level <= 0) {
-                nativeBuilder.remove(affix);
+                nativeAffixes.remove(affix);
             } else {
-                nativeBuilder.put(affix, Math.min(level, Affix.MAX_LEVEL));
+                nativeAffixes.put(
+                        affix,
+                        new AffixInstance(
+                                affix,
+                                stack,
+                                rarity,
+                                Math.min(level, AffixLevelLimits.NATIVE_STORAGE_MAX_LEVEL)));
             }
         }
-        ItemAffixes nativeAffixes = nativeBuilder.build();
-        if (nativeAffixes.isEmpty()) {
-            stack.remove(Apoth.Components.AFFIXES);
-        } else {
-            stack.set(Apoth.Components.AFFIXES, nativeAffixes);
-        }
+        AffixHelper.setAffixes(stack, nativeAffixes);
 
         Map<DynamicHolder<Affix>, Float> levels = new HashMap<>();
-        OverlimitAffixes old = stack.get(CEIAXDataComponents.OVERLIMIT_AFFIXES.get());
-        if (old != null) {
+        OverlimitAffixes old = get(stack);
+        if (old != null)
             levels.putAll(old.levels());
-        }
         for (var entry : changedLevels.entrySet()) {
-            DynamicHolder<Affix> affix = entry.getKey();
+            DynamicHolder<Affix> affix = normalize(entry.getKey());
             float level = entry.getValue();
-            if (level > Affix.MAX_LEVEL) {
+            if (level > AffixLevelLimits.NATIVE_STORAGE_MAX_LEVEL) {
                 levels.put(affix, level);
             } else {
                 levels.remove(affix);
             }
         }
-        if (levels.isEmpty()) {
-            stack.remove(CEIAXDataComponents.OVERLIMIT_AFFIXES.get());
-        } else {
-            stack.set(CEIAXDataComponents.OVERLIMIT_AFFIXES.get(), new OverlimitAffixes(Map.copyOf(levels)));
-        }
+        set(stack, levels.isEmpty() ? null : new OverlimitAffixes(Map.copyOf(levels)));
     }
 
-    public static void removeAffix(ItemStack stack, DynamicHolder<Affix> affix) {
+    public static void removeAffix(ItemStack stack, DynamicHolder<? extends Affix> affix) {
         setAffixLevel(stack, affix, 0);
+    }
+
+    public static void clear(ItemStack stack) {
+        set(stack, null);
+    }
+
+    private static DynamicHolder<Affix> normalize(DynamicHolder<? extends Affix> affix) {
+        return AffixRegistry.INSTANCE.holder(affix.getId());
+    }
+
+    private static @Nullable OverlimitAffixes get(ItemStack stack) {
+        var tag = CEIItemData.getOwnedData(stack, CEIItemData.OVERLIMIT_AFFIXES_TAG);
+        return tag == null ? null : OverlimitAffixes.load(tag);
+    }
+
+    private static void set(ItemStack stack, @Nullable OverlimitAffixes value) {
+        CEIItemData.setOwnedData(
+                stack,
+                CEIItemData.OVERLIMIT_AFFIXES_TAG,
+                value == null || value.isEmpty() ? null : value.save());
     }
 }

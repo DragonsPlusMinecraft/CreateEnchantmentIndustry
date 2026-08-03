@@ -24,11 +24,11 @@ import com.simibubi.create.api.registry.CreateRegistries;
 import com.simibubi.create.content.logistics.item.filter.attribute.ItemAttributeType;
 import com.simibubi.create.content.logistics.item.filter.attribute.SingletonItemAttribute;
 import java.util.function.BiPredicate;
-import net.minecraft.core.Holder;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.neoforged.bus.api.IEventBus;
-import net.neoforged.neoforge.registries.DeferredRegister;
+import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.registries.RegistryObject;
 import plus.dragons.createenchantmentindustry.integration.apothic_enchanting.common.CEIACommon;
 import plus.dragons.createenchantmentindustry.integration.apothic_enchanting.common.processing.infuser.InfuserBlockEntity;
 
@@ -36,12 +36,12 @@ public class CEIAItemAttributes {
     private static final DeferredRegister<ItemAttributeType> ITEM_ATTRIBUTES = DeferredRegister
             .create(CreateRegistries.ITEM_ATTRIBUTE_TYPE, CEIACommon.ID);
 
-    public static final Holder<ItemAttributeType> CAN_BE_INFUSED = attribute("can_be_infused",
+    public static final RegistryObject<ItemAttributeType> CAN_BE_INFUSED = attribute("can_be_infused",
             "can be Infused",
             "cannot be Infused",
             InfuserBlockEntity::canBeInfused);
 
-    private static Holder<ItemAttributeType> attribute(String name, String description, String invertedDescription, BiPredicate<ItemStack, Level> predicate) {
+    private static RegistryObject<ItemAttributeType> attribute(String name, String description, String invertedDescription, BiPredicate<ItemStack, Level> predicate) {
         String descriptionKey = "create.item_attributes." + CEIACommon.ID + "." + name;
         String invertedDescriptionKey = descriptionKey + ".inverted";
         REGISTRATE.addRawLang(descriptionKey, description);

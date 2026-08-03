@@ -19,17 +19,18 @@
 package plus.dragons.createenchantmentindustry.integration.apotheosis.common.kinetics.fan.salvaging;
 
 import com.simibubi.create.foundation.recipe.RecipeApplier;
-import dev.shadowsoffire.apotheosis.Apoth;
-import dev.shadowsoffire.apotheosis.affix.salvaging.SalvagingMenu;
+import dev.shadowsoffire.apotheosis.Apotheosis;
+import dev.shadowsoffire.apotheosis.adventure.affix.salvaging.SalvagingMenu;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Containers;
+import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.SingleRecipeInput;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
@@ -41,22 +42,26 @@ public class SalvagingHelper {
     public static boolean canSalvage(ItemStack stack, Level level) {
         if (stack.isEmpty())
             return false;
-        var input = new SingleRecipeInput(stack);
+        if (!Apotheosis.enableAdventure)
+            return false;
+        var input = new SimpleContainer(stack);
         if (level.getRecipeManager().getRecipeFor(CEIAXRecipes.SALVAGING.getType(), input, level).isPresent())
             return true;
-        return level.getRecipeManager().getRecipeFor(Apoth.RecipeTypes.SALVAGING, input, level).isPresent();
+        return SalvagingMenu.findMatch(level, stack) != null;
     }
 
     public static @Nullable List<ItemStack> salvage(ItemStack stack, Level level) {
         if (stack.isEmpty())
             return null;
+        if (!Apotheosis.enableAdventure)
+            return null;
         var recipeManager = level.getRecipeManager();
-        var input = new SingleRecipeInput(stack);
+        var input = new SimpleContainer(stack);
         return recipeManager
                 .getRecipeFor(CEIAXRecipes.SALVAGING.getType(), input, level)
-                .map(recipe -> RecipeApplier.applyRecipeOn(level, stack, recipe.value(), true))
-                .or(() -> recipeManager.getRecipeFor(Apoth.RecipeTypes.SALVAGING, input, level)
-                        .map(recipe -> SalvagingMenu.getSalvageResults(level, stack)))
+                .map(recipe -> RecipeApplier.applyRecipeOn(level, stack, recipe, true))
+                .or(() -> Optional.ofNullable(SalvagingMenu.findMatch(level, stack))
+                        .map(recipe -> SalvagingMenu.salvageItem(level, stack)))
                 .orElse(null);
     }
 

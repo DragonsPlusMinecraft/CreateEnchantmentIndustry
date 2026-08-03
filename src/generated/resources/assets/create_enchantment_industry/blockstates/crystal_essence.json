@@ -1,7 +1,7 @@
 {
-    "variants": {
-        "": {
-            "model": "create_enchantment_industry:block/crystal_essence"
-        }
+  "variants": {
+    "": {
+      "model": "create_enchantment_industry:block/crystal_essence"
     }
+  }
 }

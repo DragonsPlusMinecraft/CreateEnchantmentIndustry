@@ -18,10 +18,11 @@
 
 package plus.dragons.createenchantmentindustry.integration.apotheosis.common.registry;
 
-import net.neoforged.bus.api.EventPriority;
-import net.neoforged.bus.api.IEventBus;
-import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
+import dev.shadowsoffire.apotheosis.Apotheosis;
+import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
+import net.minecraftforge.eventbus.api.EventPriority;
+import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 import plus.dragons.createenchantmentindustry.integration.apothic_enchanting.common.registry.CEIACreativeModeTabs;
 
 public class CEIAXCreativeModeTabs {
@@ -31,13 +32,13 @@ public class CEIAXCreativeModeTabs {
 
     @SubscribeEvent(priority = EventPriority.LOW)
     public static void buildContents(BuildCreativeModeTabContentsEvent event) {
-        if (event.getTabKey() == CEIACreativeModeTabs.APOTHEOTIC.getKey()) {
-            event.accept(CEIAXBlocks.GEM_CUTTER);
-            event.accept(CEIAXBlocks.AFFIX_AUGMENTOR);
-            event.accept(CEIAXBlocks.BLAZE_COMPOSER);
-            event.accept(CEIAXItems.BRASS_AFFIX_TEMPLATE);
-            event.accept(CEIAXItems.CRYSTAL_AFFIX_TEMPLATE);
-            event.accept(CEIAXItems.APOTHEOTIC_AFFIX_TEMPLATE);
+        if (Apotheosis.enableAdventure && event.getTabKey() == CEIACreativeModeTabs.APOTHEOTIC.getKey()) {
+            event.accept(CEIAXBlocks.GEM_CUTTER.get());
+            event.accept(CEIAXBlocks.AFFIX_AUGMENTOR.get());
+            event.accept(CEIAXBlocks.BLAZE_COMPOSER.get());
+            event.accept(CEIAXItems.BRASS_AFFIX_TEMPLATE.get());
+            event.accept(CEIAXItems.CRYSTAL_AFFIX_TEMPLATE.get());
+            event.accept(CEIAXItems.APOTHEOTIC_AFFIX_TEMPLATE.get());
             event.accept(CEIAXFluids.APOTHEOTIC_ESSENCE.getBucket().get());
             event.accept(CEIAXFluids.CRYSTAL_ESSENCE.getBucket().get());
         }

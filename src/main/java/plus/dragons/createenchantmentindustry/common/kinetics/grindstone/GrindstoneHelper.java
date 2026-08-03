@@ -19,29 +19,26 @@
 package plus.dragons.createenchantmentindustry.common.kinetics.grindstone;
 
 import com.simibubi.create.content.processing.sequenced.SequencedAssemblyRecipe;
-import it.unimi.dsi.fastutil.objects.Object2IntMap.Entry;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.Optional;
-import net.minecraft.core.Holder;
-import net.minecraft.core.component.DataComponents;
-import net.minecraft.tags.EnchantmentTags;
 import net.minecraft.util.Mth;
+import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.inventory.AnvilMenu;
-import net.minecraft.world.inventory.ContainerLevelAccess;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.crafting.SingleRecipeInput;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
-import net.minecraft.world.item.enchantment.ItemEnchantments;
 import net.minecraft.world.level.Level;
-import net.neoforged.neoforge.common.NeoForge;
-import net.neoforged.neoforge.event.GrindstoneEvent;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.GrindstoneEvent;
+import plus.dragons.createenchantmentindustry.common.item.CEIItemData;
 import plus.dragons.createenchantmentindustry.common.registry.CEIRecipes;
 
 public class GrindstoneHelper {
     public static boolean canItemBeGrinded(ItemStack top, ItemStack bottom) {
-        var event = NeoForge.EVENT_BUS.post(new GrindstoneEvent.OnPlaceItem(top, bottom, -1));
-        if (event.isCanceled())
+        var event = new GrindstoneEvent.OnPlaceItem(top, bottom, -1);
+        if (MinecraftForge.EVENT_BUS.post(event))
             return false;
         if (!event.getOutput().isEmpty())
             return true;
@@ -49,8 +46,8 @@ public class GrindstoneHelper {
     }
 
     public static Optional<Result> grindItem(Level level, ItemStack top, ItemStack bottom) {
-        var place = NeoForge.EVENT_BUS.post(new GrindstoneEvent.OnPlaceItem(top, ItemStack.EMPTY, -1));
-        if (place.isCanceled())
+        var place = new GrindstoneEvent.OnPlaceItem(top, bottom, -1);
+        if (MinecraftForge.EVENT_BUS.post(place))
             return Optional.empty();
         int experience = place.getXp();
         var output = place.getOutput();
@@ -62,10 +59,9 @@ public class GrindstoneHelper {
                 experience = getGrindingExperience(level, top, bottom);
             }
         }
-        var take = NeoForge.EVENT_BUS.post(new GrindstoneEvent.OnTakeItem(ContainerLevelAccess.NULL, null, top, bottom, experience));
-        if (take.isCanceled()) {
-            return Optional.of(new Result(top, bottom, output, 0));
-        }
+        var take = new GrindstoneEvent.OnTakeItem(top, bottom, experience);
+        if (MinecraftForge.EVENT_BUS.post(take))
+            return Optional.empty();
         return Optional.of(new Result(take.getNewTopItem(), take.getNewBottomItem(), output, Math.max(take.getXp(), 0)));
     }
 
@@ -83,26 +79,26 @@ public class GrindstoneHelper {
 
     public static int getExperienceFromItem(ItemStack stack) {
         int result = 0;
-        ItemEnchantments itemenchantments = EnchantmentHelper.getEnchantmentsForCrafting(stack);
-        for (Entry<Holder<Enchantment>> entry : itemenchantments.entrySet()) {
-            Holder<Enchantment> holder = entry.getKey();
-            int level = entry.getIntValue();
-            if (!holder.is(EnchantmentTags.CURSE)) {
-                result += holder.value().getMinCost(level);
+        Map<Enchantment, Integer> enchantments = EnchantmentHelper.getEnchantments(stack);
+        for (var entry : enchantments.entrySet()) {
+            Enchantment enchantment = entry.getKey();
+            int level = entry.getValue();
+            if (!enchantment.isCurse()) {
+                result += enchantment.getMinCost(level);
             }
         }
         return result;
     }
 
     public static int getExperienceFromGrindingRecipe(Level level, ItemStack stack) {
-        var input = new SingleRecipeInput(stack);
+        var input = new SimpleContainer(stack);
         var grinding = SequencedAssemblyRecipe.getRecipe(level, input, CEIRecipes.GRINDING.getType(), GrindingRecipe.class);
         if (grinding.isEmpty())
             grinding = level.getRecipeManager().getRecipeFor(CEIRecipes.GRINDING.getType(), input, level);
         if (grinding.isEmpty()) return 0;
-        var f = grinding.get().value().getFluidResults();
+        var f = grinding.get().getFluidResults();
         if (f.isEmpty()) return 0;
-        return f.getFirst().getAmount();
+        return f.get(0).getAmount();
     }
 
     private static ItemStack computeResult(ItemStack top, ItemStack bottom) {
@@ -113,7 +109,7 @@ public class GrindstoneHelper {
         } else if (top.getCount() <= 1 && bottom.getCount() <= 1) {
             if (topEmpty || bottomEmpty) {
                 ItemStack input = topEmpty ? bottom : top;
-                return !EnchantmentHelper.hasAnyEnchantments(input)
+                return EnchantmentHelper.getEnchantments(input).isEmpty()
                         ? ItemStack.EMPTY
                         : removeNonCursesFrom(input.copy());
             } else {
@@ -141,9 +137,9 @@ public class GrindstoneHelper {
                 count = 2;
             }
 
-            ItemStack result = top.copyWithCount(count);
+            ItemStack result = top.copy();
+            result.setCount(count);
             if (result.isDamageableItem()) {
-                result.set(DataComponents.MAX_DAMAGE, maxDamage);
                 result.setDamageValue(Math.max(maxDamage - l, 0));
                 if (!bottom.isRepairable())
                     result.setDamageValue(top.getDamageValue());
@@ -155,32 +151,30 @@ public class GrindstoneHelper {
     }
 
     private static void mergeEnchantsFrom(ItemStack top, ItemStack bottom) {
-        EnchantmentHelper.updateEnchantments(top, topEnchantments -> {
-            ItemEnchantments bottomEnchantments = EnchantmentHelper.getEnchantmentsForCrafting(bottom);
-
-            for (Entry<Holder<Enchantment>> entry : bottomEnchantments.entrySet()) {
-                Holder<Enchantment> holder = entry.getKey();
-                if (!holder.is(EnchantmentTags.CURSE) || topEnchantments.getLevel(holder) == 0) {
-                    topEnchantments.upgrade(holder, entry.getIntValue());
-                }
-            }
-        });
+        Map<Enchantment, Integer> topEnchantments = new LinkedHashMap<>(EnchantmentHelper.getEnchantments(top));
+        for (var entry : EnchantmentHelper.getEnchantments(bottom).entrySet()) {
+            Enchantment enchantment = entry.getKey();
+            if (!enchantment.isCurse() || !topEnchantments.containsKey(enchantment))
+                topEnchantments.merge(enchantment, entry.getValue(), Math::max);
+        }
+        CEIItemData.setEnchantments(top, topEnchantments);
     }
 
     public static ItemStack removeNonCursesFrom(ItemStack input) {
-        ItemEnchantments itemenchantments = EnchantmentHelper.updateEnchantments(input,
-                enchantments -> enchantments.removeIf(enchantment -> !enchantment.is(EnchantmentTags.CURSE)));
-        if (input.is(Items.ENCHANTED_BOOK) && itemenchantments.isEmpty()) {
-            input = input.transmuteCopy(Items.BOOK);
+        Map<Enchantment, Integer> enchantments = new LinkedHashMap<>(EnchantmentHelper.getEnchantments(input));
+        enchantments.keySet().removeIf(enchantment -> !enchantment.isCurse());
+        CEIItemData.setEnchantments(input, enchantments);
+        if (input.is(Items.ENCHANTED_BOOK) && enchantments.isEmpty()) {
+            input = CEIItemData.transmuteCopy(input, Items.BOOK);
         }
 
         int repairCost = 0;
 
-        for (int j = 0; j < itemenchantments.size(); j++) {
+        for (int j = 0; j < enchantments.size(); j++) {
             repairCost = AnvilMenu.calculateIncreasedRepairCost(repairCost);
         }
 
-        input.set(DataComponents.REPAIR_COST, repairCost);
+        CEIItemData.setRepairCost(input, repairCost);
         return input;
     }
 

@@ -18,23 +18,24 @@
 
 package plus.dragons.createenchantmentindustry.integration.apotheosis.common.registry;
 
-import com.simibubi.create.content.processing.recipe.StandardProcessingRecipe;
+import com.simibubi.create.content.processing.recipe.ProcessingRecipeSerializer;
 import java.util.function.Supplier;
-import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
-import net.neoforged.bus.api.IEventBus;
-import net.neoforged.neoforge.registries.DeferredRegister;
+import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.registries.DeferredRegister;
 import plus.dragons.createdragonsplus.common.recipe.RecipeTypeInfo;
 import plus.dragons.createenchantmentindustry.integration.apotheosis.common.kinetics.fan.salvaging.SalvagingRecipe;
 import plus.dragons.createenchantmentindustry.integration.apothic_enchanting.common.CEIACommon;
 
 public class CEIAXRecipes {
-    private static final DeferredRegister<RecipeType<?>> TYPES = DeferredRegister.create(BuiltInRegistries.RECIPE_TYPE, CEIACommon.ID);
-    private static final DeferredRegister<RecipeSerializer<?>> SERIALIZERS = DeferredRegister.create(BuiltInRegistries.RECIPE_SERIALIZER, CEIACommon.ID);
+    private static final DeferredRegister<RecipeType<?>> TYPES = DeferredRegister.create(Registries.RECIPE_TYPE, CEIACommon.ID);
+    private static final DeferredRegister<RecipeSerializer<?>> SERIALIZERS = DeferredRegister.create(Registries.RECIPE_SERIALIZER, CEIACommon.ID);
 
-    public static final RecipeTypeInfo<SalvagingRecipe> SALVAGING = register("salvaging", () -> new StandardProcessingRecipe.Serializer<>(SalvagingRecipe::new));
+    public static final RecipeTypeInfo<SalvagingRecipe> SALVAGING = register(
+            "salvaging", () -> new ProcessingRecipeSerializer<>(SalvagingRecipe::new));
 
     public static void register(IEventBus modBus) {
         TYPES.register(modBus);

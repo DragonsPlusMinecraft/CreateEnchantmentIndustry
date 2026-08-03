@@ -1,0 +1,51 @@
+{
+  "advancements": [
+    {
+      "advancement": {
+        "parent": "minecraft:recipes/root",
+        "criteria": {
+          "brass": {
+            "conditions": {
+              "items": [
+                {
+                  "items": [
+                    "create:brass_ingot"
+                  ]
+                }
+              ]
+            },
+            "trigger": "minecraft:inventory_changed"
+          },
+          "has_the_recipe": {
+            "conditions": {
+              "recipe": "create_enchantment_industry:crafting/ender_woven_bag"
+            },
+            "trigger": "minecraft:recipe_unlocked"
+          }
+        },
+        "requirements": [
+          [
+            "brass",
+            "has_the_recipe"
+          ]
+        ],
+        "rewards": {
+          "recipes": [
+            "create_enchantment_industry:crafting/ender_woven_bag"
+          ]
+        },
+        "sends_telemetry_event": false
+      },
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "apotheosis"
+        },
+        {
+          "type": "create_enchantment_industry:apotheosis_module",
+          "module": "enchantment"
+        }
+      ]
+    }
+  ]
+}

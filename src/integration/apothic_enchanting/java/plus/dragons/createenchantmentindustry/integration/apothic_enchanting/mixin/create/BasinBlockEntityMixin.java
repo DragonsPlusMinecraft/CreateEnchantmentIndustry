@@ -44,13 +44,13 @@ public abstract class BasinBlockEntityMixin extends SmartBlockEntity {
         super(type, pos, state);
     }
 
-    @WrapMethod(method = "onEmptied")
+    @WrapMethod(method = "onEmptied", remap = false)
     public void onEmptied$checkInfuser(Operation<Void> original) {
         getInfuser().ifPresent(be -> be.basinRemoved = true);
         original.call();
     }
 
-    @Inject(method = "tick", at = @At(value = "INVOKE", target = "Lcom/simibubi/create/content/processing/basin/BasinBlockEntity;getOperator()Ljava/util/Optional;"))
+    @Inject(method = "tick", at = @At(value = "INVOKE", target = "Lcom/simibubi/create/content/processing/basin/BasinBlockEntity;getOperator()Ljava/util/Optional;", remap = false), remap = false)
     private void tick$checkInfuser(CallbackInfo ci) {
         getInfuser().ifPresent(be -> be.basinChecker.scheduleUpdate());
     }

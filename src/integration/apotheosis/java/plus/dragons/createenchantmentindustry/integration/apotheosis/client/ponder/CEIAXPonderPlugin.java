@@ -21,6 +21,7 @@ package plus.dragons.createenchantmentindustry.integration.apotheosis.client.pon
 import com.simibubi.create.AllBlocks;
 import com.tterrag.registrate.util.entry.ItemProviderEntry;
 import com.tterrag.registrate.util.entry.RegistryEntry;
+import dev.shadowsoffire.apotheosis.Apotheosis;
 import net.createmod.ponder.api.registration.PonderSceneRegistrationHelper;
 import net.createmod.ponder.api.registration.PonderTagRegistrationHelper;
 import net.minecraft.resources.ResourceLocation;
@@ -33,12 +34,18 @@ public class CEIAXPonderPlugin {
     public static final ResourceLocation APOTHEOTIC_CREATION_COMPONENTS = CEICommon.asResource("apotheotic_creation_components");
 
     public static void register() {
-        CEIAPonderPlugin.SCENES.add(CEIAXPonderPlugin::registerScenes);
-        CEIAPonderPlugin.TAGS.add(CEIAXPonderPlugin::registerTags);
+        CEIAPonderPlugin.SCENES.add(helper -> {
+            if (Apotheosis.enableAdventure)
+                registerScenes(helper);
+        });
+        CEIAPonderPlugin.TAGS.add(helper -> {
+            if (Apotheosis.enableAdventure)
+                registerTags(helper);
+        });
     }
 
     private static void registerScenes(PonderSceneRegistrationHelper<ResourceLocation> helper) {
-        var registration = helper.<ItemProviderEntry<?, ?>>withKeyFunction(RegistryEntry::getId);
+        var registration = helper.<ItemProviderEntry<?>>withKeyFunction(RegistryEntry::getId);
         registration.forComponents(CEIAXBlocks.GEM_CUTTER)
                 .addStoryBoard("gem_cutter", CEIAXPonderScenes::gemCutter, APOTHEOTIC_CREATION_COMPONENTS);
         registration.forComponents(CEIAXBlocks.AFFIX_AUGMENTOR)
@@ -48,7 +55,7 @@ public class CEIAXPonderPlugin {
     }
 
     private static void registerTags(PonderTagRegistrationHelper<ResourceLocation> helper) {
-        PonderTagRegistrationHelper<RegistryEntry<?, ?>> entryHelper = helper.withKeyFunction(RegistryEntry::getId);
+        PonderTagRegistrationHelper<RegistryEntry<?>> entryHelper = helper.withKeyFunction(RegistryEntry::getId);
 
         helper.registerTag(APOTHEOTIC_CREATION_COMPONENTS)
                 .addToIndex()

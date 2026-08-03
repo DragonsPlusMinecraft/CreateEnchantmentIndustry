@@ -19,10 +19,10 @@
 package plus.dragons.createenchantmentindustry.integration.jei.category.printing;
 
 import com.mojang.serialization.MapCodec;
-import com.simibubi.create.AllDataComponents;
 import com.simibubi.create.AllItems;
 import com.simibubi.create.content.equipment.clipboard.ClipboardBlockItem;
-import com.simibubi.create.content.equipment.clipboard.ClipboardContent;
+import com.simibubi.create.content.equipment.clipboard.ClipboardEntry;
+import com.simibubi.create.content.equipment.clipboard.ClipboardOverrides;
 import com.simibubi.create.content.equipment.clipboard.ClipboardOverrides.ClipboardType;
 import com.simibubi.create.foundation.recipe.ItemCopyingRecipe.SupportsItemCopying;
 import java.util.List;
@@ -33,6 +33,7 @@ import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import plus.dragons.createdragonsplus.util.Pairs;
@@ -61,8 +62,10 @@ public enum CopyPrintingRecipeJEI implements PrintingRecipeJEI {
         for (Item item : BuiltInRegistries.ITEM) {
             if (item instanceof ClipboardBlockItem) {
                 ItemStack stack = new ItemStack(item);
-                ClipboardContent content = ClipboardContent.EMPTY.setType(ClipboardType.WRITTEN);
-                stack.set(AllDataComponents.CLIPBOARD_CONTENT, content);
+                ClipboardEntry.saveAll(
+                        List.of(List.of(new ClipboardEntry(false, Component.literal("Create: Enchantment Industry")))),
+                        stack);
+                ClipboardOverrides.switchTo(ClipboardType.WRITTEN, stack);
                 slot.addItemStack(stack);
             } else if (item instanceof SupportsItemCopying) {
                 slot.addItemLike(item);

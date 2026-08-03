@@ -22,7 +22,6 @@ import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
 import com.simibubi.create.foundation.blockEntity.behaviour.BehaviourType;
 import com.simibubi.create.foundation.blockEntity.behaviour.ValueBoxTransform;
 import com.simibubi.create.foundation.blockEntity.behaviour.scrollValue.ScrollOptionBehaviour;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 
@@ -39,12 +38,12 @@ public class StatTypeBehaviour extends ScrollOptionBehaviour<EnchantmentStatType
     }
 
     @Override
-    public void write(CompoundTag nbt, HolderLookup.Provider registries, boolean clientPacket) {
+    public void write(CompoundTag nbt, boolean clientPacket) {
         nbt.putInt("StatType", value);
     }
 
     @Override
-    public void read(CompoundTag nbt, HolderLookup.Provider registries, boolean clientPacket) {
+    public void read(CompoundTag nbt, boolean clientPacket) {
         value = nbt.getInt("StatType");
     }
 }

@@ -20,7 +20,7 @@ package plus.dragons.createenchantmentindustry.common.fluids.printer.behaviour;
 
 import java.util.Optional;
 import java.util.function.BooleanSupplier;
-import net.neoforged.bus.api.IEventBus;
+import net.minecraftforge.eventbus.api.IEventBus;
 import org.jetbrains.annotations.ApiStatus.Internal;
 import plus.dragons.createenchantmentindustry.config.CEIConfig;
 

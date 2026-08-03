@@ -19,7 +19,6 @@
 package plus.dragons.createenchantmentindustry.integration.jei.category.printing;
 
 import com.mojang.serialization.MapCodec;
-import com.simibubi.create.AllDataComponents;
 import com.simibubi.create.content.logistics.box.PackageItem;
 import com.simibubi.create.content.logistics.box.PackageStyles;
 import java.util.List;
@@ -48,7 +47,7 @@ public enum AddressPrintingRecipeJEI implements PrintingRecipeJEI {
     public void setTemplate(IRecipeSlotBuilder slot) {
         for (PackageItem item : PackageStyles.ALL_BOXES) {
             var stack = new ItemStack(item);
-            stack.set(AllDataComponents.PACKAGE_ADDRESS, "New Address");
+            PackageItem.addAddress(stack, "New Address");
             slot.addItemStack(stack);
         }
     }

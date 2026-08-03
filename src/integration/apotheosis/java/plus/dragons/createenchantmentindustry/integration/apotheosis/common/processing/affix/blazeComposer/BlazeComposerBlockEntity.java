@@ -29,8 +29,9 @@ import com.simibubi.create.foundation.item.ItemHelper;
 import com.simibubi.create.foundation.utility.CreateLang;
 import dev.engine_room.flywheel.lib.model.baked.PartialModel;
 import dev.engine_room.flywheel.lib.transform.TransformStack;
-import dev.shadowsoffire.apotheosis.affix.AffixHelper;
-import dev.shadowsoffire.apotheosis.loot.LootCategory;
+import dev.shadowsoffire.apotheosis.Apotheosis;
+import dev.shadowsoffire.apotheosis.adventure.affix.AffixHelper;
+import dev.shadowsoffire.apotheosis.adventure.loot.LootCategory;
 import java.util.List;
 import java.util.function.Consumer;
 import net.createmod.catnip.lang.LangBuilder;
@@ -39,8 +40,8 @@ import net.createmod.catnip.math.VecHelper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.HolderLookup.Provider;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
@@ -51,13 +52,17 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
-import net.neoforged.neoforge.fluids.FluidActionResult;
-import net.neoforged.neoforge.fluids.FluidStack;
-import net.neoforged.neoforge.fluids.FluidUtil;
-import net.neoforged.neoforge.fluids.capability.IFluidHandler;
-import net.neoforged.neoforge.fluids.capability.IFluidHandler.FluidAction;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
+import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.fluids.FluidActionResult;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidUtil;
+import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
+import net.minecraftforge.items.IItemHandler;
 import org.jetbrains.annotations.Nullable;
 import plus.dragons.createdragonsplus.common.advancements.AdvancementBehaviour;
 import plus.dragons.createdragonsplus.common.fluids.tank.ConfigurableFluidTank;
@@ -91,10 +96,14 @@ public class BlazeComposerBlockEntity extends BlazeBlockEntity implements Cleara
     protected FluidTankBehaviour tanks;
     protected IFluidHandler fuelHandler;
     protected AdvancementBehaviour advancement;
+    protected @Nullable ActiveComposing activeComposing;
+    private LazyOptional<IItemHandler> itemCapability = LazyOptional.empty();
+    private LazyOptional<IFluidHandler> fluidCapability = LazyOptional.empty();
 
     public BlazeComposerBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
         this.inventory = new BlazeComposerInventory(this);
+        this.itemCapability = LazyOptional.of(() -> inventory);
     }
 
     public @Nullable IFluidHandler getFluidHandler(@Nullable Direction side) {
@@ -108,6 +117,7 @@ public class BlazeComposerBlockEntity extends BlazeBlockEntity implements Cleara
         modeSelector = new BlazeComposerModeBehaviour(this, new ModeTransform());
         tanks = new FluidTankBehaviour(this, List.of(this::createNormalTank, this::createSuperTank), false);
         fuelHandler = new SuperFuelFluidHandler(this::getNormalTank, this::getSuperTank, this::canFillSuperTank);
+        fluidCapability = LazyOptional.of(() -> fuelHandler);
         advancement = new AdvancementBehaviour(this);
         behaviours.add(modeSelector);
         behaviours.add(tanks);
@@ -116,12 +126,12 @@ public class BlazeComposerBlockEntity extends BlazeBlockEntity implements Cleara
 
     protected ConfigurableFluidTank createNormalTank(Consumer<FluidStack> fluidUpdateCallback) {
         return new ConfigurableFluidTank(CEIAXConfig.server().affixes().blazeComposerFluidCapacity.get(), fluidUpdateCallback)
-                .allowInsertion(fluidStack -> fluidStack.is(CEIAXFluids.APOTHEOTIC_ESSENCE));
+                .allowInsertion(fluidStack -> fluidStack.getFluid() == CEIAXFluids.APOTHEOTIC_ESSENCE.get());
     }
 
     protected ConfigurableFluidTank createSuperTank(Consumer<FluidStack> fluidUpdateCallback) {
         return new ConfigurableFluidTank(CEIAXConfig.server().affixes().blazeComposerSuperFluidCapacity.get(), fluidUpdateCallback)
-                .allowInsertion(fluidStack -> fluidStack.is(CEIAXFluids.APOTHEOTIC_ESSENCE));
+                .allowInsertion(fluidStack -> fluidStack.getFluid() == CEIAXFluids.APOTHEOTIC_ESSENCE.get());
     }
 
     @Override
@@ -150,25 +160,34 @@ public class BlazeComposerBlockEntity extends BlazeBlockEntity implements Cleara
     }
 
     @Override
-    public void write(CompoundTag compound, Provider registries, boolean clientPacket) {
-        super.write(compound, registries, clientPacket);
+    public void write(CompoundTag compound, boolean clientPacket) {
+        super.write(compound, clientPacket);
         compound.putInt("ProcessingTime", processingTime);
         compound.putInt("Mode", mode.ordinal());
         compound.putBoolean("SuperUnlocked", superUnlocked);
         compound.putBoolean("PendingBlockedSuperOperation", pendingBlockedSuperOperation);
         compound.putFloat("PendingBlockedSuperPenalty", pendingBlockedSuperPenalty);
-        compound.put("Inventory", inventory.serializeNBT(registries));
+        compound.put("Inventory", inventory.serializeNBT());
+        if (activeComposing != null)
+            compound.put("ActiveComposing", activeComposing.save());
     }
 
     @Override
-    protected void read(CompoundTag compound, Provider registries, boolean clientPacket) {
-        super.read(compound, registries, clientPacket);
-        processingTime = compound.contains("ProcessingTime") ? compound.getInt("ProcessingTime") : -1;
+    protected void read(CompoundTag compound, boolean clientPacket) {
+        super.read(compound, clientPacket);
         mode = BlazeComposerMode.BY_ID.apply(compound.getInt("Mode"));
         superUnlocked = compound.getBoolean("SuperUnlocked");
+        inventory.deserializeNBT(compound.getCompound("Inventory"));
+        processingTime = compound.contains("ProcessingTime") ? compound.getInt("ProcessingTime") : -1;
         pendingBlockedSuperOperation = compound.getBoolean("PendingBlockedSuperOperation");
         pendingBlockedSuperPenalty = compound.getFloat("PendingBlockedSuperPenalty");
-        inventory.deserializeNBT(registries, compound.getCompound("Inventory"));
+        activeComposing = compound.contains("ActiveComposing", Tag.TAG_COMPOUND)
+                ? ActiveComposing.load(compound.getCompound("ActiveComposing"))
+                : null;
+        if (processingTime >= 0 && activeComposing == null) {
+            processingTime = -1;
+            clearPendingSuperOperation();
+        }
     }
 
     @Override
@@ -183,13 +202,15 @@ public class BlazeComposerBlockEntity extends BlazeBlockEntity implements Cleara
         super.tick();
         if (level == null)
             return;
+        if (!Apotheosis.enableAdventure) {
+            cancelProcessing();
+            return;
+        }
         if (level.isClientSide() && !isVirtual())
             return;
         boolean superMode = isSuper();
         if (this.superMode != superMode) {
             this.superMode = superMode;
-            clearPendingSuperOperation();
-            processingTime = -1;
             inventory.updateResult();
             notifyUpdate();
         }
@@ -199,38 +220,77 @@ public class BlazeComposerBlockEntity extends BlazeBlockEntity implements Cleara
             inventory.updateResult();
             notifyUpdate();
         }
-        int cost = inventory.getEssenceCost();
-        if (cost > 0 && consumeEssence(cost, superMode, true)) {
-            if (processingTime < 0) {
-                beginProcessing(superMode);
-                processingTime = processingTime();
-                notifyUpdate();
-                return;
-            }
-            if (processingTime > 0) {
-                processingTime--;
-                notifyUpdate();
-                return;
-            }
-            if (superMode && !pendingBlockedSuperOperation && level instanceof ServerLevel serverLevel && BlazeLightningHelper.strikeLightning(serverLevel, worldPosition)) {
-                advancement.trigger(CEIAdvancements.OSHA_VIOLATION.builtinTrigger());
-                serverLevel.destroyBlock(worldPosition, false);
-                serverLevel.setBlockAndUpdate(worldPosition, AllBlocks.LIT_BLAZE_BURNER.getDefaultState());
-                this.setRemoved();
-                return;
-            }
-            consumeEssence(cost, superMode, false);
-            processingTime = -1;
-            inventory.applyResult();
-            clearPendingSuperOperation();
-            advancement.awardStat(CEIAXStats.COMPOSE_AFFIX.get(), 1);
+        if (activeComposing == null) {
+            startProcessing(superMode);
+            return;
+        }
+        ActiveComposing active = activeComposing;
+        if (!active.matches(inventory.getStackInSlot(0), inventory.getStackInSlot(1))) {
+            cancelProcessing();
+            inventory.updateResult();
+            return;
+        }
+        if (!consumeEssence(active.cost(), active.superMode(), true))
+            return;
+        if (processingTime > 0) {
+            processingTime--;
             notifyUpdate();
-            level.playSound(null, worldPosition, SoundEvents.EVOKER_CAST_SPELL, SoundSource.BLOCKS, 0.8F, 0.9F + 0.2F * level.random.nextFloat());
-            level.playSound(null, worldPosition, SoundEvents.SMITHING_TABLE_USE, SoundSource.BLOCKS, 0.5F, 0.7F + 0.2F * level.random.nextFloat());
-        } else if (processingTime != -1) {
-            processingTime = -1;
+            return;
+        }
+        if (active.strikeLightning()
+                && level instanceof ServerLevel serverLevel
+                && BlazeLightningHelper.strikeLightning(serverLevel, worldPosition)) {
+            advancement.trigger(CEIAdvancements.OSHA_VIOLATION.builtinTrigger());
+            serverLevel.destroyBlock(worldPosition, false);
+            serverLevel.setBlockAndUpdate(worldPosition, AllBlocks.LIT_BLAZE_BURNER.getDefaultState());
+            this.setRemoved();
+            return;
+        }
+        if (!consumeEssence(active.cost(), active.superMode(), false))
+            return;
+        inventory.applyResult(active.primaryOutput(), active.secondaryOutput());
+        finishProcessing();
+        advancement.awardStat(CEIAXStats.COMPOSE_AFFIX.get(), 1);
+        notifyUpdate();
+        level.playSound(null, worldPosition, SoundEvents.EVOKER_CAST_SPELL, SoundSource.BLOCKS, 0.8F, 0.9F + 0.2F * level.random.nextFloat());
+        level.playSound(null, worldPosition, SoundEvents.SMITHING_TABLE_USE, SoundSource.BLOCKS, 0.5F, 0.7F + 0.2F * level.random.nextFloat());
+    }
+
+    private boolean startProcessing(boolean superMode) {
+        AffixTemplateOps.Result preview = inventory.getLastResult();
+        if (!preview.valid()
+                || inventory.hasRemainingOutput()
+                || !consumeEssence(preview.cost(), superMode, true))
+            return false;
+        beginProcessing(superMode);
+        AffixTemplateOps.Result result = inventory.getProcessingResult();
+        if (!result.valid()) {
             clearPendingSuperOperation();
             inventory.updateResult();
+            return false;
+        }
+        activeComposing = new ActiveComposing(
+                inventory.getStackInSlot(0).copy(),
+                inventory.getStackInSlot(1).copy(),
+                result.primaryOutput().copy(),
+                result.secondaryOutput().copy(),
+                result.cost(),
+                superMode,
+                superMode && !pendingBlockedSuperOperation);
+        processingTime = processingTime();
+        notifyUpdate();
+        return true;
+    }
+
+    private void finishProcessing() {
+        processingTime = -1;
+        activeComposing = null;
+        clearPendingSuperOperation();
+    }
+
+    private void cancelProcessing() {
+        if (processingTime != -1 || activeComposing != null || pendingBlockedSuperOperation) {
+            finishProcessing();
             notifyUpdate();
         }
     }
@@ -250,8 +310,7 @@ public class BlazeComposerBlockEntity extends BlazeBlockEntity implements Cleara
     }
 
     public void onInputChanged() {
-        clearPendingSuperOperation();
-        processingTime = -1;
+        cancelProcessing();
     }
 
     public float getBlockedSuperPenalty() {
@@ -301,7 +360,7 @@ public class BlazeComposerBlockEntity extends BlazeBlockEntity implements Cleara
     }
 
     public boolean consumeEssence(int amount, boolean superMode, boolean simulate) {
-        var fluid = new FluidStack(CEIAXFluids.APOTHEOTIC_ESSENCE, amount);
+        var fluid = new FluidStack(CEIAXFluids.APOTHEOTIC_ESSENCE.get(), amount);
         var tank = superMode ? getSuperTank() : getNormalTank();
         var drained = tank.drain(fluid, FluidAction.SIMULATE);
         if (drained.getAmount() != amount)
@@ -347,18 +406,19 @@ public class BlazeComposerBlockEntity extends BlazeBlockEntity implements Cleara
         if (this.mode == mode)
             return;
         this.mode = mode;
-        clearPendingSuperOperation();
-        processingTime = -1;
+        finishProcessing();
         inventory.updateResult();
         notifyUpdate();
     }
 
     public ItemStack insertItem(ItemStack stack, boolean simulate) {
+        if (!Apotheosis.enableAdventure)
+            return stack;
         var original = stack;
         if (inventory.hasRemainingOutput())
             return stack;
         stack = unlockSuper(stack, simulate);
-        if (!ItemStack.isSameItemSameComponents(original, stack) || original.getCount() != stack.getCount())
+        if (!ItemStack.isSameItemSameTags(original, stack) || original.getCount() != stack.getCount())
             return stack;
         if (isSuperActivator(stack))
             return stack;
@@ -366,7 +426,7 @@ public class BlazeComposerBlockEntity extends BlazeBlockEntity implements Cleara
             stack = inventory.insertItem(0, stack, simulate);
         if (!stack.isEmpty())
             stack = inventory.insertItem(1, stack, simulate);
-        if (!simulate && (original.getCount() != stack.getCount() || !ItemStack.isSameItemSameComponents(original, stack))) {
+        if (!simulate && (original.getCount() != stack.getCount() || !ItemStack.isSameItemSameTags(original, stack))) {
             inventory.updateResult();
             notifyUpdate();
         }
@@ -388,6 +448,8 @@ public class BlazeComposerBlockEntity extends BlazeBlockEntity implements Cleara
     }
 
     public ItemStack insertAutomationItem(ItemStack stack, boolean simulate) {
+        if (!Apotheosis.enableAdventure)
+            return stack;
         if (stack.isEmpty())
             return stack;
         if (FluidUtil.getFluidHandler(stack).isPresent())
@@ -517,7 +579,7 @@ public class BlazeComposerBlockEntity extends BlazeBlockEntity implements Cleara
 
     private static boolean insertedAny(ItemStack original, ItemStack remainder) {
         return original.getCount() != remainder.getCount()
-                || !ItemStack.isSameItemSameComponents(original, remainder);
+                || !ItemStack.isSameItemSameTags(original, remainder);
     }
 
     public boolean isSuperActivator(ItemStack stack) {
@@ -539,8 +601,7 @@ public class BlazeComposerBlockEntity extends BlazeBlockEntity implements Cleara
         remainder.shrink(1);
         if (!simulate) {
             superUnlocked = true;
-            clearPendingSuperOperation();
-            processingTime = -1;
+            finishProcessing();
             inventory.updateResult();
             notifyUpdate();
             if (level != null && !level.isClientSide()) {
@@ -557,6 +618,8 @@ public class BlazeComposerBlockEntity extends BlazeBlockEntity implements Cleara
 
     @Override
     public boolean addToGoggleTooltip(List<Component> tooltip, boolean isPlayerSneaking) {
+        if (!Apotheosis.enableAdventure)
+            return false;
         LangBuilder mb = CreateLang.translate("generic.unit.millibuckets");
         CreateLang.translate("gui.goggles.fluid_container")
                 .forGoggles(tooltip);
@@ -651,15 +714,84 @@ public class BlazeComposerBlockEntity extends BlazeBlockEntity implements Cleara
     }
 
     @Override
-    public void invalidate() {
-        super.invalidate();
-        invalidateCapabilities();
+    public <T> LazyOptional<T> getCapability(Capability<T> capability, @Nullable Direction side) {
+        if (capability == ForgeCapabilities.ITEM_HANDLER && !isRemoved())
+            return itemCapability.cast();
+        if (capability == ForgeCapabilities.FLUID_HANDLER
+                && !isRemoved()
+                && (side == null || side == Direction.DOWN))
+            return fluidCapability.cast();
+        return super.getCapability(capability, side);
+    }
+
+    @Override
+    public void invalidateCaps() {
+        super.invalidateCaps();
+        itemCapability.invalidate();
+        fluidCapability.invalidate();
+    }
+
+    @Override
+    public void reviveCaps() {
+        super.reviveCaps();
+        itemCapability = LazyOptional.of(() -> inventory);
+        fluidCapability = LazyOptional.of(() -> fuelHandler);
     }
 
     @Override
     public void clearContent() {
-        clearPendingSuperOperation();
+        finishProcessing();
         inventory.clear();
+    }
+
+    protected record ActiveComposing(
+            ItemStack firstInput,
+            ItemStack secondInput,
+            ItemStack primaryOutput,
+            ItemStack secondaryOutput,
+            int cost,
+            boolean superMode,
+            boolean strikeLightning) {
+        CompoundTag save() {
+            CompoundTag tag = new CompoundTag();
+            tag.put("FirstInput", firstInput.save(new CompoundTag()));
+            tag.put("SecondInput", secondInput.save(new CompoundTag()));
+            tag.put("PrimaryOutput", primaryOutput.save(new CompoundTag()));
+            tag.put("SecondaryOutput", secondaryOutput.save(new CompoundTag()));
+            tag.putInt("Cost", cost);
+            tag.putBoolean("SuperMode", superMode);
+            tag.putBoolean("StrikeLightning", strikeLightning);
+            return tag;
+        }
+
+        static @Nullable ActiveComposing load(CompoundTag tag) {
+            ItemStack firstInput = ItemStack.of(tag.getCompound("FirstInput"));
+            ItemStack secondInput = ItemStack.of(tag.getCompound("SecondInput"));
+            ItemStack primaryOutput = ItemStack.of(tag.getCompound("PrimaryOutput"));
+            ItemStack secondaryOutput = ItemStack.of(tag.getCompound("SecondaryOutput"));
+            int cost = tag.getInt("Cost");
+            if (firstInput.isEmpty()
+                    || secondInput.isEmpty()
+                    || primaryOutput.isEmpty() && secondaryOutput.isEmpty()
+                    || cost <= 0)
+                return null;
+            return new ActiveComposing(
+                    firstInput,
+                    secondInput,
+                    primaryOutput,
+                    secondaryOutput,
+                    cost,
+                    tag.getBoolean("SuperMode"),
+                    tag.getBoolean("StrikeLightning"));
+        }
+
+        boolean matches(ItemStack first, ItemStack second) {
+            return same(firstInput, first) && same(secondInput, second);
+        }
+
+        private static boolean same(ItemStack expected, ItemStack actual) {
+            return expected.getCount() == actual.getCount() && ItemStack.isSameItemSameTags(expected, actual);
+        }
     }
 
     private static class ModeTransform extends ValueBoxTransform.Sided {

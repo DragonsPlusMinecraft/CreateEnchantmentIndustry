@@ -1,0 +1,37 @@
+{
+  "parent": "create_enchantment_industry:paradox_fusion",
+  "criteria": {
+    "0": {
+      "conditions": {
+        "type": "minecraft:custom",
+        "bounds": {
+          "min": 100
+        },
+        "value": "create_enchantment_industry:super_enchant"
+      },
+      "trigger": "create_dragons_plus:stat"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "color": "#DBA213",
+      "translate": "advancement.create_enchantment_industry.omni_enchanter.desc"
+    },
+    "frame": "goal",
+    "hidden": false,
+    "icon": {
+      "item": "minecraft:nether_star"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancement.create_enchantment_industry.omni_enchanter"
+    }
+  },
+  "requirements": [
+    [
+      "0"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

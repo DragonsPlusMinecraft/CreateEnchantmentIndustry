@@ -1,0 +1,31 @@
+{
+  "type": "create_enchantment_industry:infusing",
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "apotheosis"
+    },
+    {
+      "type": "create_enchantment_industry:apotheosis_module",
+      "module": "enchantment"
+    }
+  ],
+  "ingredients": [
+    {
+      "amount": 250,
+      "fluid": "create_dragons_plus:dragon_breath",
+      "nbt": {}
+    }
+  ],
+  "results": [
+    {
+      "amount": 750,
+      "fluid": "create_enchantment_industry:infused_dragon_breath"
+    }
+  ],
+  "stats": {
+    "arcana": 60.0,
+    "eterna": 80.0,
+    "quanta": 15.0
+  }
+}

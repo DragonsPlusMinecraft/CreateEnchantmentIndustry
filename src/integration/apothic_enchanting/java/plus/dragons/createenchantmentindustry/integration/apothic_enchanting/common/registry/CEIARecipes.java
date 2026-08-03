@@ -19,19 +19,19 @@
 package plus.dragons.createenchantmentindustry.integration.apothic_enchanting.common.registry;
 
 import java.util.function.Supplier;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
-import net.neoforged.bus.api.IEventBus;
-import net.neoforged.neoforge.registries.DeferredRegister;
+import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.registries.ForgeRegistries;
 import plus.dragons.createdragonsplus.common.recipe.RecipeTypeInfo;
 import plus.dragons.createenchantmentindustry.integration.apothic_enchanting.common.CEIACommon;
 import plus.dragons.createenchantmentindustry.integration.apothic_enchanting.common.processing.infuser.InfusingRecipe;
 
 public class CEIARecipes {
-    private static final DeferredRegister<RecipeType<?>> TYPES = DeferredRegister.create(BuiltInRegistries.RECIPE_TYPE, CEIACommon.ID);
-    private static final DeferredRegister<RecipeSerializer<?>> SERIALIZERS = DeferredRegister.create(BuiltInRegistries.RECIPE_SERIALIZER, CEIACommon.ID);
+    private static final DeferredRegister<RecipeType<?>> TYPES = DeferredRegister.create(ForgeRegistries.RECIPE_TYPES, CEIACommon.ID);
+    private static final DeferredRegister<RecipeSerializer<?>> SERIALIZERS = DeferredRegister.create(ForgeRegistries.RECIPE_SERIALIZERS, CEIACommon.ID);
 
     public static final RecipeTypeInfo<InfusingRecipe> INFUSING = register("infusing", () -> new InfusingRecipe.Serializer<>(InfusingRecipe::new));
 

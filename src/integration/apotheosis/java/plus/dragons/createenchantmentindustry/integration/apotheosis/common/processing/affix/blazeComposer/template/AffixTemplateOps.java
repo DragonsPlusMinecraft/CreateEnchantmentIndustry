@@ -18,13 +18,12 @@
 
 package plus.dragons.createenchantmentindustry.integration.apotheosis.common.processing.affix.blazeComposer.template;
 
-import dev.shadowsoffire.apotheosis.Apoth;
-import dev.shadowsoffire.apotheosis.affix.Affix;
-import dev.shadowsoffire.apotheosis.affix.AffixHelper;
-import dev.shadowsoffire.apotheosis.affix.AffixInstance;
-import dev.shadowsoffire.apotheosis.affix.ItemAffixes;
-import dev.shadowsoffire.apotheosis.loot.LootCategory;
-import dev.shadowsoffire.apotheosis.loot.LootRarity;
+import dev.shadowsoffire.apotheosis.adventure.affix.Affix;
+import dev.shadowsoffire.apotheosis.adventure.affix.AffixHelper;
+import dev.shadowsoffire.apotheosis.adventure.affix.AffixInstance;
+import dev.shadowsoffire.apotheosis.adventure.affix.AffixRegistry;
+import dev.shadowsoffire.apotheosis.adventure.loot.LootCategory;
+import dev.shadowsoffire.apotheosis.adventure.loot.LootRarity;
 import dev.shadowsoffire.placebo.reload.DynamicHolder;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -32,16 +31,18 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
+import plus.dragons.createenchantmentindustry.common.item.CEIItemData;
+import plus.dragons.createenchantmentindustry.integration.apotheosis.common.processing.affix.AffixLevelLimits;
 import plus.dragons.createenchantmentindustry.integration.apotheosis.common.processing.affix.blazeComposer.AffixComposingRules;
 import plus.dragons.createenchantmentindustry.integration.apotheosis.common.processing.affix.blazeComposer.BlazeComposerMode;
 import plus.dragons.createenchantmentindustry.integration.apotheosis.common.processing.affix.blazeComposer.BlazeComposingCost;
 import plus.dragons.createenchantmentindustry.integration.apotheosis.common.processing.affix.blazeComposer.OverlimitAffixHelper;
-import plus.dragons.createenchantmentindustry.integration.apotheosis.common.registry.CEIAXDataComponents;
 import plus.dragons.createenchantmentindustry.integration.apotheosis.config.CEIAXConfig;
 
 public class AffixTemplateOps {
@@ -95,10 +96,10 @@ public class AffixTemplateOps {
             return invalid(FailureReason.EQUIPMENT_HAS_NO_AFFIX);
 
         AffixTemplateEntry entry = new AffixTemplateEntry(
-                instance.affix(),
+                exact(instance.affix()),
                 instance.level(),
-                List.of(category.getKey()),
-                instance.level() > Affix.MAX_LEVEL);
+                List.of(new ResourceLocation("apotheosis", category.getName())),
+                instance.level() > AffixLevelLimits.EXTENDED_MAX_LEVEL);
         AffixTemplateData data = AffixTemplateData.single(rarity, entry);
         Result levelFailure = validateExtractionLevel(templateItem.tier(), superMode, entry);
         if (levelFailure != null)
@@ -162,36 +163,32 @@ public class AffixTemplateOps {
         ItemStack equipment = single(equipmentInput);
         DynamicHolder<LootRarity> existingRarity = AffixHelper.getRarity(equipment);
         if (!existingRarity.isBound()) {
-            equipment.set(Apoth.Components.RARITY, data.rarity());
+            AffixHelper.setRarity(equipment, data.rarity().get());
         } else if (!existingRarity.equals(data.rarity())) {
             if (!CEIAXConfig.server().affixes().allowRarityMismatchApplying.get())
                 return invalid(FailureReason.RARITY_MISMATCH_DISALLOWED, rarityName(existingRarity), AffixTemplateDisplay.rarityName(data));
-            equipment.set(Apoth.Components.RARITY, data.rarity());
+            AffixHelper.setRarity(equipment, data.rarity().get());
         }
 
         LootCategory category = LootCategory.forItem(equipment);
         if (category.isNone())
             return invalid(FailureReason.ITEM_HAS_NO_LOOT_CATEGORY, equipment.getHoverName().copy());
 
-        boolean allowExclusiveBypass = superMode && CEIAXConfig.server().affixes().allowExclusiveSetBypassInSuperApplying.get();
-        ItemAffixes.Builder compatibilityBuilder = equipment.getOrDefault(Apoth.Components.AFFIXES, ItemAffixes.EMPTY).toBuilder();
         Map<DynamicHolder<Affix>, Float> currentLevels = new HashMap<>();
-        AffixHelper.getAffixes(equipment).forEach((affix, instance) -> currentLevels.put(affix, instance.level()));
+        AffixHelper.getAffixes(equipment).forEach(
+                (affix, instance) -> currentLevels.put(exact(affix), instance.level()));
         Map<DynamicHolder<Affix>, Float> changedLevels = new LinkedHashMap<>();
         List<AcceptedEntry> accepted = new ArrayList<>();
         List<RejectedEntry> rejected = new ArrayList<>();
         List<BlazeComposingCost.EntryCost> costs = new ArrayList<>();
-        int bypassedConflicts = 0;
 
         for (AffixTemplateEntry entry : data.entries()) {
-            RejectedEntry rejection = validateApplyingEntry(superMode, equipment, templateItem.tier(), data, entry, category, compatibilityBuilder, currentLevels, allowExclusiveBypass);
+            RejectedEntry rejection = validateApplyingEntry(
+                    superMode, equipment, templateItem.tier(), data, entry, category, currentLevels);
             if (rejection != null) {
                 rejected.add(rejection);
                 continue;
             }
-
-            ItemAffixes compatibilityAffixes = compatibilityBuilder.build().toBuilder().remove(entry.affix()).build();
-            bypassedConflicts += countExclusiveConflicts(entry, compatibilityAffixes);
 
             float currentLevel = currentLevels.getOrDefault(entry.affix(), 0F);
             float maxLevel = maxLevel(templateItem.tier(), data.rarity(), entry);
@@ -203,7 +200,6 @@ public class AffixTemplateOps {
             resultLevel = applyBlockedSuperPenalty(resultLevel, minimumLevel, blockedSuperPenalty);
             changedLevels.put(entry.affix(), resultLevel);
             currentLevels.put(entry.affix(), resultLevel);
-            compatibilityBuilder.put(entry.affix(), Math.min(resultLevel, Affix.MAX_LEVEL));
             BlazeComposingCost.Operation operation = currentLevel <= 0
                     ? BlazeComposingCost.Operation.APPLY_NEW_TEMPLATE
                     : BlazeComposingCost.Operation.APPLY_UPGRADE_DELTA;
@@ -222,10 +218,8 @@ public class AffixTemplateOps {
 
         OverlimitAffixHelper.setAffixLevels(equipment, changedLevels);
         rebuildAffixName(equipment);
-        float extraCost = BlazeComposingCost.exclusiveSetBypassCost(
-                bypassedConflicts,
-                CEIAXConfig.server().affixes().superExclusiveSetApplyExtraCostMultiplier.getF());
-        int cost = BlazeComposingCost.calculate(BlazeComposerMode.APPLY, templateItem.tier(), data.rarity(), costs, extraCost);
+        int cost = BlazeComposingCost.calculate(
+                BlazeComposerMode.APPLY, templateItem.tier(), data.rarity(), costs, 0);
         List<Component> descriptions = accepted.stream()
                 .map(acceptedEntry -> describeAcceptedApply(equipment, acceptedEntry, penaltyPreview))
                 .toList();
@@ -327,17 +321,6 @@ public class AffixTemplateOps {
                 .sorted(Comparator.comparing(AffixTemplateOps::entryId))
                 .toList();
 
-        List<ExclusiveConflict> conflicts = findExclusiveConflicts(mergedEntries);
-        if (!conflicts.isEmpty()) {
-            ExclusiveConflict conflict = conflicts.getFirst();
-            if (!superMode || !CEIAXConfig.server().affixes().allowExclusiveSetBypassInSuperMerging.get()) {
-                return invalid(
-                        FailureReason.TEMPLATE_AFFIXES_INCOMPATIBLE,
-                        AffixTemplateDisplay.affixName(conflict.first(), firstData.rarity(), result),
-                        AffixTemplateDisplay.affixName(conflict.second(), firstData.rarity(), result));
-            }
-        }
-
         if (!changed) {
             return blockedByLevelIndependent
                     ? invalid(FailureReason.LEVEL_INDEPENDENT_AFFIX)
@@ -347,10 +330,8 @@ public class AffixTemplateOps {
         List<AffixTemplateEntry> resultEntryList = applyBlockedSuperPenalty(mergedEntries, penaltyMinimums, blockedSuperPenalty);
         AffixTemplateData resultData = new AffixTemplateData(firstData.rarity(), resultEntryList);
         setTemplateData(result, resultData);
-        float extraCost = BlazeComposingCost.exclusiveSetBypassCost(
-                conflicts.size(),
-                CEIAXConfig.server().affixes().superExclusiveSetMergeExtraCostMultiplier.getF());
-        int cost = BlazeComposingCost.calculate(BlazeComposerMode.MERGE, tier, firstData.rarity(), costs, extraCost);
+        int cost = BlazeComposingCost.calculate(
+                BlazeComposerMode.MERGE, tier, firstData.rarity(), costs, 0);
         List<Component> resultDescriptions = describeTemplateResult(resultData, result, penaltyPreview, penaltyMinimums);
         return Result.ready(
                 result,
@@ -364,11 +345,12 @@ public class AffixTemplateOps {
     }
 
     public static AffixTemplateData getTemplateData(ItemStack stack) {
-        return stack.get(CEIAXDataComponents.AFFIX_TEMPLATE.get());
+        CompoundTag tag = CEIItemData.getOwnedData(stack, CEIItemData.AFFIX_TEMPLATE_TAG);
+        return tag == null ? null : AffixTemplateData.load(tag);
     }
 
     public static void setTemplateData(ItemStack stack, AffixTemplateData data) {
-        stack.set(CEIAXDataComponents.AFFIX_TEMPLATE.get(), data);
+        CEIItemData.setOwnedData(stack, CEIItemData.AFFIX_TEMPLATE_TAG, data.save());
     }
 
     public static boolean isBlankTemplate(ItemStack stack) {
@@ -393,7 +375,7 @@ public class AffixTemplateOps {
 
     private static Component rarityName(DynamicHolder<LootRarity> rarity) {
         return Component.translatable(rarity.getId().toLanguageKey("rarity"))
-                .withStyle(style -> rarity.isBound() ? style.withColor(rarity.get().color()) : style);
+                .withStyle(style -> rarity.isBound() ? style.withColor(rarity.get().getColor()) : style);
     }
 
     private static Result validateTemplateData(AffixTemplateData data) {
@@ -415,16 +397,16 @@ public class AffixTemplateOps {
     private static Result validateExtractionLevel(AffixTemplateTier tier, boolean superMode, AffixTemplateEntry entry) {
         if (superMode)
             return null;
-        if (entry.level() > Affix.MAX_LEVEL + EPSILON)
+        if (entry.level() > AffixLevelLimits.EXTENDED_MAX_LEVEL + EPSILON)
             return invalid(
                     FailureReason.OVERLIMIT_AFFIX_REQUIRES_SUPER_TEMPLATE,
                     AffixTemplateDisplay.formatLevel(entry.level()),
-                    AffixTemplateDisplay.formatLevel(Affix.MAX_LEVEL));
-        if (tier == AffixTemplateTier.BRASS && entry.level() > Affix.STANDARD_MAX_LEVEL + EPSILON)
+                    AffixTemplateDisplay.formatLevel(AffixLevelLimits.EXTENDED_MAX_LEVEL));
+        if (tier == AffixTemplateTier.BRASS && entry.level() > AffixLevelLimits.STANDARD_MAX_LEVEL + EPSILON)
             return invalid(
                     FailureReason.ADVANCED_AFFIX_REQUIRES_CRYSTAL_TEMPLATE,
                     AffixTemplateDisplay.formatLevel(entry.level()),
-                    AffixTemplateDisplay.formatLevel(Affix.STANDARD_MAX_LEVEL));
+                    AffixTemplateDisplay.formatLevel(AffixLevelLimits.STANDARD_MAX_LEVEL));
         return null;
     }
 
@@ -468,9 +450,7 @@ public class AffixTemplateOps {
             AffixTemplateData data,
             AffixTemplateEntry entry,
             LootCategory category,
-            ItemAffixes.Builder compatibilityBuilder,
-            Map<DynamicHolder<Affix>, Float> currentLevels,
-            boolean allowExclusiveBypass) {
+            Map<DynamicHolder<Affix>, Float> currentLevels) {
         if (AffixComposingRules.INSTANCE.denies(BlazeComposerMode.APPLY, superMode, entry, data.rarity()))
             return reject(entry, RejectionReason.DENIED_BY_RULE, modeName(BlazeComposerMode.APPLY));
 
@@ -484,10 +464,6 @@ public class AffixTemplateOps {
 
         if (!entry.affix().get().canApplyTo(equipment, category, data.rarity().get()))
             return reject(entry, RejectionReason.CANNOT_APPLY_TO_ITEM, equipment.getHoverName().copy());
-
-        ItemAffixes compatibilityAffixes = compatibilityBuilder.build().toBuilder().remove(entry.affix()).build();
-        if (!entry.affix().get().isCompatibleWith(compatibilityAffixes) && !allowExclusiveBypass)
-            return reject(entry, RejectionReason.INCOMPATIBLE_WITH_EQUIPMENT, equipment.getHoverName().copy());
 
         float currentLevel = currentLevels.getOrDefault(entry.affix(), 0F);
         if (currentLevel > 0 && nearlyEqual(currentLevel, entry.level()) && !canUpgrade(entry, data.rarity(), equipment))
@@ -525,8 +501,7 @@ public class AffixTemplateOps {
     }
 
     private static boolean canUpgrade(AffixTemplateEntry entry, DynamicHolder<LootRarity> rarity, ItemStack stack) {
-        return CEIAXConfig.server().affixes().allowLevelIndependentAffixUpgrade.get()
-                || !entry.toInstance(rarity, stack).isLevelIndependent();
+        return true;
     }
 
     private static Component describeAcceptedApply(ItemStack equipment, AcceptedEntry accepted, PenaltyPreview penaltyPreview) {
@@ -602,28 +577,6 @@ public class AffixTemplateOps {
         return result;
     }
 
-    private static List<ExclusiveConflict> findExclusiveConflicts(List<AffixTemplateEntry> entries) {
-        List<ExclusiveConflict> conflicts = new ArrayList<>();
-        for (int i = 0; i < entries.size(); i++) {
-            AffixTemplateEntry first = entries.get(i);
-            for (int j = i + 1; j < entries.size(); j++) {
-                AffixTemplateEntry second = entries.get(j);
-                if (!first.affix().get().isCompatibleWith(second.affix().get())) {
-                    conflicts.add(new ExclusiveConflict(first, second));
-                }
-            }
-        }
-        return conflicts;
-    }
-
-    private static int countExclusiveConflicts(AffixTemplateEntry entry, ItemAffixes affixes) {
-        if (affixes.isEmpty())
-            return 0;
-        return (int) affixes.liveAffixes()
-                .filter(affix -> !entry.affix().get().isCompatibleWith(affix))
-                .count();
-    }
-
     private static ResourceLocation entryId(AffixTemplateEntry entry) {
         return entry.affix().getId();
     }
@@ -631,30 +584,43 @@ public class AffixTemplateOps {
     private static void rebuildAffixName(ItemStack stack) {
         var affixes = AffixHelper.getAffixes(stack);
         if (affixes.isEmpty()) {
-            stack.remove(Apoth.Components.AFFIX_NAME);
-            stack.remove(Apoth.Components.RARITY);
-            stack.remove(CEIAXDataComponents.OVERLIMIT_AFFIXES.get());
+            clearAffixMetadata(stack, true);
+            OverlimitAffixHelper.clear(stack);
             return;
         }
         DynamicHolder<LootRarity> rarity = AffixHelper.getRarity(stack);
         if (!rarity.isBound()) {
-            stack.remove(Apoth.Components.AFFIX_NAME);
+            clearAffixMetadata(stack, false);
             return;
         }
         List<Affix> nameList = new ArrayList<>(affixes.values().stream()
                 .filter(AffixInstance::isValid)
                 .sorted(Comparator.comparing(instance -> instance.affix().getId()))
-                .map(AffixInstance::getAffix)
+                .map(instance -> instance.affix().get())
                 .toList());
         if (nameList.isEmpty()) {
-            stack.remove(Apoth.Components.AFFIX_NAME);
+            clearAffixMetadata(stack, false);
             return;
         }
         String key = nameList.size() > 1 ? "misc.apotheosis.affix_name.three" : "misc.apotheosis.affix_name.two";
         MutableComponent name = Component.translatable(key, nameList.get(0).getName(true), "", nameList.size() > 1 ? nameList.get(1).getName(false) : "")
-                .withStyle(Style.EMPTY.withColor(rarity.get().color()).withItalic(false));
+                .withStyle(Style.EMPTY.withColor(rarity.get().getColor()).withItalic(false));
         AffixHelper.setName(stack, name);
-        stack.remove(Apoth.Components.TOUCHED_BY_MALICE);
+    }
+
+    private static void clearAffixMetadata(ItemStack stack, boolean clearRarity) {
+        CompoundTag affixData = stack.getTagElement(AffixHelper.AFFIX_DATA);
+        if (affixData == null)
+            return;
+        affixData.remove(AffixHelper.NAME);
+        if (clearRarity)
+            affixData.remove(AffixHelper.RARITY);
+        if (affixData.isEmpty())
+            stack.removeTagKey(AffixHelper.AFFIX_DATA);
+    }
+
+    private static DynamicHolder<Affix> exact(DynamicHolder<? extends Affix> affix) {
+        return AffixRegistry.INSTANCE.holder(affix.getId());
     }
 
     private static ItemStack single(ItemStack stack) {
@@ -670,8 +636,6 @@ public class AffixTemplateOps {
     private record AcceptedEntry(AffixTemplateEntry entry, float beforeLevel, float resultLevel, float costLevel, float minimumLevel) {}
 
     private record RejectedEntry(AffixTemplateEntry entry, Component reason) {}
-
-    private record ExclusiveConflict(AffixTemplateEntry first, AffixTemplateEntry second) {}
 
     private record PenaltyPreview(float minPenalty, float maxPenalty) {
         public static PenaltyPreview none() {

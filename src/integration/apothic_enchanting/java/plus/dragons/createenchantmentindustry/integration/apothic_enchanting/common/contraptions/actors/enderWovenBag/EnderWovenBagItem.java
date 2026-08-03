@@ -23,15 +23,17 @@ import javax.annotation.Nullable;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.BlockItem;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
-import plus.dragons.createenchantmentindustry.integration.apothic_enchanting.common.registry.CEIADataComponents;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import plus.dragons.createenchantmentindustry.common.item.CEIItemData;
 import plus.dragons.createenchantmentindustry.integration.apothic_enchanting.util.CEIALang;
 
 public class EnderWovenBagItem extends BlockItem {
@@ -39,12 +41,14 @@ public class EnderWovenBagItem extends BlockItem {
         super(block, properties);
     }
 
-    public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
-        StoredEntities entities = stack.get(CEIADataComponents.STORED_ENTITIES);
-        if (entities == null || entities.count() == 0) {
+    @Override
+    public void appendHoverText(
+            ItemStack stack, @Nullable Level level, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
+        StoredEntities entities = readEntities(stack);
+        if (level == null || entities.count() == 0) {
             return;
         }
-        entities.getEntityNames(context.level()).forEach((key, value) -> {
+        entities.getEntityNames(level).forEach((key, value) -> {
             var builder = CEIALang.builder().add(key.copy());
             if (value > 1)
                 builder.add(CEIALang.text(" x" + value).style(ChatFormatting.GRAY).component());
@@ -52,11 +56,32 @@ public class EnderWovenBagItem extends BlockItem {
         });
     }
 
+    @Override
+    public InteractionResult place(BlockPlaceContext context) {
+        StoredEntities stored = readEntities(context.getItemInHand());
+        InteractionResult result = super.place(context);
+        if (result.consumesAction()
+                && !context.getLevel().isClientSide
+                && context.getLevel().getBlockEntity(context.getClickedPos()) instanceof EnderWovenBagBlockEntity bag) {
+            bag.setStoredEntities(stored);
+        }
+        return result;
+    }
+
     @OnlyIn(Dist.CLIENT)
     public static float override(ItemStack stack, @Nullable ClientLevel level, @Nullable LivingEntity livingEntity, int seed) {
-        StoredEntities entities = stack.get(CEIADataComponents.STORED_ENTITIES);
-        if (entities == null) return 0;
+        StoredEntities entities = readEntities(stack);
         if (entities.full()) return 1;
         else return 0;
+    }
+
+    private static StoredEntities readEntities(ItemStack stack) {
+        var owned = CEIItemData.getOwnedData(stack, CEIItemData.STORED_ENTITIES_TAG);
+        if (owned != null) {
+            return StoredEntities.parse(owned);
+        }
+        // Pre-schema 1.20 and vanilla BlockEntityTag compatibility.
+        var blockEntityTag = BlockItem.getBlockEntityData(stack);
+        return blockEntityTag == null ? new StoredEntities() : StoredEntities.parse(blockEntityTag.get("Entities"));
     }
 }

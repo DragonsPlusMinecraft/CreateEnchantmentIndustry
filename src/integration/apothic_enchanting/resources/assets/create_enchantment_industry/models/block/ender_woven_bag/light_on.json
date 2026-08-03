@@ -16,7 +16,7 @@
         "up": {"uv": [0, 0, 6, 6], "rotation": 270, "texture": "#1"},
         "down": {"uv": [0, 0, 6, 6], "rotation": 90, "texture": "#1"}
       },
-      "neoforge_data": {
+      "forge_data": {
         "block_light": 15,
         "sky_light": 15
       }

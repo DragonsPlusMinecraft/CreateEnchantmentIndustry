@@ -25,7 +25,7 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.material.Fluid;
-import net.neoforged.neoforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidStack;
 import plus.dragons.createdragonsplus.common.fluids.dye.DyeFluidType;
 import plus.dragons.createdragonsplus.common.registry.CDPFluids;
 
@@ -61,7 +61,7 @@ public class CEIDyeFluids {
     }
 
     public static Optional<Style> style(FluidStack stack) {
-        if (stack.getFluidType() instanceof DyeFluidType type)
+        if (stack.getFluid().getFluidType() instanceof DyeFluidType type)
             return Optional.of(Style.EMPTY.withColor(type.getVariant().color()));
         return Optional.empty();
     }

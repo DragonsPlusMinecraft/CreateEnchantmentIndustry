@@ -41,7 +41,7 @@ import plus.dragons.createenchantmentindustry.integration.apotheosis.common.kine
 @Restriction(require = @Condition(ModIntegration.Constants.APOTHEOSIS))
 @Mixin(BeltInventory.class)
 public abstract class BeltInventoryMixin {
-    @Shadow
+    @Shadow(remap = false)
     @Final
     BeltBlockEntity belt;
 

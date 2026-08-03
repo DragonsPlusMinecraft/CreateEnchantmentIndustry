@@ -1,0 +1,47 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "apotheosis"
+        },
+        {
+          "type": "create_enchantment_industry:apotheosis_module",
+          "module": "adventure"
+        }
+      ],
+      "recipe": {
+        "type": "minecraft:crafting_shaped",
+        "category": "misc",
+        "key": {
+          "-": {
+            "item": "minecraft:nether_star"
+          },
+          "=": {
+            "item": "create:nixie_tube"
+          },
+          "S": {
+            "item": "apotheosis:mythic_material"
+          },
+          "o": {
+            "item": "create:brass_sheet"
+          },
+          "x": {
+            "item": "minecraft:amethyst_shard"
+          }
+        },
+        "pattern": [
+          "oxo",
+          " - ",
+          "S=S"
+        ],
+        "result": {
+          "item": "create_enchantment_industry:affix_augmentor"
+        },
+        "show_notification": true
+      }
+    }
+  ]
+}

@@ -1,34 +1,34 @@
 {
-    "variants": {
-        "facing=east,powered=false": {
-            "model": "create_enchantment_industry:block/ender_woven_bag/block",
-            "y": 90
-        },
-        "facing=east,powered=true": {
-            "model": "create_enchantment_industry:block/ender_woven_bag/block",
-            "y": 90
-        },
-        "facing=north,powered=false": {
-            "model": "create_enchantment_industry:block/ender_woven_bag/block"
-        },
-        "facing=north,powered=true": {
-            "model": "create_enchantment_industry:block/ender_woven_bag/block"
-        },
-        "facing=south,powered=false": {
-            "model": "create_enchantment_industry:block/ender_woven_bag/block",
-            "y": 180
-        },
-        "facing=south,powered=true": {
-            "model": "create_enchantment_industry:block/ender_woven_bag/block",
-            "y": 180
-        },
-        "facing=west,powered=false": {
-            "model": "create_enchantment_industry:block/ender_woven_bag/block",
-            "y": 270
-        },
-        "facing=west,powered=true": {
-            "model": "create_enchantment_industry:block/ender_woven_bag/block",
-            "y": 270
-        }
+  "variants": {
+    "facing=east,powered=false": {
+      "model": "create_enchantment_industry:block/ender_woven_bag/block",
+      "y": 90
+    },
+    "facing=east,powered=true": {
+      "model": "create_enchantment_industry:block/ender_woven_bag/block",
+      "y": 90
+    },
+    "facing=north,powered=false": {
+      "model": "create_enchantment_industry:block/ender_woven_bag/block"
+    },
+    "facing=north,powered=true": {
+      "model": "create_enchantment_industry:block/ender_woven_bag/block"
+    },
+    "facing=south,powered=false": {
+      "model": "create_enchantment_industry:block/ender_woven_bag/block",
+      "y": 180
+    },
+    "facing=south,powered=true": {
+      "model": "create_enchantment_industry:block/ender_woven_bag/block",
+      "y": 180
+    },
+    "facing=west,powered=false": {
+      "model": "create_enchantment_industry:block/ender_woven_bag/block",
+      "y": 270
+    },
+    "facing=west,powered=true": {
+      "model": "create_enchantment_industry:block/ender_woven_bag/block",
+      "y": 270
     }
+  }
 }

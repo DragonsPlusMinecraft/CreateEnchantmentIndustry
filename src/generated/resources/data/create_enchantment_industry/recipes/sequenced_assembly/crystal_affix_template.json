@@ -1,0 +1,97 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "apotheosis"
+        },
+        {
+          "type": "create_enchantment_industry:apotheosis_module",
+          "module": "adventure"
+        }
+      ],
+      "recipe": {
+        "type": "create:sequenced_assembly",
+        "ingredient": {
+          "item": "minecraft:paper"
+        },
+        "loops": 1,
+        "results": [
+          {
+            "item": "create_enchantment_industry:crystal_affix_template"
+          }
+        ],
+        "sequence": [
+          {
+            "type": "create:deploying",
+            "ingredients": [
+              {
+                "item": "create_enchantment_industry:incomplete_crystal_affix_template"
+              },
+              {
+                "item": "create:brass_sheet"
+              }
+            ],
+            "results": [
+              {
+                "item": "create_enchantment_industry:incomplete_crystal_affix_template"
+              }
+            ]
+          },
+          {
+            "type": "create:filling",
+            "ingredients": [
+              {
+                "item": "create_enchantment_industry:incomplete_crystal_affix_template"
+              },
+              {
+                "amount": 50,
+                "fluid": "create_enchantment_industry:crystal_essence",
+                "nbt": {}
+              }
+            ],
+            "results": [
+              {
+                "item": "create_enchantment_industry:incomplete_crystal_affix_template"
+              }
+            ]
+          },
+          {
+            "type": "create:deploying",
+            "ingredients": [
+              {
+                "item": "create_enchantment_industry:incomplete_crystal_affix_template"
+              },
+              {
+                "item": "minecraft:amethyst_shard"
+              }
+            ],
+            "results": [
+              {
+                "item": "create_enchantment_industry:incomplete_crystal_affix_template"
+              }
+            ]
+          },
+          {
+            "type": "create:pressing",
+            "ingredients": [
+              {
+                "item": "create_enchantment_industry:incomplete_crystal_affix_template"
+              }
+            ],
+            "results": [
+              {
+                "item": "create_enchantment_industry:incomplete_crystal_affix_template"
+              }
+            ]
+          }
+        ],
+        "transitionalItem": {
+          "item": "create_enchantment_industry:incomplete_crystal_affix_template"
+        }
+      }
+    }
+  ]
+}

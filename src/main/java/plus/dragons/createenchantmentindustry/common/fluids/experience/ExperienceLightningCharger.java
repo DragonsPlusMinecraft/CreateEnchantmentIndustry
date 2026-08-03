@@ -59,7 +59,7 @@ public class ExperienceLightningCharger {
     }
 
     public static Optional<BlockPos> findChargeableBlock(Level level, BlockPos pos) {
-        if (level.getBlockState(pos).is(AllBlocks.EXPERIENCE_BLOCK))
+        if (level.getBlockState(pos).is(AllBlocks.EXPERIENCE_BLOCK.get()))
             return Optional.of(pos);
         return Optional.empty();
     }

@@ -19,7 +19,7 @@
 package plus.dragons.createenchantmentindustry.integration.apotheosis.config;
 
 import net.createmod.catnip.config.ConfigBase;
-import net.neoforged.neoforge.common.ModConfigSpec;
+import net.minecraftforge.common.ForgeConfigSpec;
 
 public class CEIAXServerConfig extends ConfigBase {
     private final CEIAXFluidConfig fluids = nested(0, CEIAXFluidConfig::new, Comments.fluids);
@@ -27,7 +27,7 @@ public class CEIAXServerConfig extends ConfigBase {
     private final CEIAXAffixConfig affixes = nested(0, CEIAXAffixConfig::new, Comments.affixes);
 
     @Override
-    public void registerAll(ModConfigSpec.Builder builder) {
+    public void registerAll(ForgeConfigSpec.Builder builder) {
         super.registerAll(builder);
     }
 

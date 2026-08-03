@@ -18,20 +18,21 @@
 
 package plus.dragons.createenchantmentindustry.integration.apothic_enchanting.common;
 
+import dev.shadowsoffire.apotheosis.Apotheosis;
 import net.createmod.ponder.foundation.PonderIndex;
 import net.minecraft.client.renderer.item.ItemProperties;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.bus.api.IEventBus;
-import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.ModContainer;
-import net.neoforged.fml.common.Mod;
-import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
-import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.neoforged.fml.event.lifecycle.FMLConstructModEvent;
-import net.neoforged.fml.event.lifecycle.FMLLoadCompleteEvent;
-import net.neoforged.fml.loading.FMLLoader;
-import net.neoforged.neoforge.common.NeoForge;
-import net.neoforged.neoforge.event.AddReloadListenerEvent;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.AddReloadListenerEvent;
+import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.ModLoadingContext;
+import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
+import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.minecraftforge.fml.event.lifecycle.FMLConstructModEvent;
+import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
+import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.fml.loading.FMLLoader;
 import plus.dragons.createdragonsplus.common.CDPRegistrate;
 import plus.dragons.createenchantmentindustry.common.CEICommon;
 import plus.dragons.createenchantmentindustry.integration.ModIntegration;
@@ -41,16 +42,18 @@ import plus.dragons.createenchantmentindustry.integration.apothic_enchanting.com
 import plus.dragons.createenchantmentindustry.integration.apothic_enchanting.common.processing.infuser.InfuserBlockEntity;
 import plus.dragons.createenchantmentindustry.integration.apothic_enchanting.common.registry.*;
 import plus.dragons.createenchantmentindustry.integration.apothic_enchanting.config.CEIAConfig;
+import plus.dragons.createenchantmentindustry.integration.apothic_enchanting.data.CEIAData;
 import plus.dragons.createenchantmentindustry.integration.apothic_enchanting.integration.CEIMaxEnchantmentLevel;
 
-@Mod(CEICommon.ID)
 public class CEIACommon {
     public static final String ID = CEICommon.ID;
     public static final CDPRegistrate REGISTRATE = CEICommon.REGISTRATE;
 
-    public CEIACommon(IEventBus modBus, ModContainer modContainer) {
+    public CEIACommon() {
+        IEventBus modBus = FMLJavaModLoadingContext.get().getModEventBus();
         if (ModIntegration.APOTHIC_ENCHANTING.enabled()) {
-            modBus.register(new Common(modBus, modContainer));
+            new CEIAData(modBus);
+            modBus.register(new Common(modBus, ModLoadingContext.get()));
             if (FMLLoader.getDist() == Dist.CLIENT)
                 modBus.register(new Client());
         }
@@ -58,11 +61,11 @@ public class CEIACommon {
 
     public static class Common {
         IEventBus modBus;
-        ModContainer modContainer;
+        ModLoadingContext modLoadingContext;
 
-        Common(IEventBus modBus, ModContainer modContainer) {
+        Common(IEventBus modBus, ModLoadingContext modLoadingContext) {
             this.modBus = modBus;
-            this.modContainer = modContainer;
+            this.modLoadingContext = modLoadingContext;
         }
 
         @SubscribeEvent
@@ -73,12 +76,11 @@ public class CEIACommon {
             CEIAFluids.register(modBus);
             CEIACreativeModeTabs.register(modBus);
             CEIARecipes.register(modBus);
-            CEIADataComponents.register(modBus);
             CEIAItemAttributes.register(modBus);
-            modBus.register(CEIAPackets.class);
-            modBus.register(new CEIAConfig(modContainer));
-            NeoForge.EVENT_BUS.addListener(Common::addReloadListeners);
-            NeoForge.EVENT_BUS.register(CEIAFluids.Events.class);
+            CEIAPackets.register();
+            modBus.register(new CEIAConfig(modLoadingContext));
+            MinecraftForge.EVENT_BUS.addListener(Common::addReloadListeners);
+            MinecraftForge.EVENT_BUS.register(CEIAFluids.Events.class);
         }
 
         @SubscribeEvent
@@ -86,7 +88,9 @@ public class CEIACommon {
 
         @SubscribeEvent
         public void complete(final FMLLoadCompleteEvent event) {
-            CEIMaxEnchantmentLevel.register();
+            if (Apotheosis.enableEnch) {
+                CEIMaxEnchantmentLevel.register();
+            }
         }
 
         public static void addReloadListeners(AddReloadListenerEvent event) {
@@ -108,7 +112,9 @@ public class CEIACommon {
         @SubscribeEvent
         public void setup(final FMLClientSetupEvent event) {
             event.enqueueWork(() -> {
-                PonderIndex.addPlugin(new CEIAPonderPlugin());
+                if (Apotheosis.enableEnch || Apotheosis.enableAdventure) {
+                    PonderIndex.addPlugin(new CEIAPonderPlugin());
+                }
                 ItemProperties.register(
                         CEIABlocks.ENDER_WOVEN_BAG.asItem(),
                         CEICommon.asResource("open"),

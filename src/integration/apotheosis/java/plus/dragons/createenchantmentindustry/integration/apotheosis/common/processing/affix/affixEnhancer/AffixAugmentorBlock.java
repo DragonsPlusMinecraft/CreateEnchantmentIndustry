@@ -20,7 +20,6 @@ package plus.dragons.createenchantmentindustry.integration.apotheosis.common.pro
 
 import static com.simibubi.create.content.kinetics.base.HorizontalKineticBlock.HORIZONTAL_FACING;
 
-import com.mojang.serialization.MapCodec;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.foundation.block.IBE;
 import net.minecraft.core.Direction;
@@ -34,8 +33,6 @@ import org.jetbrains.annotations.Nullable;
 import plus.dragons.createenchantmentindustry.integration.apotheosis.common.registry.CEIAXBlockEntities;
 
 public class AffixAugmentorBlock extends HorizontalDirectionalBlock implements IBE<AffixAugmentorBlockEntity> {
-    public static final MapCodec<AffixAugmentorBlock> CODEC = simpleCodec(AffixAugmentorBlock::new);
-
     public AffixAugmentorBlock(Properties properties) {
         super(properties.noOcclusion());
         registerDefaultState(defaultBlockState().setValue(FACING, Direction.NORTH));
@@ -53,11 +50,6 @@ public class AffixAugmentorBlock extends HorizontalDirectionalBlock implements I
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         super.createBlockStateDefinition(builder.add(FACING));
-    }
-
-    @Override
-    protected MapCodec<? extends HorizontalDirectionalBlock> codec() {
-        return CODEC;
     }
 
     @Override

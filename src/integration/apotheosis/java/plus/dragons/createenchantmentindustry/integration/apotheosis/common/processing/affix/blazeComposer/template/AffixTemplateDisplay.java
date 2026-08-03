@@ -18,10 +18,10 @@
 
 package plus.dragons.createenchantmentindustry.integration.apotheosis.common.processing.affix.blazeComposer.template;
 
-import dev.shadowsoffire.apotheosis.affix.Affix;
-import dev.shadowsoffire.apotheosis.affix.AffixHelper;
-import dev.shadowsoffire.apotheosis.affix.AffixInstance;
-import dev.shadowsoffire.apotheosis.loot.LootRarity;
+import dev.shadowsoffire.apotheosis.adventure.affix.Affix;
+import dev.shadowsoffire.apotheosis.adventure.affix.AffixHelper;
+import dev.shadowsoffire.apotheosis.adventure.affix.AffixInstance;
+import dev.shadowsoffire.apotheosis.adventure.loot.LootRarity;
 import dev.shadowsoffire.placebo.reload.DynamicHolder;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -55,7 +55,7 @@ public class AffixTemplateDisplay {
 
     public static Component describeTemplate(AffixTemplateData data, ItemStack stack) {
         if (data.size() == 1)
-            return describeTemplateEntry(data, data.entries().getFirst(), stack);
+            return describeTemplateEntry(data, data.entries().get(0), stack);
         return Component.translatable(
                 "create_enchantment_industry.gui.goggles.blaze_composer.result.template_affixes",
                 data.size(),
@@ -112,10 +112,10 @@ public class AffixTemplateDisplay {
                 formatLevel(instance.level()));
     }
 
-    public static Component describeEquipmentAffixUpgrade(ItemStack stack, DynamicHolder<Affix> affix, float before, float after) {
+    public static Component describeEquipmentAffixUpgrade(ItemStack stack, DynamicHolder<? extends Affix> affix, float before, float after) {
         AffixInstance instance = AffixHelper.getAffixes(stack).get(affix);
         if (instance == null) {
-            instance = new AffixInstance(affix, after, AffixHelper.getRarity(stack), stack);
+            instance = new AffixInstance(affix, stack, AffixHelper.getRarity(stack), after);
         }
         if (before <= 0) {
             return Component.translatable(
@@ -132,10 +132,10 @@ public class AffixTemplateDisplay {
                 formatLevel(after));
     }
 
-    public static Component describeEquipmentAffixUpgradeRange(ItemStack stack, DynamicHolder<Affix> affix, float before, float minAfter, float maxAfter) {
+    public static Component describeEquipmentAffixUpgradeRange(ItemStack stack, DynamicHolder<? extends Affix> affix, float before, float minAfter, float maxAfter) {
         AffixInstance instance = AffixHelper.getAffixes(stack).get(affix);
         if (instance == null) {
-            instance = new AffixInstance(affix, maxAfter, AffixHelper.getRarity(stack), stack);
+            instance = new AffixInstance(affix, stack, AffixHelper.getRarity(stack), maxAfter);
         }
         if (before <= 0) {
             return Component.translatable(
@@ -203,7 +203,7 @@ public class AffixTemplateDisplay {
         }
         MutableComponent name = Component.empty().append(instance.getName(true));
         if (instance.rarity().isBound()) {
-            name.withStyle(style -> style.withColor(instance.getRarity().color()));
+            name.withStyle(style -> style.withColor(instance.rarity().get().getColor()));
         } else {
             name.withStyle(ChatFormatting.GRAY);
         }
@@ -217,7 +217,7 @@ public class AffixTemplateDisplay {
     public static Component rarityName(DynamicHolder<LootRarity> rarity) {
         if (!rarity.isBound())
             return Component.literal(rarity.getId().toString()).withStyle(ChatFormatting.RED);
-        return rarity.get().toComponent().withStyle(style -> style.withColor(rarity.get().color()));
+        return rarity.get().toComponent().copy().withStyle(style -> style.withColor(rarity.get().getColor()));
     }
 
     public static Component sourceCategoryName(ResourceLocation category) {

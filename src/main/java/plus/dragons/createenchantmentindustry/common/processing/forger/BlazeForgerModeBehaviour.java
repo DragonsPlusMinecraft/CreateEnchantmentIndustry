@@ -24,7 +24,6 @@ import com.simibubi.create.foundation.blockEntity.behaviour.ValueSettingsBoard;
 import com.simibubi.create.foundation.blockEntity.behaviour.ValueSettingsFormatter;
 import com.simibubi.create.foundation.blockEntity.behaviour.scrollValue.ScrollValueBehaviour;
 import java.util.Arrays;
-import net.minecraft.core.HolderLookup.Provider;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -56,12 +55,12 @@ public class BlazeForgerModeBehaviour extends ScrollValueBehaviour {
     }
 
     @Override
-    public void write(CompoundTag nbt, Provider registries, boolean clientPacket) {
+    public void write(CompoundTag nbt, boolean clientPacket) {
         nbt.putInt(MODE, getValue());
     }
 
     @Override
-    public void read(CompoundTag nbt, Provider registries, boolean clientPacket) {
+    public void read(CompoundTag nbt, boolean clientPacket) {
         if (nbt.contains(MODE))
             forger.mode = BlazeForgerMode.BY_ID.apply(nbt.getInt(MODE));
     }

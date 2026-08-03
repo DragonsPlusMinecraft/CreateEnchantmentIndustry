@@ -19,23 +19,23 @@
 package plus.dragons.createenchantmentindustry.integration.jei.category.printing;
 
 import com.mojang.serialization.MapCodec;
-import java.util.ArrayList;
+import mezz.jei.api.forge.ForgeTypes;
 import mezz.jei.api.gui.builder.IRecipeSlotBuilder;
 import mezz.jei.api.gui.ingredient.IRecipeSlotDrawable;
-import mezz.jei.api.neoforge.NeoForgeTypes;
 import mezz.jei.api.recipe.IFocusGroup;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
-import net.minecraft.core.RegistryAccess;
-import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.Tag;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.level.block.entity.BannerPatternLayers;
-import net.neoforged.neoforge.fluids.FluidStack;
+import net.minecraft.world.level.block.entity.BannerBlockEntity;
+import net.minecraftforge.fluids.FluidStack;
 import plus.dragons.createdragonsplus.util.Pairs;
 import plus.dragons.createenchantmentindustry.common.CEICommon;
 import plus.dragons.createenchantmentindustry.common.registry.CEIDataMaps;
@@ -59,14 +59,12 @@ public enum BannerPatternPrintingRecipeJEI implements PrintingRecipeJEI {
 
     @Override
     public void setTemplate(IRecipeSlotBuilder slot) {
-        RegistryAccess registryAccess = Minecraft.getInstance().level.registryAccess();
-        registryAccess.lookup(Registries.BANNER_PATTERN).get().listElements().forEach(element -> {
-            var stack = new ItemStack(Items.WHITE_BANNER);
-            ArrayList<BannerPatternLayers.Layer> l = new ArrayList<>();
-            l.add(new BannerPatternLayers.Layer(element.getDelegate(), DyeColor.BLACK));
-            stack.set(DataComponents.BANNER_PATTERNS, new BannerPatternLayers(l));
-            slot.addItemStack(stack);
-        });
+        var level = Minecraft.getInstance().level;
+        if (level != null)
+            level.registryAccess().registryOrThrow(Registries.BANNER_PATTERN).holders()
+                    .map(pattern -> withPattern(
+                            new ItemStack(Items.WHITE_BANNER), pattern.value().getHashname(), DyeColor.BLACK))
+                    .forEach(slot::addItemStack);
         slot.addRichTooltipCallback((view, tooltip) -> tooltip.add(CEILang
                 .translate("recipe.printing.banner_pattern.template")
                 .style(ChatFormatting.GRAY)
@@ -96,17 +94,28 @@ public enum BannerPatternPrintingRecipeJEI implements PrintingRecipeJEI {
 
     @Override
     public void onDisplayedIngredientsUpdate(IRecipeSlotDrawable baseSlot, IRecipeSlotDrawable templateSlot, IRecipeSlotDrawable fluidSlot, IRecipeSlotDrawable outputSlot, IFocusGroup focuses) {
-        var fluid = fluidSlot.getDisplayedIngredient(NeoForgeTypes.FLUID_STACK).orElse(new FluidStack(CEIDyeFluids.get(DyeColor.BLACK), 100)); // Fallback
+        var fluid = fluidSlot.getDisplayedIngredient(ForgeTypes.FLUID_STACK).orElse(new FluidStack(CEIDyeFluids.get(DyeColor.BLACK), 100)); // Fallback
         var base = baseSlot.getDisplayedItemStack();
         var template = templateSlot.getDisplayedItemStack();
-        var output = base.get().copy();
-        ArrayList<BannerPatternLayers.Layer> l = new ArrayList<>();
-        var pattern = template.get().get(DataComponents.BANNER_PATTERNS);
         var color = CEIDyeFluids.color(fluid);
-        if (color.isEmpty())
+        if (base.isEmpty() || template.isEmpty() || color.isEmpty())
             return;
-        l.add(new BannerPatternLayers.Layer(pattern.layers().getFirst().pattern(), color.get()));
-        output.set(DataComponents.BANNER_PATTERNS, new BannerPatternLayers(l));
+        ListTag patterns = BannerBlockEntity.getItemPatterns(template.get());
+        if (patterns.isEmpty())
+            return;
+        var output = withPattern(base.get(), patterns.getCompound(0).getString("Pattern"), color.get());
         outputSlot.createDisplayOverrides().addItemStack(output);
+    }
+
+    private static ItemStack withPattern(ItemStack stack, String pattern, DyeColor color) {
+        ItemStack result = stack.copy();
+        CompoundTag blockEntityTag = result.getOrCreateTagElement("BlockEntityTag");
+        ListTag patterns = blockEntityTag.getList("Patterns", Tag.TAG_COMPOUND).copy();
+        CompoundTag layer = new CompoundTag();
+        layer.putString("Pattern", pattern);
+        layer.putInt("Color", color.getId());
+        patterns.add(layer);
+        blockEntityTag.put("Patterns", patterns);
+        return result;
     }
 }

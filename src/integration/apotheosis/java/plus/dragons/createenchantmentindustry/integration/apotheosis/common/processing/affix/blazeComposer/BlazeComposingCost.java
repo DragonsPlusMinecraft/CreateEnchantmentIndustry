@@ -18,10 +18,10 @@
 
 package plus.dragons.createenchantmentindustry.integration.apotheosis.common.processing.affix.blazeComposer;
 
-import dev.shadowsoffire.apotheosis.affix.Affix;
-import dev.shadowsoffire.apotheosis.loot.LootRarity;
+import dev.shadowsoffire.apotheosis.adventure.loot.LootRarity;
 import dev.shadowsoffire.placebo.reload.DynamicHolder;
 import java.util.List;
+import plus.dragons.createenchantmentindustry.integration.apotheosis.common.processing.affix.AffixLevelLimits;
 import plus.dragons.createenchantmentindustry.integration.apotheosis.common.processing.affix.AffixOperationCosts;
 import plus.dragons.createenchantmentindustry.integration.apotheosis.common.processing.affix.blazeComposer.template.AffixTemplateEntry;
 import plus.dragons.createenchantmentindustry.integration.apotheosis.common.processing.affix.blazeComposer.template.AffixTemplateTier;
@@ -43,7 +43,7 @@ public class BlazeComposingCost {
     public static float entryCost(Operation operation, AffixTemplateTier tier, DynamicHolder<LootRarity> rarity, AffixTemplateEntry entry, float fromLevel, float resultLevel) {
         float cost = levelCost(operation, fromLevel, resultLevel);
         cost *= tierMultiplier(tier);
-        cost *= AffixOperationCosts.typeMultiplier(entry.affix().get().definition().type());
+        cost *= AffixOperationCosts.typeMultiplier(entry.affix().get().getType());
         cost *= AffixComposingRules.INSTANCE.getCostMultiplier(entry, rarity);
         return cost;
     }
@@ -57,7 +57,7 @@ public class BlazeComposingCost {
     public static float levelCost(Operation operation, float fromLevel, float resultLevel) {
         var config = CEIAXConfig.server().affixes();
         float stepWeight = Math.max(AffixOperationCosts.EPSILON, AffixOperationCosts.weightedLevelSpan(0, AffixOperationCosts.APOTHEOSIS_AUGMENTING_STEP));
-        float standardEnd = Math.min(resultLevel, Affix.MAX_LEVEL);
+        float standardEnd = Math.min(resultLevel, AffixLevelLimits.EXTENDED_MAX_LEVEL);
         float standardCost = AffixOperationCosts.apotheosisUpgradeReferenceCost()
                 * AffixOperationCosts.weightedLevelSpan(fromLevel, standardEnd)
                 / stepWeight
@@ -68,7 +68,7 @@ public class BlazeComposingCost {
                     AffixOperationCosts.apotheosisUpgradeReferenceCost() * config.blazeComposerStandardOperationCostCap.getF());
         }
         float superCost = AffixOperationCosts.apotheosisUpgradeReferenceCost()
-                * AffixOperationCosts.weightedLevelSpan(Math.max(fromLevel, Affix.MAX_LEVEL), resultLevel)
+                * AffixOperationCosts.weightedLevelSpan(Math.max(fromLevel, AffixLevelLimits.EXTENDED_MAX_LEVEL), resultLevel)
                 / stepWeight
                 * operation.multiplier();
         return standardCost + superCost;

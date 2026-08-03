@@ -26,8 +26,6 @@ import com.simibubi.create.foundation.blockEntity.behaviour.ValueSettingsBoard;
 import com.simibubi.create.foundation.blockEntity.behaviour.ValueSettingsFormatter;
 import com.simibubi.create.foundation.blockEntity.behaviour.filtering.FilteringBehaviour;
 import java.util.List;
-import net.minecraft.core.Holder;
-import net.minecraft.core.HolderLookup.Provider;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -36,7 +34,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.BlockHitResult;
-import net.neoforged.neoforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidStack;
 import plus.dragons.createenchantmentindustry.common.registry.CEIDataMaps;
 import plus.dragons.createenchantmentindustry.common.registry.CEIFluids;
 import plus.dragons.createenchantmentindustry.util.CEILang;
@@ -52,11 +50,11 @@ public class ExperienceHatchBehaviour extends FilteringBehaviour {
     }
 
     public FluidStack getFluidToDrain() {
-        Holder<Fluid> fluid = filter.fluid(getWorld()).getFluidHolder();
+        Fluid fluid = filter.fluid(getWorld()).getFluid();
         int unit;
-        if (Fluids.EMPTY.isSame(fluid.value())) {
+        if (Fluids.EMPTY.isSame(fluid)) {
             unit = 1;
-            fluid = CEIFluids.EXPERIENCE;
+            fluid = CEIFluids.EXPERIENCE.get();
         } else unit = ExperienceHelper.getExperienceFluidUnit(fluid);
         if (unit == 0)
             return FluidStack.EMPTY;
@@ -68,11 +66,11 @@ public class ExperienceHatchBehaviour extends FilteringBehaviour {
     public FluidStack getFluidToFill(int available) {
         if (available == 0)
             return FluidStack.EMPTY;
-        Holder<Fluid> fluid = filter.fluid(getWorld()).getFluidHolder();
+        Fluid fluid = filter.fluid(getWorld()).getFluid();
         int unit;
-        if (Fluids.EMPTY.isSame(fluid.value())) {
+        if (Fluids.EMPTY.isSame(fluid)) {
             unit = 1;
-            fluid = CEIFluids.EXPERIENCE;
+            fluid = CEIFluids.EXPERIENCE.get();
         } else unit = ExperienceHelper.getExperienceFluidUnit(fluid);
         if (unit == 0)
             return FluidStack.EMPTY;
@@ -82,14 +80,14 @@ public class ExperienceHatchBehaviour extends FilteringBehaviour {
     }
 
     @Override
-    public void write(CompoundTag nbt, Provider registries, boolean clientPacket) {
-        nbt.put("Filter", getFilter().saveOptional(registries));
+    public void write(CompoundTag nbt, boolean clientPacket) {
+        nbt.put("Filter", getFilter().serializeNBT());
         nbt.putInt("Scroll", count);
     }
 
     @Override
-    public void read(CompoundTag nbt, Provider registries, boolean clientPacket) {
-        filter = FilterItemStack.of(registries, nbt.getCompound("Filter"));
+    public void read(CompoundTag nbt, boolean clientPacket) {
+        filter = FilterItemStack.of(nbt.getCompound("Filter"));
         count = nbt.getInt("Scroll");
     }
 
@@ -143,7 +141,8 @@ public class ExperienceHatchBehaviour extends FilteringBehaviour {
         FilterItemStack filter = FilterItemStack.of(stack.copy());
         if (!filter.isEmpty()) {
             FluidStack fluid = filter.fluid(getWorld());
-            if (!fluid.is(CEIFluids.EXPERIENCE) && fluid.getFluidHolder().getData(CEIDataMaps.FLUID_UNIT_EXPERIENCE) == null)
+            if (fluid.getFluid() != CEIFluids.EXPERIENCE.get()
+                    && CEIDataMaps.FLUID_UNIT_EXPERIENCE.get(fluid.getFluid()) == null)
                 return false;
         }
         this.filter = filter;

@@ -25,16 +25,19 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Supplier;
-import net.minecraft.core.Registry;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.neoforged.bus.api.IEventBus;
-import net.neoforged.neoforge.registries.DeferredRegister;
+import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.registries.IForgeRegistry;
+import net.minecraftforge.registries.IForgeRegistryInternal;
+import net.minecraftforge.registries.RegistryBuilder;
+import net.minecraftforge.registries.RegistryManager;
 import plus.dragons.createenchantmentindustry.api.registry.CEIRegistries;
 import plus.dragons.createenchantmentindustry.common.CEICommon;
 
 /**
- * NeoForge registry and dispatcher for Printer behaviour providers.
+ * Forge registry and dispatcher for Printer behaviour providers.
  *
  * <p>Addons should register {@link PrintingBehaviourProvider} entries through a {@link DeferredRegister} created from
  * {@link CEIRegistries#PRINTING_BEHAVIOUR_PROVIDER}. Providers with a higher priority are queried first, while
@@ -43,9 +46,11 @@ import plus.dragons.createenchantmentindustry.common.CEICommon;
  */
 public final class PrintingBehaviourRegistry {
     private static final DeferredRegister<PrintingBehaviourProvider> PROVIDERS = DeferredRegister.create(CEIRegistries.PRINTING_BEHAVIOUR_PROVIDER, CEICommon.ID);
-    public static final Registry<PrintingBehaviourProvider> REGISTRY = PROVIDERS.makeRegistry(builder -> builder
-            .sync(false)
-            .onBake(PrintingBehaviourRegistry::bake));
+    public static final Supplier<IForgeRegistry<PrintingBehaviourProvider>> REGISTRY = PROVIDERS.makeRegistry(
+            () -> new RegistryBuilder<PrintingBehaviourProvider>()
+                    .disableSaving()
+                    .disableSync()
+                    .onBake(PrintingBehaviourRegistry::bake));
     private static volatile List<PrintingBehaviourProvider> sortedProviders;
 
     private PrintingBehaviourRegistry() {}
@@ -58,7 +63,8 @@ public final class PrintingBehaviourRegistry {
         PROVIDERS.register(modBus);
     }
 
-    private static void bake(Registry<PrintingBehaviourProvider> registry) {
+    private static void bake(
+            IForgeRegistryInternal<PrintingBehaviourProvider> registry, RegistryManager registryManager) {
         var providers = new ArrayList<PrintingBehaviourProvider>();
         registry.forEach(providers::add);
         providers.sort(Comparator.comparingInt(PrintingBehaviourProvider::priority).reversed());
@@ -72,7 +78,7 @@ public final class PrintingBehaviourRegistry {
         for (var entry : providers) {
             var result = Objects.requireNonNull(
                     entry.provider().create(level, tank, stack),
-                    () -> "Printing behaviour provider " + REGISTRY.getKey(entry) + " returned null");
+                    () -> "Printing behaviour provider " + REGISTRY.get().getKey(entry) + " returned null");
             if (result.isPresent())
                 return result.get();
         }

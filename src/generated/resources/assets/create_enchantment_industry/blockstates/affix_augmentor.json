@@ -1,19 +1,19 @@
 {
-    "variants": {
-        "facing=east": {
-            "model": "create_enchantment_industry:block/affix_augmentor/block",
-            "y": 90
-        },
-        "facing=north": {
-            "model": "create_enchantment_industry:block/affix_augmentor/block"
-        },
-        "facing=south": {
-            "model": "create_enchantment_industry:block/affix_augmentor/block",
-            "y": 180
-        },
-        "facing=west": {
-            "model": "create_enchantment_industry:block/affix_augmentor/block",
-            "y": 270
-        }
+  "variants": {
+    "facing=east": {
+      "model": "create_enchantment_industry:block/affix_augmentor/block",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "create_enchantment_industry:block/affix_augmentor/block"
+    },
+    "facing=south": {
+      "model": "create_enchantment_industry:block/affix_augmentor/block",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "create_enchantment_industry:block/affix_augmentor/block",
+      "y": 270
     }
+  }
 }

@@ -22,13 +22,13 @@ import static plus.dragons.createenchantmentindustry.integration.apothic_enchant
 
 import com.tterrag.registrate.util.entry.RegistryEntry;
 import net.minecraft.resources.ResourceLocation;
-import net.neoforged.bus.api.IEventBus;
+import net.minecraftforge.eventbus.api.IEventBus;
 import plus.dragons.createdragonsplus.common.CDPRegistrate;
 import plus.dragons.createdragonsplus.common.registrate.builder.CustomStatBuilder;
 import plus.dragons.createenchantmentindustry.common.CEICommon;
 
 public class CEIAXStats {
-    public static final RegistryEntry<ResourceLocation, ResourceLocation> COMPOSE_AFFIX = create("compose_affix")
+    public static final RegistryEntry<ResourceLocation> COMPOSE_AFFIX = create("compose_affix")
             .lang("Blaze Composer Used")
             .register();
 

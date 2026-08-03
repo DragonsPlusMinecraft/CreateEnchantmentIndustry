@@ -31,33 +31,32 @@ import net.createmod.catnip.math.AngleHelper;
 import net.createmod.catnip.math.VecHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.HolderLookup.Provider;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.tags.EnchantmentTags;
+import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Clearable;
 import net.minecraft.world.Containers;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
-import net.neoforged.neoforge.fluids.FluidStack;
-import net.neoforged.neoforge.fluids.capability.IFluidHandler;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.fluids.FluidStack;
 import org.jetbrains.annotations.Nullable;
 import plus.dragons.createdragonsplus.common.advancements.AdvancementBehaviour;
 import plus.dragons.createdragonsplus.common.fluids.tank.ConfigurableFluidTank;
 import plus.dragons.createdragonsplus.util.FieldsNullabilityUnknownByDefault;
 import plus.dragons.createenchantmentindustry.client.model.CEIPartialModels;
 import plus.dragons.createenchantmentindustry.common.fluids.experience.BlazeExperienceBlockEntity;
+import plus.dragons.createenchantmentindustry.common.item.CEIItemData;
+import plus.dragons.createenchantmentindustry.common.migration.LegacyBlockEntityData;
 import plus.dragons.createenchantmentindustry.common.registry.CEIAdvancements;
 import plus.dragons.createenchantmentindustry.common.registry.CEIFluids;
 import plus.dragons.createenchantmentindustry.common.registry.CEIStats;
@@ -74,15 +73,10 @@ public class BlazeEnchanterBlockEntity extends BlazeExperienceBlockEntity implem
     protected int processingTime = -1;
     protected ItemStack heldItem = ItemStack.EMPTY;
     protected AdvancementBehaviour advancement;
+    protected @Nullable ActiveEnchanting activeEnchanting;
 
     public BlazeEnchanterBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
-    }
-
-    public @Nullable IFluidHandler getFluidHandler(@Nullable Direction side) {
-        if ((side == Direction.DOWN || side == null) && !isRemoved())
-            return tanks.getCapability();
-        return null;
     }
 
     @Override
@@ -97,7 +91,7 @@ public class BlazeEnchanterBlockEntity extends BlazeExperienceBlockEntity implem
     @Override
     protected ConfigurableFluidTank createNormalTank(Consumer<FluidStack> fluidUpdateCallback) {
         return new ConfigurableFluidTank(CEIConfig.fluids().blazeEnchanterFluidCapacity.get(), fluidUpdateCallback)
-                .allowInsertion(fluidStack -> fluidStack.is(CEIFluids.EXPERIENCE));
+                .allowInsertion(fluidStack -> fluidStack.getFluid() == CEIFluids.EXPERIENCE.get());
     }
 
     @Override
@@ -138,21 +132,29 @@ public class BlazeEnchanterBlockEntity extends BlazeExperienceBlockEntity implem
     }
 
     @Override
-    public void write(CompoundTag compound, Provider registries, boolean clientPacket) {
-        super.write(compound, registries, clientPacket);
+    protected void write(CompoundTag compound, boolean clientPacket) {
+        super.write(compound, clientPacket);
         if (seed != null)
             compound.putLong("Seed", seed);
         compound.putInt("ProcessingTime", processingTime);
-        compound.put("HeldItem", heldItem.saveOptional(registries));
+        compound.put("HeldItem", heldItem.save(new CompoundTag()));
+        if (activeEnchanting != null)
+            compound.put("ActiveEnchanting", activeEnchanting.save());
     }
 
     @Override
-    protected void read(CompoundTag compound, Provider registries, boolean clientPacket) {
-        super.read(compound, registries, clientPacket);
+    protected void read(CompoundTag compound, boolean clientPacket) {
+        compound = LegacyBlockEntityData.migrateBlazeEnchanter(compound);
+        super.read(compound, clientPacket);
         if (compound.contains("Seed", Tag.TAG_LONG))
             seed = compound.getLong("Seed");
         processingTime = compound.getInt("ProcessingTime");
-        heldItem = ItemStack.parseOptional(registries, compound.getCompound("HeldItem"));
+        heldItem = ItemStack.of(compound.getCompound("HeldItem"));
+        activeEnchanting = compound.contains("ActiveEnchanting", Tag.TAG_COMPOUND)
+                ? ActiveEnchanting.load(compound.getCompound("ActiveEnchanting"))
+                : null;
+        if (processingTime >= 0 && activeEnchanting == null)
+            processingTime = -1;
         updateEnchanterIfLevelReady();
     }
 
@@ -173,75 +175,119 @@ public class BlazeEnchanterBlockEntity extends BlazeExperienceBlockEntity implem
         }
         if (level.isClientSide() && isVirtual()) {
             if (update) enchanter.update(heldItem);
-            if (enchanter.canProcess(heldItem)) {
-                if (processingTime < 0) {
-                    processingTime = ENCHANTING_TIME / 4;
-                    return;
-                }
-                if (processingTime > 0) {
-                    processingTime--;
-                    return;
-                }
-                processingTime = -1;
-                heldItem = enchanter.getResult(heldItem);
-                enchanter.update(heldItem);
-                return;
-            }
+            tickVirtual();
+            return;
         }
         if (!(level instanceof ServerLevel serverLevel))
             return;
         if (update) {
             enchanter.update(heldItem);
         }
-        if (enchanter.canProcess(heldItem)) {
-            var cost = enchanter.getExperienceCost();
-            if (cost > 0 && consumeExperience(cost, special, true)) {
-                if (processingTime < 0) {
-                    processingTime = ENCHANTING_TIME;
-                    notifyUpdate();
-                    return;
-                }
-                if (processingTime > 0) {
-                    processingTime--;
-                    notifyUpdate();
-                    return;
-                }
-                if (special && !cursed && strikeLightning(serverLevel, strikePos)) {
-                    advancement.trigger(CEIAdvancements.OSHA_VIOLATION.builtinTrigger());
-                    serverLevel.destroyBlock(worldPosition, false);
-                    serverLevel.setBlockAndUpdate(worldPosition, AllBlocks.LIT_BLAZE_BURNER.getDefaultState());
-                    this.setRemoved();
-                    return;
-                }
-                processingTime = -1;
-                heldItem = enchanter.getResult(heldItem);
-                advancement.awardStat(CEIStats.ENCHANT.get(), 1);
+        if (heldItem.isEmpty()) {
+            cancelProcessing();
+            return;
+        }
+        if (activeEnchanting == null) {
+            if (enchanter.canProcess(heldItem))
+                startProcessing(ENCHANTING_TIME, true);
+            else if (processingTime != -1)
+                cancelProcessing();
+            return;
+        }
+        ActiveEnchanting active = activeEnchanting;
+        if (!active.matches(heldItem)) {
+            cancelProcessing();
+            return;
+        }
+        if (!consumeExperience(active.cost(), active.special(), true))
+            return;
+        if (processingTime > 0) {
+            processingTime--;
+            notifyUpdate();
+            return;
+        }
+        if (active.strikeLightning() && strikeLightning(serverLevel, strikePos)) {
+            advancement.trigger(CEIAdvancements.OSHA_VIOLATION.builtinTrigger());
+            serverLevel.destroyBlock(worldPosition, false);
+            serverLevel.setBlockAndUpdate(worldPosition, AllBlocks.LIT_BLAZE_BURNER.getDefaultState());
+            this.setRemoved();
+            return;
+        }
+        if (!consumeExperience(active.cost(), active.special(), false))
+            return;
+        heldItem = active.result().copy();
+        advancement.awardStat(CEIStats.ENCHANT.get(), 1);
+        if (heldItem.getItem() instanceof EnchantingTemplateItem) {
+            advancement.trigger(CEIAdvancements.SIGIL_FORGING.builtinTrigger());
+        } else {
+            advancement.trigger(CEIAdvancements.BLAZING_ENCHANTMENT.builtinTrigger());
+        }
+        if (active.special()) {
+            advancement.awardStat(CEIStats.SUPER_ENCHANT.get(), 1);
+            boolean treasure = CEIItemData.getEnchantmentsForCrafting(heldItem).keySet().stream()
+                    .anyMatch(net.minecraft.world.item.enchantment.Enchantment::isTreasureOnly);
+            if (treasure)
+                advancement.trigger(CEIAdvancements.PROBABILITY_SPIKE.builtinTrigger());
+        }
+        finishProcessing();
+        nextSeed();
+        enchanter.update(heldItem);
+        notifyUpdate();
+        level.playSound(null, worldPosition, SoundEvents.ENCHANTMENT_TABLE_USE, SoundSource.BLOCKS, 1.0F, level.random.nextFloat() * 0.1F + 0.9F);
+    }
 
-                if (heldItem.getItem() instanceof EnchantingTemplateItem) {
-                    advancement.trigger(CEIAdvancements.SIGIL_FORGING.builtinTrigger());
-                } else {
-                    advancement.trigger(CEIAdvancements.BLAZING_ENCHANTMENT.builtinTrigger());
-                }
-                if (special) {
-                    advancement.awardStat(CEIStats.SUPER_ENCHANT.get(), 1);
-                    boolean treasure = EnchantmentHelper.getEnchantmentsForCrafting(heldItem).keySet().stream().anyMatch(h -> h.is(EnchantmentTags.TREASURE));
-                    if (treasure)
-                        advancement.trigger(CEIAdvancements.PROBABILITY_SPIKE.builtinTrigger());
-                }
+    private void tickVirtual() {
+        if (heldItem.isEmpty()) {
+            cancelProcessing();
+            return;
+        }
+        if (activeEnchanting == null) {
+            if (enchanter.canProcess(heldItem))
+                startProcessing(ENCHANTING_TIME / 4, false);
+            return;
+        }
+        ActiveEnchanting active = activeEnchanting;
+        if (!active.matches(heldItem)) {
+            cancelProcessing();
+            return;
+        }
+        if (processingTime > 0) {
+            processingTime--;
+            return;
+        }
+        heldItem = active.result().copy();
+        finishProcessing();
+        nextSeed();
+        enchanter.update(heldItem);
+    }
 
-                consumeExperience(cost, special, false);
-                nextSeed();
-                enchanter.update(heldItem);
-                notifyUpdate();
-                level.playSound(null, worldPosition, SoundEvents.ENCHANTMENT_TABLE_USE, SoundSource.BLOCKS, 1.0F, level.random.nextFloat() * 0.1F + 0.9F);
-            } else {
-                if (processingTime != -1) {
-                    processingTime = -1;
-                    notifyUpdate();
-                }
-            }
-        } else if (processingTime != -1) {
-            processingTime = -1;
+    private boolean startProcessing(int duration, boolean requireExperience) {
+        int cost = enchanter.getExperienceCost();
+        if (cost <= 0 || requireExperience && !consumeExperience(cost, special, true))
+            return false;
+        ItemStack input = heldItem.copy();
+        ItemStack result = enchanter.getResult(input);
+        if (result.isEmpty() || ItemStack.isSameItemSameTags(input, result) && input.getCount() == result.getCount())
+            return false;
+        activeEnchanting = new ActiveEnchanting(
+                input,
+                result.copy(),
+                cost,
+                special,
+                special && !cursed);
+        processingTime = duration;
+        notifyUpdate();
+        return true;
+    }
+
+    private void finishProcessing() {
+        processingTime = -1;
+        activeEnchanting = null;
+    }
+
+    private void cancelProcessing() {
+        if (processingTime != -1 || activeEnchanting != null) {
+            finishProcessing();
             notifyUpdate();
         }
     }
@@ -267,7 +313,7 @@ public class BlazeEnchanterBlockEntity extends BlazeExperienceBlockEntity implem
     public int getMaxEnchantLevel(boolean special) {
         int max = CEIConfig.enchantments().blazeEnchanterMaxEnchantLevel.get();
         int maxSuper = CEIConfig.enchantments().blazeEnchanterMaxSuperEnchantLevel.get();
-        return special ? Math.max(max, maxSuper) : Math.clamp(max, 0, maxSuper);
+        return special ? Math.max(max, maxSuper) : Mth.clamp(max, 0, maxSuper);
     }
 
     public ItemStack insertItem(ItemStack stack, boolean simulate) {
@@ -293,11 +339,11 @@ public class BlazeEnchanterBlockEntity extends BlazeExperienceBlockEntity implem
     public ItemStack extractItem(boolean forced, boolean simulate) {
         assert level != null;
         ItemStack extracted = ItemStack.EMPTY;
-        if (forced || processingTime <= 0) {
+        if (forced || activeEnchanting == null && processingTime <= 0) {
             extracted = heldItem.copy();
             if (!simulate) {
                 heldItem = ItemStack.EMPTY;
-                processingTime = -1;
+                finishProcessing();
                 enchanter.update(heldItem);
                 notifyUpdate();
             }
@@ -315,8 +361,43 @@ public class BlazeEnchanterBlockEntity extends BlazeExperienceBlockEntity implem
     @Override
     public void clearContent() {
         heldItem = ItemStack.EMPTY;
-        processingTime = -1;
+        finishProcessing();
         enchanter.update(heldItem);
+    }
+
+    protected record ActiveEnchanting(
+            ItemStack input,
+            ItemStack result,
+            int cost,
+            boolean special,
+            boolean strikeLightning) {
+        CompoundTag save() {
+            CompoundTag tag = new CompoundTag();
+            tag.put("Input", input.save(new CompoundTag()));
+            tag.put("Result", result.save(new CompoundTag()));
+            tag.putInt("Cost", cost);
+            tag.putBoolean("Special", special);
+            tag.putBoolean("StrikeLightning", strikeLightning);
+            return tag;
+        }
+
+        static @Nullable ActiveEnchanting load(CompoundTag tag) {
+            ItemStack input = ItemStack.of(tag.getCompound("Input"));
+            ItemStack result = ItemStack.of(tag.getCompound("Result"));
+            int cost = tag.getInt("Cost");
+            if (input.isEmpty() || result.isEmpty() || cost <= 0)
+                return null;
+            return new ActiveEnchanting(
+                    input,
+                    result,
+                    cost,
+                    tag.getBoolean("Special"),
+                    tag.getBoolean("StrikeLightning"));
+        }
+
+        boolean matches(ItemStack stack) {
+            return input.getCount() == stack.getCount() && ItemStack.isSameItemSameTags(input, stack);
+        }
     }
 
     private static class EnchanterTransform extends ValueBoxTransform.Sided {

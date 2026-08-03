@@ -18,51 +18,40 @@
 
 package plus.dragons.createenchantmentindustry.integration.jei.category.printing;
 
-import com.mojang.serialization.MapCodec;
-import java.util.Arrays;
+import mezz.jei.api.forge.ForgeTypes;
 import mezz.jei.api.gui.builder.IRecipeSlotBuilder;
-import mezz.jei.api.helpers.ICodecHelper;
-import mezz.jei.api.neoforge.NeoForgeTypes;
-import mezz.jei.api.recipe.IRecipeManager;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.crafting.RecipeHolder;
 import plus.dragons.createenchantmentindustry.common.CEICommon;
 import plus.dragons.createenchantmentindustry.common.fluids.printer.PrintingRecipe;
 
 public class StandardPrintingRecipeJEI implements PrintingRecipeJEI {
     public static final PrintingRecipeJEI.Type TYPE = PrintingRecipeJEI
-            .register(CEICommon.asResource("standard"), StandardPrintingRecipeJEI::createCodec);
-    private final RecipeHolder<PrintingRecipe> recipe;
+            .register(CEICommon.asResource("standard"));
+    private final PrintingRecipe recipe;
 
-    public StandardPrintingRecipeJEI(RecipeHolder<PrintingRecipe> recipe) {
+    public StandardPrintingRecipeJEI(PrintingRecipe recipe) {
         this.recipe = recipe;
-    }
-
-    public static MapCodec<StandardPrintingRecipeJEI> createCodec(ICodecHelper codecHelper, IRecipeManager recipeManager) {
-        return codecHelper.<RecipeHolder<PrintingRecipe>>getRecipeHolderCodec()
-                .xmap(StandardPrintingRecipeJEI::new, jei -> jei.recipe)
-                .fieldOf("recipe");
     }
 
     @Override
     public void setBase(IRecipeSlotBuilder slot) {
-        slot.addIngredients(recipe.value().getIngredients().get(0));
+        slot.addIngredients(recipe.getIngredients().get(0));
     }
 
     @Override
     public void setTemplate(IRecipeSlotBuilder slot) {
-        slot.addIngredients(recipe.value().getIngredients().get(1));
+        slot.addIngredients(recipe.getIngredients().get(1));
     }
 
     @Override
     public void setFluid(IRecipeSlotBuilder slot) {
-        var fluid = recipe.value().getFluidIngredients().getFirst();
-        slot.addIngredients(NeoForgeTypes.FLUID_STACK, Arrays.asList(fluid.getFluids()));
+        var fluid = recipe.getFluidIngredients().get(0);
+        slot.addIngredients(ForgeTypes.FLUID_STACK, fluid.getMatchingFluidStacks());
     }
 
     @Override
     public void setOutput(IRecipeSlotBuilder slot) {
-        slot.addItemStack(recipe.value().getRollableResults().getFirst().getStack());
+        slot.addItemStack(recipe.getRollableResults().get(0).getStack());
     }
 
     @Override
@@ -72,6 +61,6 @@ public class StandardPrintingRecipeJEI implements PrintingRecipeJEI {
 
     @Override
     public ResourceLocation getRegistryName() {
-        return recipe.id();
+        return recipe.getId();
     }
 }

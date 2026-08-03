@@ -28,7 +28,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.neoforged.neoforge.fluids.capability.IFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidHandler;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -39,7 +39,7 @@ import plus.dragons.createdragonsplus.common.fluids.tank.FluidTankBehaviour;
 import plus.dragons.createenchantmentindustry.common.fluids.experience.ExperienceFluidDropContext;
 import plus.dragons.createenchantmentindustry.common.fluids.experience.ExperienceHelper;
 
-@Mixin(SmartBlockEntity.class)
+@Mixin(value = SmartBlockEntity.class, remap = false)
 public abstract class SmartBlockEntityMixin extends CachedRenderBBBlockEntity {
     @Shadow
     public abstract <T extends BlockEntityBehaviour> @Nullable T getBehaviour(BehaviourType<T> type);
@@ -51,7 +51,7 @@ public abstract class SmartBlockEntityMixin extends CachedRenderBBBlockEntity {
         super(type, pos, state);
     }
 
-    @Inject(method = "destroy", at = @At(value = "HEAD"))
+    @Inject(method = "destroy", at = @At(value = "HEAD"), remap = false)
     private void setRemoved$dropExperienceFluid(CallbackInfo ci) {
         if (!(this.level instanceof ServerLevel serverLevel))
             return;
@@ -59,10 +59,12 @@ public abstract class SmartBlockEntityMixin extends CachedRenderBBBlockEntity {
         for (var behaviour : this.getAllBehaviours()) {
             IFluidHandler handler;
             if (behaviour instanceof SmartFluidTankBehaviour tank) {
-                handler = tank.getCapability();
+                handler = tank.getCapability().orElse(null);
             } else if (behaviour instanceof FluidTankBehaviour tank) {
-                handler = tank.getCapability();
+                handler = tank.getCapability().orElse(null);
             } else continue;
+            if (handler == null)
+                continue;
             int tanks = handler.getTanks();
             for (int tank = 0; tank < tanks; tank++) {
                 var fluid = handler.getFluidInTank(tank);

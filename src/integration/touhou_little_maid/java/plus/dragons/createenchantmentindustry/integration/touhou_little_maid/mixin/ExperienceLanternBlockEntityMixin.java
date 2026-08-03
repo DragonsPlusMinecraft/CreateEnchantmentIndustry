@@ -38,16 +38,16 @@ import plus.dragons.createenchantmentindustry.integration.touhou_little_maid.com
 @Mixin(ExperienceLanternBlockEntity.class)
 @Restriction(require = @Condition(ModIntegration.Constants.TOUHOU_LITTLE_MAID))
 public abstract class ExperienceLanternBlockEntityMixin extends SmartBlockEntity {
-    @Shadow
+    @Shadow(remap = false)
     protected FluidTankBehaviour tank;
-    @Shadow
+    @Shadow(remap = false)
     protected AABB effectiveAABB;
 
     public ExperienceLanternBlockEntityMixin(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
     }
 
-    @Inject(method = "drainExp", at = @At("TAIL"))
+    @Inject(method = "drainExp", at = @At("TAIL"), remap = false)
     private void create_enchantment_industry$touhouLittleMaid$drainMaidExperience(CallbackInfo ci) {
         if (level == null || level.isClientSide)
             return;

@@ -19,19 +19,18 @@
 package plus.dragons.createenchantmentindustry.integration.jei.category.printing;
 
 import com.mojang.serialization.MapCodec;
+import mezz.jei.api.forge.ForgeTypes;
 import mezz.jei.api.gui.builder.IRecipeSlotBuilder;
 import mezz.jei.api.gui.ingredient.IRecipeSlotDrawable;
-import mezz.jei.api.neoforge.NeoForgeTypes;
 import mezz.jei.api.recipe.IFocusGroup;
 import net.minecraft.ChatFormatting;
-import net.minecraft.core.component.DataComponents;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.neoforged.neoforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidStack;
 import plus.dragons.createdragonsplus.util.Pairs;
 import plus.dragons.createenchantmentindustry.common.CEICommon;
+import plus.dragons.createenchantmentindustry.common.item.CEIItemData;
 import plus.dragons.createenchantmentindustry.common.registry.CEIDataMaps;
-import plus.dragons.createenchantmentindustry.config.CEIConfig;
 import plus.dragons.createenchantmentindustry.util.CEIDyeFluids;
 import plus.dragons.createenchantmentindustry.util.CEILang;
 
@@ -54,7 +53,7 @@ public enum CustomNamePrintingRecipeJEI implements PrintingRecipeJEI {
     public void setTemplate(IRecipeSlotBuilder slot) {
         var stack = new ItemStack(Items.NAME_TAG);
         var name = CEILang.translate("recipe.printing.custom_name.template").component();
-        stack.set(DataComponents.CUSTOM_NAME, name);
+        CEIItemData.setCustomName(stack, name);
         slot.addItemStack(stack);
     }
 
@@ -77,17 +76,14 @@ public enum CustomNamePrintingRecipeJEI implements PrintingRecipeJEI {
     @Override
     public void onDisplayedIngredientsUpdate(IRecipeSlotDrawable baseSlot, IRecipeSlotDrawable templateSlot, IRecipeSlotDrawable fluidSlot, IRecipeSlotDrawable outputSlot, IFocusGroup focuses) {
         var name = CEILang.translate("recipe.printing.custom_name.template").component();
-        var fluidStack = fluidSlot.getDisplayedIngredient(NeoForgeTypes.FLUID_STACK).orElse(FluidStack.EMPTY);
-        var style = fluidStack.getFluidHolder().getData(CEIDataMaps.PRINTING_CUSTOM_NAME_STYLE);
+        var fluidStack = fluidSlot.getDisplayedIngredient(ForgeTypes.FLUID_STACK).orElse(FluidStack.EMPTY);
+        var style = CEIDataMaps.PRINTING_CUSTOM_NAME_STYLE.get(fluidStack.getFluid());
         if (style == null)
             style = CEIDyeFluids.style(fluidStack).orElse(null);
         if (style != null)
             name.withStyle(style);
         var stack = new ItemStack(Items.NAME_TAG);
-        if (CEIConfig.fluids().printingCustomNameAsItemName.get())
-            stack.set(DataComponents.ITEM_NAME, name);
-        else
-            stack.set(DataComponents.CUSTOM_NAME, name);
+        CEIItemData.setCustomName(stack, name);
         outputSlot.createDisplayOverrides().addItemStack(stack);
     }
 }

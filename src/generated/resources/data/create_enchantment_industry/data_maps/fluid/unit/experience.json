@@ -1,85 +1,85 @@
 {
-    "values": {
-        "cofh_core:experience": {
-            "neoforge:conditions": [
-                {
-                    "type": "neoforge:mod_loaded",
-                    "modid": "cofh_core"
-                }
-            ],
-            "neoforge:value": 25
-        },
-        "cyclic:xpjuice": {
-            "neoforge:conditions": [
-                {
-                    "type": "neoforge:mod_loaded",
-                    "modid": "cyclic"
-                }
-            ],
-            "neoforge:value": 20
-        },
-        "enderio:xpjuice": {
-            "neoforge:conditions": [
-                {
-                    "type": "neoforge:mod_loaded",
-                    "modid": "enderio"
-                }
-            ],
-            "neoforge:value": 20
-        },
-        "industrialforegoing:essence": {
-            "neoforge:conditions": [
-                {
-                    "type": "neoforge:mod_loaded",
-                    "modid": "industrialforegoing"
-                }
-            ],
-            "neoforge:value": 20
-        },
-        "justdirethings:xp_fluid_source": {
-            "neoforge:conditions": [
-                {
-                    "type": "neoforge:mod_loaded",
-                    "modid": "justdirethings"
-                }
-            ],
-            "neoforge:value": 20
-        },
-        "mob_grinding_utils:fluid_xp": {
-            "neoforge:conditions": [
-                {
-                    "type": "neoforge:mod_loaded",
-                    "modid": "mob_grinding_utils"
-                }
-            ],
-            "neoforge:value": 20
-        },
-        "pneumaticcraft:memory_essence": {
-            "neoforge:conditions": [
-                {
-                    "type": "neoforge:mod_loaded",
-                    "modid": "pneumaticcraft"
-                }
-            ],
-            "neoforge:value": 20
-        },
-        "reliquary:xp_juice_still": {
-            "neoforge:conditions": [
-                {
-                    "type": "neoforge:mod_loaded",
-                    "modid": "reliquary"
-                }
-            ],
-            "neoforge:value": 20
-        },
-        "sophisticatedcore:xp_still": {
-            "neoforge:conditions": [
-                {
-                    "type": "neoforge:mod_loaded",
-                    "modid": "sophisticatedcore"
-                }
-            ],
-            "neoforge:value": 20
+  "values": {
+    "cofh_core:experience": {
+      "forge:conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "cofh_core"
         }
+      ],
+      "forge:value": 25
+    },
+    "cyclic:xpjuice": {
+      "forge:conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "cyclic"
+        }
+      ],
+      "forge:value": 20
+    },
+    "enderio:xpjuice": {
+      "forge:conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "enderio"
+        }
+      ],
+      "forge:value": 20
+    },
+    "industrialforegoing:essence": {
+      "forge:conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "industrialforegoing"
+        }
+      ],
+      "forge:value": 20
+    },
+    "justdirethings:xp_fluid_source": {
+      "forge:conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "justdirethings"
+        }
+      ],
+      "forge:value": 20
+    },
+    "mob_grinding_utils:fluid_xp": {
+      "forge:conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "mob_grinding_utils"
+        }
+      ],
+      "forge:value": 20
+    },
+    "pneumaticcraft:memory_essence": {
+      "forge:conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "pneumaticcraft"
+        }
+      ],
+      "forge:value": 20
+    },
+    "reliquary:xp_juice_still": {
+      "forge:conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "reliquary"
+        }
+      ],
+      "forge:value": 20
+    },
+    "sophisticatedcore:xp_still": {
+      "forge:conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "sophisticatedcore"
+        }
+      ],
+      "forge:value": 20
     }
+  }
 }

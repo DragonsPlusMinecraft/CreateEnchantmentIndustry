@@ -30,7 +30,7 @@ public class CEIAPonderTags {
     public static final ResourceLocation APOTHEOTIC_STATS_COMPONENTS = CEICommon.asResource("apotheotic_stats_components");
 
     public static void register(PonderTagRegistrationHelper<ResourceLocation> helper) {
-        PonderTagRegistrationHelper<RegistryEntry<?, ?>> entryHelper = helper.withKeyFunction(RegistryEntry::getId);
+        PonderTagRegistrationHelper<RegistryEntry<?>> entryHelper = helper.withKeyFunction(RegistryEntry::getId);
 
         helper.registerTag(APOTHEOTIC_STATS_COMPONENTS)
                 .addToIndex()

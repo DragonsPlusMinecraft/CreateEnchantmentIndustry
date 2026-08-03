@@ -19,7 +19,6 @@
 package plus.dragons.createenchantmentindustry.common.fluids.printer.behaviour;
 
 import com.mojang.serialization.DataResult;
-import com.simibubi.create.AllDataComponents;
 import com.simibubi.create.content.logistics.box.PackageItem;
 import com.simibubi.create.foundation.blockEntity.behaviour.fluid.SmartFluidTankBehaviour;
 import com.simibubi.create.foundation.utility.CreateLang;
@@ -30,8 +29,9 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.neoforged.neoforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidStack;
 import plus.dragons.createenchantmentindustry.common.fluids.printer.PrinterBlockEntity;
+import plus.dragons.createenchantmentindustry.common.item.CEIItemData;
 import plus.dragons.createenchantmentindustry.common.registry.CEIDataMaps;
 import plus.dragons.createenchantmentindustry.config.CEIConfig;
 import plus.dragons.createenchantmentindustry.util.CEILang;
@@ -47,8 +47,8 @@ public class PackagePatternPrintingBehaviour implements PrintingBehaviour {
 
     public static Optional<DataResult<PrintingBehaviour>> create(Level level, SmartFluidTankBehaviour tank, ItemStack stack) {
         if (stack.getItem() instanceof PackageItem) {
-            String address = stack.get(AllDataComponents.PACKAGE_ADDRESS);
-            if (address == null || address.isEmpty())
+            String address = CEIItemData.getPackageAddress(stack);
+            if (address.isEmpty())
                 return Optional.of(DataResult.success(new PackagePatternPrintingBehaviour(stack.copy(), tank)));
         }
         return Optional.empty();
@@ -63,14 +63,13 @@ public class PackagePatternPrintingBehaviour implements PrintingBehaviour {
 
     @Override
     public int getRequiredFluidAmount(Level level, ItemStack stack, FluidStack fluidStack) {
-        var amount = fluidStack.getFluidHolder().getData(CEIDataMaps.PRINTING_PATTERN_INGREDIENT);
+        var amount = CEIDataMaps.PRINTING_PATTERN_INGREDIENT.get(fluidStack.getFluid());
         return amount == null ? 0 : amount;
     }
 
     @Override
     public ItemStack getResult(Level level, ItemStack stack, FluidStack fluidStack) {
-        var result = stack.transmuteCopy(pattern.getItem());
-        return result;
+        return CEIItemData.transmuteCopy(stack, pattern.getItem());
     }
 
     @Override
@@ -82,7 +81,7 @@ public class PackagePatternPrintingBehaviour implements PrintingBehaviour {
     @Override
     public boolean addToGoggleTooltip(List<Component> tooltip, boolean isPlayerSneaking) {
         CEILang.translate("gui.goggles.printing.pattern").forGoggles(tooltip);
-        var amount = tank.getPrimaryHandler().getFluid().getFluidHolder().getData(CEIDataMaps.PRINTING_PATTERN_INGREDIENT);
+        var amount = CEIDataMaps.PRINTING_PATTERN_INGREDIENT.get(tank.getPrimaryHandler().getFluid().getFluid());
         if (amount != null)
             CEILang.translate("gui.goggles.printing.cost",
                     CEILang.number(amount)

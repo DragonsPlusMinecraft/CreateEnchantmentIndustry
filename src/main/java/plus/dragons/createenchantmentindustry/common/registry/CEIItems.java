@@ -23,15 +23,14 @@ import static plus.dragons.createenchantmentindustry.common.CEICommon.REGISTRATE
 import com.simibubi.create.AllTags.AllItemTags;
 import com.simibubi.create.content.materials.ExperienceNuggetItem;
 import com.tterrag.registrate.util.entry.ItemEntry;
-import net.minecraft.core.component.DataComponents;
 import net.minecraft.world.item.BucketItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Rarity;
-import net.minecraft.world.item.enchantment.ItemEnchantments;
-import net.neoforged.bus.api.IEventBus;
-import net.neoforged.neoforge.common.Tags;
-import net.neoforged.neoforge.registries.DeferredItem;
-import plus.dragons.createenchantmentindustry.common.CEICommon;
+import net.minecraftforge.common.Tags;
+import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.RegistryObject;
+import plus.dragons.createenchantmentindustry.common.item.FoilItem;
 import plus.dragons.createenchantmentindustry.common.processing.enchanter.EnchantingTemplateItem;
 
 public class CEIItems {
@@ -43,15 +42,11 @@ public class CEIItems {
             .register();
     public static final ItemEntry<EnchantingTemplateItem> ENCHANTING_TEMPLATE = REGISTRATE
             .item("enchanting_template", EnchantingTemplateItem::normal)
-            .properties(prop -> prop
-                    .rarity(Rarity.UNCOMMON)
-                    .component(DataComponents.STORED_ENCHANTMENTS, ItemEnchantments.EMPTY))
+            .properties(prop -> prop.rarity(Rarity.UNCOMMON))
             .register();
     public static final ItemEntry<EnchantingTemplateItem> SUPER_ENCHANTING_TEMPLATE = REGISTRATE
             .item("super_enchanting_template", EnchantingTemplateItem::special)
-            .properties(prop -> prop
-                    .rarity(Rarity.RARE)
-                    .component(DataComponents.STORED_ENCHANTMENTS, ItemEnchantments.EMPTY))
+            .properties(prop -> prop.rarity(Rarity.RARE))
             .register();
     public static final ItemEntry<Item> BLAZES_ENCHANTING_HANDBOOK = REGISTRATE
             .item("blazes_enchanting_handbook", Item::new)
@@ -62,23 +57,19 @@ public class CEIItems {
             .lang("Cake Base o' Enchanting")
             .tag(AllItemTags.UPRIGHT_ON_BELT.tag)
             .register();
-    public static final ItemEntry<Item> EXPERIENCE_CAKE = REGISTRATE
-            .item("experience_cake", Item::new)
+    public static final ItemEntry<FoilItem> EXPERIENCE_CAKE = REGISTRATE
+            .item("experience_cake", FoilItem::new)
             .lang("Cake o' Enchanting")
-            .properties(prop -> prop
-                    .rarity(Rarity.RARE)
-                    .component(DataComponents.ENCHANTMENT_GLINT_OVERRIDE, true))
+            .properties(prop -> prop.rarity(Rarity.RARE))
             .tag(AllItemTags.UPRIGHT_ON_BELT.tag)
             .register();
-    public static final ItemEntry<Item> EXPERIENCE_CAKE_SLICE = REGISTRATE
-            .item("experience_cake_slice", Item::new)
+    public static final ItemEntry<FoilItem> EXPERIENCE_CAKE_SLICE = REGISTRATE
+            .item("experience_cake_slice", FoilItem::new)
             .lang("Cake Slice o' Enchanting")
-            .properties(prop -> prop
-                    .rarity(Rarity.RARE)
-                    .component(DataComponents.ENCHANTMENT_GLINT_OVERRIDE, true))
+            .properties(prop -> prop.rarity(Rarity.RARE))
             .register();
-    public static final DeferredItem<BucketItem> EXPERIENCE_BUCKET = DeferredItem
-            .createItem(CEICommon.asResource("experience_bucket"));
+    public static final RegistryObject<BucketItem> EXPERIENCE_BUCKET = RegistryObject.create(
+            REGISTRATE.asResource("experience_bucket"), ForgeRegistries.ITEMS);
 
     public static void register(IEventBus modBus) {}
 }

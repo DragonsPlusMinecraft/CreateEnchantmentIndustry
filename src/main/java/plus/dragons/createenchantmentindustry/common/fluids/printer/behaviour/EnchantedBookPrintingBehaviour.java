@@ -21,32 +21,27 @@ package plus.dragons.createenchantmentindustry.common.fluids.printer.behaviour;
 import com.mojang.serialization.DataResult;
 import com.simibubi.create.foundation.blockEntity.behaviour.fluid.SmartFluidTankBehaviour;
 import com.simibubi.create.foundation.utility.CreateLang;
-import it.unimi.dsi.fastutil.objects.Object2IntMap.Entry;
+import java.util.Comparator;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.OptionalInt;
-import java.util.concurrent.atomic.AtomicInteger;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Holder;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.core.HolderSet;
-import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.tags.EnchantmentTags;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.Enchantment;
-import net.minecraft.world.item.enchantment.EnchantmentHelper;
-import net.minecraft.world.item.enchantment.ItemEnchantments;
 import net.minecraft.world.level.Level;
-import net.neoforged.neoforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidStack;
 import plus.dragons.createenchantmentindustry.common.CEICommon;
 import plus.dragons.createenchantmentindustry.common.fluids.experience.ExperienceHelper;
 import plus.dragons.createenchantmentindustry.common.fluids.printer.PrinterBlockEntity;
+import plus.dragons.createenchantmentindustry.common.item.CEIItemData;
 import plus.dragons.createenchantmentindustry.common.processing.enchanter.CEIEnchantmentHelper;
 import plus.dragons.createenchantmentindustry.common.registry.CEIDataMaps;
 import plus.dragons.createenchantmentindustry.common.registry.CEIEnchantments;
@@ -58,43 +53,45 @@ public class EnchantedBookPrintingBehaviour implements PrintingBehaviour {
     private final Level level;
     private final SmartFluidTankBehaviour tank;
     private final ItemStack original;
-    private final ItemEnchantments enchantments;
+    private final Map<Enchantment, Integer> enchantments;
     private final int cost;
 
-    private EnchantedBookPrintingBehaviour(Level level, SmartFluidTankBehaviour tank, ItemStack original, ItemEnchantments enchantments) {
+    private EnchantedBookPrintingBehaviour(Level level, SmartFluidTankBehaviour tank, ItemStack original, Map<Enchantment, Integer> enchantments) {
         this.level = level;
         this.tank = tank;
         this.original = original;
-        this.enchantments = enchantments;
-        AtomicInteger result = new AtomicInteger(0);
-        enchantments.entrySet().forEach(entry -> {
+        this.enchantments = Map.copyOf(enchantments);
+        int result = 0;
+        for (var entry : enchantments.entrySet()) {
             Optional<CEIIntIntPair> optional = Optional.empty();
-            var customCost = entry.getKey().getData(CEIDataMaps.PRINTING_ENCHANTED_BOOK_COST);
+            var customCost = CEIDataMaps.PRINTING_ENCHANTED_BOOK_COST.get(entry.getKey());
             if (customCost != null) {
-                optional = customCost.stream().filter(pair -> pair.level() == entry.getIntValue()).findFirst();
+                optional = customCost.stream().filter(pair -> pair.level() == entry.getValue()).findFirst();
             }
-            result.addAndGet(optional.map(CEIIntIntPair::value).orElseGet(() -> (int) (CEIEnchantmentHelper.getEnchantmentCost(entry.getKey(), entry.getIntValue()) * CEIConfig.fluids().printingEnchantedBookCostMultiplier.get())));
-        });
-        this.cost = result.get();
+            result += optional.map(CEIIntIntPair::value).orElseGet(() -> (int) (CEIEnchantmentHelper.getEnchantmentCost(entry.getKey(), entry.getValue()) * CEIConfig.fluids().printingEnchantedBookCostMultiplier.get()));
+        }
+        this.cost = result;
     }
 
     public static Optional<DataResult<PrintingBehaviour>> create(Level level, SmartFluidTankBehaviour tank, ItemStack stack) {
         if (!stack.is(Items.ENCHANTED_BOOK))
             return Optional.empty();
-        var enchantments = EnchantmentHelper.getEnchantmentsForCrafting(stack);
+        var enchantments = CEIItemData.getEnchantments(stack);
         if (enchantments.isEmpty())
             return Optional.of(DataResult.error(() -> CEICommon.asLocalization("gui.printer.enchanted_book.invalid")));
-        if (enchantments.keySet().stream().anyMatch(enchantment -> enchantment.is(CEIEnchantments.MOD_TAGS.printingDeny))) {
+        if (enchantments.keySet().stream().anyMatch(enchantment -> isDenied(level, enchantment))) {
             if (CEIConfig.fluids().printingEnchantedBookDenylistStopCopying.get()) {
                 return Optional.of(DataResult.error(() -> CEICommon.asLocalization("gui.printer.enchanted_book.denied")));
             } else {
-                var rest = enchantments.keySet().stream().filter(enchantment -> !enchantment.is(CEIEnchantments.MOD_TAGS.printingDeny)).toList();
-                if (rest.isEmpty())
+                var allowed = new LinkedHashMap<Enchantment, Integer>();
+                enchantments.forEach((enchantment, enchantmentLevel) -> {
+                    if (!isDenied(level, enchantment))
+                        allowed.put(enchantment, enchantmentLevel);
+                });
+                if (allowed.isEmpty())
                     return Optional.of(DataResult.error(() -> CEICommon.asLocalization("gui.printer.enchanted_book.all_denied")));
                 else {
-                    var result = new ItemEnchantments.Mutable(enchantments);
-                    result.removeIf(rest::contains);
-                    return Optional.of(DataResult.success(new EnchantedBookPrintingBehaviour(level, tank, stack, result.toImmutable())));
+                    return Optional.of(DataResult.success(new EnchantedBookPrintingBehaviour(level, tank, stack, allowed)));
                 }
             }
         }
@@ -139,8 +136,9 @@ public class EnchantedBookPrintingBehaviour implements PrintingBehaviour {
 
     @Override
     public ItemStack getResult(Level level, ItemStack stack, FluidStack fluidStack) {
-        var result = stack.transmuteCopy(Items.ENCHANTED_BOOK, 1);
-        result.set(DataComponents.STORED_ENCHANTMENTS, enchantments);
+        var result = CEIItemData.transmuteCopy(stack, Items.ENCHANTED_BOOK);
+        result.setCount(1);
+        CEIItemData.setEnchantments(result, enchantments);
         return result;
     }
 
@@ -161,25 +159,20 @@ public class EnchantedBookPrintingBehaviour implements PrintingBehaviour {
                                 ? ChatFormatting.GREEN
                                 : ChatFormatting.RED))
                 .style(ChatFormatting.GRAY).forGoggles(tooltip));
-        HolderLookup.Provider registries = level.registryAccess();
-        var order = registries
-                .lookupOrThrow(Registries.ENCHANTMENT)
-                .get(EnchantmentTags.TOOLTIP_ORDER)
-                .map(holders -> (HolderSet<Enchantment>) holders)
-                .orElse(HolderSet.direct());
-        for (Holder<Enchantment> ordered : order) {
-            int level = enchantments.getLevel(ordered);
-            if (level > 0) {
-                CEILang.builder().add(Enchantment.getFullname(ordered, level)).forGoggles(tooltip, 1);
-            }
-        }
-        for (Entry<Holder<Enchantment>> entry : enchantments.entrySet()) {
-            Holder<Enchantment> unordered = entry.getKey();
-            int level = entry.getIntValue();
-            if (level > 0 && !order.contains(unordered)) {
-                CEILang.builder().add(Enchantment.getFullname(unordered, level)).forGoggles(tooltip, 1);
-            }
-        }
+        var registry = level.registryAccess().registryOrThrow(Registries.ENCHANTMENT);
+        enchantments.entrySet().stream()
+                .sorted(Map.Entry.comparingByKey(Comparator.comparingInt(registry::getId)))
+                .forEach(entry -> CEILang.builder()
+                        .add(entry.getKey().getFullname(entry.getValue()))
+                        .forGoggles(tooltip, 1));
         return true;
+    }
+
+    private static boolean isDenied(Level level, Enchantment enchantment) {
+        var registry = level.registryAccess().registryOrThrow(Registries.ENCHANTMENT);
+        return registry.getResourceKey(enchantment)
+                .flatMap(registry::getHolder)
+                .map(holder -> holder.is(CEIEnchantments.MOD_TAGS.printingDeny))
+                .orElse(false);
     }
 }

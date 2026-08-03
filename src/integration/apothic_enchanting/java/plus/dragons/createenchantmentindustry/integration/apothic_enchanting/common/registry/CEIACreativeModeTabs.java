@@ -20,19 +20,21 @@ package plus.dragons.createenchantmentindustry.integration.apothic_enchanting.co
 
 import static plus.dragons.createenchantmentindustry.integration.apothic_enchanting.common.registry.CEIABlocks.*;
 
-import net.minecraft.core.Holder;
+import dev.shadowsoffire.apotheosis.Apotheosis;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.CreativeModeTab;
-import net.neoforged.bus.api.IEventBus;
-import net.neoforged.neoforge.registries.DeferredRegister;
+import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.registries.RegistryObject;
 import plus.dragons.createenchantmentindustry.common.CEICommon;
 import plus.dragons.createenchantmentindustry.util.CEILang;
 
 public class CEIACreativeModeTabs {
     private static final DeferredRegister<CreativeModeTab> TABS = DeferredRegister
             .create(Registries.CREATIVE_MODE_TAB, CEICommon.ID);
-    public static final Holder<CreativeModeTab> APOTHEOTIC = TABS.register("apotheotic", CEIACreativeModeTabs::base);
+    public static final RegistryObject<CreativeModeTab> APOTHEOTIC = TABS.register(
+            "apotheotic", () -> base(CEICommon.asResource("apotheotic")));
 
     public static void register(IEventBus modBus) {
         TABS.register(modBus);
@@ -48,6 +50,8 @@ public class CEIACreativeModeTabs {
     }
 
     private static void buildBaseContents(CreativeModeTab.ItemDisplayParameters parameters, CreativeModeTab.Output output) {
+        if (!Apotheosis.enableEnch)
+            return;
         output.accept(INFUSER);
         output.accept(BRASS_BOOKSHELF);
         output.accept(CREATIVE_BOOKSHELF);

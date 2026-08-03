@@ -1,0 +1,8 @@
+{
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "touhou_little_maid"
+    }
+  ]
+}

@@ -25,10 +25,10 @@ import net.minecraft.data.CachedOutput;
 import net.minecraft.data.DataProvider;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
+import plus.dragons.createenchantmentindustry.common.item.CEIItemData;
 import plus.dragons.createenchantmentindustry.data.CEIConditionalLootTables;
 import plus.dragons.createenchantmentindustry.integration.ModIntegration;
 import plus.dragons.createenchantmentindustry.integration.apothic_enchanting.common.registry.CEIABlocks;
-import plus.dragons.createenchantmentindustry.integration.apothic_enchanting.common.registry.CEIADataComponents;
 
 public class CEIAConditionalLootTableProvider implements DataProvider {
     private final PackOutput output;
@@ -59,7 +59,8 @@ public class CEIAConditionalLootTableProvider implements DataProvider {
         var block = CEIABlocks.ENDER_WOVEN_BAG.getId();
         var entry = CEIConditionalLootTables.itemEntry(block);
         var functions = new JsonArray();
-        functions.add(CEIConditionalLootTables.copyComponents(CEIADataComponents.STORED_ENTITIES.getId()));
+        functions.add(CEIConditionalLootTables.copyNbt(
+                "Entities", CEIItemData.ROOT_TAG + "." + CEIItemData.STORED_ENTITIES_TAG));
         entry.add("functions", functions);
         return CEIConditionalLootTables.saveBlock(
                 output,

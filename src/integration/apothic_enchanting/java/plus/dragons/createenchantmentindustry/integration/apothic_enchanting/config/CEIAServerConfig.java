@@ -19,7 +19,7 @@
 package plus.dragons.createenchantmentindustry.integration.apothic_enchanting.config;
 
 import net.createmod.catnip.config.ConfigBase;
-import net.neoforged.neoforge.common.ModConfigSpec;
+import net.minecraftforge.common.ForgeConfigSpec;
 
 public class CEIAServerConfig extends ConfigBase {
     private final CEIAStatsConfig stats = nested(0, CEIAStatsConfig::new, Comments.bookshelf);
@@ -28,7 +28,7 @@ public class CEIAServerConfig extends ConfigBase {
     private final CEIAUtilityConfig utility = nested(0, CEIAUtilityConfig::new, Comments.utility);
 
     @Override
-    public void registerAll(ModConfigSpec.Builder builder) {
+    public void registerAll(ForgeConfigSpec.Builder builder) {
         super.registerAll(builder);
     }
 

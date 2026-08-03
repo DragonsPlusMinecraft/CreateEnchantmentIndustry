@@ -29,10 +29,11 @@ import com.simibubi.create.content.kinetics.belt.behaviour.TransportedItemStackH
 import com.simibubi.create.content.kinetics.belt.transport.TransportedItemStack;
 import com.simibubi.create.content.logistics.depot.DepotBlockEntity;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
-import dev.shadowsoffire.apotheosis.affix.Affix;
-import dev.shadowsoffire.apotheosis.affix.AffixHelper;
-import dev.shadowsoffire.apotheosis.affix.AffixInstance;
-import dev.shadowsoffire.apotheosis.affix.AffixRegistry;
+import dev.shadowsoffire.apotheosis.Apotheosis;
+import dev.shadowsoffire.apotheosis.adventure.affix.Affix;
+import dev.shadowsoffire.apotheosis.adventure.affix.AffixHelper;
+import dev.shadowsoffire.apotheosis.adventure.affix.AffixInstance;
+import dev.shadowsoffire.apotheosis.adventure.affix.AffixRegistry;
 import dev.shadowsoffire.placebo.reload.DynamicHolder;
 import java.util.List;
 import java.util.Map;
@@ -41,7 +42,6 @@ import net.createmod.catnip.lang.LangBuilder;
 import net.createmod.catnip.math.VecHelper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
@@ -55,7 +55,7 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.fluids.capability.IFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidHandler;
 import org.jetbrains.annotations.Nullable;
 import plus.dragons.createenchantmentindustry.integration.apotheosis.common.kinetics.belt.lowerProcessingAppliance.LowerBeltProcessingBehaviour;
 import plus.dragons.createenchantmentindustry.integration.apotheosis.common.processing.affix.AffixOperationCosts;
@@ -93,6 +93,14 @@ public class AffixAugmentorBlockEntity extends KineticBlockEntity implements IHa
     @Override
     public void tick() {
         super.tick();
+        if (!Apotheosis.enableAdventure) {
+            if (!level.isClientSide) {
+                powered = false;
+                cancelProcessing();
+                clearHeldPreview();
+            }
+            return;
+        }
         if (level.isClientSide) {
             if (powered && chargingPercentage < 1) {
                 chargingPercentage = Math.min(chargingPercentage + 0.025f, 1);
@@ -109,7 +117,7 @@ public class AffixAugmentorBlockEntity extends KineticBlockEntity implements IHa
                 }
             } else {
                 var tank = fluidTank.get().getTankInventory();
-                if (tank.getFluid().is(CEIAXFluids.APOTHEOTIC_ESSENCE)) {
+                if (tank.getFluid().getFluid() == CEIAXFluids.APOTHEOTIC_ESSENCE.get()) {
                     if (!powered) {
                         powered = true;
                         notifyUpdate();
@@ -147,6 +155,8 @@ public class AffixAugmentorBlockEntity extends KineticBlockEntity implements IHa
     }
 
     public BeltProcessingBehaviour.ProcessingResult onItemEnters(TransportedItemStack transported, TransportedItemStackHandlerBehaviour handler) {
+        if (!Apotheosis.enableAdventure)
+            return PASS;
         Level level = this.level;
         assert level != null;
 
@@ -160,6 +170,8 @@ public class AffixAugmentorBlockEntity extends KineticBlockEntity implements IHa
     }
 
     public BeltProcessingBehaviour.ProcessingResult onItemHeld(TransportedItemStack transported, TransportedItemStackHandlerBehaviour handler) {
+        if (!Apotheosis.enableAdventure)
+            return PASS;
         Level level = this.level;
         assert level != null;
         var context = getAugmentingContext(transported.stack);
@@ -319,7 +331,7 @@ public class AffixAugmentorBlockEntity extends KineticBlockEntity implements IHa
         var tank = fluidTank.get().getTankInventory();
         if (tank.isEmpty())
             return AugmentingContext.withAnalysis(AugmentingStatus.EMPTY_TANK, fluidTank, analysis);
-        if (!tank.getFluid().is(CEIAXFluids.APOTHEOTIC_ESSENCE))
+        if (tank.getFluid().getFluid() != CEIAXFluids.APOTHEOTIC_ESSENCE.get())
             return AugmentingContext.withAnalysis(AugmentingStatus.WRONG_FLUID, fluidTank, analysis);
         int cost = analysis.result().map(AffixAugmenting.Result::cost).orElse(0);
         if (cost <= 0)
@@ -335,7 +347,7 @@ public class AffixAugmentorBlockEntity extends KineticBlockEntity implements IHa
         if (cost <= 0 || fluidTank.isEmpty())
             return false;
         var tank = fluidTank.get().getTankInventory();
-        return tank.getFluid().is(CEIAXFluids.APOTHEOTIC_ESSENCE)
+        return tank.getFluid().getFluid() == CEIAXFluids.APOTHEOTIC_ESSENCE.get()
                 && cost <= tank.getCapacity()
                 && cost <= tank.getFluidAmount();
     }
@@ -355,8 +367,8 @@ public class AffixAugmentorBlockEntity extends KineticBlockEntity implements IHa
     }
 
     @Override
-    protected void write(CompoundTag tag, HolderLookup.Provider registries, boolean clientPacket) {
-        super.write(tag, registries, clientPacket);
+    protected void write(CompoundTag tag, boolean clientPacket) {
+        super.write(tag, clientPacket);
         tag.putInt("ProcessingTicks", processingTicks);
         tag.putBoolean("Powered", powered);
         if (activeAugmenting != null) {
@@ -376,8 +388,8 @@ public class AffixAugmentorBlockEntity extends KineticBlockEntity implements IHa
     }
 
     @Override
-    protected void read(CompoundTag tag, HolderLookup.Provider registries, boolean clientPacket) {
-        super.read(tag, registries, clientPacket);
+    protected void read(CompoundTag tag, boolean clientPacket) {
+        super.read(tag, clientPacket);
         processingTicks = tag.contains("ProcessingTicks") ? tag.getInt("ProcessingTicks") : -1;
         if (processingTicks == 0)
             processingTicks = -1;
@@ -412,6 +424,8 @@ public class AffixAugmentorBlockEntity extends KineticBlockEntity implements IHa
 
     @Override
     public boolean addToGoggleTooltip(List<Component> tooltip, boolean isPlayerSneaking) {
+        if (!Apotheosis.enableAdventure)
+            return false;
         CEILang.translate("gui.goggles.affix_augmentor").forGoggles(tooltip);
         addTankTooltip(tooltip);
         if (processingTicks > 0) {
@@ -634,12 +648,12 @@ public class AffixAugmentorBlockEntity extends KineticBlockEntity implements IHa
         var fluid = tank.getFluid();
         var amount = amount(tank.getFluidAmount(), tank.getCapacity());
         CEILang.builder()
-                .add(fluid.getHoverName())
+                .add(fluid.getDisplayName())
                 .text(" ")
                 .add(amount)
-                .style(fluid.is(CEIAXFluids.APOTHEOTIC_ESSENCE) ? ChatFormatting.GREEN : ChatFormatting.RED)
+                .style(fluid.getFluid() == CEIAXFluids.APOTHEOTIC_ESSENCE.get() ? ChatFormatting.GREEN : ChatFormatting.RED)
                 .forGoggles(tooltip, 1);
-        if (!fluid.is(CEIAXFluids.APOTHEOTIC_ESSENCE)) {
+        if (fluid.getFluid() != CEIAXFluids.APOTHEOTIC_ESSENCE.get()) {
             CEILang.translate("gui.goggles.affix_augmentor.wrong_fluid")
                     .style(ChatFormatting.RED)
                     .forGoggles(tooltip, 1);

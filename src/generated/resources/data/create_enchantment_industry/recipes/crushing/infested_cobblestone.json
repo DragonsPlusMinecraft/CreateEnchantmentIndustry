@@ -1,0 +1,17 @@
+{
+  "type": "create:crushing",
+  "ingredients": [
+    {
+      "item": "minecraft:infested_cobblestone"
+    }
+  ],
+  "results": [
+    {
+      "item": "minecraft:gravel"
+    },
+    {
+      "chance": 0.5,
+      "item": "create:experience_nugget"
+    }
+  ]
+}

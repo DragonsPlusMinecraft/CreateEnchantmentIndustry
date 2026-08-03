@@ -20,7 +20,7 @@ package plus.dragons.createenchantmentindustry.integration.apotheosis.config;
 
 import net.createmod.catnip.config.ConfigBase;
 import net.createmod.catnip.config.ui.ConfigAnnotations;
-import net.neoforged.neoforge.common.ModConfigSpec;
+import net.minecraftforge.common.ForgeConfigSpec;
 
 public class CEIAXFluidConfig extends ConfigBase {
     public final ConfigInt gemCutterCostCrackedToChipped = i(100, 1,
@@ -56,7 +56,7 @@ public class CEIAXFluidConfig extends ConfigBase {
             Comments.affixAugmentorCostSigilToApotheoticEssenceRatio);
 
     @Override
-    public void registerAll(ModConfigSpec.Builder builder) {
+    public void registerAll(ForgeConfigSpec.Builder builder) {
         super.registerAll(builder);
     }
 

@@ -1,0 +1,44 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "apotheosis"
+        },
+        {
+          "type": "create_enchantment_industry:apotheosis_module",
+          "module": "enchantment"
+        }
+      ],
+      "recipe": {
+        "type": "minecraft:crafting_shaped",
+        "category": "misc",
+        "key": {
+          "-": {
+            "item": "create:brass_casing"
+          },
+          "=": {
+            "item": "create:precision_mechanism"
+          },
+          "o": {
+            "item": "apotheosis:ender_lead"
+          },
+          "x": {
+            "item": "create:rose_quartz_lamp"
+          }
+        },
+        "pattern": [
+          "oxo",
+          "o=o",
+          "o-o"
+        ],
+        "result": {
+          "item": "create_enchantment_industry:ender_woven_bag"
+        },
+        "show_notification": true
+      }
+    }
+  ]
+}

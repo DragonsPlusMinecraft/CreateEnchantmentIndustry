@@ -21,8 +21,8 @@ package plus.dragons.createenchantmentindustry.integration.apotheosis.common.pro
 import com.simibubi.create.foundation.fluid.SmartFluidTank;
 import java.util.function.BooleanSupplier;
 import java.util.function.Supplier;
-import net.neoforged.neoforge.fluids.FluidStack;
-import net.neoforged.neoforge.fluids.capability.IFluidHandler;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.capability.IFluidHandler;
 import plus.dragons.createenchantmentindustry.integration.apotheosis.common.registry.CEIAXFluids;
 
 class SuperFuelFluidHandler implements IFluidHandler {
@@ -55,7 +55,7 @@ class SuperFuelFluidHandler implements IFluidHandler {
 
     @Override
     public boolean isFluidValid(int tank, FluidStack stack) {
-        return stack.is(CEIAXFluids.APOTHEOTIC_ESSENCE);
+        return stack.getFluid() == CEIAXFluids.APOTHEOTIC_ESSENCE.get();
     }
 
     @Override
@@ -66,12 +66,14 @@ class SuperFuelFluidHandler implements IFluidHandler {
         int remaining = resource.getAmount() - filled;
         if (remaining <= 0 || !canFillSuperTank.getAsBoolean())
             return filled;
-        return filled + superTank.get().fill(resource.copyWithAmount(remaining), action);
+        FluidStack remainder = resource.copy();
+        remainder.setAmount(remaining);
+        return filled + superTank.get().fill(remainder, action);
     }
 
     @Override
     public FluidStack drain(FluidStack resource, FluidAction action) {
-        if (resource.isEmpty() || !resource.is(CEIAXFluids.APOTHEOTIC_ESSENCE))
+        if (resource.isEmpty() || resource.getFluid() != CEIAXFluids.APOTHEOTIC_ESSENCE.get())
             return FluidStack.EMPTY;
         return drain(resource.getAmount(), action);
     }
@@ -84,7 +86,7 @@ class SuperFuelFluidHandler implements IFluidHandler {
         int remaining = maxDrain - drained;
         if (remaining > 0)
             drained += normalTank.get().drain(remaining, action).getAmount();
-        return drained <= 0 ? FluidStack.EMPTY : new FluidStack(CEIAXFluids.APOTHEOTIC_ESSENCE, drained);
+        return drained <= 0 ? FluidStack.EMPTY : new FluidStack(CEIAXFluids.APOTHEOTIC_ESSENCE.get(), drained);
     }
 
     private SmartFluidTank getTank(int tank) {

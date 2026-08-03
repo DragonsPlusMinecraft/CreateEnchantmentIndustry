@@ -26,21 +26,26 @@ import java.util.List;
 import java.util.Map;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.Direction;
-import net.minecraft.core.HolderLookup;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.common.Tags;
+import net.minecraftforge.common.Tags;
 import plus.dragons.createenchantmentindustry.integration.apothic_enchanting.config.CEIAConfig;
 import plus.dragons.createenchantmentindustry.integration.apothic_enchanting.util.CEIALang;
 
 public class CaptureEntityBehaviour extends BlockEntityBehaviour implements IHaveGoggleInformation {
     public static final BehaviourType<CaptureEntityBehaviour> TYPE = new BehaviourType<>("capture_entity");
+    private static final TagKey<EntityType<?>> CAPTURING_NOT_SUPPORTED = TagKey.create(
+            Registries.ENTITY_TYPE, new ResourceLocation("forge", "capturing_not_supported"));
     protected AABB effectiveAABB;
     protected StoredEntities entities;
     protected boolean release;
@@ -52,14 +57,14 @@ public class CaptureEntityBehaviour extends BlockEntityBehaviour implements IHav
     }
 
     @Override
-    public void write(CompoundTag nbt, HolderLookup.Provider registries, boolean clientPacket) {
-        nbt.put("Entities", entities.tag(registries));
+    public void write(CompoundTag nbt, boolean clientPacket) {
+        nbt.put("Entities", entities.tag());
         nbt.putBoolean("Release", release);
     }
 
     @Override
-    public void read(CompoundTag nbt, HolderLookup.Provider registries, boolean clientPacket) {
-        this.entities = StoredEntities.parse(registries, nbt.get("Entities"));
+    public void read(CompoundTag nbt, boolean clientPacket) {
+        this.entities = StoredEntities.parse(nbt.get("Entities"));
         this.release = nbt.getBoolean("Release");
     }
 
@@ -106,7 +111,7 @@ public class CaptureEntityBehaviour extends BlockEntityBehaviour implements IHav
                 for (var entity : targets) {
                     var pushForce = CEIAConfig.server().utility().enderWovenBagPullForceMultiplier.get() * 1 / entity.position().distanceTo(blockEntity.getBlockPos().getCenter());
                     var direction = blockEntity.getBlockPos().getCenter().subtract(entity.position()).normalize().multiply(pushForce, pushForce, pushForce);
-                    entity.push(direction);
+                    entity.push(direction.x, direction.y, direction.z);
                 }
             }
         }
@@ -119,7 +124,7 @@ public class CaptureEntityBehaviour extends BlockEntityBehaviour implements IHav
     static boolean test(LivingEntity target) {
         return target.isAlive() && target instanceof Mob
                 && (!target.getType().is(Tags.EntityTypes.BOSSES) || CEIAConfig.server().utility().enderWovenBagPullBossToggle.get())
-                && !target.getType().is(Tags.EntityTypes.CAPTURING_NOT_SUPPORTED)
+                && !target.getType().is(CAPTURING_NOT_SUPPORTED)
                 && !target.isRemoved() && !target.isPassenger() && target.getType().canSerialize();
     }
 

@@ -1,19 +1,19 @@
 {
-    "variants": {
-        "facing=east": {
-            "model": "create_enchantment_industry:block/creative_bookshelf",
-            "y": 90
-        },
-        "facing=north": {
-            "model": "create_enchantment_industry:block/creative_bookshelf"
-        },
-        "facing=south": {
-            "model": "create_enchantment_industry:block/creative_bookshelf",
-            "y": 180
-        },
-        "facing=west": {
-            "model": "create_enchantment_industry:block/creative_bookshelf",
-            "y": 270
-        }
+  "variants": {
+    "facing=east": {
+      "model": "create_enchantment_industry:block/creative_bookshelf",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "create_enchantment_industry:block/creative_bookshelf"
+    },
+    "facing=south": {
+      "model": "create_enchantment_industry:block/creative_bookshelf",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "create_enchantment_industry:block/creative_bookshelf",
+      "y": 270
     }
+  }
 }

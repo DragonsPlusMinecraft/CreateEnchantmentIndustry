@@ -1,0 +1,25 @@
+{
+  "type": "create:mixing",
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "apotheosis"
+    },
+    {
+      "type": "create_enchantment_industry:apotheosis_module",
+      "module": "adventure"
+    }
+  ],
+  "ingredients": [
+    {
+      "item": "apotheosis:gem_dust"
+    }
+  ],
+  "processingTime": 8,
+  "results": [
+    {
+      "amount": 10,
+      "fluid": "create_enchantment_industry:crystal_essence"
+    }
+  ]
+}

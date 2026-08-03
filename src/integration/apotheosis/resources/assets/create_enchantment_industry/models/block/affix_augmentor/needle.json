@@ -33,7 +33,7 @@
         "up": {"uv": [9, 3, 10.5, 4.5], "texture": "#0"},
         "down": {"uv": [9, 3, 10.5, 4.5], "texture": "#0"}
       },
-      "neoforge_data": {
+      "forge_data": {
         "block_light": 15,
         "sky_light": 15
       }

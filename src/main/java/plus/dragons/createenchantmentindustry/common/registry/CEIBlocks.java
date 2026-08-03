@@ -42,9 +42,9 @@ import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
-import net.neoforged.bus.api.IEventBus;
-import net.neoforged.neoforge.common.Tags;
-import net.neoforged.neoforge.common.util.DeferredSoundType;
+import net.minecraftforge.common.Tags;
+import net.minecraftforge.common.util.ForgeSoundType;
+import net.minecraftforge.eventbus.api.IEventBus;
 import plus.dragons.createdragonsplus.common.processing.blaze.BlazeBlock;
 import plus.dragons.createdragonsplus.common.processing.blaze.BlazeMovementBehaviour;
 import plus.dragons.createenchantmentindustry.common.fluids.experience.ExperienceHatchBlock;
@@ -54,6 +54,7 @@ import plus.dragons.createenchantmentindustry.common.fluids.printer.PrinterBlock
 import plus.dragons.createenchantmentindustry.common.kinetics.grindstone.GrindstoneDrainBlock;
 import plus.dragons.createenchantmentindustry.common.kinetics.grindstone.MechanicalGrindStoneItem;
 import plus.dragons.createenchantmentindustry.common.kinetics.grindstone.MechanicalGrindstoneBlock;
+import plus.dragons.createenchantmentindustry.common.processing.BlazeCustomRenderedBlockItem;
 import plus.dragons.createenchantmentindustry.common.processing.classic_enchanter.ClassicBlazeEnchanterBlock;
 import plus.dragons.createenchantmentindustry.common.processing.enchanter.BlazeEnchanterBlock;
 import plus.dragons.createenchantmentindustry.common.processing.forger.BlazeForgerBlock;
@@ -113,7 +114,7 @@ public class CEIBlocks {
             .blockstate((ctx, prov) -> prov.horizontalBlock(
                     ctx.getEntry(),
                     prov.models().getExistingFile(Create.asResource("block/blaze_burner/block"))))
-            .item()
+            .item(BlazeCustomRenderedBlockItem.Enchanter::new)
             .model((ctx, prov) -> prov.withExistingParent(ctx.getName(),
                     Create.asResource("block/blaze_burner/block_with_blaze")))
             .build()
@@ -129,7 +130,7 @@ public class CEIBlocks {
             .blockstate((ctx, prov) -> prov.horizontalBlock(
                     ctx.getEntry(),
                     prov.models().getExistingFile(Create.asResource("block/blaze_burner/block"))))
-            .item()
+            .item(BlazeCustomRenderedBlockItem.Forger::new)
             .model((ctx, prov) -> prov.withExistingParent(ctx.getName(),
                     Create.asResource("block/blaze_burner/block_with_blaze")))
             .build()
@@ -145,7 +146,7 @@ public class CEIBlocks {
             .blockstate((ctx, prov) -> prov.horizontalBlock(
                     ctx.getEntry(),
                     prov.models().getExistingFile(Create.asResource("block/blaze_burner/block"))))
-            .item()
+            .item(BlazeCustomRenderedBlockItem.ClassicEnchanter::new)
             .model((ctx, prov) -> prov.withExistingParent(ctx.getName(),
                     Create.asResource("block/blaze_burner/block_with_blaze")))
             .build()
@@ -154,7 +155,7 @@ public class CEIBlocks {
             .block("super_experience_block", ExperienceBlock::new)
             .initialProperties(SharedProperties::softMetal)
             .properties(p -> p.mapColor(MapColor.DIAMOND)
-                    .sound(new DeferredSoundType(1, .5f, () -> SoundEvents.AMETHYST_BLOCK_BREAK,
+                    .sound(new ForgeSoundType(1, .5f, () -> SoundEvents.AMETHYST_BLOCK_BREAK,
                             () -> SoundEvents.AMETHYST_BLOCK_STEP, () -> SoundEvents.AMETHYST_BLOCK_PLACE,
                             () -> SoundEvents.AMETHYST_BLOCK_HIT, () -> SoundEvents.AMETHYST_BLOCK_FALL))
                     .requiresCorrectToolForDrops()

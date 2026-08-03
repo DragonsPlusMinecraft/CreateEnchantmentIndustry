@@ -26,8 +26,9 @@ import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour
 import com.simibubi.create.foundation.blockEntity.behaviour.fluid.SmartFluidTankBehaviour;
 import com.simibubi.create.foundation.blockEntity.behaviour.simple.DeferralBehaviour;
 import com.simibubi.create.foundation.recipe.RecipeFinder;
-import dev.shadowsoffire.apothic_enchanting.table.EnchantmentTableStats;
-import dev.shadowsoffire.apothic_enchanting.table.infusion.InfusionRecipe;
+import dev.shadowsoffire.apotheosis.Apotheosis;
+import dev.shadowsoffire.apotheosis.ench.table.ApothEnchantmentMenu;
+import dev.shadowsoffire.apotheosis.ench.table.EnchantingRecipe;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -36,7 +37,6 @@ import net.createmod.catnip.math.VecHelper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
@@ -52,7 +52,10 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.fluids.capability.IFluidHandler;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
+import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.fluids.capability.IFluidHandler;
 import org.jetbrains.annotations.Nullable;
 import plus.dragons.createdragonsplus.common.advancements.AdvancementBehaviour;
 import plus.dragons.createenchantmentindustry.integration.apothic_enchanting.common.registry.CEIAFluids;
@@ -62,7 +65,7 @@ import plus.dragons.createenchantmentindustry.integration.apothic_enchanting.uti
 
 public class InfuserBlockEntity extends SmartBlockEntity implements IHaveGoggleInformation {
     public static final int PROCESSING_TIME = 80;
-    private static final List<RecipeHolder<? extends Recipe<?>>> CACHED_RECIPES = new ArrayList<>();
+    private static final List<Recipe<?>> CACHED_RECIPES = new ArrayList<>();
     public static final ResourceManagerReloadListener RELOAD_LISTENER = resourceManager -> CACHED_RECIPES.clear();
 
     public int runningTicks;
@@ -172,7 +175,7 @@ public class InfuserBlockEntity extends SmartBlockEntity implements IHaveGoggleI
         return true;
     }
 
-    protected <I extends RecipeInput> boolean matchBasinRecipe(Recipe<I> recipe) {
+    protected boolean matchBasinRecipe(Recipe<?> recipe) {
         if (recipe == null)
             return false;
         Optional<BasinBlockEntity> basin = getBasin();
@@ -204,6 +207,8 @@ public class InfuserBlockEntity extends SmartBlockEntity implements IHaveGoggleI
     }
 
     protected List<Recipe<?>> getMatchingRecipes() {
+        if (!Apotheosis.enableEnch)
+            return new ArrayList<>();
         if (getBasin().map(BasinBlockEntity::isEmpty)
                 .orElse(true))
             return new ArrayList<>();
@@ -211,24 +216,24 @@ public class InfuserBlockEntity extends SmartBlockEntity implements IHaveGoggleI
         collectRecipeCache(level);
 
         List<Recipe<?>> list = new ArrayList<>();
-        for (RecipeHolder<? extends Recipe<?>> r : CACHED_RECIPES)
-            if (matchBasinRecipe(r.value()))
-                list.add(r.value());
+        for (Recipe<?> recipe : CACHED_RECIPES)
+            if (matchBasinRecipe(recipe))
+                list.add(recipe);
 
         return list;
     }
 
     private static void collectRecipeCache(Level level) {
         if (CACHED_RECIPES.isEmpty()) {
-            CACHED_RECIPES.addAll(RecipeFinder.get(null, level, r -> r.value().getType() == CEIARecipes.INFUSING.getType()));
-            List<RecipeHolder<? extends Recipe<?>>> apothicRecipes = new ArrayList<>(RecipeFinder.get(null, level, InfuserBlockEntity::matchStaticFilters));
-            apothicRecipes.sort(Comparator.comparingDouble((RecipeHolder<? extends Recipe<?>> holder) -> ((InfusionRecipe) holder.value()).getRequirements().eterna()).reversed());
+            CACHED_RECIPES.addAll(RecipeFinder.get(null, level, r -> r.getType() == CEIARecipes.INFUSING.getType()));
+            List<Recipe<?>> apothicRecipes = new ArrayList<>(RecipeFinder.get(null, level, InfuserBlockEntity::matchStaticFilters));
+            apothicRecipes.sort(Comparator.comparingDouble((Recipe<?> recipe) -> ((EnchantingRecipe) recipe).getRequirements().eterna()).reversed());
             CACHED_RECIPES.addAll(apothicRecipes);
         }
     }
 
     protected boolean updateInfusionStats() {
-        var newStats = EnchantmentTableStats.gatherStats(level, getBlockPos().below(), 0);
+        var newStats = ApothEnchantmentMenu.gatherStats(level, getBlockPos().below(), 0);
         boolean changed = newStats.arcana() != infusionStats.arcana() || newStats.eterna() != infusionStats.eterna() || newStats.quanta() != infusionStats.quanta();
         if (changed) infusionStats = new InfusionStats(newStats.eterna(), newStats.quanta(), newStats.arcana());
         return changed;
@@ -257,18 +262,17 @@ public class InfuserBlockEntity extends SmartBlockEntity implements IHaveGoggleI
         return true;
     }
 
-    protected static boolean matchStaticFilters(RecipeHolder<? extends Recipe<?>> recipe) {
-        Recipe<?> r = recipe.value();
-        return (r instanceof InfusionRecipe) && !AllRecipeTypes.shouldIgnoreInAutomation(recipe);
+    protected static boolean matchStaticFilters(Recipe<?> recipe) {
+        return recipe instanceof EnchantingRecipe && !AllRecipeTypes.shouldIgnoreInAutomation(recipe);
     }
 
     @Override
-    protected void read(CompoundTag compound, HolderLookup.Provider registries, boolean clientPacket) {
+    protected void read(CompoundTag compound, boolean clientPacket) {
         running = compound.getBoolean("Running");
         runningTicks = compound.getInt("Ticks");
         processingTicks = compound.getInt("ProcessingTicks");
-        infusionStats = InfusionStats.parse(registries, compound.get("InfusionStats"));
-        super.read(compound, registries, clientPacket);
+        infusionStats = InfusionStats.parse(compound.get("InfusionStats"));
+        super.read(compound, clientPacket);
 
         if (clientPacket && hasLevel())
             getBasin().ifPresent(bte -> bte.setAreFluidsMoving(running && runningTicks <= 20));
@@ -284,18 +288,25 @@ public class InfuserBlockEntity extends SmartBlockEntity implements IHaveGoggleI
     }
 
     @Override
-    protected void write(CompoundTag compound, HolderLookup.Provider registries, boolean clientPacket) {
+    protected void write(CompoundTag compound, boolean clientPacket) {
         compound.putBoolean("Running", running);
         compound.putInt("Ticks", runningTicks);
         compound.putInt("ProcessingTicks", processingTicks);
-        compound.put("InfusionStats", infusionStats.tag(registries));
-        super.write(compound, registries, clientPacket);
+        compound.put("InfusionStats", infusionStats.tag());
+        super.write(compound, clientPacket);
     }
 
     public @Nullable IFluidHandler getFluidHandler(@Nullable Direction side) {
         if (side != Direction.DOWN)
-            return tank.getCapability();
+            return tank.getCapability().orElse(null);
         return null;
+    }
+
+    @Override
+    public <T> LazyOptional<T> getCapability(Capability<T> capability, @Nullable Direction side) {
+        if (capability == ForgeCapabilities.FLUID_HANDLER && tank != null && side != Direction.DOWN)
+            return tank.getCapability().cast();
+        return super.getCapability(capability, side);
     }
 
     public void setInfusionStats(InfusionStats infusionStats) { // Only used by ponder!
@@ -310,15 +321,18 @@ public class InfuserBlockEntity extends SmartBlockEntity implements IHaveGoggleI
     @Override
     public boolean addToGoggleTooltip(List<Component> tooltip, boolean isPlayerSneaking) {
         assert level != null;
-        containedFluidTooltip(tooltip, isPlayerSneaking, tank.getPrimaryHandler());
-        if (!tank.getPrimaryHandler().isEmpty() && !tank.getPrimaryHandler().getFluid().is(CEIAFluids.MOD_TAGS.infusing_ingredients))
+        containedFluidTooltip(tooltip, isPlayerSneaking, tank.getCapability().cast());
+        if (!tank.getPrimaryHandler().isEmpty()
+                && !tank.getPrimaryHandler().getFluid().getFluid().is(CEIAFluids.MOD_TAGS.infusing_ingredients))
             CEIALang.translate("gui.goggles.infuser.incorrect_liquid").style(ChatFormatting.RED).forGoggles(tooltip, 1);
         infusionStats.addToGoggleTooltip(tooltip, isPlayerSneaking);
         return true;
     }
 
     public static Boolean canBeInfused(ItemStack stack, Level level) {
+        if (!Apotheosis.enableEnch)
+            return false;
         collectRecipeCache(level);
-        return CACHED_RECIPES.stream().anyMatch(holder -> InfusingRecipe.canProcessInput(holder.value(), stack));
+        return CACHED_RECIPES.stream().anyMatch(recipe -> InfusingRecipe.canProcessInput(recipe, stack));
     }
 }

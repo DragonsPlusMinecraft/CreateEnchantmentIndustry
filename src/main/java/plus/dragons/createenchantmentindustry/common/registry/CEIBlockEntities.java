@@ -25,10 +25,7 @@ import com.simibubi.create.content.kinetics.base.KineticBlockEntityRenderer;
 import com.simibubi.create.content.kinetics.base.SingleAxisRotatingVisual;
 import com.simibubi.create.foundation.blockEntity.renderer.SmartBlockEntityRenderer;
 import com.tterrag.registrate.util.entry.BlockEntityEntry;
-import net.neoforged.bus.api.IEventBus;
-import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.neoforge.capabilities.Capabilities;
-import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
+import net.minecraftforge.eventbus.api.IEventBus;
 import plus.dragons.createdragonsplus.common.processing.blaze.BlazeBlockVisual;
 import plus.dragons.createenchantmentindustry.client.model.CEIPartialModels;
 import plus.dragons.createenchantmentindustry.common.fluids.experience.ExperienceHatchBlockEntity;
@@ -92,24 +89,6 @@ public class CEIBlockEntities {
             .register();
 
     public static void register(IEventBus modBus) {
-        modBus.register(CEIBlockEntities.class);
-    }
-
-    @SubscribeEvent
-    public static void registerCapabilities(final RegisterCapabilitiesEvent event) {
-        event.registerBlockEntity(Capabilities.ItemHandler.BLOCK,
-                GRINDSTONE_DRAIN.get(), GrindstoneDrainBlockEntity::getItemHandler);
-        event.registerBlockEntity(Capabilities.FluidHandler.BLOCK,
-                GRINDSTONE_DRAIN.get(), GrindstoneDrainBlockEntity::getFluidHandler);
-        event.registerBlockEntity(Capabilities.FluidHandler.BLOCK,
-                PRINTER.get(), PrinterBlockEntity::getFluidHandler);
-        event.registerBlockEntity(Capabilities.FluidHandler.BLOCK,
-                BLAZE_ENCHANTER.get(), BlazeEnchanterBlockEntity::getFluidHandler);
-        event.registerBlockEntity(Capabilities.FluidHandler.BLOCK,
-                BLAZE_FORGER.get(), BlazeForgerBlockEntity::getFluidHandler);
-        event.registerBlockEntity(Capabilities.FluidHandler.BLOCK,
-                CLASSIC_BLAZE_ENCHANTER.get(), ClassicBlazeEnchanterBlockEntity::getFluidHandler);
-        event.registerBlockEntity(Capabilities.FluidHandler.BLOCK,
-                EXPERIENCE_LANTERN.get(), ExperienceLanternBlockEntity::getFluidHandler);
+        // Forge 1.20.1 block entities expose capabilities from getCapability directly.
     }
 }

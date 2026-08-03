@@ -18,39 +18,46 @@
 
 package plus.dragons.createenchantmentindustry.integration.apotheosis.common.logistics.attributes;
 
-import com.mojang.serialization.MapCodec;
 import com.simibubi.create.content.logistics.item.filter.attribute.ItemAttribute;
 import com.simibubi.create.content.logistics.item.filter.attribute.ItemAttributeType;
-import dev.shadowsoffire.apotheosis.Apoth;
-import dev.shadowsoffire.apotheosis.socket.gem.GemItem;
-import dev.shadowsoffire.apotheosis.socket.gem.Purity;
-import io.netty.buffer.ByteBuf;
 import java.util.List;
-import net.createmod.catnip.lang.LangBuilder;
-import net.minecraft.network.RegistryFriendlyByteBuf;
-import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
+import plus.dragons.createenchantmentindustry.integration.apotheosis.common.processing.socket.gem.gemCutter.GemCutting;
+import plus.dragons.createenchantmentindustry.integration.apotheosis.common.processing.socket.gem.gemCutter.GemCutting.Tier;
 import plus.dragons.createenchantmentindustry.integration.apotheosis.common.registry.CEIAXItemAttributes;
 import plus.dragons.createenchantmentindustry.integration.apothic_enchanting.common.CEIACommon;
 
-public record GemPurityAttributes(Purity purity) implements ItemAttribute {
-    public static final MapCodec<GemPurityAttributes> CODEC = Purity.CODEC
-            .xmap(GemPurityAttributes::new, GemPurityAttributes::purity)
-            .fieldOf("value");
+/** Create filter attribute for the six official Apotheosis 1.20.1 gem rarities. */
+public final class GemPurityAttributes implements ItemAttribute {
+    private ResourceLocation rarityId;
 
-    public static final StreamCodec<ByteBuf, GemPurityAttributes> STREAM_CODEC = Purity.STREAM_CODEC
-            .map(GemPurityAttributes::new, GemPurityAttributes::purity);
+    public GemPurityAttributes(ResourceLocation rarityId) {
+        this.rarityId = rarityId;
+    }
 
     @Override
     public boolean appliesTo(ItemStack stack, Level world) {
-        return (stack.is(Apoth.Items.GEM));
+        return GemCutting.tier(stack).map(tier -> tier.id().equals(rarityId)).orElse(false);
     }
 
     @Override
     public ItemAttributeType getType() {
-        return CEIAXItemAttributes.GEM_PURITY.value();
+        return CEIAXItemAttributes.GEM_PURITY.get();
+    }
+
+    @Override
+    public void save(CompoundTag nbt) {
+        nbt.putString("rarity", rarityId.toString());
+    }
+
+    @Override
+    public void load(CompoundTag nbt) {
+        ResourceLocation parsed = ResourceLocation.tryParse(nbt.getString("rarity"));
+        rarityId = parsed == null ? Tier.COMMON.id() : parsed;
     }
 
     @Override
@@ -60,31 +67,20 @@ public record GemPurityAttributes(Purity purity) implements ItemAttribute {
 
     @Override
     public Object[] getTranslationParameters() {
-        LangBuilder parameter = new LangBuilder(CEIACommon.ID).add(purity.toComponent());
-        return new Object[] { parameter };
+        return new Object[] { Tier.byId(rarityId).orElse(Tier.COMMON).displayName() };
     }
 
     public static class Type implements ItemAttributeType {
         @Override
         public @NotNull ItemAttribute createAttribute() {
-            return new GemPurityAttributes(Purity.CRACKED);
+            return new GemPurityAttributes(Tier.COMMON.id());
         }
 
         @Override
         public List<ItemAttribute> getAllAttributes(ItemStack stack, Level level) {
-            if (stack.is(Apoth.Items.GEM))
-                return List.of(new GemPurityAttributes(GemItem.getPurity(stack)));
-            return List.of();
-        }
-
-        @Override
-        public MapCodec<? extends ItemAttribute> codec() {
-            return CODEC;
-        }
-
-        @Override
-        public StreamCodec<? super RegistryFriendlyByteBuf, ? extends ItemAttribute> streamCodec() {
-            return STREAM_CODEC;
+            return GemCutting.tier(stack)
+                    .<List<ItemAttribute>>map(tier -> List.of(new GemPurityAttributes(tier.id())))
+                    .orElseGet(List::of);
         }
     }
 }

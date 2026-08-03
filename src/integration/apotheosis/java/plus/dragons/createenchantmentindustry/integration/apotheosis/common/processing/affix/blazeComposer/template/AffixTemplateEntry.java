@@ -20,18 +20,16 @@ package plus.dragons.createenchantmentindustry.integration.apotheosis.common.pro
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import dev.shadowsoffire.apotheosis.affix.Affix;
-import dev.shadowsoffire.apotheosis.affix.AffixInstance;
-import dev.shadowsoffire.apotheosis.affix.AffixRegistry;
-import dev.shadowsoffire.apotheosis.loot.LootRarity;
+import dev.shadowsoffire.apotheosis.adventure.affix.Affix;
+import dev.shadowsoffire.apotheosis.adventure.affix.AffixInstance;
+import dev.shadowsoffire.apotheosis.adventure.affix.AffixRegistry;
+import dev.shadowsoffire.apotheosis.adventure.loot.LootRarity;
 import dev.shadowsoffire.placebo.reload.DynamicHolder;
-import io.netty.buffer.ByteBuf;
 import java.util.Collection;
 import java.util.List;
-import net.minecraft.network.codec.ByteBufCodecs;
-import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
+import plus.dragons.createenchantmentindustry.integration.apotheosis.common.processing.affix.AffixLevelLimits;
 
 public record AffixTemplateEntry(
         DynamicHolder<Affix> affix,
@@ -39,25 +37,16 @@ public record AffixTemplateEntry(
         List<ResourceLocation> sourceCategories,
         boolean transcendent) {
 
-    private static final int MAX_SOURCE_CATEGORIES = 32;
-
     public static final Codec<AffixTemplateEntry> CODEC = RecordCodecBuilder.create(instance -> instance.group(
             AffixRegistry.INSTANCE.holderCodec().fieldOf("affix").forGetter(AffixTemplateEntry::affix),
             Codec.floatRange(0, Float.MAX_VALUE).fieldOf("level").forGetter(AffixTemplateEntry::level),
             ResourceLocation.CODEC.listOf().optionalFieldOf("source_categories", List.of()).forGetter(AffixTemplateEntry::sourceCategories),
             Codec.BOOL.optionalFieldOf("transcendent", false).forGetter(AffixTemplateEntry::transcendent))
             .apply(instance, AffixTemplateEntry::new));
-
-    public static final StreamCodec<ByteBuf, AffixTemplateEntry> STREAM_CODEC = StreamCodec.composite(
-            AffixRegistry.INSTANCE.holderStreamCodec(), AffixTemplateEntry::affix,
-            ByteBufCodecs.FLOAT, AffixTemplateEntry::level,
-            ResourceLocation.STREAM_CODEC.apply(ByteBufCodecs.list(MAX_SOURCE_CATEGORIES)), AffixTemplateEntry::sourceCategories,
-            ByteBufCodecs.BOOL, AffixTemplateEntry::transcendent,
-            AffixTemplateEntry::new);
     public AffixTemplateEntry {
         level = Math.max(0, level);
         sourceCategories = normalizeSourceCategories(sourceCategories);
-        transcendent = transcendent || level > Affix.MAX_LEVEL;
+        transcendent = transcendent || level > AffixLevelLimits.EXTENDED_MAX_LEVEL;
     }
 
     public boolean isBound() {
@@ -65,7 +54,11 @@ public record AffixTemplateEntry(
     }
 
     public AffixTemplateEntry withLevel(float level) {
-        return new AffixTemplateEntry(affix, level, sourceCategories, level > Affix.MAX_LEVEL || transcendent);
+        return new AffixTemplateEntry(
+                affix,
+                level,
+                sourceCategories,
+                level > AffixLevelLimits.EXTENDED_MAX_LEVEL || transcendent);
     }
 
     public AffixTemplateEntry withSourceCategories(Collection<ResourceLocation> categories) {
@@ -83,7 +76,7 @@ public record AffixTemplateEntry(
     }
 
     public AffixInstance toInstance(DynamicHolder<LootRarity> rarity, ItemStack stack) {
-        return new AffixInstance(affix, level, rarity, stack);
+        return new AffixInstance(affix, stack, rarity, level);
     }
 
     private static List<ResourceLocation> normalizeSourceCategories(List<ResourceLocation> categories) {

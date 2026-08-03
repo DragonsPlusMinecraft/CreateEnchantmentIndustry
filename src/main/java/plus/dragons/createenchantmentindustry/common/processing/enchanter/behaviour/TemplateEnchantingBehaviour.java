@@ -18,13 +18,13 @@
 
 package plus.dragons.createenchantmentindustry.common.processing.enchanter.behaviour;
 
+import java.util.LinkedHashMap;
 import java.util.List;
-import net.minecraft.core.component.DataComponents;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.EnchantmentInstance;
-import net.minecraft.world.item.enchantment.ItemEnchantments;
 import net.minecraft.world.level.Level;
+import plus.dragons.createenchantmentindustry.common.item.CEIItemData;
 import plus.dragons.createenchantmentindustry.common.processing.enchanter.CEIEnchantmentHelper;
 import plus.dragons.createenchantmentindustry.common.processing.enchanter.EnchantingTemplateItem;
 
@@ -40,7 +40,7 @@ public class TemplateEnchantingBehaviour extends EnchantingBehaviour {
         if (enchantments.isEmpty())
             return false;
         if (stack.getItem() instanceof EnchantingTemplateItem template) {
-            if (stack.getOrDefault(DataComponents.STORED_ENCHANTMENTS, ItemEnchantments.EMPTY).isEmpty())
+            if (CEIItemData.getStoredEnchantments(stack).isEmpty())
                 return (!special && !template.isSpecial()) || (special && template.isSpecial());
         }
         return false;
@@ -58,8 +58,12 @@ public class TemplateEnchantingBehaviour extends EnchantingBehaviour {
 
     @Override
     public ItemStack getResult(Level level, ItemStack stack, RandomSource random, boolean special) {
-        var enchantments = selectResultEnchantments(random, stack, special);
-        return stack.getItem().applyEnchantments(stack, enchantments);
+        var selected = selectResultEnchantments(random, stack, special);
+        ItemStack result = stack.copy();
+        var enchantments = new LinkedHashMap<net.minecraft.world.item.enchantment.Enchantment, Integer>();
+        selected.forEach(instance -> enchantments.put(instance.enchantment, instance.level));
+        CEIItemData.setStoredEnchantments(result, enchantments);
+        return result;
     }
 
     @Override

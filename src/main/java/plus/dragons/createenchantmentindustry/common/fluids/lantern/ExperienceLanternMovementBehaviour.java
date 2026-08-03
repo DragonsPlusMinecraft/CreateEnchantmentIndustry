@@ -29,8 +29,8 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.fluids.FluidStack;
-import net.neoforged.neoforge.fluids.capability.IFluidHandler;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.capability.IFluidHandler;
 import plus.dragons.createenchantmentindustry.common.fluids.experience.ExperienceHelper;
 import plus.dragons.createenchantmentindustry.common.registry.CEIFluids;
 import plus.dragons.createenchantmentindustry.config.CEIConfig;
@@ -63,7 +63,7 @@ public class ExperienceLanternMovementBehaviour implements MovementBehaviour {
                 else if (playerExp != 0) sum.addAndGet(playerExp);
             });
             if (sum.get() != 0) {
-                var inserted = tank.fill(new FluidStack(CEIFluids.EXPERIENCE, sum.get()), IFluidHandler.FluidAction.EXECUTE);
+                var inserted = tank.fill(new FluidStack(CEIFluids.EXPERIENCE.get(), sum.get()), IFluidHandler.FluidAction.EXECUTE);
                 if (inserted != 0) {
                     for (var player : players) {
                         var total = ExperienceHelper.getExperienceForPlayer(player);
@@ -115,7 +115,7 @@ public class ExperienceLanternMovementBehaviour implements MovementBehaviour {
                 if (orb.getDeltaMovement().length() <= .5) {
                     var pushForce = CEIConfig.fluids().experienceLanternPullForceMultiplier.get() * 1 / orb.position().distanceTo(position);
                     var directionToLantern = position.subtract(orb.position()).normalize().multiply(pushForce, pushForce, pushForce);
-                    orb.push(directionToLantern);
+                    orb.push(directionToLantern.x, directionToLantern.y, directionToLantern.z);
                 }
             }
         }

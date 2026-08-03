@@ -26,7 +26,7 @@ import com.simibubi.create.content.kinetics.base.RotatedPillarKineticBlock;
 import com.simibubi.create.foundation.blockEntity.behaviour.fluid.SmartFluidTankBehaviour;
 import com.simibubi.create.foundation.blockEntity.behaviour.fluid.SmartFluidTankBehaviour.TankSegment;
 import dev.engine_room.flywheel.lib.transform.TransformStack;
-import net.createmod.catnip.platform.NeoForgeCatnipServices;
+import net.createmod.catnip.platform.ForgeCatnipServices;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider.Context;
@@ -37,7 +37,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
-import net.neoforged.neoforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidStack;
 import plus.dragons.createenchantmentindustry.common.registry.CEIBlocks;
 
 public class GrindstoneDrainRenderer extends KineticBlockEntityRenderer<GrindstoneDrainBlockEntity> {
@@ -128,7 +128,7 @@ public class GrindstoneDrainRenderer extends KineticBlockEntityRenderer<Grindsto
             float max = min + (12 / 16f);
             float minY = 5f / 16f;
             level *= (7 / 16f);
-            NeoForgeCatnipServices.FLUID_RENDERER.renderFluidBox(
+            ForgeCatnipServices.FLUID_RENDERER.renderFluidBox(
                     fluidStack,
                     min, minY, min,
                     max, minY + level, max,

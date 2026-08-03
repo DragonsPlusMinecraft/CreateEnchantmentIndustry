@@ -1,6 +1,6 @@
 {
-    "parent": "minecraft:item/generated",
-    "textures": {
-        "layer0": "create_enchantment_industry:item/apotheotic_essence_bucket"
-    }
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "create_enchantment_industry:item/apotheotic_essence_bucket"
+  }
 }

@@ -18,18 +18,26 @@
 
 package plus.dragons.createenchantmentindustry.integration.apothic_enchanting.common.registry;
 
-import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
-import net.neoforged.neoforge.network.registration.PayloadRegistrar;
+import net.minecraftforge.network.NetworkDirection;
+import plus.dragons.createenchantmentindustry.common.network.CEINetwork;
 import plus.dragons.createenchantmentindustry.integration.apothic_enchanting.common.contraptions.actors.enderWovenBag.ContraptionEnderWovenBagPocketChangePacket;
 
-public class CEIAPackets {
-    @SubscribeEvent // on the mod event bus
-    public static void register(final RegisterPayloadHandlersEvent event) {
-        final PayloadRegistrar registrar = event.registrar("1");
-        registrar.playToClient(
-                ContraptionEnderWovenBagPocketChangePacket.TYPE,
-                ContraptionEnderWovenBagPocketChangePacket.STREAM_CODEC,
-                ContraptionEnderWovenBagPocketChangePacket::handle);
+public final class CEIAPackets {
+    private static boolean registered;
+
+    private CEIAPackets() {}
+
+    public static synchronized void register() {
+        if (registered) {
+            return;
+        }
+        registered = true;
+        CEINetwork.registerMessage(
+                CEINetwork.CONTRAPTION_ENDER_WOVEN_BAG_PACKET_ID,
+                ContraptionEnderWovenBagPocketChangePacket.class,
+                ContraptionEnderWovenBagPocketChangePacket::encode,
+                ContraptionEnderWovenBagPocketChangePacket::decode,
+                ContraptionEnderWovenBagPocketChangePacket::handle,
+                NetworkDirection.PLAY_TO_CLIENT);
     }
 }

@@ -18,7 +18,7 @@
 
 package plus.dragons.createenchantmentindustry.common.fluids.lantern;
 
-import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.simibubi.create.api.contraption.storage.fluid.MountedFluidStorageType;
 import com.simibubi.create.api.contraption.storage.fluid.WrapperMountedFluidStorage;
@@ -27,17 +27,19 @@ import net.minecraft.util.ExtraCodecs;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.neoforged.neoforge.fluids.FluidStack;
-import net.neoforged.neoforge.fluids.capability.templates.FluidTank;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.capability.templates.FluidTank;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import plus.dragons.createenchantmentindustry.common.registry.CEIFluids;
 import plus.dragons.createenchantmentindustry.common.registry.CEIMountedStorageTypes;
 
 public class ExperienceLanternMountedStorage extends WrapperMountedFluidStorage<ExperienceLanternMountedStorage.Handler> {
-    public static final MapCodec<ExperienceLanternMountedStorage> CODEC = RecordCodecBuilder.mapCodec(i -> i.group(
+    public static final Codec<ExperienceLanternMountedStorage> CODEC = RecordCodecBuilder.create(i -> i.group(
             ExtraCodecs.NON_NEGATIVE_INT.fieldOf("capacity").forGetter(ExperienceLanternMountedStorage::getCapacity),
-            FluidStack.OPTIONAL_CODEC.fieldOf("fluid").forGetter(ExperienceLanternMountedStorage::getFluid)).apply(i, ExperienceLanternMountedStorage::new));
+            FluidStack.CODEC.optionalFieldOf("fluid", FluidStack.EMPTY)
+                    .forGetter(ExperienceLanternMountedStorage::getFluid))
+            .apply(i, ExperienceLanternMountedStorage::new));
 
     private boolean dirty;
 
@@ -87,7 +89,7 @@ public class ExperienceLanternMountedStorage extends WrapperMountedFluidStorage<
 
         @Override
         public boolean isFluidValid(FluidStack stack) {
-            return stack.is(CEIFluids.EXPERIENCE);
+            return stack.getFluid() == CEIFluids.EXPERIENCE.get();
         }
 
         @Override

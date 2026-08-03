@@ -18,9 +18,9 @@
 
 package plus.dragons.createenchantmentindustry.integration.apotheosis.mixin.apotheosis;
 
-import dev.shadowsoffire.apotheosis.affix.Affix;
-import dev.shadowsoffire.apotheosis.affix.AffixHelper;
-import dev.shadowsoffire.apotheosis.affix.AffixInstance;
+import dev.shadowsoffire.apotheosis.adventure.affix.Affix;
+import dev.shadowsoffire.apotheosis.adventure.affix.AffixHelper;
+import dev.shadowsoffire.apotheosis.adventure.affix.AffixInstance;
 import dev.shadowsoffire.placebo.reload.DynamicHolder;
 import java.util.Map;
 import me.fallenbreath.conditionalmixin.api.annotation.Condition;
@@ -37,7 +37,9 @@ import plus.dragons.createenchantmentindustry.integration.apotheosis.common.proc
 @Mixin(AffixHelper.class)
 public class AffixHelperMixin {
     @Inject(method = "getAffixes(Lnet/minecraft/world/item/ItemStack;)Ljava/util/Map;", at = @At("RETURN"), cancellable = true, remap = false)
-    private static void getAffixes$applyOverlimitLevels(ItemStack stack, CallbackInfoReturnable<Map<DynamicHolder<Affix>, AffixInstance>> cir) {
+    private static void getAffixes$applyOverlimitLevels(
+            ItemStack stack,
+            CallbackInfoReturnable<Map<DynamicHolder<? extends Affix>, AffixInstance>> cir) {
         cir.setReturnValue(OverlimitAffixHelper.applyTrueLevels(stack, cir.getReturnValue()));
     }
 }

@@ -20,31 +20,44 @@ package plus.dragons.createenchantmentindustry.integration.apotheosis.common.pro
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import dev.shadowsoffire.apotheosis.affix.Affix;
-import dev.shadowsoffire.apotheosis.affix.AffixRegistry;
+import dev.shadowsoffire.apotheosis.adventure.affix.Affix;
+import dev.shadowsoffire.apotheosis.adventure.affix.AffixRegistry;
 import dev.shadowsoffire.placebo.reload.DynamicHolder;
-import io.netty.buffer.ByteBuf;
-import java.util.HashMap;
 import java.util.Map;
-import net.minecraft.network.codec.ByteBufCodecs;
-import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtOps;
+import net.minecraft.nbt.Tag;
+import org.jetbrains.annotations.Nullable;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public record OverlimitAffixes(Map<DynamicHolder<Affix>, Float> levels) {
+    private static final Logger LOGGER = LoggerFactory.getLogger(OverlimitAffixes.class);
     public static final OverlimitAffixes EMPTY = new OverlimitAffixes(Map.of());
     public static final Codec<OverlimitAffixes> CODEC = RecordCodecBuilder.create(instance -> instance.group(
             Codec.unboundedMap(AffixRegistry.INSTANCE.holderCodec(), Codec.floatRange(0, Float.MAX_VALUE))
                     .fieldOf("levels")
                     .forGetter(OverlimitAffixes::levels))
             .apply(instance, OverlimitAffixes::new));
-    public static final StreamCodec<ByteBuf, OverlimitAffixes> STREAM_CODEC = ByteBufCodecs
-            .map(HashMap::new, AffixRegistry.INSTANCE.holderStreamCodec(), ByteBufCodecs.FLOAT)
-            .map(OverlimitAffixes::new, overlimit -> new HashMap<>(overlimit.levels()));
 
     public boolean isEmpty() {
         return levels.isEmpty();
     }
 
-    public float getLevel(DynamicHolder<Affix> affix) {
+    public float getLevel(DynamicHolder<? extends Affix> affix) {
         return levels.getOrDefault(affix, 0F);
+    }
+
+    public CompoundTag save() {
+        Tag encoded = CODEC.encodeStart(NbtOps.INSTANCE, this)
+                .resultOrPartial(message -> LOGGER.warn("Unable to encode overlimit affix data: {}", message))
+                .orElseGet(CompoundTag::new);
+        return encoded instanceof CompoundTag compound ? compound : new CompoundTag();
+    }
+
+    public static @Nullable OverlimitAffixes load(CompoundTag tag) {
+        return CODEC.parse(NbtOps.INSTANCE, tag)
+                .resultOrPartial(message -> LOGGER.warn("Ignoring invalid overlimit affix data: {}", message))
+                .orElse(null);
     }
 }

@@ -27,7 +27,7 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
-import net.neoforged.neoforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidStack;
 import plus.dragons.createenchantmentindustry.integration.apothic_enchanting.common.CEIACommon;
 
 public class CEIALang {
@@ -58,21 +58,15 @@ public class CEIALang {
     }
 
     public static LangBuilder description(Holder<?> holder, Object... args) {
-        ResourceKey<?> key = holder.getKey();
-        if (key == null) {
-            throw new IllegalArgumentException("Can not build description for unregistered object: " + String.valueOf(holder));
-        } else {
-            return description(key.registry().getPath(), key.location(), args);
-        }
+        ResourceKey<?> key = holder.unwrapKey().orElseThrow(
+                () -> new IllegalArgumentException("Can not build description for unregistered object: " + holder));
+        return description(key.registry().getPath(), key.location(), args);
     }
 
     public static LangBuilder description(Holder<?> holder, String suffix, Object... args) {
-        ResourceKey<?> key = holder.getKey();
-        if (key == null) {
-            throw new IllegalArgumentException("Can not build description for unregistered object: " + String.valueOf(holder));
-        } else {
-            return description(key.registry().getPath(), key.location(), suffix, args);
-        }
+        ResourceKey<?> key = holder.unwrapKey().orElseThrow(
+                () -> new IllegalArgumentException("Can not build description for unregistered object: " + holder));
+        return description(key.registry().getPath(), key.location(), suffix, args);
     }
 
     public static LangBuilder block(BlockState state) {
@@ -84,6 +78,6 @@ public class CEIALang {
     }
 
     public static LangBuilder fluid(FluidStack stack) {
-        return builder().add(stack.getHoverName().copy());
+        return builder().add(stack.getDisplayName().copy());
     }
 }

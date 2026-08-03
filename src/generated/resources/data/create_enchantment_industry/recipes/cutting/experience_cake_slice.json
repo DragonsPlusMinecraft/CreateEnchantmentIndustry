@@ -1,0 +1,14 @@
+{
+  "type": "create:cutting",
+  "ingredients": [
+    {
+      "item": "create_enchantment_industry:experience_cake"
+    }
+  ],
+  "results": [
+    {
+      "count": 4,
+      "item": "create_enchantment_industry:experience_cake_slice"
+    }
+  ]
+}

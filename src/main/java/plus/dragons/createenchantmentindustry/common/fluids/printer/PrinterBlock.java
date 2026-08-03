@@ -18,7 +18,6 @@
 
 package plus.dragons.createenchantmentindustry.common.fluids.printer;
 
-import com.mojang.serialization.MapCodec;
 import com.simibubi.create.AllShapes;
 import com.simibubi.create.content.equipment.wrench.IWrenchable;
 import com.simibubi.create.foundation.block.IBE;
@@ -53,11 +52,6 @@ public class PrinterBlock extends HorizontalDirectionalBlock implements IWrencha
     }
 
     @Override
-    protected MapCodec<? extends HorizontalDirectionalBlock> codec() {
-        return simpleCodec(PrinterBlock::new);
-    }
-
-    @Override
     protected void createBlockStateDefinition(Builder<Block, BlockState> builder) {
         builder.add(FACING);
     }
@@ -81,7 +75,7 @@ public class PrinterBlock extends HorizontalDirectionalBlock implements IWrencha
     }
 
     @Override
-    protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
+    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
         return AllShapes.SPOUT;
     }
 
@@ -96,7 +90,7 @@ public class PrinterBlock extends HorizontalDirectionalBlock implements IWrencha
     }
 
     @Override
-    protected boolean isPathfindable(BlockState state, PathComputationType pathComputationType) {
+    public boolean isPathfindable(BlockState state, BlockGetter level, BlockPos pos, PathComputationType pathComputationType) {
         return false;
     }
 

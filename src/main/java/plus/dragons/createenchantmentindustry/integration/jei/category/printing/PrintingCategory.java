@@ -20,25 +20,22 @@ package plus.dragons.createenchantmentindustry.integration.jei.category.printing
 
 import static com.simibubi.create.compat.jei.category.CreateRecipeCategory.getRenderedSlot;
 
-import com.mojang.serialization.Codec;
 import com.simibubi.create.compat.jei.ItemIcon;
 import com.simibubi.create.foundation.gui.AllGuiTextures;
 import java.util.List;
+import mezz.jei.api.forge.ForgeTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
 import mezz.jei.api.gui.ingredient.IRecipeSlotDrawable;
 import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
-import mezz.jei.api.helpers.ICodecHelper;
-import mezz.jei.api.neoforge.NeoForgeTypes;
 import mezz.jei.api.recipe.IFocusGroup;
-import mezz.jei.api.recipe.IRecipeManager;
 import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.recipe.category.IRecipeCategory;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import net.neoforged.neoforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidStack;
 import org.jetbrains.annotations.Nullable;
 import plus.dragons.createenchantmentindustry.common.registry.CEIBlocks;
 import plus.dragons.createenchantmentindustry.common.registry.CEIRecipes;
@@ -81,13 +78,6 @@ public class PrintingCategory implements IRecipeCategory<PrintingRecipeJEI> {
         return recipe.getRegistryName();
     }
 
-    @Override
-    public Codec<PrintingRecipeJEI> getCodec(ICodecHelper codecHelper, IRecipeManager recipeManager) {
-        return PrintingRecipeJEI.TYPE_CODEC.dispatch(
-                PrintingRecipeJEI::getType,
-                type -> type.codec(codecHelper, recipeManager));
-    }
-
     @SuppressWarnings("removal") // See CreateRecipeCategory#addPotionTooltip
     @Override
     public void setRecipe(IRecipeLayoutBuilder builder, PrintingRecipeJEI recipe, IFocusGroup focuses) {
@@ -121,7 +111,7 @@ public class PrintingCategory implements IRecipeCategory<PrintingRecipeJEI> {
         AllGuiTextures.JEI_SHADOW.render(graphics, 62, 57);
         AllGuiTextures.JEI_DOWN_ARROW.render(graphics, 126, 29);
         var fluid = recipeSlotsView.getSlotViews().get(2)
-                .getDisplayedIngredient(NeoForgeTypes.FLUID_STACK)
+                .getDisplayedIngredient(ForgeTypes.FLUID_STACK)
                 .orElse(FluidStack.EMPTY);
         printer.withFluid(fluid).draw(graphics, getWidth() / 2 - 13, 22);
     }

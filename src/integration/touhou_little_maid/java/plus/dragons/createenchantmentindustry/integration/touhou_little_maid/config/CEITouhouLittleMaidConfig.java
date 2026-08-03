@@ -20,21 +20,22 @@ package plus.dragons.createenchantmentindustry.integration.touhou_little_maid.co
 
 import net.minecraft.Util;
 import net.minecraft.util.Unit;
-import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.ModContainer;
-import net.neoforged.fml.config.ModConfig.Type;
-import net.neoforged.fml.event.config.ModConfigEvent;
-import net.neoforged.neoforge.common.ModConfigSpec;
+import net.minecraftforge.common.ForgeConfigSpec;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.ModLoadingContext;
+import net.minecraftforge.fml.config.ModConfig.Type;
+import net.minecraftforge.fml.event.config.ModConfigEvent;
 
 public class CEITouhouLittleMaidConfig {
     private static final CEITouhouLittleMaidServerConfig SERVER_CONFIG = new CEITouhouLittleMaidServerConfig();
-    private static ModConfigSpec SERVER_SPEC;
+    private static ForgeConfigSpec SERVER_SPEC;
 
-    public CEITouhouLittleMaidConfig(ModContainer modContainer) {
-        SERVER_SPEC = Util.make(new ModConfigSpec.Builder().configure(builder -> {
+    public CEITouhouLittleMaidConfig(ModLoadingContext modLoadingContext) {
+        SERVER_SPEC = Util.make(new ForgeConfigSpec.Builder().configure(builder -> {
             SERVER_CONFIG.registerAll(builder);
             return Unit.INSTANCE;
-        }).getValue(), spec -> modContainer.registerConfig(Type.SERVER, spec, "create_enchantment_industry-touhou_little_maid-server.toml"));
+        }).getValue(), spec -> modLoadingContext.registerConfig(
+                Type.SERVER, spec, "create_enchantment_industry-touhou_little_maid-server.toml"));
     }
 
     public static CEITouhouLittleMaidServerConfig server() {

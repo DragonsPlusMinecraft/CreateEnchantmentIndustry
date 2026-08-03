@@ -1,8 +1,24 @@
 {
-    "remove": [
-        "#minecraft:curse"
-    ],
-    "values": [
-        "#minecraft:treasure"
-    ]
+  "values": [
+    {
+      "id": "minecraft:frost_walker",
+      "required": false
+    },
+    {
+      "id": "minecraft:soul_speed",
+      "required": false
+    },
+    {
+      "id": "minecraft:swift_sneak",
+      "required": false
+    },
+    {
+      "id": "minecraft:mending",
+      "required": false
+    },
+    {
+      "id": "apotheosis:infusion",
+      "required": false
+    }
+  ]
 }

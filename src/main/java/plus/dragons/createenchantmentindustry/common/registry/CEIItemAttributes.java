@@ -25,12 +25,12 @@ import com.simibubi.create.api.registry.CreateRegistries;
 import com.simibubi.create.content.logistics.item.filter.attribute.ItemAttributeType;
 import com.simibubi.create.content.logistics.item.filter.attribute.SingletonItemAttribute;
 import java.util.function.BiPredicate;
-import net.minecraft.core.Holder;
+import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.SingleRecipeInput;
 import net.minecraft.world.level.Level;
-import net.neoforged.bus.api.IEventBus;
-import net.neoforged.neoforge.registries.DeferredRegister;
+import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.registries.RegistryObject;
 import plus.dragons.createenchantmentindustry.common.CEICommon;
 import plus.dragons.createenchantmentindustry.common.kinetics.grindstone.GrindstoneHelper;
 
@@ -38,11 +38,11 @@ public class CEIItemAttributes {
     private static final DeferredRegister<ItemAttributeType> ITEM_ATTRIBUTES = DeferredRegister
             .create(CreateRegistries.ITEM_ATTRIBUTE_TYPE, CEICommon.ID);
 
-    public static final Holder<ItemAttributeType> PROCESSABLE_BY_MECHANICAL_GRINDSTONE = attribute("processable_by_mechanical_grindstone",
+    public static final RegistryObject<ItemAttributeType> PROCESSABLE_BY_MECHANICAL_GRINDSTONE = attribute("processable_by_mechanical_grindstone",
             "can be processed by Mechanical Grindstone",
             "cannot be processed by Mechanical Grindstone",
             ((itemStack, level) -> {
-                var input = new SingleRecipeInput(itemStack);
+                var input = new SimpleContainer(itemStack);
                 var recipeManager = level.getRecipeManager();
                 var grinding = recipeManager.getRecipeFor(CEIRecipes.GRINDING.getType(), input, level);
                 if (grinding.isPresent())
@@ -52,7 +52,7 @@ public class CEIItemAttributes {
                 return GrindstoneHelper.canItemBeGrinded(itemStack, ItemStack.EMPTY);
             }));
 
-    private static Holder<ItemAttributeType> attribute(String name, String description, String invertedDescription, BiPredicate<ItemStack, Level> predicate) {
+    private static RegistryObject<ItemAttributeType> attribute(String name, String description, String invertedDescription, BiPredicate<ItemStack, Level> predicate) {
         String descriptionKey = "create.item_attributes." + CEICommon.ID + "." + name;
         String invertedDescriptionKey = descriptionKey + ".inverted";
         REGISTRATE.addRawLang(descriptionKey, description);

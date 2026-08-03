@@ -29,7 +29,6 @@ import com.simibubi.create.foundation.blockEntity.behaviour.fluid.SmartFluidTank
 import com.simibubi.create.foundation.item.ItemHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.HolderLookup.Provider;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
@@ -39,7 +38,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
-import net.neoforged.neoforge.items.wrapper.InvWrapper;
+import net.minecraftforge.items.wrapper.InvWrapper;
 import org.jetbrains.annotations.Nullable;
 import plus.dragons.createdragonsplus.util.CodeReference;
 import plus.dragons.createenchantmentindustry.common.fluids.printer.behaviour.PrintingBehaviour;
@@ -84,19 +83,19 @@ public class PrinterBehaviour extends FilteringBehaviour {
     }
 
     @Override
-    public void write(CompoundTag nbt, Provider registries, boolean clientPacket) {
-        nbt.put(TEMPLATE, getFilter().saveOptional(registries));
+    public void write(CompoundTag nbt, boolean clientPacket) {
+        nbt.put(TEMPLATE, getFilter().save(new CompoundTag()));
     }
 
     @Override
-    public void writeSafe(CompoundTag nbt, Provider registries) {
+    public void writeSafe(CompoundTag nbt) {
         if (printing.isSafeNBT())
-            nbt.put(TEMPLATE, getFilter().saveOptional(registries));
+            nbt.put(TEMPLATE, getFilter().save(new CompoundTag()));
     }
 
     @Override
-    public void read(CompoundTag nbt, Provider registries, boolean clientPacket) {
-        var filter = FilterItemStack.of(registries, nbt.getCompound(TEMPLATE));
+    public void read(CompoundTag nbt, boolean clientPacket) {
+        var filter = FilterItemStack.of(ItemStack.of(nbt.getCompound(TEMPLATE)));
         var printing = PrintingBehaviour.create(getWorld(), tank, filter.item()).result();
         if (printing.isPresent()) {
             this.filter = filter;
@@ -113,17 +112,17 @@ public class PrinterBehaviour extends FilteringBehaviour {
     }
 
     @Override
-    public boolean writeToClipboard(Provider registries, CompoundTag tag, Direction side) {
+    public boolean writeToClipboard(CompoundTag tag, Direction side) {
         ItemStack template = getFilter();
-        tag.put(TEMPLATE, template.saveOptional(registries));
+        tag.put(TEMPLATE, template.save(new CompoundTag()));
         return true;
     }
 
     @Override
-    public boolean readFromClipboard(Provider registries, CompoundTag tag, Player player, Direction side, boolean simulate) {
+    public boolean readFromClipboard(CompoundTag tag, Player player, Direction side, boolean simulate) {
         if (!tag.contains(TEMPLATE))
             return false;
-        ItemStack template = ItemStack.parseOptional(registries, tag.getCompound(TEMPLATE));
+        ItemStack template = ItemStack.of(tag.getCompound(TEMPLATE));
         return setFilter(template, player);
     }
 
@@ -141,7 +140,7 @@ public class PrinterBehaviour extends FilteringBehaviour {
             return;
 
         if (getFilter().getItem() instanceof FilterItem) {
-            if (!player.isCreative() || ItemHelper.extract(new InvWrapper(player.getInventory()), stack -> ItemStack.isSameItemSameComponents(stack, getFilter(side)), true).isEmpty())
+            if (!player.isCreative() || ItemHelper.extract(new InvWrapper(player.getInventory()), stack -> ItemStack.isSameItemSameTags(stack, getFilter(side)), true).isEmpty())
                 player.getInventory().placeItemBackInInventory(getFilter(side).copy());
         }
 

@@ -18,9 +18,8 @@
 
 package plus.dragons.createenchantmentindustry.integration.apothic_enchanting.common.kinetics.bookshelf.creative;
 
-import com.mojang.serialization.MapCodec;
 import com.simibubi.create.foundation.block.IBE;
-import dev.shadowsoffire.apothic_enchanting.api.EnchantmentStatBlock;
+import dev.shadowsoffire.apotheosis.ench.api.IEnchantingBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -37,9 +36,7 @@ import org.jetbrains.annotations.Nullable;
 import plus.dragons.createenchantmentindustry.integration.apothic_enchanting.common.registry.CEIABlockEntities;
 import plus.dragons.createenchantmentindustry.integration.apothic_enchanting.config.CEIAConfig;
 
-public class CreativeBookshelfBlock extends HorizontalDirectionalBlock implements EnchantmentStatBlock, IBE<CreativeBookshelfBlockEntity> {
-    public static final MapCodec<CreativeBookshelfBlock> CODEC = simpleCodec(CreativeBookshelfBlock::new);
-
+public class CreativeBookshelfBlock extends HorizontalDirectionalBlock implements IEnchantingBlock, IBE<CreativeBookshelfBlockEntity> {
     public CreativeBookshelfBlock(Properties props) {
         super(props);
         registerDefaultState(defaultBlockState().setValue(FACING, Direction.NORTH));
@@ -58,12 +55,7 @@ public class CreativeBookshelfBlock extends HorizontalDirectionalBlock implement
     }
 
     @Override
-    protected MapCodec<CreativeBookshelfBlock> codec() {
-        return CODEC;
-    }
-
-    @Override
-    protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
+    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
         return Block.box(1, 1, 1, 15, 15, 15);
     }
 

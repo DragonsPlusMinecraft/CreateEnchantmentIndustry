@@ -18,7 +18,6 @@
 
 package plus.dragons.createenchantmentindustry.integration.apothic_enchanting.common.processing.infuser;
 
-import com.mojang.serialization.MapCodec;
 import com.simibubi.create.AllShapes;
 import com.simibubi.create.content.equipment.wrench.IWrenchable;
 import com.simibubi.create.content.processing.basin.BasinBlock;
@@ -76,7 +75,7 @@ public class InfuserBlock extends HorizontalDirectionalBlock implements IWrencha
     }
 
     @Override
-    protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
+    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
         return AllShapes.SPOUT;
     }
 
@@ -91,7 +90,8 @@ public class InfuserBlock extends HorizontalDirectionalBlock implements IWrencha
     }
 
     @Override
-    protected boolean isPathfindable(BlockState state, PathComputationType pathComputationType) {
+    public boolean isPathfindable(
+            BlockState state, BlockGetter level, BlockPos pos, PathComputationType pathComputationType) {
         return false;
     }
 
@@ -103,11 +103,6 @@ public class InfuserBlock extends HorizontalDirectionalBlock implements IWrencha
     @Override
     public BlockEntityType<? extends InfuserBlockEntity> getBlockEntityType() {
         return CEIABlockEntities.INFUSER.get();
-    }
-
-    @Override
-    protected MapCodec<? extends HorizontalDirectionalBlock> codec() {
-        return simpleCodec(InfuserBlock::new);
     }
 
     @Override

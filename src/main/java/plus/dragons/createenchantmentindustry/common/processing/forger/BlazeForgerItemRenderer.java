@@ -22,27 +22,12 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.simibubi.create.foundation.item.render.CustomRenderedItemModel;
 import com.simibubi.create.foundation.item.render.CustomRenderedItemModelRenderer;
 import com.simibubi.create.foundation.item.render.PartialItemModelRenderer;
-import com.simibubi.create.foundation.item.render.SimpleCustomRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent;
 import plus.dragons.createenchantmentindustry.client.model.CEIPartialModels;
-import plus.dragons.createenchantmentindustry.common.CEICommon;
-import plus.dragons.createenchantmentindustry.common.registry.CEIBlocks;
 
-@EventBusSubscriber(value = Dist.CLIENT, modid = CEICommon.ID)
 public class BlazeForgerItemRenderer extends CustomRenderedItemModelRenderer {
-    @SubscribeEvent
-    public static void register(RegisterClientExtensionsEvent event) {
-        event.registerItem(
-                SimpleCustomRenderer.create(CEIBlocks.BLAZE_FORGER.asItem(), new BlazeForgerItemRenderer()),
-                CEIBlocks.BLAZE_FORGER.asItem());
-    }
-
     @Override
     protected void render(ItemStack stack, CustomRenderedItemModel model, PartialItemModelRenderer renderer, ItemDisplayContext transformType, PoseStack poseStack, MultiBufferSource bufferSource, int light, int overlay) {
         renderer.render(model.getOriginalModel(), light);

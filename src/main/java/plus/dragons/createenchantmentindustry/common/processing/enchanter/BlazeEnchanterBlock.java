@@ -18,12 +18,10 @@
 
 package plus.dragons.createenchantmentindustry.common.processing.enchanter;
 
-import com.mojang.serialization.MapCodec;
 import com.simibubi.create.foundation.block.IBE;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -48,43 +46,34 @@ public class BlazeEnchanterBlock extends BlazeExperienceBlock<BlazeEnchanterBloc
     }
 
     @Override
-    protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hitResult) {
+    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
+        ItemStack stack = player.getItemInHand(hand);
         var blockEntity = getBlockEntity(level, pos);
+        if (stack.isEmpty()) {
+            if (blockEntity == null)
+                return InteractionResult.PASS;
+            ItemStack extracted = blockEntity.extractItem(true, false);
+            if (!extracted.isEmpty()) {
+                player.getInventory().placeItemBackInInventory(extracted);
+                return InteractionResult.sidedSuccess(level.isClientSide);
+            }
+            return InteractionResult.PASS;
+        }
+        var result = super.use(state, level, pos, player, hand, hitResult);
+        if (result != InteractionResult.PASS)
+            return result;
         if (blockEntity == null)
             return InteractionResult.PASS;
-        ItemStack extrtacted = blockEntity.extractItem(true, false);
-        if (!extrtacted.isEmpty()) {
-            player.getInventory().placeItemBackInInventory(extrtacted);
-            return InteractionResult.sidedSuccess(level.isClientSide);
-        }
-        return InteractionResult.PASS;
-    }
-
-    @Override
-    protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
-        if (stack.isEmpty())
-            return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
-        var result = super.useItemOn(stack, state, level, pos, player, hand, hitResult);
-        if (result.result() != InteractionResult.PASS)
-            return result;
-        var blockEntity = getBlockEntity(level, pos);
-        if (blockEntity == null)
-            return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
         var remainder = blockEntity.insertItem(stack, false);
-        if (ItemStack.isSameItemSameComponents(stack, remainder) && remainder.getCount() == stack.getCount())
-            return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+        if (ItemStack.isSameItemSameTags(stack, remainder) && remainder.getCount() == stack.getCount())
+            return InteractionResult.PASS;
         player.setItemInHand(hand, remainder);
-        return ItemInteractionResult.sidedSuccess(level.isClientSide);
+        return InteractionResult.sidedSuccess(level.isClientSide);
     }
 
     @Override
-    protected void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean movedByPiston) {
+    public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean movedByPiston) {
         IBE.onRemove(state, level, pos, newState);
-    }
-
-    @Override
-    protected MapCodec<BlazeEnchanterBlock> codec() {
-        return simpleCodec(BlazeEnchanterBlock::new);
     }
 
     @Override

@@ -18,11 +18,9 @@
 
 package plus.dragons.createenchantmentindustry.integration.apotheosis.common.processing.affix;
 
-import dev.shadowsoffire.apotheosis.AdventureConfig;
-import dev.shadowsoffire.apotheosis.affix.Affix;
-import dev.shadowsoffire.apotheosis.affix.AffixInstance;
-import dev.shadowsoffire.apotheosis.affix.AffixType;
-import dev.shadowsoffire.placebo.util.EnchantmentUtils;
+import dev.shadowsoffire.apotheosis.adventure.affix.AffixInstance;
+import dev.shadowsoffire.apotheosis.adventure.affix.AffixType;
+import dev.shadowsoffire.apotheosis.adventure.affix.augmenting.AugmentingMenu;
 import net.minecraft.util.Mth;
 import plus.dragons.createenchantmentindustry.integration.apotheosis.common.processing.affix.blazeComposer.AffixComposingRules;
 import plus.dragons.createenchantmentindustry.integration.apotheosis.config.CEIAXConfig;
@@ -30,15 +28,11 @@ import plus.dragons.createenchantmentindustry.integration.apotheosis.config.CEIA
 public class AffixOperationCosts {
     public static final float EPSILON = 0.0001F;
     public static final float APOTHEOSIS_AUGMENTING_STEP = 0.25F;
-    private static final int DEFAULT_APOTHEOSIS_UPGRADE_LEVEL_COST = 225;
 
     public static int apotheosisUpgradeReferenceCost() {
         var fluids = CEIAXConfig.server().fluids();
-        int defaultExperience = Math.max(1, EnchantmentUtils.getTotalExperienceForLevel(DEFAULT_APOTHEOSIS_UPGRADE_LEVEL_COST));
-        int configuredExperience = EnchantmentUtils.getTotalExperienceForLevel(Math.max(0, AdventureConfig.upgradeLevelCost));
-        float experienceCost = (float) fluids.affixAugmentorCostExperienceToApotheoticEssenceTotal.get()
-                * ((float) configuredExperience / defaultExperience);
-        float sigilCost = AdventureConfig.upgradeSigilCost * fluids.affixAugmentorCostSigilToApotheoticEssenceRatio.get();
+        float experienceCost = fluids.affixAugmentorCostExperienceToApotheoticEssenceTotal.get();
+        float sigilCost = AugmentingMenu.UPGRADE_COST * fluids.affixAugmentorCostSigilToApotheoticEssenceRatio.get();
         return roundPositiveCost(experienceCost + sigilCost);
     }
 
@@ -50,7 +44,7 @@ public class AffixOperationCosts {
         float upgradeUnits = weightedLevelSpan(fromLevel, toLevel) / stepWeight;
         float cost = apotheosisUpgradeReferenceCost()
                 * upgradeUnits
-                * typeMultiplier(instance.affix().get().definition().type())
+                * typeMultiplier(instance.affix().get().getType())
                 * config.affixAugmentorCostMultiplier.getF()
                 * AffixComposingRules.INSTANCE.getAugmentingCostMultiplier(instance);
         return roundPositiveCost(cost);
@@ -67,9 +61,9 @@ public class AffixOperationCosts {
     public static float levelValue(float level) {
         var config = CEIAXConfig.server().affixes();
         level = Math.max(0, level);
-        float standard = Mth.clamp(level, 0, Affix.STANDARD_MAX_LEVEL);
-        float crystal = Math.max(0, Math.min(level, Affix.MAX_LEVEL) - Affix.STANDARD_MAX_LEVEL);
-        float superSegment = Math.max(0, level - Affix.MAX_LEVEL);
+        float standard = Mth.clamp(level, 0, AffixLevelLimits.STANDARD_MAX_LEVEL);
+        float crystal = Math.max(0, Math.min(level, AffixLevelLimits.EXTENDED_MAX_LEVEL) - AffixLevelLimits.STANDARD_MAX_LEVEL);
+        float superSegment = Math.max(0, level - AffixLevelLimits.EXTENDED_MAX_LEVEL);
         return standard
                 + crystal * config.blazeComposerCrystalLevelMultiplier.getF()
                 + (float) Math.pow(superSegment, config.blazeComposerSuperLevelExponent.getF()) * config.blazeComposerSuperLevelMultiplier.getF();
@@ -78,9 +72,9 @@ public class AffixOperationCosts {
     public static float typeMultiplier(AffixType type) {
         var config = CEIAXConfig.server().affixes();
         return switch (type) {
-            case STAT -> config.statAffixTypeCostMultiplier.getF();
-            case BASIC_EFFECT -> config.basicEffectAffixTypeCostMultiplier.getF();
-            case ABILITY -> config.abilityAffixTypeCostMultiplier.getF();
+            case STAT, SOCKET, DURABILITY -> config.statAffixTypeCostMultiplier.getF();
+            case POTION -> config.basicEffectAffixTypeCostMultiplier.getF();
+            case ABILITY, ANCIENT -> config.abilityAffixTypeCostMultiplier.getF();
         };
     }
 

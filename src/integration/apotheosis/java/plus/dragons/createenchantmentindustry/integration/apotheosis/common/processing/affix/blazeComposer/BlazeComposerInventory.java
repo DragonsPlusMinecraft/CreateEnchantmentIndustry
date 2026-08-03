@@ -18,10 +18,9 @@
 
 package plus.dragons.createenchantmentindustry.integration.apotheosis.common.processing.affix.blazeComposer;
 
-import net.minecraft.core.HolderLookup.Provider;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
-import net.neoforged.neoforge.items.ItemStackHandler;
+import net.minecraftforge.items.ItemStackHandler;
 import plus.dragons.createenchantmentindustry.integration.apotheosis.common.processing.affix.blazeComposer.template.AffixTemplateOps;
 
 public class BlazeComposerInventory extends ItemStackHandler {
@@ -69,14 +68,14 @@ public class BlazeComposerInventory extends ItemStackHandler {
     }
 
     @Override
-    public void deserializeNBT(Provider provider, CompoundTag nbt) {
-        super.deserializeNBT(provider, nbt);
+    public void deserializeNBT(CompoundTag nbt) {
+        super.deserializeNBT(nbt);
         updateResult();
     }
 
     @Override
-    public CompoundTag serializeNBT(Provider provider) {
-        return super.serializeNBT(provider);
+    public CompoundTag serializeNBT() {
+        return super.serializeNBT();
     }
 
     public int getEssenceCost() {
@@ -104,17 +103,20 @@ public class BlazeComposerInventory extends ItemStackHandler {
         result = AffixTemplateOps.Result.emptyInput();
     }
 
-    public void applyResult() {
-        AffixTemplateOps.Result finalResult = AffixTemplateOps.compose(
+    public AffixTemplateOps.Result getProcessingResult() {
+        return AffixTemplateOps.compose(
                 composer.getMode(),
                 composer.isSuper(),
                 composer.getBlockedSuperPenalty(),
                 stacks.get(0),
                 stacks.get(1));
-        if (!finalResult.valid())
+    }
+
+    public void applyResult(ItemStack primaryOutput, ItemStack secondaryOutput) {
+        if (primaryOutput.isEmpty() && secondaryOutput.isEmpty())
             return;
-        stacks.set(2, finalResult.primaryOutput().copy());
-        stacks.set(3, finalResult.secondaryOutput().copy());
+        stacks.set(2, primaryOutput.copy());
+        stacks.set(3, secondaryOutput.copy());
         clearInput();
         updateResult();
     }

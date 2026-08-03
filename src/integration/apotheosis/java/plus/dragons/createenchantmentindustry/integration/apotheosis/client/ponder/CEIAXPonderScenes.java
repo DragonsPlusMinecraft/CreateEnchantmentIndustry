@@ -21,10 +21,11 @@ package plus.dragons.createenchantmentindustry.integration.apotheosis.client.pon
 import com.simibubi.create.content.fluids.tank.FluidTankBlockEntity;
 import com.simibubi.create.content.logistics.depot.DepotBlockEntity;
 import com.simibubi.create.foundation.ponder.CreateSceneBuilder;
-import dev.shadowsoffire.apotheosis.Apoth;
-import dev.shadowsoffire.apotheosis.socket.gem.GemItem;
-import dev.shadowsoffire.apotheosis.socket.gem.GemRegistry;
-import dev.shadowsoffire.apotheosis.socket.gem.Purity;
+import dev.shadowsoffire.apotheosis.adventure.Adventure;
+import dev.shadowsoffire.apotheosis.adventure.affix.AffixHelper;
+import dev.shadowsoffire.apotheosis.adventure.socket.gem.Gem;
+import dev.shadowsoffire.apotheosis.adventure.socket.gem.GemItem;
+import dev.shadowsoffire.apotheosis.adventure.socket.gem.GemRegistry;
 import net.createmod.catnip.math.Pointing;
 import net.createmod.ponder.api.PonderPalette;
 import net.createmod.ponder.api.scene.SceneBuilder;
@@ -37,11 +38,12 @@ import net.minecraft.world.entity.decoration.ArmorStand;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.data.loading.DatagenModLoader;
-import net.neoforged.neoforge.fluids.FluidStack;
-import net.neoforged.neoforge.fluids.capability.IFluidHandler;
+import net.minecraftforge.data.loading.DatagenModLoader;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.capability.IFluidHandler;
 import plus.dragons.createenchantmentindustry.integration.apotheosis.common.processing.affix.affixEnhancer.AffixAugmentorBlockEntity;
 import plus.dragons.createenchantmentindustry.integration.apotheosis.common.processing.socket.gem.gemCutter.GemCutterBlockEntity;
+import plus.dragons.createenchantmentindustry.integration.apotheosis.common.processing.socket.gem.gemCutter.GemCutting;
 import plus.dragons.createenchantmentindustry.integration.apotheosis.common.registry.CEIAXBlocks;
 import plus.dragons.createenchantmentindustry.integration.apotheosis.common.registry.CEIAXFluids;
 
@@ -100,15 +102,15 @@ public class CEIAXPonderScenes {
                 .showOutline(PonderPalette.BLACK, airCurrent, airCurrent, 20);
         scene.idle(20);
         scene.world().modifyBlockEntity(util.grid().at(2, 1, 2), DepotBlockEntity.class,
-                depot -> depot.setHeldItem(GemRegistry.INSTANCE.getValues().stream().findAny().get().toStack(Purity.PERFECT)));
+                depot -> depot.setHeldItem(createGem(GemRegistry.INSTANCE.getValues().stream().findAny().orElseThrow(), GemCutting.Tier.ANCIENT)));
         scene.idle(3);
         scene.world().modifyBlockEntity(util.grid().at(2, 1, 1), DepotBlockEntity.class, depot -> depot.setHeldItem(Items.NETHERITE_SWORD.getDefaultInstance()));
         scene.idle(3);
         scene.world().modifyBlockEntity(util.grid().at(2, 1, 0), DepotBlockEntity.class, depot -> depot.setHeldItem(Items.LEATHER_BOOTS.getDefaultInstance()));
         scene.idle(60);
-        scene.world().modifyBlockEntity(util.grid().at(2, 1, 2), DepotBlockEntity.class, depot -> depot.setHeldItem(new ItemStack(Apoth.Items.GEM_DUST, 8)));
+        scene.world().modifyBlockEntity(util.grid().at(2, 1, 2), DepotBlockEntity.class, depot -> depot.setHeldItem(new ItemStack(Adventure.Items.GEM_DUST.get(), 8)));
         scene.idle(3);
-        scene.world().modifyBlockEntity(util.grid().at(2, 1, 1), DepotBlockEntity.class, depot -> depot.setHeldItem(new ItemStack(Apoth.Items.MYTHIC_MATERIAL, 2)));
+        scene.world().modifyBlockEntity(util.grid().at(2, 1, 1), DepotBlockEntity.class, depot -> depot.setHeldItem(new ItemStack(Adventure.Items.MYTHIC_MATERIAL.get(), 2)));
         scene.idle(3);
         scene.world().modifyBlockEntity(util.grid().at(2, 1, 0), DepotBlockEntity.class, depot -> depot.setHeldItem(new ItemStack(Items.LEATHER, 4)));
         scene.idle(20);
@@ -126,7 +128,7 @@ public class CEIAXPonderScenes {
             as.setItemSlot(EquipmentSlot.FEET, new ItemStack(Items.DIAMOND_BOOTS));
             as.setItemSlot(EquipmentSlot.LEGS, new ItemStack(Items.DIAMOND_LEGGINGS));
             as.setItemSlot(EquipmentSlot.CHEST, new ItemStack(Items.DIAMOND_CHESTPLATE));
-            as.setPos(pos.getBottomCenter());
+            as.setPos(Vec3.atBottomCenterOf(pos));
             as.lookAt(EntityAnchorArgument.Anchor.EYES, as.getEyePosition().add(0, 0, -1));
             return as;
         });
@@ -146,7 +148,7 @@ public class CEIAXPonderScenes {
             var as = (ArmorStand) it;
             as.setItemSlot(EquipmentSlot.LEGS, ItemStack.EMPTY);
         });
-        scene.world().createItemEntity(util.vector().centerOf(2, 2, 0), new Vec3(0, -0.1, -1), new ItemStack(Apoth.Items.RARE_MATERIAL, 2));
+        scene.world().createItemEntity(util.vector().centerOf(2, 2, 0), new Vec3(0, -0.1, -1), new ItemStack(Adventure.Items.RARE_MATERIAL.get(), 2));
         scene.idle(20);
     }
 
@@ -222,10 +224,8 @@ public class CEIAXPonderScenes {
 
         if (!DatagenModLoader.isRunningDataGen()) {
             scene.addKeyframe();
-            var gem = new ItemStack(Apoth.Items.GEM);
             var gemKind = GemRegistry.INSTANCE.getValues().stream().findAny().orElseThrow();
-            GemItem.setGem(gem, gemKind);
-            GemItem.setPurity(gem, Purity.FLAWLESS);
+            var gem = createGem(gemKind, GemCutting.Tier.MYTHIC);
             var gemStack = scene.world().createItemOnBelt(util.grid().at(4, 2, 2), Direction.EAST, gem);
             scene.idle(18);
             scene.world().stallBeltItem(gemStack, true);
@@ -237,11 +237,18 @@ public class CEIAXPonderScenes {
                     .text("Processing...");
             scene.idle(205);
             scene.world().removeItemsFromBelt(util.grid().at(2, 2, 2));
-            gem = new ItemStack(Apoth.Items.GEM);
-            GemItem.setGem(gem, gemKind);
-            GemItem.setPurity(gem, Purity.PERFECT);
+            gem = createGem(gemKind, GemCutting.Tier.ANCIENT);
             scene.world().createItemOnBelt(util.grid().at(2, 2, 2), Direction.UP, gem);
         } else scene.overlay().showText(1).independent().text("Processing...");
+    }
+
+    private static ItemStack createGem(Gem gem, GemCutting.Tier tier) {
+        ItemStack stack = new ItemStack(Adventure.Items.GEM.get());
+        GemItem.setGem(stack, gem);
+        var rarity = tier.holder();
+        if (rarity.isBound())
+            AffixHelper.setRarity(stack, rarity.get());
+        return stack;
     }
 
     public static void affixAugmentor(SceneBuilder builder, SceneBuildingUtil util) {

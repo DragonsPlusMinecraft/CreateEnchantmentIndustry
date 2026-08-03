@@ -18,6 +18,7 @@
 
 package plus.dragons.createenchantmentindustry.common.fluids.experience;
 
+import com.mojang.datafixers.util.Either;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -26,7 +27,6 @@ import java.util.Optional;
 import net.minecraft.util.ExtraCodecs;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.neoforged.neoforge.common.util.NeoForgeExtraCodecs;
 import org.jetbrains.annotations.Nullable;
 import plus.dragons.createenchantmentindustry.common.registry.CEIDataMaps;
 
@@ -40,8 +40,10 @@ public record ExperienceFuel(int experience, boolean special, Optional<ItemStack
     public static final Codec<ExperienceFuel> FULL_CODEC = RecordCodecBuilder.create(instance -> instance.group(
             ExtraCodecs.POSITIVE_INT.fieldOf("experience").forGetter(ExperienceFuel::experience),
             Codec.BOOL.optionalFieldOf("special", false).forGetter(ExperienceFuel::special),
-            ItemStack.SINGLE_ITEM_CODEC.optionalFieldOf("using_convert_to").forGetter(ExperienceFuel::usingConvertTo)).apply(instance, ExperienceFuel::new));
-    public static final Codec<ExperienceFuel> CODEC = NeoForgeExtraCodecs.withAlternative(INLINE_CODEC, FULL_CODEC);
+            ItemStack.CODEC.optionalFieldOf("using_convert_to").forGetter(ExperienceFuel::usingConvertTo)).apply(instance, ExperienceFuel::new));
+    public static final Codec<ExperienceFuel> CODEC = Codec.either(INLINE_CODEC, FULL_CODEC).xmap(
+            either -> either.map(fuel -> fuel, fuel -> fuel),
+            fuel -> !fuel.special && fuel.usingConvertTo.isEmpty() ? Either.left(fuel) : Either.right(fuel));
     public static ExperienceFuel normal(int experience) {
         return new ExperienceFuel(experience, false, Optional.empty());
     }
@@ -59,7 +61,7 @@ public record ExperienceFuel(int experience, boolean special, Optional<ItemStack
     }
 
     public static @Nullable ExperienceFuel get(Level level, ItemStack stack) {
-        var fuel = stack.getItemHolder().getData(CEIDataMaps.EXPERIENCE_FUEL);
+        var fuel = CEIDataMaps.EXPERIENCE_FUEL.get(stack.getItem());
         if (fuel != null)
             return fuel;
         if (!GenericItemEmptying.canItemBeEmptied(level, stack))

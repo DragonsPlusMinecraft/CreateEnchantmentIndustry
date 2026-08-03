@@ -26,7 +26,8 @@ import net.minecraft.data.CachedOutput;
 import net.minecraft.data.DataProvider;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
-import net.neoforged.neoforge.common.conditions.ICondition;
+import net.minecraftforge.common.crafting.conditions.ICondition;
+import plus.dragons.createenchantmentindustry.common.CEICommon;
 
 public final class CEIConditionalLootTables {
     private CEIConditionalLootTables() {}
@@ -39,34 +40,43 @@ public final class CEIConditionalLootTables {
         var table = new JsonObject();
         table.addProperty("type", "minecraft:block");
         table.add("pools", pools(entry));
-        table.addProperty("random_sequence", block.withPrefix("blocks/").toString());
-        ICondition.writeConditions(registries, table, condition);
+        // The block remains registered when its feature is disabled, so its recovery loot table must
+        // remain available as well. Forge 1.20.1 has no general conditional loot-table wrapper.
         return table;
     }
 
     public static JsonObject itemEntry(ResourceLocation item) {
         var entry = new JsonObject();
-        entry.addProperty("type", "minecraft:item");
-        entry.addProperty("name", item.toString());
+        entry.addProperty("type", "minecraft:tag");
+        entry.addProperty("name", optionalDropTag(item).toString());
+        entry.addProperty("expand", true);
         return entry;
     }
 
-    public static JsonObject copyComponents(ResourceLocation component) {
+    public static JsonObject copyNbt(String sourcePath, String targetPath) {
         var function = new JsonObject();
-        function.addProperty("function", "minecraft:copy_components");
+        function.addProperty("function", "minecraft:copy_nbt");
         function.addProperty("source", "block_entity");
-        var include = new JsonArray();
-        include.add(component.toString());
-        function.add("include", include);
+        var operation = new JsonObject();
+        operation.addProperty("source", sourcePath);
+        operation.addProperty("target", targetPath);
+        operation.addProperty("op", "replace");
+        var operations = new JsonArray();
+        operations.add(operation);
+        function.add("ops", operations);
         return function;
     }
 
     public static CompletableFuture<?> saveBlock(PackOutput output, ResourceLocation block, JsonObject table) {
-        var pathProvider = output.createPathProvider(PackOutput.Target.DATA_PACK, "loot_table");
+        var pathProvider = output.createPathProvider(PackOutput.Target.DATA_PACK, "loot_tables");
         // These tables intentionally overwrite Registrate's default block loot tables at
         // the same path. The shared hash cache can otherwise skip the second write and
         // leave the unconditional table on disk.
         return DataProvider.saveStable(CachedOutput.NO_CACHE, table, pathProvider.json(block.withPrefix("blocks/")));
+    }
+
+    public static ResourceLocation optionalDropTag(ResourceLocation item) {
+        return CEICommon.asResource("optional_block_drops/" + item.getPath());
     }
 
     private static JsonArray pools(JsonObject entry) {

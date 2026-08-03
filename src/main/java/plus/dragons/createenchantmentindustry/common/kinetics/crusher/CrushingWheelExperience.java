@@ -60,7 +60,7 @@ public class CrushingWheelExperience {
     }
 
     private static int getScaledExperience(ServerLevel level, LivingEntity entity) {
-        int baseExperience = entity.getExperienceReward(level, null);
+        int baseExperience = entity.getExperienceReward();
         if (baseExperience <= 0)
             return 0;
 

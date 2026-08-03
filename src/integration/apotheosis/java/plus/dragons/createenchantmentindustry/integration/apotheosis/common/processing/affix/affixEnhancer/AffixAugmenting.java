@@ -18,9 +18,9 @@
 
 package plus.dragons.createenchantmentindustry.integration.apotheosis.common.processing.affix.affixEnhancer;
 
-import dev.shadowsoffire.apotheosis.affix.Affix;
-import dev.shadowsoffire.apotheosis.affix.AffixHelper;
-import dev.shadowsoffire.apotheosis.affix.AffixInstance;
+import dev.shadowsoffire.apotheosis.adventure.affix.Affix;
+import dev.shadowsoffire.apotheosis.adventure.affix.AffixHelper;
+import dev.shadowsoffire.apotheosis.adventure.affix.AffixInstance;
 import dev.shadowsoffire.placebo.reload.DynamicHolder;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -91,7 +91,7 @@ public class AffixAugmenting {
         return apply(stack, result.target().affix(), result.resultLevel());
     }
 
-    public static ItemStack apply(ItemStack stack, DynamicHolder<Affix> affix, float resultLevel) {
+    public static ItemStack apply(ItemStack stack, DynamicHolder<? extends Affix> affix, float resultLevel) {
         ItemStack output = stack.copy();
         output.setCount(1);
         OverlimitAffixHelper.setAffixLevel(output, affix, resultLevel);
@@ -101,8 +101,6 @@ public class AffixAugmenting {
     private static Optional<RejectionReason> rejectionReason(AffixInstance instance, float maxLevel) {
         if (!instance.isValid())
             return Optional.of(RejectionReason.INVALID);
-        if (instance.isLevelIndependent())
-            return Optional.of(RejectionReason.LEVEL_INDEPENDENT);
         if (instance.level() >= maxLevel - AffixOperationCosts.EPSILON)
             return Optional.of(RejectionReason.AT_AUGMENTOR_CAP);
         if (AffixComposingRules.INSTANCE.deniesAugmenting(instance))

@@ -21,10 +21,7 @@ package plus.dragons.createenchantmentindustry.integration.apothic_enchanting.co
 import static plus.dragons.createenchantmentindustry.integration.apothic_enchanting.common.CEIACommon.REGISTRATE;
 
 import com.tterrag.registrate.util.entry.BlockEntityEntry;
-import net.neoforged.bus.api.IEventBus;
-import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.neoforge.capabilities.Capabilities;
-import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
+import net.minecraftforge.eventbus.api.IEventBus;
 import plus.dragons.createenchantmentindustry.integration.apothic_enchanting.common.contraptions.actors.enderWovenBag.EnderWovenBagBlockEntity;
 import plus.dragons.createenchantmentindustry.integration.apothic_enchanting.common.contraptions.actors.enderWovenBag.EnderWovenBagRenderer;
 import plus.dragons.createenchantmentindustry.integration.apothic_enchanting.common.kinetics.bookshelf.brass.BrassBookshelfBlockEntity;
@@ -60,12 +57,6 @@ public class CEIABlockEntities {
             .register();
 
     public static void register(IEventBus modBus) {
-        modBus.register(CEIABlockEntities.class);
-    }
-
-    @SubscribeEvent
-    public static void registerCapabilities(final RegisterCapabilitiesEvent event) {
-        event.registerBlockEntity(Capabilities.FluidHandler.BLOCK,
-                INFUSER.get(), InfuserBlockEntity::getFluidHandler);
+        // Forge 1.20 block entities expose capabilities from getCapability directly.
     }
 }

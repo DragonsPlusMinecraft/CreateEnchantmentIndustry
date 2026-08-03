@@ -22,21 +22,12 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.simibubi.create.foundation.item.render.CustomRenderedItemModel;
 import com.simibubi.create.foundation.item.render.CustomRenderedItemModelRenderer;
 import com.simibubi.create.foundation.item.render.PartialItemModelRenderer;
-import com.simibubi.create.foundation.item.render.SimpleCustomRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
-import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent;
 import plus.dragons.createenchantmentindustry.integration.apotheosis.client.registry.CEIAXPartialModels;
-import plus.dragons.createenchantmentindustry.integration.apotheosis.common.registry.CEIAXBlocks;
 
 public class BlazeComposerItemRenderer extends CustomRenderedItemModelRenderer {
-    public static void register(RegisterClientExtensionsEvent event) {
-        event.registerItem(
-                SimpleCustomRenderer.create(CEIAXBlocks.BLAZE_COMPOSER.asItem(), new BlazeComposerItemRenderer()),
-                CEIAXBlocks.BLAZE_COMPOSER.asItem());
-    }
-
     @Override
     protected void render(ItemStack stack, CustomRenderedItemModel model, PartialItemModelRenderer renderer, ItemDisplayContext transformType, PoseStack poseStack, MultiBufferSource bufferSource, int light, int overlay) {
         renderer.render(model.getOriginalModel(), light);

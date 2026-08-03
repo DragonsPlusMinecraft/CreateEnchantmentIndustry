@@ -35,6 +35,7 @@ import net.createmod.ponder.api.scene.SceneBuildingUtil;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.WalkAnimationState;
@@ -44,8 +45,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.fluids.FluidStack;
-import net.neoforged.neoforge.fluids.capability.IFluidHandler;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.capability.IFluidHandler;
 import plus.dragons.createdragonsplus.common.processing.blaze.BlazeBlock;
 import plus.dragons.createenchantmentindustry.common.registry.CEIBlocks;
 import plus.dragons.createenchantmentindustry.common.registry.CEIFluids;
@@ -248,7 +249,7 @@ public class ExperienceScene {
         ItemStack sword = new ItemStack(Items.NETHERITE_SWORD);
         scene.idle(5);
         scene.world().modifyBlockEntityNBT(deployer, DeployerBlockEntity.class, nbt -> {
-            nbt.put("HeldItem", sword.saveOptional(scene.world().getHolderLookupProvider()));
+            nbt.put("HeldItem", sword.save(new CompoundTag()));
             nbt.putString("mode", "PUNCH");
         });
         scene.idle(5);

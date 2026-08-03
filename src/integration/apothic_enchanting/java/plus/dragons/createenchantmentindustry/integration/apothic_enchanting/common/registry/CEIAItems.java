@@ -23,19 +23,23 @@ import static plus.dragons.createenchantmentindustry.integration.apothic_enchant
 import com.simibubi.create.AllTags;
 import com.simibubi.create.content.processing.sequenced.SequencedAssemblyItem;
 import com.tterrag.registrate.util.entry.ItemEntry;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
-import net.neoforged.neoforge.common.Tags;
+import net.minecraft.tags.TagKey;
+import net.minecraft.world.item.Item;
 import plus.dragons.createdragonsplus.common.registry.CDPItems;
 import plus.dragons.createdragonsplus.data.tag.ItemTagRegistry;
 import plus.dragons.createenchantmentindustry.common.CEICommon;
+import plus.dragons.createenchantmentindustry.data.CEIConditionalLootTables;
 import plus.dragons.createenchantmentindustry.integration.apothic_enchanting.common.CEIACommon;
 
 public class CEIAItems {
+    private static final TagKey<Item> FORGE_BUCKETS = TagKey.create(
+            Registries.ITEM, ResourceLocation.fromNamespaceAndPath("forge", "buckets"));
     public static final ModTags MOD_TAGS = new ModTags();
 
     public static final ItemEntry<SequencedAssemblyItem> INCOMPLETE_BRASS_BOOKSHELF = REGISTRATE
             .item("incomplete_brass_bookshelf", SequencedAssemblyItem::new)
-            .asOptional()
             .model((ctx, prov) -> prov
                     .cubeColumn(ctx.getName(), prov.modLoc("block/brass_bookshelf_top"), prov.modLoc("block/brass_bookshelf_bottom")))
             .register();
@@ -43,9 +47,18 @@ public class CEIAItems {
     public static class ModTags extends ItemTagRegistry {
         public ModTags() {
             super(CEIACommon.ID);
-            addOptional(AllTags.AllItemTags.UPRIGHT_ON_BELT.tag, ResourceLocation.fromNamespaceAndPath("apothic_enchanting", "infused_breath"));
-            addOptional(Tags.Items.BUCKETS, CEICommon.asResource("infused_dragon_breath_bucket"));
+            addOptional(AllTags.AllItemTags.UPRIGHT_ON_BELT.tag, ResourceLocation.fromNamespaceAndPath("apotheosis", "infused_breath"));
+            addOptional(FORGE_BUCKETS, CEICommon.asResource("infused_dragon_breath_bucket"));
             addOptional(CDPItems.COMMON_TAGS.dragonBreathBuckets, CEICommon.asResource("infused_dragon_breath_bucket"));
+            addOptionalBlockDrop("infuser");
+            addOptionalBlockDrop("brass_bookshelf");
+            addOptionalBlockDrop("creative_bookshelf");
+            addOptionalBlockDrop("ender_woven_bag");
+        }
+
+        private void addOptionalBlockDrop(String path) {
+            ResourceLocation item = CEICommon.asResource(path);
+            addOptional(TagKey.create(Registries.ITEM, CEIConditionalLootTables.optionalDropTag(item)), item);
         }
     }
 

@@ -24,13 +24,13 @@ import static plus.dragons.createdragonsplus.common.registry.CDPItems.BLAZE_UPGR
 import static plus.dragons.createenchantmentindustry.common.registry.CEIBlocks.*;
 import static plus.dragons.createenchantmentindustry.common.registry.CEIItems.*;
 
-import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.CreativeModeTab.TabVisibility;
-import net.neoforged.bus.api.IEventBus;
-import net.neoforged.neoforge.registries.DeferredRegister;
+import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.registries.RegistryObject;
 import plus.dragons.createenchantmentindustry.common.CEICommon;
 import plus.dragons.createenchantmentindustry.config.CEIConfig;
 import plus.dragons.createenchantmentindustry.util.CEILang;
@@ -38,7 +38,8 @@ import plus.dragons.createenchantmentindustry.util.CEILang;
 public class CEICreativeModeTabs {
     private static final DeferredRegister<CreativeModeTab> TABS = DeferredRegister
             .create(Registries.CREATIVE_MODE_TAB, CEICommon.ID);
-    public static final Holder<CreativeModeTab> BASE = TABS.register("base", CEICreativeModeTabs::base);
+    public static final RegistryObject<CreativeModeTab> BASE = TABS.register(
+            "base", () -> base(CEICommon.asResource("base")));
 
     public static void register(IEventBus modBus) {
         TABS.register(modBus);
@@ -74,6 +75,6 @@ public class CEICreativeModeTabs {
         output.accept(EXPERIENCE_CAKE_BASE, TabVisibility.SEARCH_TAB_ONLY);
         output.accept(EXPERIENCE_CAKE);
         output.accept(EXPERIENCE_CAKE_SLICE);
-        output.accept(EXPERIENCE_BUCKET);
+        output.accept(EXPERIENCE_BUCKET.get());
     }
 }
