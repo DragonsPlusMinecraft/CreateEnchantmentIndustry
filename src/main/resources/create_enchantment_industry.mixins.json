@@ -21,6 +21,7 @@
     "dragonLibLegacy.CreateAdvancementConstructor",
     "dragonLibLegacy.CreateAdvancementMixin",
     "dragonLibLegacy.FluidReactionsMixin",
+    "ExperienceOrbAccessor",
     "ExperienceOrbMixin"
   ],
   "client": [

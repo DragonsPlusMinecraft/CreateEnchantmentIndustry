@@ -54,7 +54,7 @@ public class ExperienceFluid extends VirtualFluid {
             orb.setDeltaMovement(speed);
             level.addFreshEntity(orb);
         } else {
-            int left = orb.repairPlayerItems(player, value);
+            int left = RawExperienceUtil.repairPlayerItems(orb, player, value);
             if (left > 0) {
                 RawExperienceUtil.addRawExperience(player, left);
                 this.applyAdditionalEffects(player, left);

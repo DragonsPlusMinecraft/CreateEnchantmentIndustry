@@ -6,8 +6,6 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ExperienceOrb;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.entity.player.PlayerXpEvent;
 import net.minecraftforge.network.NetworkHooks;
 import plus.dragons.createenchantmentindustry.entry.CeiEntityTypes;
 import plus.dragons.createenchantmentindustry.entry.CeiFluids;
@@ -38,25 +36,7 @@ public class HyperExperienceOrb extends ExperienceOrb {
 
     @Override
     public void playerTouch(Player player) {
-        if (!this.level().isClientSide) {
-            if (player.takeXpDelay == 0) {
-                int rawValue = this.value;
-                if (MinecraftForge.EVENT_BUS.post(new PlayerXpEvent.PickupXp(player, this)))
-                    return;
-                player.takeXpDelay = 2;
-                player.take(this, 1);
-                int i = this.repairPlayerItems(player, rawValue);
-                if (i > 0) {
-                    RawExperienceUtil.addRawExperience(player, i);
-                    applyPlayerEffects(player, i);
-                }
-
-                --this.count;
-                if (this.count == 0) {
-                    this.discard();
-                }
-            }
-        }
+        RawExperienceUtil.pickupRawExperience(this, player, amount -> applyPlayerEffects(player, amount));
     }
 
     public int getIcon() {

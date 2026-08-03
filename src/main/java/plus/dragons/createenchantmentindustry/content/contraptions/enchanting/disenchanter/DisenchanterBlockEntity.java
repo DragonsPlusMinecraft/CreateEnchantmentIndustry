@@ -23,7 +23,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Containers;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.ExperienceOrb;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
@@ -256,21 +255,23 @@ public class DisenchanterBlockEntity extends SmartBlockEntity implements IHaveGo
         if (!experienceOrbs.isEmpty()) {
             internalTank.allowInsertion();
             for (var orb : experienceOrbs) {
-                var amount = orb.value;
+                var amount = RawExperienceUtil.getOrbExperience(orb);
+                if (amount <= 0)
+                    continue;
                 var fluidStack = new FluidStack(CeiFluids.EXPERIENCE.get().getSource(), amount);
-                var inserted = internalTank.getPrimaryHandler().fill(fluidStack, IFluidHandler.FluidAction.EXECUTE);
-                if (inserted == amount) {
+                var accepted = internalTank.getPrimaryHandler().fill(fluidStack, IFluidHandler.FluidAction.SIMULATE);
+                var removed = RawExperienceUtil.removeExperienceFromOrb(orb, accepted);
+                if (removed <= 0)
+                    break;
+                var inserted = internalTank.getPrimaryHandler().fill(
+                        new FluidStack(CeiFluids.EXPERIENCE.get().getSource(), removed),
+                        IFluidHandler.FluidAction.EXECUTE);
+                if (inserted > 0) {
                     absorbedXp = true;
                     recordRecycledExperience(inserted);
-                    orb.remove(Entity.RemovalReason.DISCARDED);
-                } else {
-                    if (inserted != 0) {
-                        absorbedXp = true;
-                        recordRecycledExperience(inserted);
-                        orb.value -= inserted;
-                    }
-                    break;
                 }
+                if (inserted < amount)
+                    break;
             }
             internalTank.forbidInsertion();
         }
