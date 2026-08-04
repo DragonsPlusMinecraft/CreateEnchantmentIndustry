@@ -273,7 +273,7 @@
   "create_enchantment_industry.gui.goggles.forging.insufficient_experience": "Not enough Liquid Experience: %1$s / %2$s",
   "create_enchantment_industry.gui.goggles.forging.insufficient_super_experience": "Not enough Super Liquid Experience: %1$s / %2$s",
   "create_enchantment_industry.gui.goggles.forging.invalid_items": "Invalid forging item combination!",
-  "create_enchantment_industry.gui.goggles.forging.invalid_template_type.normal": "Normal Enchanting Template can鈥榯 be used in Super Enchanting mode!",
+  "create_enchantment_industry.gui.goggles.forging.invalid_template_type.normal": "Normal Enchanting Template can‘t be used in Super Enchanting mode!",
   "create_enchantment_industry.gui.goggles.forging.invalid_template_type.special": "Super Enchanting Template requires Super Enchanting mode to use!",
   "create_enchantment_industry.gui.goggles.forging.lost_enchantments": "Lost Enchantments:",
   "create_enchantment_industry.gui.goggles.forging.lost_reason.cannot_apply_to_item": "cannot apply to %1$s",

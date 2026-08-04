@@ -23,28 +23,14 @@ java {
     withSourcesJar()
 }
 
-def allIntegrationSourceSets = [
+def integrationSourceSets = [
         "apothic_enchanting",
         "apotheosis",
         "touhou_little_maid",
 ]
 
-def isIntegrationEnabled = { name ->
-    providers.gradleProperty("enable_${name}_integration")
-            .map { it.toBoolean() }
-            .orElse(true)
-            .get()
-}
-
-def enabledIntegrationSourceSets = allIntegrationSourceSets.findAll(isIntegrationEnabled)
-def hasIntegration = { name -> enabledIntegrationSourceSets.contains(name) }
-
-if (hasIntegration("apotheosis") && !hasIntegration("apothic_enchanting")) {
-    throw new GradleException("The Apotheosis integration requires the enchanting integration source set")
-}
-
 sourceSets {
-    enabledIntegrationSourceSets.each { name ->
+    integrationSourceSets.each { name ->
         create(name) {
             java.srcDir "src/integration/${name}/java"
             resources.srcDir "src/integration/${name}/resources"
@@ -57,7 +43,7 @@ sourceSets {
         }
     }
     main {
-        enabledIntegrationSourceSets.each { name ->
+        integrationSourceSets.each { name ->
             runtimeClasspath += sourceSets[name].output
         }
     }
@@ -65,8 +51,8 @@ sourceSets {
 
 def integrationClasses = tasks.register("integrationClasses") {
     group = "build"
-    description = "Compiles every enabled optional integration source set."
-    enabledIntegrationSourceSets.each { name ->
+    description = "Compiles every optional integration source set."
+    integrationSourceSets.each { name ->
         dependsOn(tasks.named("${name}Classes"))
     }
 }
@@ -76,18 +62,18 @@ tasks.named("build") {
 }
 
 tasks.named("jar", Jar) {
-    enabledIntegrationSourceSets.each { name ->
+    integrationSourceSets.each { name ->
         from sourceSets[name].output
     }
     from(layout.buildDirectory.dir("mixin")) {
-        enabledIntegrationSourceSets.each { name ->
+        integrationSourceSets.each { name ->
             include "${mod_id}.${name}.refmap.json"
         }
     }
 }
 
 tasks.named("sourcesJar", Jar) {
-    enabledIntegrationSourceSets.each { name ->
+    integrationSourceSets.each { name ->
         from sourceSets[name].allJava
     }
 }
@@ -105,7 +91,7 @@ legacyForge {
     mods {
         "${mod_id}" {
             sourceSet sourceSets.main
-            enabledIntegrationSourceSets.each { name ->
+            integrationSourceSets.each { name ->
                 sourceSet sourceSets[name]
             }
         }
@@ -130,11 +116,6 @@ legacyForge {
             programArgument "--nogui"
         }
 
-        gameTestServer {
-            type = "gameTestServer"
-            gameDirectory = project.file("run/gametest")
-        }
-
         data {
             data()
             gameDirectory = project.file("run")
@@ -148,7 +129,7 @@ legacyForge {
                     "--existing-mod", "create",
                     "--existing-mod", "create_dragons_plus",
             ]
-            enabledIntegrationSourceSets.each { name ->
+            integrationSourceSets.each { name ->
                 dataArgs.addAll("--existing", file("src/integration/${name}/resources/").getAbsolutePath())
             }
             programArguments.addAll(dataArgs)
@@ -184,7 +165,7 @@ dependencies {
     compileOnly(annotationProcessor("io.github.llamalad7:mixinextras-common:0.4.1"))
     implementation("io.github.llamalad7:mixinextras-forge:0.4.1")
     annotationProcessor("org.spongepowered:mixin:${mixin_version}:processor")
-    enabledIntegrationSourceSets.each { name ->
+    integrationSourceSets.each { name ->
         add("${name}AnnotationProcessor", "org.spongepowered:mixin:${mixin_version}:processor")
     }
 
@@ -195,16 +176,11 @@ dependencies {
     modCompileOnly("top.theillusivec4.curios:curios-forge:${curios_version}+${minecraft_version}:api")
     modRuntimeOnly("top.theillusivec4.curios:curios-forge:${curios_version}+${minecraft_version}")
 
-    if (hasIntegration("apothic_enchanting") || hasIntegration("apotheosis")) {
-        modImplementation("dev.shadowsoffire:Placebo:${minecraft_version}-${placebo_version}")
-        modImplementation("dev.shadowsoffire:ApothicAttributes:${minecraft_version}-${apothic_attributes_version}")
-        modImplementation("vazkii.patchouli:Patchouli:${minecraft_version}-${patchouli_version}")
-        modImplementation("dev.shadowsoffire:Apotheosis:${minecraft_version}-${apotheosis_version}")
-    }
-
-    if (hasIntegration("touhou_little_maid")) {
-        modImplementation("curse.maven:touhou-little-maid-355044:${tlm_file_id}")
-    }
+    modImplementation("dev.shadowsoffire:Placebo:${minecraft_version}-${placebo_version}")
+    modImplementation("dev.shadowsoffire:ApothicAttributes:${minecraft_version}-${apothic_attributes_version}")
+    modImplementation("vazkii.patchouli:Patchouli:${minecraft_version}-${patchouli_version}")
+    modImplementation("dev.shadowsoffire:Apotheosis:${minecraft_version}-${apotheosis_version}")
+    modImplementation("curse.maven:touhou-little-maid-355044:${tlm_file_id}")
 }
 
 sourceSets.main.resources {
@@ -218,7 +194,7 @@ def integrationMixinConfigs = [
         touhou_little_maid : "${mod_id}.touhou_little_maid.mixins.json",
 ]
 
-def integrationMixinBlocks = enabledIntegrationSourceSets
+def integrationMixinBlocks = integrationSourceSets
         .collect { integrationMixinConfigs[it] }
         .findAll { it != null }
         .collect { config -> "[[mixins]]\n    config=\"${config}\"" }
@@ -255,7 +231,7 @@ legacyForge.ideSyncTask generateModMetadata
 mixin {
     add sourceSets.main, "${mod_id}.refmap.json"
     config "${mod_id}.mixins.json"
-    enabledIntegrationSourceSets.each { name ->
+    integrationSourceSets.each { name ->
         def configFile = integrationMixinConfigs[name]
         if (configFile != null) {
             add sourceSets[name], "${mod_id}.${name}.refmap.json"
@@ -279,7 +255,7 @@ tasks.named("jar", Jar) {
                 "Implementation-Version"   : project.version,
                 "Implementation-Vendor"    : mod_authors,
                 "Implementation-Timestamp" : new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
-                "MixinConfigs"             : (["${mod_id}.mixins.json"] + enabledIntegrationSourceSets.collect { integrationMixinConfigs[it] }.findAll { it != null }).join(","),
+                "MixinConfigs"             : (["${mod_id}.mixins.json"] + integrationSourceSets.collect { integrationMixinConfigs[it] }.findAll { it != null }).join(","),
         ])
     }
 }
@@ -351,6 +327,10 @@ tasks.withType(JavaCompile).configureEach {
 }
 
 idea {
+    project {
+        jdkName = "17"
+        languageLevel = JavaVersion.VERSION_17
+    }
     module {
         downloadSources = true
         downloadJavadoc = true
