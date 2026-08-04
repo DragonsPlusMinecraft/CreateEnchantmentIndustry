@@ -71,7 +71,8 @@ public class CreativeBookshelfBlock extends HorizontalDirectionalBlock implement
 
     @Override
     public float getEnchantPowerBonus(BlockState state, LevelReader level, BlockPos pos) {
-        return getBlockEntity(level, pos).eterna() / 2f;
+        CreativeBookshelfBlockEntity blockEntity = getBlockEntity(level, pos);
+        return blockEntity == null ? 0 : blockEntity.eterna() / 2f;
     }
 
     @Override
@@ -81,12 +82,14 @@ public class CreativeBookshelfBlock extends HorizontalDirectionalBlock implement
 
     @Override
     public float getQuantaBonus(BlockState state, LevelReader world, BlockPos pos) {
-        return getBlockEntity(world, pos).quanta();
+        CreativeBookshelfBlockEntity blockEntity = getBlockEntity(world, pos);
+        return blockEntity == null ? 0 : blockEntity.quanta();
     }
 
     @Override
     public float getArcanaBonus(BlockState state, LevelReader world, BlockPos pos) {
-        return getBlockEntity(world, pos).arcana();
+        CreativeBookshelfBlockEntity blockEntity = getBlockEntity(world, pos);
+        return blockEntity == null ? 0 : blockEntity.arcana();
     }
 
     @Override

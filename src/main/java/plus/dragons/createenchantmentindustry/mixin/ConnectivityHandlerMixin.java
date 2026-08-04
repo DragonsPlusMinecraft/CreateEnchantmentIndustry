@@ -49,7 +49,7 @@ public class ConnectivityHandlerMixin {
     }
 
     @Inject(method = "splitMultiAndInvalidate", at = @At("TAIL"), remap = false)
-    private static <T extends BlockEntity & IMultiBlockEntityContainer> void splitMulti$dropExperienceFluidMulti(T be, @Coerce Object cache, boolean tryReconnect, CallbackInfo ci, @Local FluidStack dropped) {
+    private static <T extends BlockEntity & IMultiBlockEntityContainer> void splitMulti$dropExperienceFluidMulti(T be, @Coerce Object cache, boolean tryReconnect, CallbackInfo ci, @Local(ordinal = 0) FluidStack dropped) {
         if (!(be.getLevel() instanceof ServerLevel level))
             return;
         if (!(be instanceof IMultiBlockEntityContainer.Fluid fluidContainer))

@@ -70,7 +70,8 @@ public class BrassBookshelfBlock extends KineticBlock implements IEnchantingBloc
 
     @Override
     public float getEnchantPowerBonus(BlockState state, LevelReader level, BlockPos pos) {
-        return getBlockEntity(level, pos).eterna() / 2f;
+        BrassBookshelfBlockEntity blockEntity = getBlockEntity(level, pos);
+        return blockEntity == null ? 0 : blockEntity.eterna() / 2f;
     }
 
     @Override
@@ -80,17 +81,20 @@ public class BrassBookshelfBlock extends KineticBlock implements IEnchantingBloc
 
     @Override
     public float getQuantaBonus(BlockState state, LevelReader world, BlockPos pos) {
-        return getBlockEntity(world, pos).quanta();
+        BrassBookshelfBlockEntity blockEntity = getBlockEntity(world, pos);
+        return blockEntity == null ? 0 : blockEntity.quanta();
     }
 
     @Override
     public float getArcanaBonus(BlockState state, LevelReader world, BlockPos pos) {
-        return getBlockEntity(world, pos).arcana();
+        BrassBookshelfBlockEntity blockEntity = getBlockEntity(world, pos);
+        return blockEntity == null ? 0 : blockEntity.arcana();
     }
 
     @Override
     public boolean allowsTreasure(BlockState state, LevelReader world, BlockPos pos) {
-        return getBlockEntity(world, pos).allowTreasure();
+        BrassBookshelfBlockEntity blockEntity = getBlockEntity(world, pos);
+        return blockEntity != null && blockEntity.allowTreasure();
     }
 
     @Override
