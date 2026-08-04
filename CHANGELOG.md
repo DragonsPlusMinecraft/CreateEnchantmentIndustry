@@ -1,4 +1,6 @@
-## Create: Enchantment Industry 2.5.0-preview.1 for Minecraft 1.20.1
+## Create: Enchantment Industry 2.5.0-preview.2 for Minecraft 1.20.1
+Fixed CurseForge and Modrinth publishing the non-reobfuscated development jar.
+
 Backported the complete 2.5 feature set to Forge and NeoForge 1.20.1 with Java 17, based on Create 6.0.8.
 
 **Backup save before use!**

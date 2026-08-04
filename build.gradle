@@ -294,7 +294,7 @@ publishing {
 }
 
 publishMods {
-    file = jar.archiveFile
+    file = reobfJar.archiveFile
     additionalFiles.from sourcesJar.archiveFile
     changelog = project.file("CHANGELOG.md").text
     version = mod_version
