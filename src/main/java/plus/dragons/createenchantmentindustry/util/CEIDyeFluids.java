@@ -67,6 +67,6 @@ public class CEIDyeFluids {
     }
 
     private static ResourceLocation variantId(DyeColor color) {
-        return ResourceLocation.withDefaultNamespace(color.getName());
+        return new ResourceLocation(color.getName());
     }
 }

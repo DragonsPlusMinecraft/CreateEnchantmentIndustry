@@ -1,7 +1,4 @@
 {
-  "remove": [
-    "#create_enchantment_industry:blaze_enchanter/enchanting_exclusive"
-  ],
   "values": [
     "#create_enchantment_industry:blaze_enchanter/enchanting",
     "#create_enchantment_industry:blaze_enchanter/super_enchanting_exclusive"

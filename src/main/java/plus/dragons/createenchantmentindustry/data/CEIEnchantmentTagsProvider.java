@@ -59,8 +59,7 @@ public class CEIEnchantmentTagsProvider extends TagsProvider<Enchantment> {
 
         tag(CEIEnchantments.MOD_TAGS.superEnchanting)
                 .addTag(CEIEnchantments.MOD_TAGS.enchanting)
-                .addTag(CEIEnchantments.MOD_TAGS.superEnchantingExclusive)
-                .remove(CEIEnchantments.MOD_TAGS.enchantingExclusive);
+                .addTag(CEIEnchantments.MOD_TAGS.superEnchantingExclusive);
     }
 
     private static void addOptional(TagAppender<Enchantment> appender, Holder.Reference<Enchantment> holder) {

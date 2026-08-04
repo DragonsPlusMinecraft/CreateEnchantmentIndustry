@@ -143,7 +143,7 @@ public class CEICommon {
     }
 
     public static ResourceLocation asResource(String name) {
-        return ResourceLocation.fromNamespaceAndPath(ID, name);
+        return new ResourceLocation(ID, name);
     }
 
     public static String asLocalization(String key) {

@@ -50,7 +50,7 @@ public class CEICreativeModeTabs {
                 .title(CEILang.description("itemGroup", id).component())
                 .icon(BLAZE_ENCHANTER::asStack)
                 .displayItems(CEICreativeModeTabs::buildBaseContents)
-                .withTabsBefore(ResourceLocation.fromNamespaceAndPath("create_dragons_plus", "base"))
+                .withTabsBefore(new ResourceLocation("create_dragons_plus", "base"))
                 .build();
     }
 

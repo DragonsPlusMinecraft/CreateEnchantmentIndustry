@@ -58,6 +58,7 @@ public class EnchantingBehaviour {
                 .map(HolderSet::stream)
                 .orElseGet(() -> registry.holders().map(holder -> (Holder<Enchantment>) holder));
         Stream<Enchantment> possible = holders
+                .filter(holder -> !special || !holder.is(CEIEnchantments.MOD_TAGS.enchantingExclusive))
                 .map(Holder::value)
                 .filter(enchantment -> enchantment.canApplyAtEnchantingTable(stack));
         return CEIEnchantmentHelper.getAvailableEnchantmentResults(adjustedLevel, possible, special);

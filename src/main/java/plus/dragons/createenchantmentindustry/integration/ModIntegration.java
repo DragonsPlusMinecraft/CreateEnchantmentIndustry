@@ -42,7 +42,7 @@ public enum ModIntegration {
     }
 
     public ResourceLocation asResource(String path) {
-        return ResourceLocation.fromNamespaceAndPath(id, path);
+        return new ResourceLocation(id, path);
     }
 
     public ModLoadedCondition condition() {

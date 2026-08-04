@@ -35,7 +35,7 @@ import plus.dragons.createenchantmentindustry.integration.apothic_enchanting.com
 
 public class CEIAItems {
     private static final TagKey<Item> FORGE_BUCKETS = TagKey.create(
-            Registries.ITEM, ResourceLocation.fromNamespaceAndPath("forge", "buckets"));
+            Registries.ITEM, new ResourceLocation("forge", "buckets"));
     public static final ModTags MOD_TAGS = new ModTags();
 
     public static final ItemEntry<SequencedAssemblyItem> INCOMPLETE_BRASS_BOOKSHELF = REGISTRATE
@@ -47,7 +47,7 @@ public class CEIAItems {
     public static class ModTags extends ItemTagRegistry {
         public ModTags() {
             super(CEIACommon.ID);
-            addOptional(AllTags.AllItemTags.UPRIGHT_ON_BELT.tag, ResourceLocation.fromNamespaceAndPath("apotheosis", "infused_breath"));
+            addOptional(AllTags.AllItemTags.UPRIGHT_ON_BELT.tag, new ResourceLocation("apotheosis", "infused_breath"));
             addOptional(FORGE_BUCKETS, CEICommon.asResource("infused_dragon_breath_bucket"));
             addOptional(CDPItems.COMMON_TAGS.dragonBreathBuckets, CEICommon.asResource("infused_dragon_breath_bucket"));
             addOptionalBlockDrop("infuser");
