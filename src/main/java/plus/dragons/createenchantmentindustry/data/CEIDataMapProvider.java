@@ -84,7 +84,7 @@ public class CEIDataMapProvider implements DataProvider {
         var fluidExperience = builder(CEIDataMaps.FLUID_UNIT_EXPERIENCE);
         fluidExperience.add(mod("cofh_core", "experience"), 25, "cofh_core");
         fluidExperience.add(mod("cyclic", "xpjuice"), 20, "cyclic");
-        fluidExperience.add(mod("enderio", "xpjuice"), 20, "enderio");
+        fluidExperience.add(mod("enderio", "xp_juice"), 20, "enderio");
         fluidExperience.add(mod("industrialforegoing", "essence"), 20, "industrialforegoing");
         fluidExperience.add(mod("mob_grinding_utils", "fluid_xp"), 20, "mob_grinding_utils");
         fluidExperience.add(mod("pneumaticcraft", "memory_essence"), 20, "pneumaticcraft");
