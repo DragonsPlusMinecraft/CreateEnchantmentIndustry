@@ -45,7 +45,7 @@ public abstract class BeltInventoryMixin {
     @Final
     BeltBlockEntity belt;
 
-    @WrapMethod(method = "getBeltProcessingAtSegment")
+    @WrapMethod(method = "getBeltProcessingAtSegment", remap = false)
     private BeltProcessingBehaviour getBeltProcessingAtSegment$getLowerBeltProcessingBehaviour(int segment, Operation<BeltProcessingBehaviour> original) {
         var bhvr = BlockEntityBehaviour.get(belt.getLevel(), BeltHelper.getPositionForOffset(belt, segment)
                 .above(1), LowerBeltProcessingBehaviour.TYPE);
@@ -53,7 +53,7 @@ public abstract class BeltInventoryMixin {
         else return original.call(segment);
     }
 
-    @WrapOperation(method = "handleBeltProcessingAndCheckIfRemoved", at = @At(value = "INVOKE", target = "Lcom/simibubi/create/content/kinetics/belt/behaviour/BeltProcessingBehaviour;isBlocked(Lnet/minecraft/world/level/BlockGetter;Lnet/minecraft/core/BlockPos;)Z"))
+    @WrapOperation(method = "handleBeltProcessingAndCheckIfRemoved", at = @At(value = "INVOKE", target = "Lcom/simibubi/create/content/kinetics/belt/behaviour/BeltProcessingBehaviour;isBlocked(Lnet/minecraft/world/level/BlockGetter;Lnet/minecraft/core/BlockPos;)Z", remap = false), remap = false)
     private boolean isBlocked$bypassCheck(BlockGetter world, BlockPos processingSpace, Operation<Boolean> original, @Local(ordinal = 0) BeltProcessingBehaviour bp) {
         if (bp.getType() == LowerBeltProcessingBehaviour.TYPE) return false;
         else return original.call(world, processingSpace);

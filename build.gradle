@@ -167,6 +167,7 @@ dependencies {
     annotationProcessor("org.spongepowered:mixin:${mixin_version}:processor")
     integrationSourceSets.each { name ->
         add("${name}AnnotationProcessor", "org.spongepowered:mixin:${mixin_version}:processor")
+        add("${name}AnnotationProcessor", "io.github.llamalad7:mixinextras-common:0.4.1")
     }
 
     modCompileOnly("mezz.jei:jei-${minecraft_version}-common-api:${jei_version}")
