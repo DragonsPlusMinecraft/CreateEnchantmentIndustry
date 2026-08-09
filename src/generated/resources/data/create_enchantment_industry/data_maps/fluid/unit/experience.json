@@ -36,7 +36,7 @@
       ],
       "forge:value": 20
     },
-    "justdirethings:xp_fluid_source": {
+    "justdirethings:xp_fluid": {
       "forge:conditions": [
         {
           "type": "forge:mod_loaded",
