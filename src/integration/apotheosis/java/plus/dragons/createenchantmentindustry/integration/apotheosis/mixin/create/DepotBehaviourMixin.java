@@ -42,14 +42,14 @@ public abstract class DepotBehaviourMixin extends BlockEntityBehaviour {
         super(be);
     }
 
-    @WrapOperation(method = "tick()V", at = @At(value = "INVOKE", target = "Lcom/simibubi/create/foundation/blockEntity/behaviour/BlockEntityBehaviour;get(Lnet/minecraft/world/level/BlockGetter;Lnet/minecraft/core/BlockPos;Lcom/simibubi/create/foundation/blockEntity/behaviour/BehaviourType;)Lcom/simibubi/create/foundation/blockEntity/behaviour/BlockEntityBehaviour;"))
+    @WrapOperation(method = "tick()V", at = @At(value = "INVOKE", target = "Lcom/simibubi/create/foundation/blockEntity/behaviour/BlockEntityBehaviour;get(Lnet/minecraft/world/level/BlockGetter;Lnet/minecraft/core/BlockPos;Lcom/simibubi/create/foundation/blockEntity/behaviour/BehaviourType;)Lcom/simibubi/create/foundation/blockEntity/behaviour/BlockEntityBehaviour;", remap = false), remap = false)
     private <T extends BlockEntityBehaviour> T get$getLowerBeltProcessingBehaviour(BlockGetter be, BlockPos e, BehaviourType<T> type, Operation<T> original) {
         var bhvr = BlockEntityBehaviour.get(blockEntity.getLevel(), e.below(1), LowerBeltProcessingBehaviour.TYPE);
         if (bhvr != null) return (T) bhvr;
         else return original.call(be, e, type);
     }
 
-    @WrapOperation(method = "tick()V", at = @At(value = "INVOKE", target = "Lcom/simibubi/create/content/kinetics/belt/behaviour/BeltProcessingBehaviour;isBlocked(Lnet/minecraft/world/level/BlockGetter;Lnet/minecraft/core/BlockPos;)Z"))
+    @WrapOperation(method = "tick()V", at = @At(value = "INVOKE", target = "Lcom/simibubi/create/content/kinetics/belt/behaviour/BeltProcessingBehaviour;isBlocked(Lnet/minecraft/world/level/BlockGetter;Lnet/minecraft/core/BlockPos;)Z", remap = false), remap = false)
     private boolean isBlocked$bypassCheck(BlockGetter world, BlockPos processingSpace, Operation<Boolean> original, @Local(ordinal = 0) BeltProcessingBehaviour bp) {
         if (bp.getType() == LowerBeltProcessingBehaviour.TYPE) return false;
         else return original.call(world, processingSpace);

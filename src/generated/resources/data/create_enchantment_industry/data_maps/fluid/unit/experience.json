@@ -18,7 +18,7 @@
       ],
       "forge:value": 20
     },
-    "enderio:xpjuice": {
+    "enderio:xp_juice": {
       "forge:conditions": [
         {
           "type": "forge:mod_loaded",
