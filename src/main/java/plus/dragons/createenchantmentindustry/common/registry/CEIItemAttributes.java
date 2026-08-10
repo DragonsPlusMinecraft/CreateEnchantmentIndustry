@@ -22,6 +22,7 @@ import static plus.dragons.createenchantmentindustry.common.CEICommon.REGISTRATE
 
 import com.simibubi.create.AllRecipeTypes;
 import com.simibubi.create.api.registry.CreateRegistries;
+import com.simibubi.create.content.equipment.sandPaper.SandPaperPolishingRecipe;
 import com.simibubi.create.content.logistics.item.filter.attribute.ItemAttributeType;
 import com.simibubi.create.content.logistics.item.filter.attribute.SingletonItemAttribute;
 import java.util.function.BiPredicate;
@@ -47,7 +48,11 @@ public class CEIItemAttributes {
                 var grinding = recipeManager.getRecipeFor(CEIRecipes.GRINDING.getType(), input, level);
                 if (grinding.isPresent())
                     return true;
-                if (recipeManager.getRecipeFor(AllRecipeTypes.SANDPAPER_POLISHING.getType(), input, level).isPresent())
+                var polishing = recipeManager.getRecipeFor(
+                        AllRecipeTypes.SANDPAPER_POLISHING.getType(),
+                        new SandPaperPolishingRecipe.SandPaperInv(itemStack),
+                        level);
+                if (polishing.isPresent())
                     return true;
                 return GrindstoneHelper.canItemBeGrinded(itemStack, ItemStack.EMPTY);
             }));
