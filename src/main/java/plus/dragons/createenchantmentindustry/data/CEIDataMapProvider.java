@@ -90,7 +90,7 @@ public class CEIDataMapProvider implements DataProvider {
         fluidExperience.add(mod("pneumaticcraft", "memory_essence"), 20, "pneumaticcraft");
         fluidExperience.add(mod("reliquary", "xp_juice_still"), 20, "reliquary");
         fluidExperience.add(mod("sophisticatedcore", "xp_still"), 20, "sophisticatedcore");
-        fluidExperience.add(mod("justdirethings", "xp_fluid_source"), 20, "justdirethings");
+        fluidExperience.add(mod("justdirethings", "xp_fluid"), 20, "justdirethings");
         writes.add(save(cachedOutput, fluidExperience));
 
         TagKey<net.minecraft.world.level.material.Fluid> blackDye = CEIDyeFluids.tag(DyeColor.BLACK);
