@@ -18,26 +18,21 @@
 
 package plus.dragons.createenchantmentindustry.common.migration;
 
-import java.util.ArrayList;
-import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
-import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.enchantment.Enchantment;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import plus.dragons.createenchantmentindustry.common.fluids.printer.PrinterBehaviour;
-import plus.dragons.createenchantmentindustry.common.item.CEIItemData;
 import plus.dragons.createenchantmentindustry.common.processing.enchanter.EnchanterBehaviour;
-import plus.dragons.createenchantmentindustry.common.registry.CEIItems;
 
-/** Converts block-entity fields written by the final 1.4.1 build into the 2.5 format. */
+/** Migrates final 1.4.1 block-entity fields and sanitizes invalid early-2.5 enchanter samples. */
 public final class LegacyBlockEntityData {
     private static final Logger LOGGER = LoggerFactory.getLogger(LegacyBlockEntityData.class);
     private static final AtomicBoolean WARNED_PRINTER = new AtomicBoolean();
     private static final AtomicBoolean WARNED_BLAZE_ENCHANTER = new AtomicBoolean();
+    private static final AtomicBoolean WARNED_INVALID_ENCHANTER_TEMPLATE = new AtomicBoolean();
 
     private static final String LEGACY_PRINTER_TARGET = "copyTarget";
     private static final String LEGACY_PROCESSING_TIME = "ProcessingTicks";
@@ -45,6 +40,7 @@ public final class LegacyBlockEntityData {
     private static final String HELD_ITEM = "HeldItem";
     private static final String TRANSPORTED_ITEM = "Item";
     private static final String PROCESSING_TIME = "ProcessingTime";
+    private static final String ACTIVE_ENCHANTING = "ActiveEnchanting";
 
     private LegacyBlockEntityData() {}
 
@@ -60,55 +56,47 @@ public final class LegacyBlockEntityData {
     }
 
     public static CompoundTag migrateBlazeEnchanter(CompoundTag source) {
-        boolean legacyProcessingTime = !source.contains(PROCESSING_TIME, Tag.TAG_INT)
-                && source.contains(LEGACY_PROCESSING_TIME, Tag.TAG_INT);
+        boolean legacyProcessingTime = source.contains(LEGACY_PROCESSING_TIME, Tag.TAG_INT);
         boolean legacyHeldItem = source.contains(HELD_ITEM, Tag.TAG_COMPOUND)
                 && source.getCompound(HELD_ITEM).contains(TRANSPORTED_ITEM, Tag.TAG_COMPOUND);
-        boolean legacyTarget = !source.contains(EnchanterBehaviour.TEMPLATE, Tag.TAG_COMPOUND)
-                && source.contains(LEGACY_TARGET_ITEM, Tag.TAG_COMPOUND);
-        if (!legacyProcessingTime && !legacyHeldItem && !legacyTarget) {
+        boolean legacyTarget = source.contains(LEGACY_TARGET_ITEM, Tag.TAG_COMPOUND);
+        boolean invalidTemplate = hasInvalidEnchantingTemplate(source);
+        if (!legacyProcessingTime && !legacyHeldItem && !legacyTarget && !invalidTemplate) {
             return source;
         }
 
         CompoundTag migrated = source.copy();
-        if (legacyProcessingTime) {
-            migrated.putInt(PROCESSING_TIME, source.getInt(LEGACY_PROCESSING_TIME));
-        }
         if (legacyHeldItem) {
             migrated.put(HELD_ITEM, source.getCompound(HELD_ITEM).getCompound(TRANSPORTED_ITEM).copy());
         }
-        if (legacyTarget) {
-            LegacyEnchantingTarget target = convertEnchantingGuide(source.getCompound(LEGACY_TARGET_ITEM));
-            if (target != null) {
-                migrated.put(EnchanterBehaviour.TEMPLATE, target.template().save(new CompoundTag()));
-                if (!migrated.contains(EnchanterBehaviour.LEVEL, Tag.TAG_INT)) {
-                    migrated.putInt(EnchanterBehaviour.LEVEL, target.enchantingPower());
-                }
-            }
+        migrated.remove(LEGACY_PROCESSING_TIME);
+        migrated.remove(LEGACY_TARGET_ITEM);
+
+        boolean legacyData = legacyProcessingTime || legacyHeldItem || legacyTarget;
+        if (legacyData || invalidTemplate) {
+            migrated.putInt(PROCESSING_TIME, -1);
+            migrated.remove(ACTIVE_ENCHANTING);
         }
-        warnOnce(WARNED_BLAZE_ENCHANTER, "blaze_enchanter");
+        if (legacyTarget || invalidTemplate) {
+            migrated.remove(EnchanterBehaviour.TEMPLATE);
+            migrated.putInt(EnchanterBehaviour.LEVEL, 0);
+        }
+
+        if (legacyData) {
+            warnOnce(WARNED_BLAZE_ENCHANTER, "blaze_enchanter");
+        }
+        if (invalidTemplate && WARNED_INVALID_ENCHANTER_TEMPLATE.compareAndSet(false, true)) {
+            LOGGER.warn("Discarded an invalid blaze enchanter sample while loading; the interrupted operation was cancelled");
+        }
         return migrated;
     }
 
-    private static LegacyEnchantingTarget convertEnchantingGuide(CompoundTag guideStack) {
-        if (!guideStack.contains("tag", Tag.TAG_COMPOUND)) {
-            return null;
+    private static boolean hasInvalidEnchantingTemplate(CompoundTag source) {
+        if (!source.contains(EnchanterBehaviour.TEMPLATE, Tag.TAG_COMPOUND)) {
+            return false;
         }
-        CompoundTag guideData = guideStack.getCompound("tag");
-        if (!guideData.contains("target", Tag.TAG_COMPOUND)) {
-            return null;
-        }
-        ItemStack targetBook = ItemStack.of(guideData.getCompound("target"));
-        var enchantments = new ArrayList<>(CEIItemData.getEnchantmentsForCrafting(targetBook).entrySet());
-        if (enchantments.isEmpty()) {
-            return null;
-        }
-        int index = Mth.clamp(guideData.getInt("index"), 0, enchantments.size() - 1);
-        Map.Entry<Enchantment, Integer> selected = enchantments.get(index);
-        ItemStack template = new ItemStack(CEIItems.ENCHANTING_TEMPLATE.get());
-        CEIItemData.setStoredEnchantments(template, Map.of(selected.getKey(), selected.getValue()));
-        int enchantingPower = Math.max(1, selected.getKey().getMinCost(selected.getValue()));
-        return new LegacyEnchantingTarget(template, enchantingPower);
+        ItemStack template = ItemStack.of(source.getCompound(EnchanterBehaviour.TEMPLATE));
+        return !template.isEmpty() && !template.isEnchantable();
     }
 
     private static void warnOnce(AtomicBoolean warned, String id) {
@@ -116,6 +104,4 @@ public final class LegacyBlockEntityData {
             LOGGER.warn("Migrated legacy 1.4.1 block-entity data for create_enchantment_industry:{}; save the world to write the 2.5 format", id);
         }
     }
-
-    private record LegacyEnchantingTarget(ItemStack template, int enchantingPower) {}
 }
