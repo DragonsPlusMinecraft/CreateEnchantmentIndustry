@@ -53,7 +53,9 @@ public class CEIEnchantmentTagsProvider extends TagsProvider<Enchantment> {
                 addOptional(enchanting, holder);
             if (enchantment.isTreasureOnly() && !enchantment.isCurse())
                 addOptional(superEnchantingExclusive, holder);
-            if (enchantment.isCurse())
+            // 1.20.1 has no distribution tags; these predicates approximate the 1.21.1 tags for
+            // enchanting, loot, mob equipment, and villager trades without admitting internal curses.
+            if (enchantment.isCurse() && (enchantment.isDiscoverable() || enchantment.isTradeable()))
                 addOptional(penaltyCurses, holder);
         });
 
