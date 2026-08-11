@@ -375,7 +375,7 @@ public class BlazeForgerInventory extends ItemStackHandler {
             int baseLevel = resultEnchantments.getOrDefault(enchantment, 0);
             int additionLevel = entry.getValue();
             int resultLevel = baseLevel == additionLevel ? additionLevel + 1 : Math.max(additionLevel, baseLevel);
-            if (!enchantment.canApplyAtEnchantingTable(base)) {
+            if (!CEIEnchantmentHelper.supportsEnchantment(base, enchantment)) {
                 rejected.add(RejectedEnchantment.of(enchantment, additionLevel, RejectionReason.CANNOT_APPLY_TO_ITEM.message(base.getHoverName())));
                 continue;
             }

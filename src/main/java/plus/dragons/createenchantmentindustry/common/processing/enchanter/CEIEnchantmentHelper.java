@@ -28,6 +28,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.random.WeightedRandom;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.EnchantmentInstance;
@@ -38,6 +39,26 @@ import plus.dragons.createenchantmentindustry.config.CEIConfig;
 public class CEIEnchantmentHelper {
     @Nullable
     public static Function<Enchantment, Integer> alternativeMaxLevel;
+
+    /**
+     * Compatibility equivalent of 1.21.1's primary-item predicate.
+     */
+    public static boolean isPrimaryItemFor(ItemStack stack, Enchantment enchantment) {
+        if (stack.is(Items.BOOK))
+            return true;
+        if (stack.getItem() instanceof EnchantingTemplateItem)
+            return false;
+        return enchantment.canApplyAtEnchantingTable(stack);
+    }
+
+    /**
+     * Compatibility equivalent of 1.21.1's general item-support predicate.
+     */
+    public static boolean supportsEnchantment(ItemStack stack, Enchantment enchantment) {
+        if (stack.is(Items.ENCHANTED_BOOK))
+            return true;
+        return enchantment.canEnchant(stack);
+    }
 
     public static int getEnchantmentCost(Enchantment enchantment, int level) {
         int cost = ExperienceHelper.getExperienceForNextLevel(enchantment.getMinCost(level));

@@ -111,7 +111,7 @@ public class EnchanterBehaviour extends ScrollValueBehaviour implements IHaveGog
         if (stack.isEmpty()) {
             template = ItemStack.EMPTY;
             enchanting = new EnchantingBehaviour();
-        } else if (stack.getItem() instanceof EnchantingTemplateItem) {
+        } else if (stack.isEnchantable()) {
             template = stack;
             enchanting = new TemplateEnchantingBehaviour(template);
         } else return false;
@@ -183,7 +183,10 @@ public class EnchanterBehaviour extends ScrollValueBehaviour implements IHaveGog
     @Override
     public void read(CompoundTag nbt, boolean clientPacket) {
         value = Mth.clamp(nbt.getInt(LEVEL), 0, enchanter.getMaxEnchantLevel());
-        loadTemplate(ItemStack.of(nbt.getCompound(TEMPLATE)));
+        if (!loadTemplate(ItemStack.of(nbt.getCompound(TEMPLATE)))) {
+            value = 0;
+            loadTemplate(ItemStack.EMPTY);
+        }
     }
 
     @Override

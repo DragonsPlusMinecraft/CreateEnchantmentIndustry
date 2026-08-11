@@ -95,7 +95,7 @@ public class ClassicEnchanterBehaviour extends FilteringBehaviour implements IHa
         var targetEnchantment = CEIItemData.getEnchantmentsForCrafting(filter.item());
         return targetEnchantment.entrySet().stream()
                 .filter(entry -> {
-                    if (!entry.getKey().canApplyAtEnchantingTable(stack)) return false;
+                    if (!CEIEnchantmentHelper.supportsEnchantment(stack, entry.getKey())) return false;
                     int currentLevel = stackEnchantment.getOrDefault(entry.getKey(), 0);
                     int proposedLevel = getProposedLevel(stack, entry.getKey(), entry.getValue());
                     int levelLimit = CEIEnchantmentHelper.maxLevel(entry.getKey());

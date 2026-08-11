@@ -20,7 +20,6 @@ package plus.dragons.createenchantmentindustry.common.processing.enchanter.behav
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Stream;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderSet;
 import net.minecraft.core.registries.Registries;
@@ -54,13 +53,11 @@ public class EnchantingBehaviour {
         if (adjustedLevel == 0)
             return new ArrayList<>(0);
         var registry = level.registryAccess().registryOrThrow(Registries.ENCHANTMENT);
-        Stream<? extends Holder<Enchantment>> holders = registry.getTag(enchantmentTag)
-                .map(HolderSet::stream)
-                .orElseGet(() -> registry.holders().map(holder -> (Holder<Enchantment>) holder));
-        Stream<Enchantment> possible = holders
+        var possible = registry.getTag(enchantmentTag).stream()
+                .flatMap(HolderSet::stream)
                 .filter(holder -> !special || !holder.is(CEIEnchantments.MOD_TAGS.enchantingExclusive))
                 .map(Holder::value)
-                .filter(enchantment -> enchantment.canApplyAtEnchantingTable(stack));
+                .filter(enchantment -> CEIEnchantmentHelper.isPrimaryItemFor(stack, enchantment));
         return CEIEnchantmentHelper.getAvailableEnchantmentResults(adjustedLevel, possible, special);
     }
 
@@ -70,14 +67,13 @@ public class EnchantingBehaviour {
         if (CEIConfig.enchantments().blazeEnchanterBlockedLightningCurseCount.get() <= 0)
             return new ArrayList<>(0);
         var registry = level.registryAccess().registryOrThrow(Registries.ENCHANTMENT);
-        Stream<? extends Holder<Enchantment>> holders = registry.getTag(CEIEnchantments.MOD_TAGS.penaltyCurses)
-                .map(HolderSet::stream)
-                .orElseGet(() -> registry.holders().map(holder -> (Holder<Enchantment>) holder));
-        var possible = holders
+        var possible = registry.getTag(CEIEnchantments.MOD_TAGS.penaltyCurses).stream()
+                .flatMap(HolderSet::stream)
                 .filter(enchantment -> !enchantment.is(CEIEnchantments.MOD_TAGS.penaltyCursesDeny))
                 .map(Holder::value)
                 .filter(Enchantment::isCurse)
-                .filter(enchantment -> stack.is(Items.BOOK) || enchantment.canApplyAtEnchantingTable(stack));
+                .filter(enchantment -> stack.is(Items.BOOK)
+                        || CEIEnchantmentHelper.supportsEnchantment(stack, enchantment));
         return CEIEnchantmentHelper.getAvailablePenaltyCurseResults(
                 possible,
                 CEIConfig.enchantments().blazeEnchanterBlockedLightningCurseMaxLevel.get());
