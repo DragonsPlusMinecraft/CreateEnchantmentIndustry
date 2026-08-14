@@ -18,9 +18,15 @@
 
 package plus.dragons.createenchantmentindustry.common.processing.enchanter;
 
+import java.util.List;
+import javax.annotation.Nullable;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.item.EnchantedBookItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.level.Level;
 import plus.dragons.createenchantmentindustry.common.item.CEIItemData;
 
 public class EnchantingTemplateItem extends Item {
@@ -51,6 +57,12 @@ public class EnchantingTemplateItem extends Item {
     @Override
     public boolean isFoil(ItemStack stack) {
         return !CEIItemData.getStoredEnchantments(stack).isEmpty();
+    }
+
+    @Override
+    public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
+        super.appendHoverText(stack, level, tooltip, flag);
+        ItemStack.appendEnchantmentNames(tooltip, EnchantedBookItem.getEnchantments(stack));
     }
 
     @Override
