@@ -1,4 +1,4 @@
-## Create: Enchantment Industry 2.5.1b for Minecraft 1.20.1
+## Create: Enchantment Industry 2.5.1c for Minecraft 1.20.1
 
 ### Fixes
-* Fixed Enchanting Templates not displaying their stored enchantments on Forge 1.20.1 ([#476](https://github.com/DragonsPlusMinecraft/CreateEnchantmentIndustry/issues/476)).
+* Fixed the Bucket o' Enchanting not being recognized as a fluid container, allowing it to be emptied into Create fluid tanks and other Forge fluid handlers ([#481](https://github.com/DragonsPlusMinecraft/CreateEnchantmentIndustry/issues/481)).

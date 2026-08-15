@@ -19,14 +19,23 @@
 package plus.dragons.createenchantmentindustry.common.item;
 
 import java.util.function.Supplier;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.BucketItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.material.Fluid;
+import net.minecraftforge.common.capabilities.ICapabilityProvider;
+import net.minecraftforge.fluids.capability.wrappers.FluidBucketWrapper;
+import org.jetbrains.annotations.Nullable;
 
 /** Forge 1.20.1 equivalent of an item with the enchantment-glint data component set. */
 public class FoilBucketItem extends BucketItem {
     public FoilBucketItem(Supplier<? extends Fluid> fluid, Properties properties) {
         super(fluid, properties);
+    }
+
+    @Override
+    public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundTag nbt) {
+        return new FluidBucketWrapper(stack);
     }
 
     @Override
