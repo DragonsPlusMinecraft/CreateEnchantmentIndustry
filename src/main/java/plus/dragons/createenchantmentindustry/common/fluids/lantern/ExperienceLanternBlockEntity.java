@@ -153,6 +153,8 @@ public class ExperienceLanternBlockEntity extends SmartBlockEntity implements IH
     }
 
     protected void onFluidStackChanged(FluidStack newFluidStack) {
+        if (level == null)
+            return;
         int light = ((int) (((float) tank.getPrimaryTank().tank.getFluid().getAmount() / tank.getPrimaryTank().tank.getCapacity()) * 15f));
         light = Math.min(Math.max(0, light), 15);
         level.setBlockAndUpdate(getBlockPos(), getBlockState().setValue(ExperienceLanternBlock.LIGHT, light));

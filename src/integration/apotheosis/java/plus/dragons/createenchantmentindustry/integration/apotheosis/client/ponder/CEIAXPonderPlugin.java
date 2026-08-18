@@ -19,6 +19,7 @@
 package plus.dragons.createenchantmentindustry.integration.apotheosis.client.ponder;
 
 import com.simibubi.create.AllBlocks;
+import com.simibubi.create.infrastructure.ponder.AllCreatePonderTags;
 import com.tterrag.registrate.util.entry.ItemProviderEntry;
 import com.tterrag.registrate.util.entry.RegistryEntry;
 import dev.shadowsoffire.apotheosis.Apotheosis;
@@ -50,6 +51,10 @@ public class CEIAXPonderPlugin {
                 .addStoryBoard("gem_cutter", CEIAXPonderScenes::gemCutter, APOTHEOTIC_CREATION_COMPONENTS);
         registration.forComponents(CEIAXBlocks.AFFIX_AUGMENTOR)
                 .addStoryBoard("affix_augmentor", CEIAXPonderScenes::affixAugmentor, APOTHEOTIC_CREATION_COMPONENTS);
+        registration.forComponents(CEIAXBlocks.BLAZE_COMPOSER)
+                .addStoryBoard("blaze_composer", BlazeComposerScene::basic, APOTHEOTIC_CREATION_COMPONENTS)
+                .addStoryBoard("blaze_composer", BlazeComposerScene::superComposing, APOTHEOTIC_CREATION_COMPONENTS)
+                .addStoryBoard("automate_blaze_composer", BlazeComposerScene::automate, AllCreatePonderTags.ARM_TARGETS);
         registration.forComponents(AllBlocks.ENCASED_FAN)
                 .addStoryBoard("bulk_salvaging", CEIAXPonderScenes::bulkSalvaging, APOTHEOTIC_CREATION_COMPONENTS);
     }

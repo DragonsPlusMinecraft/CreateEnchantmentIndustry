@@ -1,4 +1,8 @@
-## Create: Enchantment Industry 2.5.1c for Minecraft 1.20.1
+## Create: Enchantment Industry 2.5.2 for Minecraft 1.20.1
 
-### Fixes
-* Fixed the Bucket o' Enchanting not being recognized as a fluid container, allowing it to be emptied into Create fluid tanks and other Forge fluid handlers ([#481](https://github.com/DragonsPlusMinecraft/CreateEnchantmentIndustry/issues/481)).
+### Added
+* Added a complete three-part Ponder tutorial for the Blaze Composer, covering normal composing, Super Composing, and Mechanical Arm automation.
+* Added Simplified Chinese translations for the new Blaze Composer tutorial scenes.
+
+### Fixed
+* Fixed opening the Experience Lantern Ponder crashing while its scene was loading ([#483](https://github.com/DragonsPlusMinecraft/CreateEnchantmentIndustry/issues/483)).

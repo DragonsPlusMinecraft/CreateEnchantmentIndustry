@@ -613,7 +613,8 @@ public class BlazeComposerBlockEntity extends BlazeBlockEntity implements Cleara
     }
 
     protected int processingTime() {
-        return CEIAXConfig.server().affixes().blazeComposerProcessingTime.get();
+        int processingTime = CEIAXConfig.server().affixes().blazeComposerProcessingTime.get();
+        return isVirtual() ? Math.max(1, processingTime / 4) : processingTime;
     }
 
     @Override
