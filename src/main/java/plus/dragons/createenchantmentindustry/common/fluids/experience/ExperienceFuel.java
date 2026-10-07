@@ -66,7 +66,7 @@ public record ExperienceFuel(int experience, boolean special, Optional<ItemStack
             return fuel;
         if (!GenericItemEmptying.canItemBeEmptied(level, stack))
             return null;
-        var emptying = GenericItemEmptying.emptyItem(level, stack, true);
+        var emptying = GenericItemEmptying.emptyItem(level, stack.copy(), false);
         var fluid = emptying.getFirst();
         var experience = ExperienceHelper.getExperienceFromFluid(fluid);
         if (experience == 0)
